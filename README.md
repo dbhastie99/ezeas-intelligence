@@ -228,6 +228,15 @@ Ask a question using the returned session id:
 curl -X POST http://127.0.0.1:8000/api/v1/chat/message -H "Content-Type: application/json" -d "{\"session_id\":\"YOUR_SESSION_ID\",\"message\":\"What is Minerva allowed to do?\"}"
 ```
 
+For local SQL Server corpus investigation, use the operator ask script:
+
+```powershell
+py scripts/ask_minerva.py "What is Minerva not allowed to do?"
+py scripts/ask_minerva.py "What is Minerva not allowed to do?" --source-type PLATFORM_DOCTRINE --top-k 5
+```
+
+The script creates a new chat session per invocation, uses the stub LLM only, prints source scores and matched tokens, and writes an audit row.
+
 ## Tests
 
 Tests use SQLite in memory so normal pytest runs do not require SQL Server.

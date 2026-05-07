@@ -37,12 +37,24 @@ class StubLLMClient(BaseLLMClient):
                 "Minerva is advisory and does not calculate or change payroll truth."
             )
 
-        excerpts = []
-        for result in retrieved_chunks[:3]:
-            excerpts.append(_safe_excerpt(result.chunk_text))
-        evidence_summary = " ".join(excerpts)
+        strong_chunks = [
+            result
+            for result in retrieved_chunks
+            if result.score >= 18.0 and (result.match_ratio >= 0.45 or len(result.matched_tokens) >= 2)
+        ]
+        selected_chunks = (strong_chunks or retrieved_chunks)[:3]
+        excerpts = [_safe_excerpt(result.chunk_text, max_length=260) for result in selected_chunks]
+
+        if not strong_chunks:
+            return (
+                "The retrieved Minerva evidence is weak or mixed for this question. "
+                f"The closest sources say: {' '.join(excerpts[:2])} "
+                "Minerva is advisory and does not calculate or change payroll truth."
+            )
+
+        formatted_evidence = " ".join(f"Source {index + 1}: {excerpt}" for index, excerpt in enumerate(excerpts))
         return (
-            "Based on the retrieved Minerva knowledge sources, "
-            f"{evidence_summary} "
+            "Based on the retrieved Minerva knowledge sources, using the strongest matches, "
+            f"{formatted_evidence} "
             "Minerva is advisory and does not calculate or change payroll truth."
         )

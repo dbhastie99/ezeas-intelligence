@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class SourceReference(BaseModel):
@@ -9,3 +9,6 @@ class SourceReference(BaseModel):
     source_type: str
     source_authority: int
     chunk_index: int
+    score: float | None = None
+    matched_tokens: list[str] = Field(default_factory=list)
+    snippet: str | None = None

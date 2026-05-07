@@ -1,0 +1,209 @@
+Platform Update
+
+We are commencing implementation of the Ezeas Intelligence Layer, now named Minerva.
+
+Minerva is a focused platform capability, not a generic chatbot. It is the Ezeas knowledge and evidence intelligence layer that will allow users to ask natural-language questions over:
+
+Developer Logs
+Hardening Logs
+Platform Doctrine
+client requirements and responses
+curated project chat history
+PayRun JSON artefacts
+Worker Story JSON
+Movement Review evidence
+Payroll Bases & Totals evidence
+exception payloads
+correction audit evidence
+finalisation readiness evidence
+reconciliation outputs
+
+Minerva’s purpose is to make Ezeas’ deterministic evidence estate searchable, explainable, comparable and operationally useful.
+
+The deterministic Ezeas platform remains the source of payroll truth. Minerva must not calculate payroll, determine entitlements, interpret awards at runtime, approve exceptions, suppress warnings, override payroll outcomes, mutate configuration or finalise PayRuns. Minerva reads, explains, summarises, clusters, compares and guides.
+
+The agreed architecture is a separate Python/FastAPI service in a new repo:
+
+ezeas-intelligence
+
+with a separate SQL Server database:
+
+ezeas-intelligence-db
+
+The operational Ezeas database remains authoritative for payroll, leave, award, workforce and reconciliation truth. Minerva may reference operational IDs such as AccountId, PayRunId, ContactId, ProcessPeriodId and ArtifactId, but it must not become operational payroll truth.
+
+Initial implementation should use SQL Server, document chunks, source metadata, simple keyword/full-text retrieval and audit logging. Do not introduce Postgres, pgvector, complex agent frameworks or live payroll JSON in the first slice.
+
+Thread Context
+
+The prior thread established the full conceptual and governance model for Minerva.
+
+Key decisions already made:
+
+Name decision
+
+The Ezeas Intelligence Layer is now called Minerva.
+
+Unified architecture decision
+
+Minerva supports both:
+
+Platform Knowledge Assistant
+Operational Evidence Intelligence Assistant
+
+These are not separate products. They share one secure ingestion, indexing, retrieval, redaction, source-authority, answer-generation and audit architecture.
+
+LLM boundary decision
+
+Minerva is explanatory and advisory only. It does not calculate payroll or mutate payroll truth.
+
+Separate database decision
+
+Minerva uses its own SQL Server database, ezeas-intelligence-db.
+
+SQL Server first decision
+
+Use MS SQL Server for the local prototype. Vector search can come later.
+
+No raw JSON by default decision
+
+Operational JSON evidence must be registered, hashed, classified and extracted into facts/summaries before LLM use. Raw payroll JSON should not be sent wholesale to an LLM by default.
+
+RBAC-before-LLM decision
+
+Tenant filtering and user permissions must be applied before evidence reaches the LLM.
+
+Source authority decision
+
+Platform Doctrine, Hardening Logs and Developer Logs outrank raw chat history. Chat history is supporting material, not authoritative if it conflicts with formal doctrine/logs.
+
+No autonomous AI action decision
+
+Minerva may recommend review or explain evidence. Suppression, override, repair, finalisation and configuration changes remain deterministic workflows requiring governed user action.
+
+Logging decision
+
+Minerva work remains in the broader Workforce Platform Developer Log / Hardening Log / Platform Doctrine strategy, even though the repo is separate. Separate repo is an engineering boundary; shared logs and doctrine are the platform memory boundary.
+
+Developer Log structure decision
+
+All future Developer Logs must include:
+
+User Guide / Rationale and Operating Model
+
+The Still To Do / Do Not Lose section must now act as a continuity audit checkpoint, carrying forward current-thread items, active platform commitments and deferred no-status-change commitments.
+
+Implementation Direction for the New Thread
+
+We are now ready to start the first implementation slice for Minerva.
+
+Do not start with JSON evidence intelligence yet.
+
+Start with the walking skeleton:
+
+documents go in
+text is extracted
+text is chunked
+chunks and metadata are stored in SQL Server
+a chat endpoint retrieves relevant chunks
+an answer is generated from retrieved chunks
+source references are returned
+the AI interaction is audited
+
+Initial source types:
+
+Platform Doctrine
+Hardening Log
+Developer Log
+TXT/DOCX documents
+
+Initial file types:
+
+TXT
+DOCX
+
+Initial retrieval:
+
+SQL keyword search or SQL Server full-text search if straightforward. Do not introduce embeddings in v0 unless explicitly agreed.
+
+Initial model call:
+
+Use an LLM client abstraction, but allow a stub response first so ingestion/retrieval/audit can be proven before depending on model integration.
+
+Initial endpoints:
+
+GET /health
+POST /api/v1/ingest/file
+POST /api/v1/ingest/folder
+POST /api/v1/chat/session
+POST /api/v1/chat/message
+
+Initial tables:
+
+KnowledgeDocument
+KnowledgeChunk
+KnowledgeChatSession
+KnowledgeChatMessage
+AIInteractionAudit
+
+Later tables, not first slice unless required:
+
+EvidenceArtifact
+EvidenceFact
+EvidenceNarrative
+KnownIssuePattern
+Embeddings/search index metadata
+
+Prompt to Commence New Thread
+
+We are commencing implementation of Minerva, the Ezeas Intelligence Layer.
+
+Please continue from the prior thread decisions.
+
+Minerva is a separate Python/FastAPI service in a planned new repo named ezeas-intelligence, backed initially by SQL Server database ezeas-intelligence-db.
+
+The first implementation target is the walking skeleton for platform knowledge ingestion and grounded chat. Do not implement operational JSON evidence intelligence yet. Do not use live customer payroll JSON. Do not introduce Postgres, pgvector, vector DBs or agent frameworks in v0.
+
+Please guide the implementation slice-by-slice but with an end-to-end repo skeleton rather than the old match-and-replace-only approach.
+
+Start by producing the first Codex-ready implementation prompt for Slice 1:
+
+Minerva Walking Skeleton v0.1
+
+Scope:
+
+create repo structure;
+FastAPI app;
+SQL Server config;
+SQLAlchemy models;
+database creation script;
+KnowledgeDocument table;
+KnowledgeChunk table;
+KnowledgeChatSession table;
+KnowledgeChatMessage table;
+AIInteractionAudit table;
+TXT/DOCX extraction;
+SHA256 file hashing;
+duplicate ingestion prevention;
+simple chunking;
+file/folder ingestion endpoints;
+chat session endpoint;
+chat message endpoint;
+keyword retrieval;
+source references;
+answer-generation service with stub LLM client;
+audit logging;
+pytest tests for ingestion, duplicate prevention, retrieval and audit.
+
+Critical doctrines to enforce from the beginning:
+
+Minerva is not payroll calculation truth.
+Minerva is read-only/advisory in v0.
+Source authority must be modelled even if simple.
+No raw customer JSON.
+No autonomous action.
+Audit every AI answer.
+Design so RBAC/tenant filtering can be added before operational evidence ingestion.
+Keep operational payroll database separate from Minerva’s database.
+
+Please provide the implementation prompt in a form I can paste directly into Codex.

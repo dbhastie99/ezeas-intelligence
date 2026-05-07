@@ -16,6 +16,9 @@ def build_source_references(results: list[RetrievalResult]) -> list[SourceRefere
             source_type=result.source_type,
             source_authority=result.source_authority,
             chunk_index=result.chunk_index,
+            score=round(result.score, 3),
+            matched_tokens=result.matched_tokens,
+            snippet=result.snippet,
         )
         for result in results
     ]

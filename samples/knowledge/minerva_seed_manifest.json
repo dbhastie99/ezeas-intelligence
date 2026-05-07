@@ -1,0 +1,37 @@
+{
+  "default_source_type": "OTHER",
+  "default_capability_status": "UNKNOWN",
+  "default_tenant_id": null,
+  "documents": [
+    {
+      "path": "minerva_seed/platform_doctrine.docx",
+      "source_type": "PLATFORM_DOCTRINE",
+      "capability_status": "DOCTRINE",
+      "title": "Platform Doctrine — Integrated"
+    },
+    {
+      "path": "minerva_seed/hardening_doctrine.docx",
+      "source_type": "HARDENING_LOG",
+      "capability_status": "OUTSTANDING_HARDENING",
+      "title": "Hardening Doctrine — Integrated"
+    },
+    {
+      "path": "minerva_seed/developer_log_minerva.docx",
+      "source_type": "DEVELOPER_LOG",
+      "capability_status": "IMPLEMENTED",
+      "title": "Developer Log — Minerva Intelligence Layer"
+    },
+    {
+      "path": "minerva_seed/developer_log_historical.docx",
+      "source_type": "DEVELOPER_LOG",
+      "capability_status": "IMPLEMENTED",
+      "title": "Developer Log — Historical Platform Context"
+    },
+    {
+      "path": "minerva_seed/minerva_thread_context.txt",
+      "source_type": "REQUIREMENTS",
+      "capability_status": "DOCTRINE",
+      "title": "Minerva Thread Context and Implementation Direction"
+    }
+  ]
+}
