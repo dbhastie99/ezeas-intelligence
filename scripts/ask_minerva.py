@@ -99,6 +99,10 @@ def main() -> int:
                     f"{index}. title={source.title!r} source_type={source.source_type} "
                     f"score={source.score} matched_tokens={source.matched_tokens}"
                 )
+                if source.matched_phrases:
+                    print(f"   matched_phrases={source.matched_phrases}")
+                if source.match_reason:
+                    print(f"   match_reason={source.match_reason}")
                 print(f"   chunk_id={source.chunk_id} document_id={source.document_id} chunk_index={source.chunk_index}")
                 print(f"   snippet={source.snippet}")
             print()

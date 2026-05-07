@@ -12,3 +12,6 @@ class SourceReference(BaseModel):
     score: float | None = None
     matched_tokens: list[str] = Field(default_factory=list)
     snippet: str | None = None
+    detected_intent: str | None = None
+    matched_phrases: list[str] = Field(default_factory=list)
+    match_reason: str | None = None

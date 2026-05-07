@@ -19,6 +19,9 @@ def build_source_references(results: list[RetrievalResult]) -> list[SourceRefere
             score=round(result.score, 3),
             matched_tokens=result.matched_tokens,
             snippet=result.snippet,
+            detected_intent=result.detected_intent,
+            matched_phrases=result.matched_phrases,
+            match_reason=result.match_reason,
         )
         for result in results
     ]

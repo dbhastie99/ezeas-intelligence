@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.services.knowledge_retrieval_service import RetrievalResult
+from app.services.knowledge_retrieval_service import RetrievalResult, classify_query_intent
 
 
 def _safe_excerpt(text: str, max_length: int = 350) -> str:
@@ -36,6 +36,38 @@ class StubLLMClient(BaseLLMClient):
                 "I do not have retrieved Minerva knowledge evidence for that question. "
                 "Minerva is advisory and does not calculate or change payroll truth."
             )
+
+        intent = classify_query_intent(question)
+        strong_chunks = [
+            result
+            for result in retrieved_chunks
+            if result.score >= 18.0 and (result.match_ratio >= 0.45 or len(result.matched_tokens) >= 2 or result.matched_phrases)
+        ]
+
+        if intent and strong_chunks:
+            if intent.name == "MINERVA_BOUNDARY_PROHIBITION":
+                return (
+                    "Minerva is not allowed to calculate payroll, determine entitlements, interpret awards at runtime, "
+                    "approve exceptions, suppress warnings, override payroll outcomes, mutate configuration, finalise "
+                    "PayRuns or become payroll calculation truth. It may search, retrieve, summarise, compare, explain "
+                    "and interrogate evidence. Deterministic Ezeas services remain the source of payroll, award, leave, "
+                    "tax, reconciliation and finalisation truth. Minerva is advisory and does not calculate or change "
+                    "payroll truth."
+                )
+            if intent.name == "RBAC_BEFORE_LLM":
+                return (
+                    "RBAC-before-LLM means user permissions must be checked before evidence is retrieved into model "
+                    "context. The model must not receive sensitive evidence that the user is not authorised to view. "
+                    "Permission enforcement must happen before context construction, not after answer generation. "
+                    "Minerva is advisory and does not calculate or change payroll truth."
+                )
+            if intent.name == "SEPARATE_DATABASE":
+                return (
+                    "Minerva uses a separate database so knowledge indexing, chat history, extracted facts, evidence "
+                    "references and AI audit records are isolated from the operational payroll database. The operational "
+                    "Ezeas database remains the authoritative source of payroll, leave, award, workforce and "
+                    "reconciliation truth. Minerva is advisory and does not calculate or change payroll truth."
+                )
 
         strong_chunks = [
             result
