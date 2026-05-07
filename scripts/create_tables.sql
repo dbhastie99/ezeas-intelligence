@@ -1,6 +1,9 @@
 /*
-Run this after scripts/create_db.sql.
-This script is intentionally simple and idempotent where practical.
+Minerva local SQL Server table bootstrap.
+
+Run this after scripts/create_db.sql against the ezeas-intelligence-db database.
+This script creates the Slice 1.x tables and indexes if they do not already exist.
+It is intentionally simple and idempotent where practical; it does not perform migrations.
 */
 
 USE [ezeas-intelligence-db];
@@ -94,14 +97,26 @@ BEGIN
 END;
 GO
 
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_KnowledgeDocument_FileSha256')
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_KnowledgeDocument_FileSha256' AND object_id = OBJECT_ID(N'dbo.KnowledgeDocument'))
     CREATE UNIQUE INDEX IX_KnowledgeDocument_FileSha256 ON dbo.KnowledgeDocument(FileSha256);
 GO
 
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_KnowledgeDocument_SourceType')
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_KnowledgeDocument_SourceType' AND object_id = OBJECT_ID(N'dbo.KnowledgeDocument'))
     CREATE INDEX IX_KnowledgeDocument_SourceType ON dbo.KnowledgeDocument(SourceType);
 GO
 
-IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_KnowledgeChunk_KnowledgeDocumentId')
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_KnowledgeDocument_TenantId' AND object_id = OBJECT_ID(N'dbo.KnowledgeDocument'))
+    CREATE INDEX IX_KnowledgeDocument_TenantId ON dbo.KnowledgeDocument(TenantId);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_KnowledgeDocument_DocumentStatus' AND object_id = OBJECT_ID(N'dbo.KnowledgeDocument'))
+    CREATE INDEX IX_KnowledgeDocument_DocumentStatus ON dbo.KnowledgeDocument(DocumentStatus);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_KnowledgeChunk_KnowledgeDocumentId' AND object_id = OBJECT_ID(N'dbo.KnowledgeChunk'))
     CREATE INDEX IX_KnowledgeChunk_KnowledgeDocumentId ON dbo.KnowledgeChunk(KnowledgeDocumentId);
+GO
+
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = N'IX_AIInteractionAudit_KnowledgeChatSessionId' AND object_id = OBJECT_ID(N'dbo.AIInteractionAudit'))
+    CREATE INDEX IX_AIInteractionAudit_KnowledgeChatSessionId ON dbo.AIInteractionAudit(KnowledgeChatSessionId);
 GO
