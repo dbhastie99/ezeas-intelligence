@@ -1,0 +1,13 @@
+{
+  "default_source_type": "OTHER",
+  "default_capability_status": "UNKNOWN",
+  "default_tenant_id": null,
+  "documents": [
+    {
+      "path": "samples/knowledge/sample_platform_doctrine.txt",
+      "source_type": "PLATFORM_DOCTRINE",
+      "capability_status": "DOCTRINE",
+      "title": "Sample Platform Doctrine"
+    }
+  ]
+}

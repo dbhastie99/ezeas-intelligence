@@ -31,7 +31,7 @@ sqlcmd -S localhost -d ezeas-intelligence-db -i scripts/create_tables.sql
 
 You can also run both scripts in SQL Server Management Studio. Copy `.env.example` to `.env` and adjust `MINERVA_DATABASE_URL` for your SQL Server and ODBC driver.
 
-## Slice 1.2 — Local SQL Server Run Proof
+## Slice 1.2 - Local SQL Server Run Proof
 
 This proof shows that Minerva can run locally against SQL Server database `ezeas-intelligence-db`. It does not use the operational payroll database. It does not ingest JSON, call an external LLM, use embeddings, or execute autonomous actions.
 
@@ -144,6 +144,75 @@ Or use the API:
 ```powershell
 curl -F "file=@samples/knowledge/sample_platform_doctrine.txt" -F "source_type=PLATFORM_DOCTRINE" http://127.0.0.1:8000/api/v1/ingest/file
 ```
+
+## Loading The First Minerva Knowledge Corpus
+
+Use manifest ingestion when loading the first repeatable platform knowledge corpus. This is for TXT and DOCX platform knowledge only, such as Platform Doctrine, hardening logs, developer logs, requirements, and planning documents. Do not place live customer payroll JSON or operational payroll evidence in this corpus.
+
+Place TXT and DOCX files under a local folder such as:
+
+```text
+samples/knowledge/
+```
+
+Create or edit a manifest JSON file. Start from:
+
+```text
+samples/knowledge/manifest.example.json
+```
+
+Manifest example:
+
+```json
+{
+  "default_source_type": "OTHER",
+  "default_capability_status": "UNKNOWN",
+  "default_tenant_id": null,
+  "documents": [
+    {
+      "path": "samples/knowledge/sample_platform_doctrine.txt",
+      "source_type": "PLATFORM_DOCTRINE",
+      "capability_status": "DOCTRINE",
+      "title": "Sample Platform Doctrine"
+    }
+  ]
+}
+```
+
+Document-level fields override manifest defaults. `path` is required. `tenant_id` and `title` are optional. If `title` is missing, Minerva uses the filename without extension.
+
+Run manifest ingestion:
+
+```powershell
+py scripts/ingest_manifest.py samples/knowledge/manifest.example.json
+```
+
+Rerunning the same manifest is safe. Existing files are reported as duplicates instead of being ingested again.
+
+Verify SQL Server row counts:
+
+```powershell
+py scripts/check_sqlserver_tables.py
+```
+
+Allowed `source_type` values:
+
+- `PLATFORM_DOCTRINE`
+- `HARDENING_LOG`
+- `DEVELOPER_LOG`
+- `REQUIREMENTS`
+- `CHAT_HISTORY`
+- `OTHER`
+
+Allowed `capability_status` values:
+
+- `IMPLEMENTED`
+- `PHASE_ONE`
+- `DOCTRINE`
+- `OUTSTANDING_HARDENING`
+- `FUTURE_ROADMAP`
+- `DESIGN_DISCUSSION`
+- `UNKNOWN`
 
 ## Chat
 

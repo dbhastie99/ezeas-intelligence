@@ -29,6 +29,7 @@ def ingest_file_bytes(
     capability_status: str | None = None,
     tenant_id: str | None = None,
     stored_file_path: str | None = None,
+    title: str | None = None,
 ) -> tuple[KnowledgeDocument, bool]:
     file_sha256 = sha256_bytes(content)
     existing = _get_existing_document_by_sha(db, file_sha256)
@@ -56,7 +57,7 @@ def ingest_file_bytes(
         StoredFilePath=stored_file_path,
         FileExtension=Path(original_file_name).suffix.lower().lstrip("."),
         FileSha256=file_sha256,
-        Title=Path(original_file_name).stem,
+        Title=title or Path(original_file_name).stem,
         DocumentStatus=normalize_document_status(DocumentStatus.ACTIVE.value),
         ExtractedTextLength=len(text),
         ChunkCount=len(chunks),
@@ -94,6 +95,7 @@ def ingest_file_path(
     source_type: str = "OTHER",
     capability_status: str | None = None,
     tenant_id: str | None = None,
+    title: str | None = None,
 ) -> tuple[KnowledgeDocument, bool]:
     return ingest_file_bytes(
         db=db,
@@ -103,6 +105,7 @@ def ingest_file_path(
         capability_status=capability_status,
         tenant_id=tenant_id,
         stored_file_path=str(path),
+        title=title,
     )
 
 

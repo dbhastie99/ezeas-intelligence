@@ -15,6 +15,7 @@ async def ingest_file(
     source_type: str = Form("OTHER"),
     capability_status: str | None = Form(None),
     tenant_id: str | None = Form(None),
+    title: str | None = Form(None),
     db: Session = Depends(get_db),
 ) -> FileIngestResponse:
     content = await file.read()
@@ -26,6 +27,7 @@ async def ingest_file(
             source_type=source_type,
             capability_status=capability_status,
             tenant_id=tenant_id,
+            title=title,
         )
     except UnsupportedDocumentTypeError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc

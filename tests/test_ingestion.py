@@ -29,6 +29,18 @@ def test_txt_ingestion_creates_document_and_chunks(client, db_session):
     assert documents[0].FileSha256 == body["file_sha256"]
 
 
+def test_file_ingestion_accepts_optional_title(client, db_session):
+    response = client.post(
+        "/api/v1/ingest/file",
+        files={"file": ("title-api.txt", b"API title should be stored on the document.", "text/plain")},
+        data={"source_type": "OTHER", "title": "API Supplied Title"},
+    )
+
+    assert response.status_code == 200
+    document = db_session.query(KnowledgeDocument).one()
+    assert document.Title == "API Supplied Title"
+
+
 def test_duplicate_ingestion_returns_duplicate_and_does_not_create_extra_chunks(client, db_session):
     content = b"Duplicate prevention by SHA256 keeps Minerva ingestion idempotent."
 
