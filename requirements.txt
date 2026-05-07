@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+sqlalchemy>=2.0
+pydantic>=2.0
+pydantic-settings
+pyodbc
+python-docx
+python-multipart
+pytest
+httpx
