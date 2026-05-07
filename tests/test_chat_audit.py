@@ -1,5 +1,7 @@
 from app.models.audit import AIInteractionAudit
 from app.models.chat import KnowledgeChatMessage
+from app.services.knowledge_retrieval_service import RetrievalResult
+from app.services.llm_client import StubLLMClient
 
 
 def test_chat_message_creates_messages_sources_and_audit(client, db_session):
@@ -54,3 +56,23 @@ def test_no_evidence_chat_returns_honest_answer_and_still_audits(client, db_sess
     assert "does not calculate or change payroll truth" in body["answer"]
     assert db_session.query(AIInteractionAudit).count() == 1
     assert db_session.query(KnowledgeChatMessage).count() == 2
+
+
+def test_stub_llm_does_not_leave_dangling_partial_word_before_safety_boundary():
+    chunk_text = ("A" * 349) + " I should not leak as a dangling partial word."
+    result = RetrievalResult(
+        chunk_id="chunk-1",
+        document_id="doc-1",
+        chunk_index=0,
+        chunk_text=chunk_text,
+        title="Stub test",
+        original_file_name="stub.txt",
+        source_type="OTHER",
+        source_authority=10,
+        score=1.0,
+    )
+
+    answer = StubLLMClient().generate_answer("What is Minerva allowed to do?", [result])
+
+    assert " I Minerva is advisory" not in answer
+    assert "Minerva is advisory and does not calculate or change payroll truth." in answer
