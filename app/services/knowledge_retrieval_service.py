@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 from sqlalchemy import or_, select
 from sqlalchemy.orm import Session, joinedload
 
-from app.core.enums import normalize_source_type
+from app.core.enums import SourceType, normalize_source_type
 from app.models.knowledge import KnowledgeChunk, KnowledgeDocument
 
 GENERIC_QUERY_TERMS = {
@@ -52,6 +52,7 @@ SOURCE_TYPE_QUERY_BOOSTS = {
     "REQUIREMENTS": {"requirement", "requirements", "planning", "roadmap", "future"},
     "CHAT_HISTORY": {"thread", "chat", "discussion", "context"},
 }
+SAMPLE_SOURCE_TYPES = {SourceType.SAMPLE.value}
 CAPABILITY_STATUS_BOOSTS = {
     "DOCTRINE": 2.5,
     "IMPLEMENTED": 2.0,
@@ -299,6 +300,7 @@ def retrieve_relevant_chunks(
     tenant_id: str | None = None,
     top_k: int = 5,
     source_types: list[str] | None = None,
+    include_samples: bool = False,
 ) -> list[RetrievalResult]:
     keywords = tokenize(query)
     intent = classify_query_intent(query)
@@ -320,6 +322,8 @@ def retrieve_relevant_chunks(
         stmt = stmt.where(KnowledgeDocument.TenantId.is_(None))
     if normalized_source_types is not None:
         stmt = stmt.where(KnowledgeDocument.SourceType.in_(normalized_source_types))
+    if not include_samples:
+        stmt = stmt.where(KnowledgeDocument.SourceType.notin_(SAMPLE_SOURCE_TYPES))
 
     scored: list[RetrievalResult] = []
     for chunk in db.scalars(stmt).all():

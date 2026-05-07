@@ -45,6 +45,12 @@ def main() -> int:
         return 1
 
     from app.main import app
+    from app.core.enums import ChatRole, normalize_chat_role
+    from app.db.session import SessionLocal
+    from app.models.chat import KnowledgeChatMessage, KnowledgeChatSession
+    from app.services.answer_generation_service import generate_grounded_answer
+    from app.services.audit_service import write_ai_interaction_audit
+    from app.services.knowledge_retrieval_service import retrieve_relevant_chunks
 
     client = TestClient(app)
 
@@ -56,31 +62,54 @@ def main() -> int:
             client.post(
                 "/api/v1/ingest/file",
                 files={"file": (SAMPLE_PATH.name, sample_file, "text/plain")},
-                data={"source_type": "PLATFORM_DOCTRINE", "capability_status": "DOCTRINE"},
+                data={
+                    "source_type": "SAMPLE",
+                    "capability_status": "UNKNOWN",
+                    "title": "Sample Platform Doctrine / Smoke Test Document",
+                },
             ),
             "Sample ingestion",
         )
     print(f"Ingestion: {ingest}")
     print(f"Duplicate flag: {ingest['duplicate']}")
 
-    session = require_ok(
-        client.post("/api/v1/chat/session", json={"title": "Local SQL Server smoke test"}),
-        "Chat session creation",
-    )
-    chat = require_ok(
-        client.post(
-            "/api/v1/chat/message",
-            json={
-                "session_id": session["session_id"],
-                "message": "What is Minerva allowed to do?",
-            },
-        ),
-        "Chat message",
-    )
+    question = "What is Minerva allowed to do?"
+    with SessionLocal() as db:
+        session = KnowledgeChatSession(Title="Local SQL Server smoke test")
+        db.add(session)
+        db.flush()
+        db.add(
+            KnowledgeChatMessage(
+                KnowledgeChatSessionId=session.KnowledgeChatSessionId,
+                Role=normalize_chat_role(ChatRole.USER.value),
+                Content=question,
+            )
+        )
+        db.flush()
+        retrieved_chunks = retrieve_relevant_chunks(db=db, query=question, include_samples=True)
+        answer, sources, model_name, prompt_policy = generate_grounded_answer(question, retrieved_chunks)
+        db.add(
+            KnowledgeChatMessage(
+                KnowledgeChatSessionId=session.KnowledgeChatSessionId,
+                Role=normalize_chat_role(ChatRole.ASSISTANT.value),
+                Content=answer,
+            )
+        )
+        db.flush()
+        audit = write_ai_interaction_audit(
+            db=db,
+            user_question=question,
+            response_text=answer,
+            source_references=sources,
+            model_name=model_name,
+            prompt_policy=prompt_policy,
+            chat_session_id=session.KnowledgeChatSessionId,
+        )
+        db.commit()
 
-    print(f"Chat answer: {chat['answer']}")
-    print(f"Source reference count: {len(chat['sources'])}")
-    print(f"Audit id: {chat['audit_id']}")
+    print(f"Chat answer: {answer}")
+    print(f"Source reference count: {len(sources)}")
+    print(f"Audit id: {audit.AIInteractionAuditId}")
     return 0
 
 

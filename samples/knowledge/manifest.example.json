@@ -5,8 +5,8 @@
   "documents": [
     {
       "path": "samples/knowledge/sample_platform_doctrine.txt",
-      "source_type": "PLATFORM_DOCTRINE",
-      "capability_status": "DOCTRINE",
+      "source_type": "SAMPLE",
+      "capability_status": "UNKNOWN",
       "title": "Sample Platform Doctrine"
     }
   ]

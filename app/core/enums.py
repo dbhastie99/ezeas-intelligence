@@ -8,6 +8,7 @@ class SourceType(StrEnum):
     REQUIREMENTS = "REQUIREMENTS"
     CHAT_HISTORY = "CHAT_HISTORY"
     OTHER = "OTHER"
+    SAMPLE = "SAMPLE"
 
 
 class CapabilityStatus(StrEnum):

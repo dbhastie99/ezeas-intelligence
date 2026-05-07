@@ -7,6 +7,7 @@ SOURCE_AUTHORITY: dict[str, int] = {
     SourceType.REQUIREMENTS.value: 70,
     SourceType.CHAT_HISTORY.value: 40,
     SourceType.OTHER.value: 10,
+    SourceType.SAMPLE.value: 1,
 }
 
 

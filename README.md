@@ -171,8 +171,8 @@ Manifest example:
   "documents": [
     {
       "path": "samples/knowledge/sample_platform_doctrine.txt",
-      "source_type": "PLATFORM_DOCTRINE",
-      "capability_status": "DOCTRINE",
+      "source_type": "SAMPLE",
+      "capability_status": "UNKNOWN",
       "title": "Sample Platform Doctrine"
     }
   ]
@@ -203,6 +203,7 @@ Allowed `source_type` values:
 - `REQUIREMENTS`
 - `CHAT_HISTORY`
 - `OTHER`
+- `SAMPLE`
 
 Allowed `capability_status` values:
 
@@ -233,9 +234,40 @@ For local SQL Server corpus investigation, use the operator ask script:
 ```powershell
 py scripts/ask_minerva.py "What is Minerva not allowed to do?"
 py scripts/ask_minerva.py "What is Minerva not allowed to do?" --source-type PLATFORM_DOCTRINE --top-k 5
+py scripts/ask_minerva.py "What is Minerva not allowed to do?" --include-samples
 ```
 
 The script creates a new chat session per invocation, uses the stub LLM only, prints source scores and matched tokens, and writes an audit row.
+
+## Corpus Hygiene
+
+Sample/test documents are for smoke tests and local debugging only. They should use `source_type=SAMPLE`, not `PLATFORM_DOCTRINE`, so normal Minerva queries prefer the real doctrine/log corpus.
+
+Normal `ask_minerva.py` queries exclude `SAMPLE` documents by default. Include them only when debugging:
+
+```powershell
+py scripts/ask_minerva.py "What is Minerva allowed to do?" --include-samples
+```
+
+List current documents:
+
+```powershell
+py scripts/list_documents.py
+py scripts/list_documents.py --source-type SAMPLE
+py scripts/list_documents.py --status ACTIVE --title-contains "Smoke"
+```
+
+Supersede a document without deleting chunks:
+
+```powershell
+py scripts/set_document_status.py <document_id> SUPERSEDED
+```
+
+Reactivate a document if needed:
+
+```powershell
+py scripts/set_document_status.py <document_id> ACTIVE
+```
 
 ## Tests
 

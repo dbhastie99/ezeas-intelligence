@@ -34,6 +34,7 @@ def main() -> int:
     parser.add_argument("question")
     parser.add_argument("--source-type", action="append", default=None)
     parser.add_argument("--top-k", type=int, default=5)
+    parser.add_argument("--include-samples", action="store_true", help="Include SAMPLE documents in retrieval.")
     args = parser.parse_args()
 
     if not configured_database_url():
@@ -68,6 +69,7 @@ def main() -> int:
                 tenant_id=session.TenantId,
                 top_k=args.top_k,
                 source_types=args.source_type,
+                include_samples=args.include_samples,
             )
             answer, sources, model_name, prompt_policy = generate_grounded_answer(args.question, retrieved_chunks)
 
