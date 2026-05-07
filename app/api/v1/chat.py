@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from app.core.enums import ChatRole, normalize_chat_role
 from app.db.session import get_db
 from app.models.chat import KnowledgeChatMessage, KnowledgeChatSession
 from app.schemas.chat import ChatMessageRequest, ChatMessageResponse, ChatSessionCreate, ChatSessionResponse
@@ -25,21 +26,25 @@ def create_chat_message(request: ChatMessageRequest, db: Session = Depends(get_d
     session = db.get(KnowledgeChatSession, request.session_id)
     if not session:
         raise HTTPException(status_code=404, detail="Chat session not found.")
+    if request.tenant_id is not None and request.tenant_id != session.TenantId:
+        raise HTTPException(status_code=400, detail="tenant_id does not match the chat session.")
+    if request.user_id is not None and request.user_id != session.UserId:
+        raise HTTPException(status_code=400, detail="user_id does not match the chat session.")
 
     user_message = KnowledgeChatMessage(
         KnowledgeChatSessionId=request.session_id,
-        Role="USER",
+        Role=normalize_chat_role(ChatRole.USER.value),
         Content=request.message,
     )
     db.add(user_message)
     db.flush()
 
-    retrieved_chunks = retrieve_relevant_chunks(db=db, query=request.message, tenant_id=request.tenant_id)
+    retrieved_chunks = retrieve_relevant_chunks(db=db, query=request.message, tenant_id=session.TenantId)
     answer, sources, model_name, prompt_policy = generate_grounded_answer(request.message, retrieved_chunks)
 
     assistant_message = KnowledgeChatMessage(
         KnowledgeChatSessionId=request.session_id,
-        Role="ASSISTANT",
+        Role=normalize_chat_role(ChatRole.ASSISTANT.value),
         Content=answer,
     )
     db.add(assistant_message)
@@ -52,8 +57,8 @@ def create_chat_message(request: ChatMessageRequest, db: Session = Depends(get_d
         source_references=sources,
         model_name=model_name,
         prompt_policy=prompt_policy,
-        tenant_id=request.tenant_id,
-        user_id=request.user_id,
+        tenant_id=session.TenantId,
+        user_id=session.UserId,
         chat_session_id=request.session_id,
     )
     db.commit()
