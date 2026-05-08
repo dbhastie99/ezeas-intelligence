@@ -16,6 +16,8 @@ class ChunkQualityReport:
     min_chunk_length: int
     max_chunk_length: int
     chunks_missing_source_section: int
+    missing_source_section_percent: float
+    missing_source_section_by_document: list[dict]
     largest_documents_by_chunk_count: list[dict]
     source_types_summary: dict[str, int]
     chunks_per_document: dict[str, int]
@@ -43,7 +45,27 @@ def build_chunk_quality_report(
     documents = list(db.scalars(doc_stmt).all())
     chunks = list(db.scalars(chunk_stmt).all())
     lengths = [len(chunk.ChunkText or "") for chunk in chunks]
+    missing_by_document: dict[str, int] = {}
+    for chunk in chunks:
+        if not chunk.SourceSection:
+            missing_by_document[chunk.KnowledgeDocumentId] = missing_by_document.get(chunk.KnowledgeDocumentId, 0) + 1
     chunks_per_document = {document.KnowledgeDocumentId: document.ChunkCount for document in documents}
+    documents_by_id = {document.KnowledgeDocumentId: document for document in documents}
+    missing_documents = sorted(
+        [
+            {
+                "document_id": document_id,
+                "title": documents_by_id[document_id].Title,
+                "source_type": documents_by_id[document_id].SourceType,
+                "missing_source_section_count": missing_count,
+                "chunk_count": documents_by_id[document_id].ChunkCount,
+            }
+            for document_id, missing_count in missing_by_document.items()
+            if document_id in documents_by_id
+        ],
+        key=lambda item: item["missing_source_section_count"],
+        reverse=True,
+    )[:largest_limit]
     largest_documents = sorted(
         [
             {
@@ -65,6 +87,10 @@ def build_chunk_quality_report(
         min_chunk_length=min(lengths) if lengths else 0,
         max_chunk_length=max(lengths) if lengths else 0,
         chunks_missing_source_section=sum(1 for chunk in chunks if not chunk.SourceSection),
+        missing_source_section_percent=(
+            (sum(1 for chunk in chunks if not chunk.SourceSection) / len(chunks)) * 100.0 if chunks else 0.0
+        ),
+        missing_source_section_by_document=missing_documents,
         largest_documents_by_chunk_count=largest_documents,
         source_types_summary=dict(Counter(document.SourceType for document in documents)),
         chunks_per_document=chunks_per_document,

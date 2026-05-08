@@ -58,13 +58,22 @@ def main() -> int:
     print(f"Average chunk length: {report.average_chunk_length:.1f}")
     print(f"Min chunk length: {report.min_chunk_length}")
     print(f"Max chunk length: {report.max_chunk_length}")
-    print(f"Chunks missing SourceSection: {report.chunks_missing_source_section}")
+    print(
+        f"Chunks missing SourceSection: {report.chunks_missing_source_section} "
+        f"({report.missing_source_section_percent:.1f}%)"
+    )
     print("Source types:")
     for source_type, count in sorted(report.source_types_summary.items()):
         print(f"  {source_type}: {count}")
     print("Largest documents by chunk count:")
     for document in report.largest_documents_by_chunk_count:
         print(f"  {document['chunk_count']:>4} | {document['source_type']} | {document['title']} | {document['document_id']}")
+    print("Top documents by missing SourceSection:")
+    for document in report.missing_source_section_by_document:
+        print(
+            f"  {document['missing_source_section_count']:>4} missing | "
+            f"{document['chunk_count']:>4} chunks | {document['source_type']} | {document['title']} | {document['document_id']}"
+        )
     return 0
 
 

@@ -336,6 +336,36 @@ py scripts/chunk_quality_report.py --title-contains "Hardening"
 
 Slice 1.8 does not add database columns for inferred metadata. Metadata extraction is diagnostic-only and is computed from the source text or filename when available. Existing SQL Server databases do not need manual `ALTER TABLE` statements for this slice.
 
+## Backfilling SourceSection
+
+If a corpus was loaded before SourceSection detection existed, existing chunks may show `Chunks missing SourceSection` in the quality report. Backfill re-extracts the original TXT/DOCX files, replaces only the document's chunks, and preserves the existing `KnowledgeDocument` row, document id, hash, source type, tenant id, title and status.
+
+Dry-run the seed manifest first:
+
+```powershell
+py scripts/backfill_source_sections.py --manifest samples/knowledge/minerva_seed_manifest.json --dry-run
+```
+
+Run the real backfill:
+
+```powershell
+py scripts/backfill_source_sections.py --manifest samples/knowledge/minerva_seed_manifest.json
+```
+
+You can also backfill one document when you know the source file path:
+
+```powershell
+py scripts/backfill_source_sections.py --document-id <document_id> --file-path samples/knowledge/minerva_seed/platform_doctrine.docx
+```
+
+Backfill skips `SUPERSEDED` documents by default. Use `--include-superseded` only when intentionally repairing historical documents. Verify progress with:
+
+```powershell
+py scripts/chunk_quality_report.py
+```
+
+Slice 1.8.1 does not add database columns, so existing SQL Server databases do not need manual schema changes.
+
 ## Tests
 
 Tests use SQLite in memory so normal pytest runs do not require SQL Server.
