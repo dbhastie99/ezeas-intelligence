@@ -305,6 +305,37 @@ samples/eval/golden_questions.minerva.json
 
 Each question can specify expected source types, a preferred top source type, source phrases that should appear in snippets or matched phrases, and answer phrases that should appear in the deterministic answer. Run the pack before and after large corpus ingestion or retrieval scoring changes.
 
+## Chunk And Metadata Inspection
+
+Before bulk chat-history ingestion, inspect chunk boundaries and metadata quality so retrieval problems are easier to diagnose. Source sections help show which heading or section a chunk came from, which makes bad matches and poor chunk boundaries easier to spot.
+
+List documents:
+
+```powershell
+py scripts/list_documents.py
+py scripts/list_documents.py --source-type DEVELOPER_LOG --show-metadata
+py scripts/list_documents.py --title-contains "Platform Doctrine" --show-metadata
+```
+
+Inspect chunks:
+
+```powershell
+py scripts/inspect_chunks.py --document-id <document_id>
+py scripts/inspect_chunks.py --title-contains "Platform Doctrine"
+py scripts/inspect_chunks.py --source-type DEVELOPER_LOG --limit 20
+py scripts/inspect_chunks.py --document-id <document_id> --start-index 10 --limit 5
+```
+
+Run a corpus quality summary:
+
+```powershell
+py scripts/chunk_quality_report.py
+py scripts/chunk_quality_report.py --source-type DEVELOPER_LOG
+py scripts/chunk_quality_report.py --title-contains "Hardening"
+```
+
+Slice 1.8 does not add database columns for inferred metadata. Metadata extraction is diagnostic-only and is computed from the source text or filename when available. Existing SQL Server databases do not need manual `ALTER TABLE` statements for this slice.
+
 ## Tests
 
 Tests use SQLite in memory so normal pytest runs do not require SQL Server.

@@ -74,6 +74,7 @@ def ingest_file_bytes(
                     ChunkIndex=chunk.index,
                     ChunkText=chunk.text,
                     ChunkHash=sha256_bytes(chunk.text.encode("utf-8")),
+                    SourceSection=chunk.source_section,
                     TokenEstimate=chunk.token_estimate,
                 )
             )

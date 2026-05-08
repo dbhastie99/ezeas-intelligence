@@ -34,6 +34,7 @@ def main() -> int:
     parser.add_argument("--source-type")
     parser.add_argument("--status")
     parser.add_argument("--title-contains")
+    parser.add_argument("--show-metadata", action="store_true")
     args = parser.parse_args()
 
     if not configured_database_url():
@@ -42,6 +43,8 @@ def main() -> int:
 
     from app.db.session import SessionLocal
     from app.services.document_admin_service import list_documents
+    from app.services.document_extraction_service import extract_text
+    from app.services.document_metadata_service import extract_document_metadata
 
     try:
         with SessionLocal() as db:
@@ -58,6 +61,24 @@ def main() -> int:
     for document in documents:
         created = document.CreatedAt.isoformat() if document.CreatedAt else ""
         sha_prefix = document.FileSha256[:12] if document.FileSha256 else ""
+        metadata_text = ""
+        if args.show_metadata and document.StoredFilePath:
+            stored_path = Path(document.StoredFilePath)
+            if stored_path.exists() and stored_path.is_file():
+                try:
+                    metadata_text = extract_text(stored_path.read_bytes(), document.OriginalFileName)
+                except Exception:
+                    metadata_text = ""
+        metadata = (
+            extract_document_metadata(
+                text=metadata_text,
+                file_name=document.OriginalFileName,
+                source_type=document.SourceType,
+                supplied_title=document.Title,
+            )
+            if args.show_metadata
+            else None
+        )
         print(
             f"{document.KnowledgeDocumentId} | "
             f"title={document.Title!r} | "
@@ -69,6 +90,15 @@ def main() -> int:
             f"created={created} | "
             f"sha={sha_prefix}"
         )
+        if metadata:
+            print(
+                "  metadata | "
+                f"detected_date={metadata.detected_document_date} | "
+                f"project={metadata.detected_project} | "
+                f"phase={metadata.detected_phase} | "
+                f"developer={metadata.detected_developer} | "
+                f"source_label={metadata.source_label}"
+            )
     print(f"Total documents: {len(documents)}")
     return 0
 
