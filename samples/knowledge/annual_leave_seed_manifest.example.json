@@ -1,0 +1,19 @@
+{
+  "default_source_type": "DEVELOPER_LOG",
+  "default_capability_status": "IMPLEMENTED",
+  "default_tenant_id": null,
+  "documents": [
+    {
+      "path": "annual_leave_seed/leave_engine_developer_log.docx",
+      "source_type": "DEVELOPER_LOG",
+      "capability_status": "IMPLEMENTED",
+      "title": "Developer Log - Leave Engine / Annual Leave"
+    },
+    {
+      "path": "annual_leave_seed/leave_hardening_log.docx",
+      "source_type": "HARDENING_LOG",
+      "capability_status": "OUTSTANDING_HARDENING",
+      "title": "Hardening Log - Leave Management"
+    }
+  ]
+}

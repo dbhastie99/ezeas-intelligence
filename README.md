@@ -321,6 +321,57 @@ py scripts/run_golden_questions.py --manifest samples/eval/golden_questions.annu
 
 Domain packs are deterministic retrieval and answer regression checks, not external LLM evaluation. A failure usually means either retrieval needs tuning or the formal Developer Logs/doctrine corpus does not yet contain enough clear evidence for that product question.
 
+## Targeted Annual Leave Corpus Supplement
+
+If the Annual Leave golden pack fails against SQL Server, the loaded foundation corpus likely does not yet include enough leave-specific formal logs. Before bulk raw chat-history ingestion, load targeted formal leave documents only.
+
+1. Put candidate formal leave documents in a local folder, such as:
+
+```text
+samples/knowledge/annual_leave_seed/
+```
+
+Use Developer Logs, Hardening Logs, Platform Doctrine or formal requirements. Do not put raw chat-history exports in this seed folder.
+
+2. Scan candidate docs for likely Annual Leave relevance:
+
+```powershell
+py scripts/scan_leave_corpus_candidates.py samples/knowledge/annual_leave_seed
+py scripts/scan_leave_corpus_candidates.py C:\path\to\candidate\docs --top 20
+```
+
+3. Build a draft manifest, then review and edit titles/source types if needed:
+
+```powershell
+py scripts/build_leave_manifest_from_candidates.py samples/knowledge/annual_leave_seed --output samples/knowledge/annual_leave_seed_manifest.generated.json --min-score 3
+```
+
+4. Ingest the reviewed manifest:
+
+```powershell
+py scripts/ingest_manifest.py samples/knowledge/annual_leave_seed_manifest.generated.json
+```
+
+5. Backfill SourceSection from that manifest if needed:
+
+```powershell
+py scripts/backfill_source_sections.py --manifest samples/knowledge/annual_leave_seed_manifest.generated.json
+```
+
+6. Check chunk quality:
+
+```powershell
+py scripts/chunk_quality_report.py
+```
+
+7. Re-run the Annual Leave golden pack:
+
+```powershell
+py scripts/run_golden_questions.py --manifest samples/eval/golden_questions.annual_leave.json --verbose
+```
+
+Raw chat history remains lower-authority supporting material. Do not bulk-load it until formal leave logs and doctrine have been tested first.
+
 ## Chunk And Metadata Inspection
 
 Before bulk chat-history ingestion, inspect chunk boundaries and metadata quality so retrieval problems are easier to diagnose. Source sections help show which heading or section a chunk came from, which makes bad matches and poor chunk boundaries easier to spot.
