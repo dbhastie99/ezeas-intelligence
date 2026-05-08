@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 from app.services.answer_mode_service import AnswerMode, classify_answer_mode
 from app.services.domain_retrieval_plan_service import detect_domain_retrieval_plan
+from app.services.evidence_group_synthesis_service import synthesize_domain_plan_evidence
 from app.services.knowledge_retrieval_service import RetrievalResult, classify_query_intent
 
 
@@ -119,22 +120,18 @@ class StubLLMClient(BaseLLMClient):
             domain_plan = detect_domain_retrieval_plan(question)
             planned_chunks = [result for result in retrieved_chunks if result.domain_plan_id]
             if domain_plan:
-                chunks_by_group: dict[str, list[RetrievalResult]] = {}
+                summaries = synthesize_domain_plan_evidence(domain_plan, planned_chunks)
+                strong_summaries = [summary for summary in summaries if not summary.is_weak]
+                weak_summaries = [summary for summary in summaries if summary.is_weak]
+                operation_points = [summary.sentence for summary in summaries]
+                missing_groups = [summary.label for summary in weak_summaries]
+                evidence_titles = []
                 for result in planned_chunks:
-                    if result.evidence_group_id:
-                        chunks_by_group.setdefault(result.evidence_group_id, []).append(result)
-                missing_groups = [
-                    group.label for group in domain_plan.evidence_groups if group.group_id not in chunks_by_group
-                ]
-                operation_points: list[str] = []
-                for group in domain_plan.evidence_groups:
-                    group_chunks = chunks_by_group.get(group.group_id, [])
-                    if not group_chunks:
-                        continue
-                    group_excerpt = _safe_excerpt(group_chunks[0].chunk_text, max_length=220)
-                    operation_points.append(f"{group.label}: {group_excerpt}")
+                    title = result.title or result.original_file_name
+                    if title not in evidence_titles:
+                        evidence_titles.append(title)
 
-                if not operation_points:
+                if not strong_summaries:
                     return (
                         "Direct summary\n"
                         "The retrieved formal corpus is not yet sufficient to answer this at the required rich-answer "
@@ -158,19 +155,36 @@ class StubLLMClient(BaseLLMClient):
                     if missing_groups
                     else "All planned evidence groups returned at least one source."
                 )
+                direct_summary = (
+                    f"The loaded formal corpus contains usable evidence for {len(strong_summaries)} of "
+                    f"{len(summaries)} planned {domain_plan.domain} evidence groups. "
+                    "Current retrieved evidence suggests a structured product-domain answer is possible, but it remains "
+                    "limited to the returned formal sources."
+                )
+                if len(weak_summaries) >= 3:
+                    direct_summary += (
+                        " The loaded formal corpus does not yet contain enough retrieved evidence to answer this at "
+                        "the required rich-answer standard."
+                    )
+                evidence_basis = (
+                    "Evidence groups with usable support: "
+                    f"{', '.join(summary.label for summary in strong_summaries)}. "
+                    f"Source titles considered: {', '.join(evidence_titles[:5]) if evidence_titles else 'none'}."
+                )
                 return (
                     "Direct summary\n"
-                    "Based on the retrieved formal Minerva knowledge sources, this product-domain answer is organised "
-                    "by the detected domain retrieval plan.\n\n"
+                    f"{direct_summary}\n\n"
                     "How the system works\n"
                     f"{' '.join(operation_points)}\n\n"
                     "Current implementation status\n"
-                    "The answer reflects only the retrieved formal corpus and does not infer operational payroll truth.\n\n"
+                    "The answer reflects only the retrieved formal corpus. It does not prove all functionality is "
+                    "production-complete and does not infer operational payroll truth.\n\n"
                     "What remains outstanding\n"
-                    f"{missing_text}\n\n"
+                    f"{missing_text} Outstanding hardening remains wherever formal logs identify future work or where "
+                    "an evidence group is weak.\n\n"
                     "Evidence basis\n"
-                    "Use the returned source references as the evidence trail. Minerva is advisory and does not calculate "
-                    "or change payroll truth."
+                    f"{evidence_basis} Use the returned source references as the evidence trail. Minerva is advisory "
+                    "and does not calculate or change payroll truth."
                 )
 
             if not strong_chunks:
