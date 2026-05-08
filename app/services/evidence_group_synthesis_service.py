@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from app.services.domain_retrieval_plan_service import DomainRetrievalPlan, EvidenceGroup
 from app.services.knowledge_retrieval_service import RetrievalResult
+from app.utils.term_normalization import contains_normalized_term
 
 
 @dataclass(frozen=True)
@@ -108,8 +109,7 @@ def _evidence_text(results: list[RetrievalResult]) -> str:
 
 
 def _detect_terms(text: str, terms: tuple[str, ...]) -> list[str]:
-    lower_text = text.lower()
-    return [term for term in terms if term.lower() in lower_text]
+    return [term for term in terms if contains_normalized_term(text, term)]
 
 
 def _has_any(detected_terms: list[str], *terms: str) -> bool:

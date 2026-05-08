@@ -12,6 +12,7 @@ from app.services.answer_mode_service import classify_answer_mode, normalize_ans
 from app.services.answer_generation_service import generate_grounded_answer
 from app.services.audit_service import write_ai_interaction_audit
 from app.services.domain_retrieval_plan_service import retrieve_chunks_for_question
+from app.utils.term_normalization import contains_all_normalized, contains_any_normalized
 
 
 class GoldenQuestionError(ValueError):
@@ -55,13 +56,16 @@ def load_golden_manifest(path: str | Path) -> dict[str, Any]:
 
 
 def _contains_any(text: str, phrases: list[str]) -> bool:
-    lower_text = text.lower()
-    return any(phrase.lower() in lower_text for phrase in phrases)
+    return contains_any_normalized(text, phrases)
 
 
 def _contains_all(text: str, phrases: list[str]) -> bool:
+    return contains_all_normalized(text, phrases)
+
+
+def _contains_any_literal(text: str, phrases: list[str]) -> bool:
     lower_text = text.lower()
-    return all(phrase.lower() in lower_text for phrase in phrases)
+    return any(phrase.lower() in lower_text for phrase in phrases)
 
 
 def _matches_any_pattern(text: str, patterns: list[str]) -> bool:
@@ -205,7 +209,7 @@ def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list
 
     forbidden_answer_phrases = question_spec.get("forbidden_answer_phrases_any", [])
     if forbidden_answer_phrases:
-        checks["forbidden_answer_phrases_any"] = not _contains_any(answer, forbidden_answer_phrases)
+        checks["forbidden_answer_phrases_any"] = not _contains_any_literal(answer, forbidden_answer_phrases)
         if not checks["forbidden_answer_phrases_any"]:
             failure_reasons.append(f"Answer contained a forbidden phrase from: {forbidden_answer_phrases}")
     else:
