@@ -1,0 +1,192 @@
+import json
+from pathlib import Path
+from typing import Any
+
+from sqlalchemy.orm import Session
+
+from app.core.enums import ChatRole, normalize_chat_role, normalize_source_type
+from app.models.chat import KnowledgeChatMessage, KnowledgeChatSession
+from app.schemas.common import SourceReference
+from app.services.answer_generation_service import generate_grounded_answer
+from app.services.audit_service import write_ai_interaction_audit
+from app.services.knowledge_retrieval_service import retrieve_relevant_chunks
+
+
+class GoldenQuestionError(ValueError):
+    pass
+
+
+def load_golden_manifest(path: str | Path) -> dict[str, Any]:
+    manifest_path = Path(path)
+    if not manifest_path.exists() or not manifest_path.is_file():
+        raise GoldenQuestionError(f"Golden question manifest not found: {manifest_path}")
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise GoldenQuestionError(f"Golden question manifest is not valid JSON: {exc}") from exc
+    if not isinstance(manifest, dict):
+        raise GoldenQuestionError("Golden question manifest root must be an object.")
+    questions = manifest.get("questions")
+    if not isinstance(questions, list):
+        raise GoldenQuestionError("Golden question manifest field 'questions' must be a list.")
+    for index, question in enumerate(questions):
+        if not isinstance(question, dict):
+            raise GoldenQuestionError(f"Golden question entry {index} must be an object.")
+        if not question.get("id") or not isinstance(question.get("id"), str):
+            raise GoldenQuestionError(f"Golden question entry {index} must include a string id.")
+        if not question.get("question") or not isinstance(question.get("question"), str):
+            raise GoldenQuestionError(f"Golden question entry {index} must include a string question.")
+        try:
+            for source_type in question.get("expected_source_types", []):
+                normalize_source_type(source_type)
+            preferred = question.get("preferred_top_source_type")
+            if preferred:
+                normalize_source_type(preferred)
+        except ValueError as exc:
+            raise GoldenQuestionError(f"Golden question entry {index}: {exc}") from exc
+    return manifest
+
+
+def _contains_any(text: str, phrases: list[str]) -> bool:
+    lower_text = text.lower()
+    return any(phrase.lower() in lower_text for phrase in phrases)
+
+
+def _source_phrase_text(source: SourceReference) -> str:
+    return " ".join(
+        [
+            source.snippet or "",
+            " ".join(source.matched_phrases),
+            source.match_reason or "",
+            source.title or "",
+        ]
+    )
+
+
+def _source_summary(source: SourceReference) -> dict[str, Any]:
+    return {
+        "document_id": source.document_id,
+        "chunk_id": source.chunk_id,
+        "title": source.title,
+        "source_type": source.source_type,
+        "score": source.score,
+        "matched_tokens": source.matched_tokens,
+        "matched_phrases": source.matched_phrases,
+        "match_reason": source.match_reason,
+        "snippet": source.snippet,
+    }
+
+
+def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list[SourceReference]) -> dict[str, Any]:
+    checks: dict[str, bool] = {}
+    failure_reasons: list[str] = []
+
+    expected_source_types = question_spec.get("expected_source_types", [])
+    if expected_source_types:
+        checks["expected_source_type_present"] = any(source.source_type in expected_source_types for source in sources)
+        if not checks["expected_source_type_present"]:
+            failure_reasons.append(f"No source matched expected source types: {expected_source_types}")
+    else:
+        checks["expected_source_type_present"] = True
+
+    preferred_top_source_type = question_spec.get("preferred_top_source_type")
+    if preferred_top_source_type:
+        checks["preferred_top_source_type"] = bool(sources and sources[0].source_type == preferred_top_source_type)
+        if not checks["preferred_top_source_type"]:
+            actual = sources[0].source_type if sources else None
+            failure_reasons.append(f"Preferred top source type {preferred_top_source_type} was not top; got {actual}")
+    else:
+        checks["preferred_top_source_type"] = True
+
+    source_phrases = question_spec.get("expected_phrases_any", [])
+    if source_phrases:
+        source_text = " ".join(_source_phrase_text(source) for source in sources)
+        checks["expected_source_phrase_any"] = _contains_any(source_text, source_phrases)
+        if not checks["expected_source_phrase_any"]:
+            failure_reasons.append(f"No source snippet/matched phrase contained any of: {source_phrases}")
+    else:
+        checks["expected_source_phrase_any"] = True
+
+    answer_phrases = question_spec.get("expected_answer_phrases_any", [])
+    if answer_phrases:
+        checks["expected_answer_phrase_any"] = _contains_any(answer, answer_phrases)
+        if not checks["expected_answer_phrase_any"]:
+            failure_reasons.append(f"Answer did not contain any of: {answer_phrases}")
+    else:
+        checks["expected_answer_phrase_any"] = True
+
+    passed = all(checks.values())
+    return {"passed": passed, "checks": checks, "failure_reasons": failure_reasons}
+
+
+def run_golden_questions(
+    db: Session,
+    manifest_path: str | Path,
+    top_k: int = 5,
+    create_audit: bool = False,
+) -> dict[str, Any]:
+    manifest = load_golden_manifest(manifest_path)
+    results: list[dict[str, Any]] = []
+
+    for question_spec in manifest["questions"]:
+        question = question_spec["question"]
+        retrieved_chunks = retrieve_relevant_chunks(db=db, query=question, top_k=top_k)
+        answer, sources, model_name, prompt_policy = generate_grounded_answer(question, retrieved_chunks)
+        audit_id = None
+
+        if create_audit:
+            session = KnowledgeChatSession(Title=f"golden:{question_spec['id']}")
+            db.add(session)
+            db.flush()
+            db.add(
+                KnowledgeChatMessage(
+                    KnowledgeChatSessionId=session.KnowledgeChatSessionId,
+                    Role=normalize_chat_role(ChatRole.USER.value),
+                    Content=question,
+                )
+            )
+            db.add(
+                KnowledgeChatMessage(
+                    KnowledgeChatSessionId=session.KnowledgeChatSessionId,
+                    Role=normalize_chat_role(ChatRole.ASSISTANT.value),
+                    Content=answer,
+                )
+            )
+            db.flush()
+            audit = write_ai_interaction_audit(
+                db=db,
+                user_question=question,
+                response_text=answer,
+                source_references=sources,
+                model_name=model_name,
+                prompt_policy=prompt_policy,
+                chat_session_id=session.KnowledgeChatSessionId,
+            )
+            db.commit()
+            audit_id = audit.AIInteractionAuditId
+
+        evaluation = _evaluate_question(question_spec, answer, sources)
+        results.append(
+            {
+                "id": question_spec["id"],
+                "question": question,
+                "passed": evaluation["passed"],
+                "checks": evaluation["checks"],
+                "failure_reasons": evaluation["failure_reasons"],
+                "answer": answer,
+                "top_sources": [_source_summary(source) for source in sources],
+                "audit_id": audit_id,
+            }
+        )
+
+    passed_count = sum(1 for result in results if result["passed"])
+    return {
+        "name": manifest.get("name"),
+        "description": manifest.get("description"),
+        "total": len(results),
+        "passed": passed_count,
+        "failed": len(results) - passed_count,
+        "all_passed": passed_count == len(results),
+        "create_audit": create_audit,
+        "results": results,
+    }

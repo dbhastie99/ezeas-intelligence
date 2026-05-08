@@ -269,6 +269,42 @@ Reactivate a document if needed:
 py scripts/set_document_status.py <document_id> ACTIVE
 ```
 
+## Golden Question Evaluation
+
+Golden questions are deterministic retrieval and answer regression checks for the current Minerva corpus. They are not a true external LLM quality evaluation, and they do not call an external LLM provider. They use Minerva's current keyword retrieval and stub answer generator.
+
+Run the default pack:
+
+```powershell
+py scripts/run_golden_questions.py
+```
+
+Run with full per-question output:
+
+```powershell
+py scripts/run_golden_questions.py --verbose
+```
+
+Run a specific manifest and write JSON results:
+
+```powershell
+py scripts/run_golden_questions.py --manifest samples/eval/golden_questions.minerva.json --json-output .\golden-results.json
+```
+
+By default, evaluation does not create chat messages or audit rows. To create an audit trail for a run:
+
+```powershell
+py scripts/run_golden_questions.py --create-audit
+```
+
+Add new golden questions by editing:
+
+```text
+samples/eval/golden_questions.minerva.json
+```
+
+Each question can specify expected source types, a preferred top source type, source phrases that should appear in snippets or matched phrases, and answer phrases that should appear in the deterministic answer. Run the pack before and after large corpus ingestion or retrieval scoring changes.
+
 ## Tests
 
 Tests use SQLite in memory so normal pytest runs do not require SQL Server.

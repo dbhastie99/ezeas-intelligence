@@ -1,0 +1,148 @@
+{
+  "name": "Minerva foundation golden questions",
+  "description": "Deterministic retrieval checks for Minerva doctrine, boundaries and architecture.",
+  "questions": [
+    {
+      "id": "minerva-boundary",
+      "question": "What is Minerva not allowed to do?",
+      "expected_source_types": ["PLATFORM_DOCTRINE", "DEVELOPER_LOG"],
+      "preferred_top_source_type": "PLATFORM_DOCTRINE",
+      "expected_phrases_any": [
+        "must not calculate",
+        "not payroll calculation truth",
+        "must not finalise",
+        "must not mutate",
+        "must not override"
+      ],
+      "expected_answer_phrases_any": [
+        "not allowed to calculate payroll",
+        "determine entitlements",
+        "finalise PayRuns",
+        "advisory"
+      ]
+    },
+    {
+      "id": "rbac-before-llm",
+      "question": "What does RBAC-before-LLM mean?",
+      "expected_source_types": ["PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "preferred_top_source_type": "PLATFORM_DOCTRINE",
+      "expected_phrases_any": [
+        "user permissions must be enforced before evidence reaches the LLM",
+        "authorised to view",
+        "authorized to view",
+        "model must not receive sensitive evidence"
+      ],
+      "expected_answer_phrases_any": [
+        "permissions must be checked before evidence is retrieved into model context",
+        "must not receive sensitive evidence",
+        "before context construction"
+      ]
+    },
+    {
+      "id": "separate-database",
+      "question": "Why does Minerva use a separate database?",
+      "expected_source_types": ["PLATFORM_DOCTRINE", "DEVELOPER_LOG", "HARDENING_LOG", "REQUIREMENTS"],
+      "preferred_top_source_type": "PLATFORM_DOCTRINE",
+      "expected_phrases_any": [
+        "separate intelligence store",
+        "separate database",
+        "ezeas-intelligence-db",
+        "operational database remains authoritative",
+        "source of payroll truth"
+      ],
+      "expected_answer_phrases_any": [
+        "separate database",
+        "isolated from the operational payroll database",
+        "authoritative source of payroll"
+      ]
+    },
+    {
+      "id": "no-raw-json",
+      "question": "Why is raw JSON not sent to the LLM by default?",
+      "expected_source_types": ["PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_phrases_any": [
+        "minimum necessary evidence",
+        "extracted facts",
+        "sensitive JSON boundary",
+        "no raw JSON by default",
+        "must not receive sensitive evidence"
+      ],
+      "expected_answer_phrases_any": [
+        "evidence",
+        "Minerva is advisory",
+        "does not calculate or change payroll truth"
+      ]
+    },
+    {
+      "id": "source-authority",
+      "question": "Why does source authority matter?",
+      "expected_source_types": ["PLATFORM_DOCTRINE", "HARDENING_LOG", "DEVELOPER_LOG"],
+      "expected_phrases_any": [
+        "Platform Doctrine",
+        "Hardening Logs",
+        "Developer Logs",
+        "source authority",
+        "chat history"
+      ],
+      "expected_answer_phrases_any": [
+        "source",
+        "Minerva is advisory",
+        "does not calculate or change payroll truth"
+      ]
+    },
+    {
+      "id": "developer-logs-role",
+      "question": "What is the role of Developer Logs in Minerva?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE"],
+      "preferred_top_source_type": "DEVELOPER_LOG",
+      "expected_phrases_any": [
+        "platform memory",
+        "source knowledge",
+        "structured memory",
+        "User Guide / Rationale",
+        "Developer Log"
+      ],
+      "expected_answer_phrases_any": [
+        "Developer",
+        "source",
+        "Minerva is advisory"
+      ]
+    },
+    {
+      "id": "user-guide-rationale",
+      "question": "What is the User Guide / Rationale section for?",
+      "expected_source_types": ["DEVELOPER_LOG"],
+      "preferred_top_source_type": "DEVELOPER_LOG",
+      "expected_phrases_any": [
+        "why work matters",
+        "operating model",
+        "future LLM retrieval",
+        "explain the work later",
+        "User Guide / Rationale"
+      ],
+      "expected_answer_phrases_any": [
+        "User Guide",
+        "Rationale",
+        "Minerva is advisory"
+      ]
+    },
+    {
+      "id": "chat-history-authority",
+      "question": "What is the difference between Platform Doctrine and chat history?",
+      "expected_source_types": ["PLATFORM_DOCTRINE", "DEVELOPER_LOG", "REQUIREMENTS"],
+      "preferred_top_source_type": "PLATFORM_DOCTRINE",
+      "expected_phrases_any": [
+        "chat history",
+        "supporting material",
+        "not overriding formal doctrine",
+        "Platform Doctrine",
+        "Developer Logs"
+      ],
+      "expected_answer_phrases_any": [
+        "Platform Doctrine",
+        "chat history",
+        "Minerva is advisory"
+      ]
+    }
+  ]
+}
