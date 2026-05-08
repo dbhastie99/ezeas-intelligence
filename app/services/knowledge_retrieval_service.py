@@ -290,6 +290,9 @@ class RetrievalResult:
     detected_intent: str | None = None
     matched_phrases: list[str] = field(default_factory=list)
     match_reason: str | None = None
+    domain_plan_id: str | None = None
+    evidence_group_id: str | None = None
+    evidence_group_label: str | None = None
 
 
 def tokenize(text: str) -> list[str]:

@@ -11,7 +11,7 @@ from app.schemas.common import SourceReference
 from app.services.answer_mode_service import classify_answer_mode, normalize_answer_mode
 from app.services.answer_generation_service import generate_grounded_answer
 from app.services.audit_service import write_ai_interaction_audit
-from app.services.knowledge_retrieval_service import retrieve_relevant_chunks
+from app.services.domain_retrieval_plan_service import retrieve_chunks_for_question
 
 
 class GoldenQuestionError(ValueError):
@@ -90,6 +90,9 @@ def _source_summary(source: SourceReference) -> dict[str, Any]:
         "matched_phrases": source.matched_phrases,
         "match_reason": source.match_reason,
         "snippet": source.snippet,
+        "domain_plan_id": source.domain_plan_id,
+        "evidence_group_id": source.evidence_group_id,
+        "evidence_group_label": source.evidence_group_label,
     }
 
 
@@ -239,7 +242,7 @@ def run_golden_questions(
 
     for question_spec in manifest["questions"]:
         question = question_spec["question"]
-        retrieved_chunks = retrieve_relevant_chunks(db=db, query=question, top_k=top_k)
+        retrieved_chunks = retrieve_chunks_for_question(db=db, query=question, top_k=top_k)
         answer, sources, model_name, prompt_policy = generate_grounded_answer(question, retrieved_chunks)
         audit_id = None
 

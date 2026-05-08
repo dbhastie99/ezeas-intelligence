@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 from app.services.answer_mode_service import AnswerMode, classify_answer_mode
+from app.services.domain_retrieval_plan_service import detect_domain_retrieval_plan
 from app.services.knowledge_retrieval_service import RetrievalResult, classify_query_intent
 
 
@@ -115,6 +116,63 @@ class StubLLMClient(BaseLLMClient):
         excerpts = [_safe_excerpt(result.chunk_text, max_length=260) for result in selected_chunks]
 
         if answer_mode == AnswerMode.PRODUCT_DOMAIN.value:
+            domain_plan = detect_domain_retrieval_plan(question)
+            planned_chunks = [result for result in retrieved_chunks if result.domain_plan_id]
+            if domain_plan:
+                chunks_by_group: dict[str, list[RetrievalResult]] = {}
+                for result in planned_chunks:
+                    if result.evidence_group_id:
+                        chunks_by_group.setdefault(result.evidence_group_id, []).append(result)
+                missing_groups = [
+                    group.label for group in domain_plan.evidence_groups if group.group_id not in chunks_by_group
+                ]
+                operation_points: list[str] = []
+                for group in domain_plan.evidence_groups:
+                    group_chunks = chunks_by_group.get(group.group_id, [])
+                    if not group_chunks:
+                        continue
+                    group_excerpt = _safe_excerpt(group_chunks[0].chunk_text, max_length=220)
+                    operation_points.append(f"{group.label}: {group_excerpt}")
+
+                if not operation_points:
+                    return (
+                        "Direct summary\n"
+                        "The retrieved formal corpus is not yet sufficient to answer this at the required rich-answer "
+                        "standard.\n\n"
+                        "How the system works\n"
+                        "The loaded formal corpus does not yet contain enough retrieved evidence for the Annual Leave "
+                        "management evidence groups.\n\n"
+                        "Current implementation status\n"
+                        "Unknown from the currently retrieved formal corpus.\n\n"
+                        "What remains outstanding\n"
+                        f"The loaded formal corpus does not yet contain enough retrieved evidence for: "
+                        f"{', '.join(missing_groups)}.\n\n"
+                        "Evidence basis\n"
+                        "Use the returned source references as the evidence trail. Minerva is advisory and does not "
+                        "calculate or change payroll truth."
+                    )
+
+                missing_text = (
+                    "The loaded formal corpus does not yet contain enough retrieved evidence for: "
+                    f"{', '.join(missing_groups)}."
+                    if missing_groups
+                    else "All planned evidence groups returned at least one source."
+                )
+                return (
+                    "Direct summary\n"
+                    "Based on the retrieved formal Minerva knowledge sources, this product-domain answer is organised "
+                    "by the detected domain retrieval plan.\n\n"
+                    "How the system works\n"
+                    f"{' '.join(operation_points)}\n\n"
+                    "Current implementation status\n"
+                    "The answer reflects only the retrieved formal corpus and does not infer operational payroll truth.\n\n"
+                    "What remains outstanding\n"
+                    f"{missing_text}\n\n"
+                    "Evidence basis\n"
+                    "Use the returned source references as the evidence trail. Minerva is advisory and does not calculate "
+                    "or change payroll truth."
+                )
+
             if not strong_chunks:
                 return (
                     "The retrieved formal corpus is not yet sufficient to answer this at the required rich-answer "

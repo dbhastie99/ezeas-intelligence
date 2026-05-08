@@ -356,6 +356,28 @@ py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark
 
 This benchmark may fail until Annual Leave domain retrieval and supporting formal corpus/chat-history context are implemented. Use `--allow-failures` for benchmark tracking so it does not block local proof runs.
 
+## Domain Retrieval Plans
+
+Complex product-domain questions should not rely on one generic keyword search. Minerva can use deterministic domain retrieval plans that split a question into evidence groups, run targeted retrieval for each group, and keep the answer grounded in the retrieved formal corpus.
+
+Annual Leave / Leave Management is the first implemented plan. It searches evidence groups for:
+
+- Configuration and rule setup
+- Accrual basis and ledger posting
+- TAKEN leave and deduction rules
+- Valuation and ordinary rate evidence
+- PayRun leave orchestration
+- Worker Story leave evidence
+- Outstanding hardening and future work
+
+This is not a hardcoded Annual Leave answer. The plan only decides what evidence to look for. If a group has weak or missing evidence, Minerva should say the loaded formal corpus does not yet contain enough retrieved evidence for that group.
+
+Run the Annual Leave rich-answer benchmark after corpus changes:
+
+```powershell
+py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark.annual_leave.json --verbose --allow-failures
+```
+
 ## Targeted Annual Leave Corpus Supplement
 
 If the Annual Leave golden pack fails against SQL Server, the loaded foundation corpus likely does not yet include enough leave-specific formal logs. Before bulk raw chat-history ingestion, load targeted formal leave documents only.

@@ -7,7 +7,7 @@ from app.models.chat import KnowledgeChatMessage, KnowledgeChatSession
 from app.schemas.chat import ChatMessageRequest, ChatMessageResponse, ChatSessionCreate, ChatSessionResponse
 from app.services.answer_generation_service import generate_grounded_answer
 from app.services.audit_service import write_ai_interaction_audit
-from app.services.knowledge_retrieval_service import retrieve_relevant_chunks
+from app.services.domain_retrieval_plan_service import retrieve_chunks_for_question
 
 router = APIRouter()
 
@@ -39,7 +39,7 @@ def create_chat_message(request: ChatMessageRequest, db: Session = Depends(get_d
     db.add(user_message)
     db.flush()
 
-    retrieved_chunks = retrieve_relevant_chunks(db=db, query=request.message, tenant_id=session.TenantId)
+    retrieved_chunks = retrieve_chunks_for_question(db=db, query=request.message, tenant_id=session.TenantId)
     answer, sources, model_name, prompt_policy = generate_grounded_answer(request.message, retrieved_chunks)
 
     assistant_message = KnowledgeChatMessage(

@@ -22,6 +22,9 @@ def build_source_references(results: list[RetrievalResult]) -> list[SourceRefere
             detected_intent=result.detected_intent,
             matched_phrases=result.matched_phrases,
             match_reason=result.match_reason,
+            domain_plan_id=result.domain_plan_id,
+            evidence_group_id=result.evidence_group_id,
+            evidence_group_label=result.evidence_group_label,
         )
         for result in results
     ]

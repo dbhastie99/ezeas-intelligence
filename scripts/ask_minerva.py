@@ -46,7 +46,7 @@ def main() -> int:
     from app.models.chat import KnowledgeChatMessage, KnowledgeChatSession
     from app.services.answer_generation_service import generate_grounded_answer
     from app.services.audit_service import write_ai_interaction_audit
-    from app.services.knowledge_retrieval_service import retrieve_relevant_chunks
+    from app.services.domain_retrieval_plan_service import retrieve_chunks_for_question
 
     try:
         with SessionLocal() as db:
@@ -63,7 +63,7 @@ def main() -> int:
             )
             db.flush()
 
-            retrieved_chunks = retrieve_relevant_chunks(
+            retrieved_chunks = retrieve_chunks_for_question(
                 db=db,
                 query=args.question,
                 tenant_id=session.TenantId,
@@ -101,6 +101,11 @@ def main() -> int:
                     f"{index}. title={source.title!r} source_type={source.source_type} "
                     f"score={source.score} matched_tokens={source.matched_tokens}"
                 )
+                if source.evidence_group_label:
+                    print(
+                        f"   evidence_group={source.evidence_group_label} "
+                        f"({source.evidence_group_id}) plan={source.domain_plan_id}"
+                    )
                 if source.matched_phrases:
                     print(f"   matched_phrases={source.matched_phrases}")
                 if source.match_reason:
