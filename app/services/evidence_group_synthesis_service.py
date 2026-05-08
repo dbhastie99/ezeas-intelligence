@@ -128,11 +128,11 @@ def _weak_summary(group: EvidenceGroup) -> EvidenceGroupSummary:
 
 
 def _configuration_sentence(terms: list[str], label: str) -> str:
-    clauses = ["Configuration evidence indicates Annual Leave rule setup is represented in the formal corpus"]
+    clauses = ["Annual Leave configuration is represented in the retrieved formal corpus"]
     if _has_any(terms, "LeaveType", "LeaveTypeRule"):
-        clauses.append("through LeaveType/LeaveTypeRule configuration")
+        clauses.append("through LeaveType and LeaveTypeRule policy")
     if _has_any(terms, "LeaveTypeKind", "Rule Cockpit"):
-        clauses.append("with LeaveTypeKind and Rule Cockpit surfaces organising leave-rule setup")
+        clauses.append("with LeaveTypeKind and the Rule Cockpit organising leave-rule setup")
     settings = [term for term in ("Accrual", "Payment", "Governance") if _has_any(terms, term)]
     if settings:
         clauses.append(f"including {', '.join(settings)} settings")
@@ -140,59 +140,59 @@ def _configuration_sentence(terms: list[str], label: str) -> str:
 
 
 def _accrual_sentence(terms: list[str], label: str) -> str:
-    clauses = ["Accrual evidence indicates Annual Leave accrual is represented separately from consumption"]
+    clauses = ["Annual Leave accrual is treated as entitlement movement"]
     if _has_any(terms, "LeaveLedger"):
-        clauses.append("through LeaveLedger-style entitlement movement")
+        clauses.append("represented through LeaveLedger-style rows")
     if _has_any(terms, "minutes"):
-        clauses.append("with minutes present in the retrieved evidence")
+        clauses.append("with minute-based evidence")
     if _has_any(terms, "interpreter truth", "no fallback"):
-        clauses.append("and with interpreter-truth/no-fallback controls indicated where retrieved")
+        clauses.append("using interpreter-truth or no-fallback controls where retrieved")
     if _has_any(terms, "process period", "PayRun"):
-        clauses.append("in the process-period or PayRun flow where available")
+        clauses.append("in process-period or PayRun context where available")
     return f"{label}: {', '.join(clauses)}."
 
 
 def _taken_sentence(terms: list[str], label: str) -> str:
-    clauses = ["TAKEN leave evidence indicates Annual Leave consumption is represented separately from accrual"]
+    clauses = ["TAKEN Annual Leave is treated separately from accrual"]
     if _has_any(terms, "LeaveLedger"):
-        clauses.append("with LeaveLedger posting evidence")
+        clauses.append("with consumption recorded as LeaveLedger movement")
     if _has_any(terms, "minutes"):
         clauses.append("using minutes where retrieved")
     if _has_any(terms, "public holiday", "DeductsOnPublicHoliday"):
         clauses.append("and public holiday deduction controlled by DeductsOnPublicHoliday")
     if _has_any(terms, "skip", "resolver"):
-        clauses.append("with resolver or skip behaviour indicated by the retrieved corpus")
+        clauses.append("with resolver or skip behaviour indicated by formal evidence")
     return f"{label}: {', '.join(clauses)}."
 
 
 def _valuation_sentence(terms: list[str], label: str) -> str:
-    clauses = ["Valuation evidence indicates Annual Leave value is treated as a distinct evidence area"]
+    clauses = ["Valuation is a distinct Annual Leave evidence area"]
     if _has_any(terms, "valuation basis"):
         clauses.append("connected to valuation-basis evidence")
     if _has_any(terms, "ordinary rate"):
         clauses.append("with ordinary-rate evidence where retrieved")
     if _has_any(terms, "PayRun", "snapshot"):
-        clauses.append("and PayRun or snapshot context present in the corpus")
+        clauses.append("and PayRun or snapshot context in the retrieved logs")
     if _has_any(terms, "liability"):
         clauses.append("including liability context where retrieved")
     return f"{label}: {', '.join(clauses)}."
 
 
 def _payrun_sentence(terms: list[str], label: str) -> str:
-    clauses = ["PayRun evidence indicates leave processing is part of the PayRun operating flow"]
+    clauses = ["PayRun processing includes leave-management operating flow evidence"]
     if _has_any(terms, "Generate Leave Accruals on Process"):
         clauses.append("with Generate Leave Accruals on Process exposed as an explicit processing option")
     if _has_any(terms, "leave accruals"):
-        clauses.append("including leave-accrual generation")
+        clauses.append("including leave accrual generation")
     if _has_any(terms, "valuation basis"):
-        clauses.append("and valuation-basis generation where retrieved")
+        clauses.append("and valuation basis generation where retrieved")
     if _has_any(terms, "Admin Queue"):
         clauses.append("with Admin Queue context present")
     return f"{label}: {', '.join(clauses)}."
 
 
 def _worker_story_sentence(terms: list[str], label: str) -> str:
-    clauses = ["Worker Story evidence indicates leave outcomes are explained through worker-facing evidence output"]
+    clauses = ["Worker Story presents leave through worker-facing evidence output"]
     if _has_any(terms, "Leave and Accrual Outcome"):
         clauses.append("including a Leave and Accrual Outcome chapter")
     if _has_any(terms, "server-owned leave output"):
@@ -204,7 +204,7 @@ def _worker_story_sentence(terms: list[str], label: str) -> str:
 
 
 def _outstanding_sentence(terms: list[str], label: str) -> str:
-    clauses = ["Outstanding-hardening evidence indicates Annual Leave still has future work or hardening context"]
+    clauses = ["Outstanding hardening remains in the retrieved Annual Leave evidence"]
     if _has_any(terms, "Leave Source Model"):
         clauses.append("around the Leave Source Model")
     lot_terms = [term for term in ("FIFO", "lot consumption", "revaluation") if _has_any(terms, term)]

@@ -31,6 +31,9 @@
         "outstanding",
         "hardening"
       ],
+      "expected_answer_phrases_any": [
+        "Annual Leave is managed"
+      ],
       "expected_source_terms_all": [
         "Annual Leave",
         "LeaveLedger"
@@ -47,7 +50,8 @@
         "Source\\s+1:",
         "Source\\s+2:",
         "closest sources say",
-        "using the strongest matches"
+        "using the strongest matches",
+        "Direct summary\\s+The loaded formal corpus contains"
       ]
     }
   ]

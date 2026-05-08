@@ -58,7 +58,7 @@ def test_evidence_group_summary_does_not_copy_broken_snippet_fragment():
 
     assert summary.is_weak is False
     assert "ations. Inconsistent UX" not in summary.sentence
-    assert "LeaveType/LeaveTypeRule" in summary.sentence
+    assert "LeaveType and LeaveTypeRule" in summary.sentence
 
 
 def test_configuration_summary_mentions_leave_type_terms_only_when_present():
@@ -166,3 +166,88 @@ def test_annual_leave_benchmark_style_fixture_can_pass_with_complete_evidence_gr
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.annual_leave.json")
 
     assert result["all_passed"] is True
+
+
+def test_complete_evidence_coverage_produces_direct_platform_summary(db_session):
+    _ingest(
+        db_session,
+        "Annual Leave configuration uses LeaveType and LeaveTypeRule. LeaveTypeKind and Rule Cockpit organise "
+        "Accrual Payment Governance settings.",
+        "Developer Log - Annual Leave Configuration",
+    )
+    _ingest(
+        db_session,
+        "Annual Leave accrual posts LeaveLedger minutes using interpreter truth with no fallback during PayRun.",
+        "Developer Log - Annual Leave Accrual",
+    )
+    _ingest(
+        db_session,
+        "Annual Leave TAKEN consumption posts LeaveLedger minutes. Public holiday treatment uses "
+        "DeductsOnPublicHoliday with resolver skip behaviour.",
+        "Developer Log - Annual Leave TAKEN",
+    )
+    _ingest(
+        db_session,
+        "Annual Leave valuation uses valuation basis, ordinary rate, PayRun snapshot and liability evidence.",
+        "Developer Log - Annual Leave Valuation",
+    )
+    _ingest(
+        db_session,
+        "PayRun processing includes Generate Leave Accruals on Process, leave accruals, valuation basis and Admin Queue.",
+        "Developer Log - PayRun Leave Orchestration",
+    )
+    _ingest(
+        db_session,
+        "Worker Story includes Leave and Accrual Outcome as server-owned leave output with ledger, valuation basis "
+        "and evidence chain.",
+        "Developer Log - Worker Story Leave Evidence",
+    )
+    _ingest(
+        db_session,
+        "Annual Leave outstanding hardening includes Leave Source Model, FIFO lot consumption, revaluation and "
+        "production hardening.",
+        "Developer Log - Annual Leave Outstanding",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How is Annual Leave managed in the system?")
+    answer, _, _, _ = generate_grounded_answer("How is Annual Leave managed in the system?", results)
+
+    assert answer.startswith("Direct summary\nAnnual Leave is managed")
+    assert "The loaded formal corpus contains usable evidence" not in answer.split("\n\n", 1)[0]
+    assert "The system separates configuration, accrual, consumption, valuation, PayRun processing" in answer
+
+
+def test_partial_evidence_coverage_keeps_caveats(db_session):
+    _ingest(
+        db_session,
+        "Annual Leave configuration uses LeaveType and LeaveTypeRule in Rule Cockpit configuration.",
+        "Developer Log - Annual Leave Configuration",
+    )
+    _ingest(
+        db_session,
+        "Annual Leave accrual posts LeaveLedger minutes using interpreter truth with no fallback during PayRun.",
+        "Developer Log - Annual Leave Accrual",
+    )
+    _ingest(
+        db_session,
+        "Annual Leave TAKEN consumption posts LeaveLedger minutes with public holiday DeductsOnPublicHoliday handling.",
+        "Developer Log - Annual Leave TAKEN",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How is Annual Leave managed in the system?")
+    answer, _, _, _ = generate_grounded_answer("How is Annual Leave managed in the system?", results)
+
+    assert "Annual Leave is partially described by the loaded formal corpus" in answer
+    assert "The loaded formal corpus does not yet contain enough retrieved evidence for" in answer
+
+
+def test_weak_evidence_coverage_says_corpus_is_insufficient():
+    weak_result = _result(
+        "Annual Leave is mentioned, but this evidence does not describe the leave management mechanisms.",
+        "configuration",
+    )
+
+    answer, _, _, _ = generate_grounded_answer("How is Annual Leave managed in the system?", [weak_result])
+
+    assert "The retrieved formal corpus is not yet sufficient to answer this at the required rich-answer standard." in answer
+    assert "Unknown from the currently retrieved formal corpus." in answer

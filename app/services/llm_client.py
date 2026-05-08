@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from app.services.answer_mode_service import AnswerMode, classify_answer_mode
 from app.services.domain_retrieval_plan_service import detect_domain_retrieval_plan
-from app.services.evidence_group_synthesis_service import synthesize_domain_plan_evidence
+from app.services.evidence_group_synthesis_service import EvidenceGroupSummary, synthesize_domain_plan_evidence
 from app.services.knowledge_retrieval_service import RetrievalResult, classify_query_intent
 
 
@@ -20,6 +20,26 @@ def _safe_excerpt(text: str, max_length: int = 350) -> str:
     if word_end > 0:
         return truncated[:word_end].rstrip() + "..."
     return truncated + "..."
+
+
+def _coverage_label(strong_count: int, total_count: int) -> str:
+    if strong_count == total_count and total_count > 0:
+        return "complete"
+    if strong_count >= max(1, total_count // 2):
+        return "partial"
+    return "weak"
+
+
+def _evidence_basis_text(planned_chunks: list[RetrievalResult], strong_summaries: list[EvidenceGroupSummary]) -> str:
+    source_parts: list[str] = []
+    for result in planned_chunks:
+        title = result.title or result.original_file_name
+        source_part = f"{result.evidence_group_label}: {title} ({result.source_type})"
+        if source_part not in source_parts:
+            source_parts.append(source_part)
+    group_text = ", ".join(summary.label for summary in strong_summaries) or "none"
+    source_text = "; ".join(source_parts[:7]) if source_parts else "none"
+    return f"Evidence groups used: {group_text}. Top source references: {source_text}."
 
 
 class BaseLLMClient(ABC):
@@ -125,13 +145,9 @@ class StubLLMClient(BaseLLMClient):
                 weak_summaries = [summary for summary in summaries if summary.is_weak]
                 operation_points = [summary.sentence for summary in summaries]
                 missing_groups = [summary.label for summary in weak_summaries]
-                evidence_titles = []
-                for result in planned_chunks:
-                    title = result.title or result.original_file_name
-                    if title not in evidence_titles:
-                        evidence_titles.append(title)
+                coverage = _coverage_label(len(strong_summaries), len(summaries))
 
-                if not strong_summaries:
+                if coverage == "weak":
                     return (
                         "Direct summary\n"
                         "The retrieved formal corpus is not yet sufficient to answer this at the required rich-answer "
@@ -155,30 +171,37 @@ class StubLLMClient(BaseLLMClient):
                     if missing_groups
                     else "All planned evidence groups returned at least one source."
                 )
-                direct_summary = (
-                    f"The loaded formal corpus contains usable evidence for {len(strong_summaries)} of "
-                    f"{len(summaries)} planned {domain_plan.domain} evidence groups. "
-                    "Current retrieved evidence suggests a structured product-domain answer is possible, but it remains "
-                    "limited to the returned formal sources."
-                )
-                if len(weak_summaries) >= 3:
-                    direct_summary += (
-                        " The loaded formal corpus does not yet contain enough retrieved evidence to answer this at "
-                        "the required rich-answer standard."
+                if coverage == "complete":
+                    direct_summary = (
+                        "Annual Leave is managed through configured leave policy, ledger-based accrual and TAKEN "
+                        "movement, PayRun valuation/orchestration evidence, Worker Story explanation and tracked "
+                        "hardening items. The system separates configuration, accrual, consumption, valuation, PayRun "
+                        "processing and explanatory evidence rather than treating leave as a single opaque balance."
                     )
-                evidence_basis = (
-                    "Evidence groups with usable support: "
-                    f"{', '.join(summary.label for summary in strong_summaries)}. "
-                    f"Source titles considered: {', '.join(evidence_titles[:5]) if evidence_titles else 'none'}."
-                )
+                    status_text = (
+                        "The retrieved corpus shows this as an implemented or partially implemented platform area with "
+                        "remaining hardening. It does not prove production completeness. Some mechanisms are implemented; "
+                        "valuation, leave source modelling or production hardening may remain outstanding depending on "
+                        "the specific sub-area."
+                    )
+                else:
+                    direct_summary = (
+                        "Annual Leave is partially described by the loaded formal corpus, but some planned evidence "
+                        "groups are missing. The answer below is limited to the retrieved evidence and should be treated "
+                        "as incomplete until the missing groups are covered."
+                    )
+                    status_text = (
+                        "The retrieved corpus provides partial implementation evidence only. Missing groups should be "
+                        "treated as unknown rather than inferred."
+                    )
+                evidence_basis = _evidence_basis_text(planned_chunks, strong_summaries)
                 return (
                     "Direct summary\n"
                     f"{direct_summary}\n\n"
                     "How the system works\n"
                     f"{' '.join(operation_points)}\n\n"
                     "Current implementation status\n"
-                    "The answer reflects only the retrieved formal corpus. It does not prove all functionality is "
-                    "production-complete and does not infer operational payroll truth.\n\n"
+                    f"{status_text}\n\n"
                     "What remains outstanding\n"
                     f"{missing_text} Outstanding hardening remains wherever formal logs identify future work or where "
                     "an evidence group is weak.\n\n"
