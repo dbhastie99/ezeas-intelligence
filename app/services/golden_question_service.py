@@ -77,8 +77,10 @@ def _source_phrase_text(source: SourceReference) -> str:
         [
             source.snippet or "",
             " ".join(source.matched_phrases),
+            " ".join(source.matched_tokens),
             source.match_reason or "",
             source.title or "",
+            source.evidence_group_label or "",
         ]
     )
 

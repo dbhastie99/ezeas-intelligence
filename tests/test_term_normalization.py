@@ -1,6 +1,7 @@
 from app.services.domain_retrieval_plan_service import ANNUAL_LEAVE_MANAGEMENT_PLAN
 from app.services.evidence_group_synthesis_service import synthesize_evidence_group
-from app.services.golden_question_service import run_golden_questions
+from app.schemas.common import SourceReference
+from app.services.golden_question_service import _evaluate_question, run_golden_questions
 from app.services.ingestion_service import ingest_file_bytes
 from app.services.knowledge_retrieval_service import RetrievalResult
 from app.utils.term_normalization import contains_normalized_term
@@ -138,3 +139,81 @@ def test_evidence_group_synthesis_detects_normalized_project_terms():
     assert "LeaveLedger" in summary.detected_terms
     assert "DeductsOnPublicHoliday" in summary.detected_terms
     assert "public holiday deduction controlled by DeductsOnPublicHoliday" in summary.sentence
+
+
+def test_golden_source_terms_all_passes_when_terms_appear_only_in_matched_tokens():
+    source = SourceReference(
+        document_id="doc-1",
+        chunk_id="chunk-1",
+        original_file_name="annual-leave.txt",
+        source_type="DEVELOPER_LOG",
+        source_authority=80,
+        chunk_index=0,
+        matched_tokens=["annual", "leave", "leaveledger"],
+    )
+
+    result = _evaluate_question(
+        {
+            "id": "matched-token-source-terms",
+            "question": "How is Annual Leave managed in the system?",
+            "expected_source_terms_all": ["Annual Leave", "LeaveLedger"],
+        },
+        answer="No answer terms needed for this check.",
+        sources=[source],
+    )
+
+    assert result["passed"] is True
+    assert result["checks"]["expected_source_terms_all"] is True
+
+
+def test_golden_source_terms_all_fails_when_terms_are_absent_from_all_source_metadata():
+    source = SourceReference(
+        document_id="doc-1",
+        chunk_id="chunk-1",
+        original_file_name="annual-leave.txt",
+        source_type="DEVELOPER_LOG",
+        source_authority=80,
+        chunk_index=0,
+        snippet="Annual Leave evidence is partial.",
+        matched_tokens=["annual", "leave"],
+        title="Developer Log - Partial Leave Evidence",
+    )
+
+    result = _evaluate_question(
+        {
+            "id": "missing-source-token-terms",
+            "question": "How is Annual Leave managed in the system?",
+            "expected_source_terms_all": ["Annual Leave", "LeaveLedger"],
+        },
+        answer="No answer terms needed for this check.",
+        sources=[source],
+    )
+
+    assert result["passed"] is False
+    assert result["checks"]["expected_source_terms_all"] is False
+
+
+def test_golden_required_top_source_phrase_can_use_matched_tokens_for_project_terms():
+    source = SourceReference(
+        document_id="doc-1",
+        chunk_id="chunk-1",
+        original_file_name="annual-leave.txt",
+        source_type="DEVELOPER_LOG",
+        source_authority=80,
+        chunk_index=0,
+        matched_tokens=["leaveledger"],
+        evidence_group_label="Accrual basis and ledger posting",
+    )
+
+    result = _evaluate_question(
+        {
+            "id": "top-source-token-phrase",
+            "question": "How is Annual Leave managed in the system?",
+            "required_top_source_phrases_any": ["LeaveLedger"],
+        },
+        answer="No answer terms needed for this check.",
+        sources=[source],
+    )
+
+    assert result["passed"] is True
+    assert result["checks"]["required_top_source_phrase_any"] is True
