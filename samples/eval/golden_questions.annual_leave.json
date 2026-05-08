@@ -1,0 +1,78 @@
+{
+  "name": "Annual Leave and Leave Management golden questions",
+  "description": "Deterministic retrieval checks for Annual Leave, LeaveLedger, accrual, taken leave, valuation, PayRun leave actions and Worker Story evidence.",
+  "questions": [
+    {
+      "id": "annual-leave-managed",
+      "question": "How is Annual Leave managed in the system?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_source_terms_all": ["LeaveType", "LeaveTypeRule", "LeaveLedger", "accrual", "TAKEN"],
+      "expected_source_terms_any": ["appointment-aware", "rule resolution", "Worker Story", "evidence", "story"],
+      "expected_answer_terms_all": ["LeaveType", "LeaveLedger", "accrual", "TAKEN", "PayRun"],
+      "expected_answer_terms_any": ["Worker Story", "evidence", "story", "valuation"]
+    },
+    {
+      "id": "annual-leave-accrual",
+      "question": "How is Annual Leave accrual calculated?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_source_terms_all": ["interpreter truth", "no fallback", "LeaveLedger", "accrual", "minutes"],
+      "expected_source_terms_any": ["process period", "PayRun"],
+      "expected_answer_terms_all": ["interpreter truth", "LeaveLedger", "accrual", "minutes"],
+      "expected_answer_terms_any": ["process period", "PayRun", "no fallback"]
+    },
+    {
+      "id": "annual-leave-taken",
+      "question": "How is Annual Leave TAKEN posted?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_source_terms_all": ["TAKEN", "LeaveLedger", "minutes"],
+      "expected_source_terms_any": ["public holiday", "DeductsOnPublicHoliday", "valuation", "ordinary rate"],
+      "expected_answer_terms_all": ["TAKEN", "LeaveLedger", "minutes"],
+      "expected_answer_terms_any": ["public holiday", "DeductsOnPublicHoliday", "valuation", "ordinary rate"]
+    },
+    {
+      "id": "annual-leave-public-holidays",
+      "question": "How are public holidays handled for Annual Leave?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_source_terms_all": ["public holiday", "DeductsOnPublicHoliday", "resolver"],
+      "expected_source_terms_any": ["does not deduct", "skip taken row", "skip TAKEN row"],
+      "expected_answer_terms_all": ["public holiday", "DeductsOnPublicHoliday"],
+      "expected_answer_terms_any": ["does not deduct", "skip taken row", "skip TAKEN row", "resolver"]
+    },
+    {
+      "id": "annual-leave-valuation",
+      "question": "What is the current status of Annual Leave valuation?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_source_terms_all": ["valuation", "ordinary rate", "PayRun"],
+      "expected_source_terms_any": ["valuation basis", "snapshot", "outstanding", "not complete", "amber"],
+      "expected_answer_terms_all": ["valuation", "ordinary rate", "PayRun"],
+      "expected_answer_terms_any": ["valuation basis", "snapshot", "outstanding", "not complete", "amber"]
+    },
+    {
+      "id": "annual-leave-worker-story",
+      "question": "How does Worker Story explain Annual Leave?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_source_terms_all": ["Worker Story", "Leave and Accrual Outcome", "ledger", "valuation basis"],
+      "expected_source_terms_any": ["server-owned leave output", "evidence chain"],
+      "expected_answer_terms_all": ["Worker Story", "ledger", "valuation basis"],
+      "expected_answer_terms_any": ["Leave and Accrual Outcome", "server-owned leave output", "evidence chain"]
+    },
+    {
+      "id": "leave-rule-ui",
+      "question": "How are Annual Leave rules configured in the UI?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_source_terms_all": ["LeaveTypeKind", "Rule Cockpit", "Accrual", "Payment", "Governance"],
+      "expected_source_terms_any": ["minimal-first", "semantic gating", "Annual Leave-specific fields"],
+      "expected_answer_terms_all": ["LeaveTypeKind", "Rule Cockpit", "Accrual"],
+      "expected_answer_terms_any": ["Payment", "Governance", "minimal-first", "semantic gating", "Annual Leave-specific fields"]
+    },
+    {
+      "id": "annual-leave-outstanding",
+      "question": "What remains outstanding for Annual Leave?",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "expected_source_terms_all": ["outstanding", "Annual Leave"],
+      "expected_source_terms_any": ["still to do", "hardening", "valuation", "Leave Source Model", "FIFO", "lot consumption", "revaluation", "production hardening"],
+      "expected_answer_terms_all": ["outstanding", "Annual Leave"],
+      "expected_answer_terms_any": ["valuation", "Leave Source Model", "FIFO", "lot consumption", "revaluation", "production hardening", "hardening"]
+    }
+  ]
+}

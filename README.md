@@ -305,6 +305,22 @@ samples/eval/golden_questions.minerva.json
 
 Each question can specify expected source types, a preferred top source type, source phrases that should appear in snippets or matched phrases, and answer phrases that should appear in the deterministic answer. Run the pack before and after large corpus ingestion or retrieval scoring changes.
 
+## Domain Golden Question Packs
+
+The foundation golden pack checks Minerva doctrine, boundaries and architecture:
+
+```powershell
+py scripts/run_golden_questions.py --manifest samples/eval/golden_questions.minerva.json --verbose
+```
+
+The Annual Leave pack checks whether the formal corpus already answers key leave-management questions before bulk raw chat-history ingestion:
+
+```powershell
+py scripts/run_golden_questions.py --manifest samples/eval/golden_questions.annual_leave.json --verbose
+```
+
+Domain packs are deterministic retrieval and answer regression checks, not external LLM evaluation. A failure usually means either retrieval needs tuning or the formal Developer Logs/doctrine corpus does not yet contain enough clear evidence for that product question.
+
 ## Chunk And Metadata Inspection
 
 Before bulk chat-history ingestion, inspect chunk boundaries and metadata quality so retrieval problems are easier to diagnose. Source sections help show which heading or section a chunk came from, which makes bad matches and poor chunk boundaries easier to spot.

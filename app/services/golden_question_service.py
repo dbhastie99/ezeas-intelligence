@@ -123,6 +123,24 @@ def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list
     else:
         checks["expected_source_phrase_any"] = True
 
+    source_terms_any = question_spec.get("expected_source_terms_any", [])
+    if source_terms_any:
+        source_text = " ".join(_source_phrase_text(source) for source in sources)
+        checks["expected_source_terms_any"] = _contains_any(source_text, source_terms_any)
+        if not checks["expected_source_terms_any"]:
+            failure_reasons.append(f"No source snippet/matched phrase contained any expected terms: {source_terms_any}")
+    else:
+        checks["expected_source_terms_any"] = True
+
+    source_terms_all = question_spec.get("expected_source_terms_all", [])
+    if source_terms_all:
+        source_text = " ".join(_source_phrase_text(source) for source in sources)
+        checks["expected_source_terms_all"] = _contains_all(source_text, source_terms_all)
+        if not checks["expected_source_terms_all"]:
+            failure_reasons.append(f"Source snippets/matched phrases did not contain all expected terms: {source_terms_all}")
+    else:
+        checks["expected_source_terms_all"] = True
+
     top_source_phrases = question_spec.get("required_top_source_phrases_any", [])
     if top_source_phrases:
         top_source_text = _source_phrase_text(sources[0]) if sources else ""
@@ -147,6 +165,22 @@ def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list
             failure_reasons.append(f"Answer did not contain all required phrases: {answer_phrases_all}")
     else:
         checks["expected_answer_phrases_all"] = True
+
+    answer_terms_any = question_spec.get("expected_answer_terms_any", [])
+    if answer_terms_any:
+        checks["expected_answer_terms_any"] = _contains_any(answer, answer_terms_any)
+        if not checks["expected_answer_terms_any"]:
+            failure_reasons.append(f"Answer did not contain any expected terms: {answer_terms_any}")
+    else:
+        checks["expected_answer_terms_any"] = True
+
+    answer_terms_all = question_spec.get("expected_answer_terms_all", [])
+    if answer_terms_all:
+        checks["expected_answer_terms_all"] = _contains_all(answer, answer_terms_all)
+        if not checks["expected_answer_terms_all"]:
+            failure_reasons.append(f"Answer did not contain all expected terms: {answer_terms_all}")
+    else:
+        checks["expected_answer_terms_all"] = True
 
     forbidden_answer_phrases = question_spec.get("forbidden_answer_phrases_any", [])
     if forbidden_answer_phrases:

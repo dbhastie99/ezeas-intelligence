@@ -119,7 +119,7 @@ class StubLLMClient(BaseLLMClient):
                 "Minerva is advisory and does not calculate or change payroll truth."
             )
 
-        formatted_evidence = " ".join(f"Source {index + 1}: {excerpt}" for index, excerpt in enumerate(excerpts))
+        formatted_evidence = " ".join(excerpts)
         return (
             "Based on the retrieved Minerva knowledge sources, using the strongest matches, "
             f"{formatted_evidence} "

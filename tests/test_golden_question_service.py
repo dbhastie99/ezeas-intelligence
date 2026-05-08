@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from app.services.golden_question_service import GoldenQuestionError, run_golden_questions
+from app.services.golden_question_service import GoldenQuestionError, load_golden_manifest, run_golden_questions
 from app.services.ingestion_service import ingest_file_bytes
 
 
@@ -368,3 +368,110 @@ def test_golden_manifest_missing_or_malformed_fails_cleanly(db_session, tmp_path
 
     with pytest.raises(GoldenQuestionError, match="not valid JSON"):
         run_golden_questions(db_session, malformed_path)
+
+
+def test_annual_leave_golden_manifest_loads_and_validates():
+    manifest = load_golden_manifest("samples/eval/golden_questions.annual_leave.json")
+
+    assert manifest["name"] == "Annual Leave and Leave Management golden questions"
+    assert len(manifest["questions"]) >= 8
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "annual-leave-managed",
+        "annual-leave-accrual",
+        "annual-leave-taken",
+        "annual-leave-public-holidays",
+        "annual-leave-valuation",
+        "annual-leave-worker-story",
+        "leave-rule-ui",
+        "annual-leave-outstanding",
+    }
+
+
+def test_golden_question_runs_leave_style_terms_against_fixture_document(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "annual-leave-managed.txt",
+        "Annual Leave Management Developer Log\n"
+        "Annual Leave is managed through LeaveType and LeaveTypeRule rule resolution. "
+        "The LeaveLedger records accrual and TAKEN rows in PayRun processing. "
+        "Worker Story evidence shows valuation and story output for leave outcomes.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - Annual Leave Management",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "annual-leave-fixture",
+                "question": "How is Annual Leave managed in the system?",
+                "expected_source_types": ["DEVELOPER_LOG"],
+                "expected_source_terms_all": ["LeaveType", "LeaveTypeRule", "LeaveLedger", "accrual", "TAKEN"],
+                "expected_answer_terms_all": ["LeaveType", "LeaveLedger", "accrual", "TAKEN", "PayRun"],
+                "expected_answer_terms_any": ["Worker Story", "evidence", "valuation"],
+                "forbidden_answer_phrases_any": ["Source 1:"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is True
+    checks = result["results"][0]["checks"]
+    assert checks["expected_source_terms_all"] is True
+    assert checks["expected_answer_terms_all"] is True
+    assert checks["expected_answer_terms_any"] is True
+
+
+def test_golden_question_fails_when_expected_answer_terms_all_is_missing(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "annual-leave-accrual.txt",
+        "Annual Leave accrual uses interpreter truth and posts LeaveLedger accrual minutes.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - Annual Leave Accrual",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "missing-answer-term",
+                "question": "How is Annual Leave accrual calculated?",
+                "expected_source_types": ["DEVELOPER_LOG"],
+                "expected_answer_terms_all": ["interpreter truth", "LeaveLedger", "missing term"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is False
+    assert result["results"][0]["checks"]["expected_answer_terms_all"] is False
+
+
+def test_golden_question_fails_when_expected_source_terms_all_is_missing(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "annual-leave-public-holiday.txt",
+        "Annual Leave public holiday handling uses DeductsOnPublicHoliday and a resolver.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - Annual Leave Public Holiday",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "missing-source-term",
+                "question": "How are public holidays handled for Annual Leave?",
+                "expected_source_types": ["DEVELOPER_LOG"],
+                "expected_source_terms_all": ["public holiday", "DeductsOnPublicHoliday", "missing source term"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is False
+    assert result["results"][0]["checks"]["expected_source_terms_all"] is False
