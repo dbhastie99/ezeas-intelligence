@@ -321,6 +321,41 @@ py scripts/run_golden_questions.py --manifest samples/eval/golden_questions.annu
 
 Domain packs are deterministic retrieval and answer regression checks, not external LLM evaluation. A failure usually means either retrieval needs tuning or the formal Developer Logs/doctrine corpus does not yet contain enough clear evidence for that product question.
 
+## Rich Answer Standard
+
+Snippet stitching is not acceptable as Minerva's final answer standard for serious platform-domain questions. Rich answers should be structured, source-grounded and honest about implementation status and uncertainty.
+
+The answer modes are:
+
+- `DOCTRINE`
+- `PRODUCT_DOMAIN`
+- `TECHNICAL_SUPPORT`
+- `WORKER_FACING`
+- `DEVELOPER_PLATFORM`
+- `GENERAL`
+
+For product/domain questions, the target sections are:
+
+- Direct summary
+- How the system works
+- Current implementation status
+- What remains outstanding
+- Evidence basis / source references
+
+The full contract is documented in:
+
+```text
+docs/RICH_ANSWER_STANDARD.md
+```
+
+Run the Annual Leave rich-answer benchmark:
+
+```powershell
+py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark.annual_leave.json --verbose --allow-failures
+```
+
+This benchmark may fail until Annual Leave domain retrieval and supporting formal corpus/chat-history context are implemented. Use `--allow-failures` for benchmark tracking so it does not block local proof runs.
+
 ## Targeted Annual Leave Corpus Supplement
 
 If the Annual Leave golden pack fails against SQL Server, the loaded foundation corpus likely does not yet include enough leave-specific formal logs. Before bulk raw chat-history ingestion, load targeted formal leave documents only.

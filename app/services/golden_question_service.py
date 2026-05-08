@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -7,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.core.enums import ChatRole, normalize_chat_role, normalize_source_type
 from app.models.chat import KnowledgeChatMessage, KnowledgeChatSession
 from app.schemas.common import SourceReference
+from app.services.answer_mode_service import classify_answer_mode, normalize_answer_mode
 from app.services.answer_generation_service import generate_grounded_answer
 from app.services.audit_service import write_ai_interaction_audit
 from app.services.knowledge_retrieval_service import retrieve_relevant_chunks
@@ -44,6 +46,9 @@ def load_golden_manifest(path: str | Path) -> dict[str, Any]:
             preferred = question.get("preferred_top_source_type")
             if preferred:
                 normalize_source_type(preferred)
+            answer_mode = question.get("answer_mode")
+            if answer_mode:
+                normalize_answer_mode(answer_mode)
         except ValueError as exc:
             raise GoldenQuestionError(f"Golden question entry {index}: {exc}") from exc
     return manifest
@@ -57,6 +62,10 @@ def _contains_any(text: str, phrases: list[str]) -> bool:
 def _contains_all(text: str, phrases: list[str]) -> bool:
     lower_text = text.lower()
     return all(phrase.lower() in lower_text for phrase in phrases)
+
+
+def _matches_any_pattern(text: str, patterns: list[str]) -> bool:
+    return any(re.search(pattern, text, flags=re.IGNORECASE | re.MULTILINE) for pattern in patterns)
 
 
 def _source_phrase_text(source: SourceReference) -> str:
@@ -87,6 +96,15 @@ def _source_summary(source: SourceReference) -> dict[str, Any]:
 def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list[SourceReference]) -> dict[str, Any]:
     checks: dict[str, bool] = {}
     failure_reasons: list[str] = []
+
+    expected_answer_mode = question_spec.get("answer_mode")
+    if expected_answer_mode:
+        actual_answer_mode = classify_answer_mode(question_spec["question"])
+        checks["answer_mode"] = actual_answer_mode == expected_answer_mode
+        if not checks["answer_mode"]:
+            failure_reasons.append(f"Expected answer mode {expected_answer_mode}, got {actual_answer_mode}")
+    else:
+        checks["answer_mode"] = True
 
     expected_source_types = question_spec.get("expected_source_types", [])
     if expected_source_types:
@@ -189,6 +207,22 @@ def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list
             failure_reasons.append(f"Answer contained a forbidden phrase from: {forbidden_answer_phrases}")
     else:
         checks["forbidden_answer_phrases_any"] = True
+
+    required_sections = question_spec.get("required_answer_sections", [])
+    if required_sections:
+        checks["required_answer_sections"] = _contains_all(answer, required_sections)
+        if not checks["required_answer_sections"]:
+            failure_reasons.append(f"Answer did not contain all required sections: {required_sections}")
+    else:
+        checks["required_answer_sections"] = True
+
+    forbidden_patterns = question_spec.get("forbidden_answer_patterns_any", [])
+    if forbidden_patterns:
+        checks["forbidden_answer_patterns_any"] = not _matches_any_pattern(answer, forbidden_patterns)
+        if not checks["forbidden_answer_patterns_any"]:
+            failure_reasons.append(f"Answer matched a forbidden pattern from: {forbidden_patterns}")
+    else:
+        checks["forbidden_answer_patterns_any"] = True
 
     passed = all(checks.values())
     return {"passed": passed, "checks": checks, "failure_reasons": failure_reasons}

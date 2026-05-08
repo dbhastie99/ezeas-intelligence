@@ -76,6 +76,7 @@ def main() -> int:
     parser.add_argument("--json-output")
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--create-audit", action="store_true", help="Create chat/session/audit rows for each question.")
+    parser.add_argument("--allow-failures", action="store_true", help="Exit 0 even when golden checks fail.")
     args = parser.parse_args()
 
     if not configured_database_url():
@@ -108,7 +109,7 @@ def main() -> int:
         output_path.write_text(json.dumps(result, indent=2), encoding="utf-8")
         print(f"Wrote JSON results to {output_path}")
 
-    return 0 if result["all_passed"] else 1
+    return 0 if result["all_passed"] or args.allow_failures else 1
 
 
 if __name__ == "__main__":

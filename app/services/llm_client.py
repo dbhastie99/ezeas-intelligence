@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+from app.services.answer_mode_service import AnswerMode, classify_answer_mode
 from app.services.knowledge_retrieval_service import RetrievalResult, classify_query_intent
 
 
@@ -31,6 +32,7 @@ class StubLLMClient(BaseLLMClient):
     model_name = "STUB_LLM"
 
     def generate_answer(self, question: str, retrieved_chunks: list[RetrievalResult]) -> str:
+        answer_mode = classify_answer_mode(question)
         if not retrieved_chunks:
             return (
                 "I do not have retrieved Minerva knowledge evidence for that question. "
@@ -111,6 +113,31 @@ class StubLLMClient(BaseLLMClient):
         ]
         selected_chunks = (strong_chunks or retrieved_chunks)[:3]
         excerpts = [_safe_excerpt(result.chunk_text, max_length=260) for result in selected_chunks]
+
+        if answer_mode == AnswerMode.PRODUCT_DOMAIN.value:
+            if not strong_chunks:
+                return (
+                    "The retrieved formal corpus is not yet sufficient to answer this at the required rich-answer "
+                    "standard. The closest evidence says: "
+                    f"{' '.join(excerpts[:2])} "
+                    "Minerva is advisory and does not calculate or change payroll truth."
+                )
+            evidence = " ".join(excerpts[:3])
+            return (
+                "Direct summary\n"
+                "Based on the retrieved formal Minerva knowledge sources, this product-domain answer is grounded in "
+                "the strongest available evidence.\n\n"
+                "How the system works\n"
+                f"{evidence}\n\n"
+                "Current implementation status\n"
+                "The answer reflects only the retrieved formal corpus and does not infer operational payroll truth.\n\n"
+                "What remains outstanding\n"
+                "Any missing implementation status or hardening details should be treated as unknown until supported "
+                "by formal doctrine, hardening logs or Developer Logs.\n\n"
+                "Evidence basis\n"
+                "Use the returned source references as the evidence trail. Minerva is advisory and does not calculate "
+                "or change payroll truth."
+            )
 
         if not strong_chunks:
             return (

@@ -1,0 +1,54 @@
+{
+  "name": "Annual Leave rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for Annual Leave management. This benchmark is allowed to fail until Annual Leave domain retrieval and supporting corpus work are implemented.",
+  "questions": [
+    {
+      "id": "annual-leave-managed-rich-answer",
+      "question": "How is Annual Leave managed in the system?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding"
+      ],
+      "expected_answer_terms_all": [
+        "LeaveType",
+        "LeaveTypeRule",
+        "LeaveLedger",
+        "accrual",
+        "TAKEN",
+        "public holiday",
+        "valuation",
+        "PayRun",
+        "Worker Story",
+        "evidence"
+      ],
+      "expected_answer_terms_any": [
+        "rule resolution",
+        "appointment-aware",
+        "outstanding",
+        "hardening"
+      ],
+      "expected_source_terms_all": [
+        "Annual Leave",
+        "LeaveLedger"
+      ],
+      "expected_source_terms_any": [
+        "LeaveType",
+        "LeaveTypeRule",
+        "TAKEN",
+        "public holiday",
+        "valuation",
+        "Worker Story"
+      ],
+      "forbidden_answer_patterns_any": [
+        "Source\\s+1:",
+        "Source\\s+2:",
+        "closest sources say",
+        "using the strongest matches"
+      ]
+    }
+  ]
+}
