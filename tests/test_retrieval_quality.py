@@ -221,6 +221,61 @@ def test_boundary_intent_penalises_generic_not_allowed_chunk(db_session):
     assert results[0].match_reason is not None
 
 
+def test_platform_doctrine_with_boundary_phrase_outranks_developer_log_with_similar_phrase(db_session):
+    _ingest(
+        db_session,
+        "developer-boundary-similar.txt",
+        "Developer Log: LLM Boundary. Minerva must not calculate payroll or finalise PayRuns. "
+        "This was discussed during historical implementation work.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - LLM Boundary Discussion",
+    )
+    _ingest(
+        db_session,
+        "platform-boundary-source-priority.txt",
+        "LLM Boundary\nMinerva must not calculate payroll or finalise PayRuns. "
+        "Minerva is advisory and is not payroll calculation truth.",
+        source_type="PLATFORM_DOCTRINE",
+        capability_status="DOCTRINE",
+        title="Platform Doctrine - LLM Boundary",
+    )
+
+    results = retrieve_relevant_chunks(db_session, "What is Minerva not allowed to do?")
+
+    assert results
+    assert results[0].original_file_name == "platform-boundary-source-priority.txt"
+    assert results[0].source_type == "PLATFORM_DOCTRINE"
+    assert "llm boundary" in results[0].matched_phrases
+
+
+def test_developer_log_can_outrank_platform_doctrine_when_doctrine_has_no_intent_phrase(db_session):
+    _ingest(
+        db_session,
+        "weak-platform-context.txt",
+        "Platform Doctrine says Minerva is a read-only advisory knowledge service.",
+        source_type="PLATFORM_DOCTRINE",
+        capability_status="DOCTRINE",
+        title="Platform Doctrine - General Minerva Context",
+    )
+    _ingest(
+        db_session,
+        "developer-direct-rbac.txt",
+        "Developer Log: RBAC-Before-LLM Hardening. User permissions must be enforced before evidence reaches the LLM, "
+        "and the model must not receive sensitive evidence the user is not authorised to view.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - RBAC-Before-LLM Hardening",
+    )
+
+    results = retrieve_relevant_chunks(db_session, "What does RBAC-before-LLM mean?")
+
+    assert results
+    assert results[0].original_file_name == "developer-direct-rbac.txt"
+    assert results[0].source_type == "DEVELOPER_LOG"
+    assert results[0].matched_phrases
+
+
 def test_rbac_intent_ranks_doctrine_above_weaker_contextual_chunk(db_session):
     _ingest(
         db_session,

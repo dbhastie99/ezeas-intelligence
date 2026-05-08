@@ -61,6 +61,15 @@ CAPABILITY_STATUS_BOOSTS = {
     "FUTURE_ROADMAP": 0.75,
     "DESIGN_DISCUSSION": 0.5,
 }
+INTENT_PHRASE_SOURCE_PRIORITY = {
+    "PLATFORM_DOCTRINE": 24.0,
+    "HARDENING_LOG": 18.0,
+    "DEVELOPER_LOG": 10.0,
+    "REQUIREMENTS": 7.0,
+    "CHAT_HISTORY": 4.0,
+    "OTHER": 2.0,
+    "SAMPLE": 0.0,
+}
 
 
 @dataclass(frozen=True)
@@ -282,12 +291,18 @@ def _intent_phrase_score(text: str, title: str, matched_phrases: list[str]) -> t
     return score, reasons[0] if reasons else f"matched intent phrase {matched_phrases[0]}"
 
 
-def _intent_source_boost(document: KnowledgeDocument, intent: QueryIntentDefinition | None) -> float:
+def _intent_source_boost(
+    document: KnowledgeDocument,
+    intent: QueryIntentDefinition | None,
+    matched_phrases: list[str],
+) -> float:
     if intent is None:
         return 0.0
     boost = 0.0
     if document.SourceType in intent.preferred_source_types:
         boost += 8.0
+    if matched_phrases:
+        boost += INTENT_PHRASE_SOURCE_PRIORITY.get(document.SourceType, 0.0)
     title = (document.Title or "").lower()
     if "platform doctrine" in title or "hardening doctrine" in title:
         boost += 6.0
@@ -370,7 +385,7 @@ def retrieve_relevant_chunks(
             + CAPABILITY_STATUS_BOOSTS.get(document.CapabilityStatus or "", 0.0)
             + (document.SourceAuthority / 25.0)
             + phrase_score
-            + _intent_source_boost(document, intent)
+            + _intent_source_boost(document, intent, matched_phrases)
             - generic_only_penalty
         )
         scored.append(
