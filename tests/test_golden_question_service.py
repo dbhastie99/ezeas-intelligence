@@ -101,6 +101,125 @@ def test_golden_question_fails_when_preferred_top_source_type_is_wrong(db_sessio
     assert "Preferred top source type" in item["failure_reasons"][0]
 
 
+def test_golden_question_passes_when_top_source_type_is_in_preferred_top_source_types_developer_log(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "chat-history-developer.txt",
+        "Raw chat history is supporting material with abandoned ideas, corrections and superseded thinking. "
+        "It must not override formal doctrine.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - Chat History Authority",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "developer-top-ok",
+                "question": "What is the difference between Platform Doctrine and chat history?",
+                "expected_source_types": ["DEVELOPER_LOG"],
+                "preferred_top_source_types": ["PLATFORM_DOCTRINE", "HARDENING_LOG", "DEVELOPER_LOG"],
+                "required_top_source_phrases_any": ["raw chat history", "supporting material", "must not override"],
+                "expected_answer_phrases_any": ["chat history"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is True
+    assert result["results"][0]["top_sources"][0]["source_type"] == "DEVELOPER_LOG"
+    assert result["results"][0]["checks"]["preferred_top_source_type"] is True
+
+
+def test_golden_question_passes_when_top_source_type_is_in_preferred_top_source_types_hardening_log(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "chat-history-hardening.txt",
+        "Raw chat history is supporting material. Platform Doctrine, Hardening Logs and Developer Logs outrank raw chat history.",
+        source_type="HARDENING_LOG",
+        capability_status="OUTSTANDING_HARDENING",
+        title="Hardening Log - Chat History Authority",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "hardening-top-ok",
+                "question": "Can chat history override doctrine?",
+                "expected_source_types": ["HARDENING_LOG"],
+                "preferred_top_source_types": ["PLATFORM_DOCTRINE", "HARDENING_LOG", "DEVELOPER_LOG"],
+                "required_top_source_phrases_any": ["raw chat history", "supporting material"],
+                "expected_answer_phrases_any": ["must not override"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is True
+    assert result["results"][0]["top_sources"][0]["source_type"] == "HARDENING_LOG"
+    assert result["results"][0]["checks"]["preferred_top_source_type"] is True
+
+
+def test_golden_question_fails_when_top_source_type_not_in_preferred_top_source_types(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "chat-history-other.txt",
+        "Raw chat history is supporting material and must not override formal doctrine.",
+        source_type="OTHER",
+        capability_status="UNKNOWN",
+        title="Other Chat History Authority",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "top-not-allowed",
+                "question": "Can chat history override doctrine?",
+                "expected_source_types": ["OTHER"],
+                "preferred_top_source_types": ["PLATFORM_DOCTRINE", "HARDENING_LOG", "DEVELOPER_LOG"],
+                "required_top_source_phrases_any": ["raw chat history", "supporting material"],
+                "expected_answer_phrases_any": ["must not override"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is False
+    assert result["results"][0]["top_sources"][0]["source_type"] == "OTHER"
+    assert result["results"][0]["checks"]["preferred_top_source_type"] is False
+
+
+def test_golden_question_backward_compatibility_with_singular_preferred_top_source_type(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "boundary-singular.txt",
+        "LLM Boundary\nMinerva must not calculate payroll and is not payroll calculation truth.",
+        source_type="PLATFORM_DOCTRINE",
+        title="Platform Doctrine - LLM Boundary",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "singular-preferred",
+                "question": "What is Minerva not allowed to do?",
+                "expected_source_types": ["PLATFORM_DOCTRINE"],
+                "preferred_top_source_type": "PLATFORM_DOCTRINE",
+                "expected_phrases_any": ["must not calculate"],
+                "expected_answer_phrases_any": ["not allowed to calculate payroll"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is True
+    assert result["results"][0]["checks"]["preferred_top_source_type"] is True
+
+
 def test_golden_question_fails_when_answer_phrase_is_missing(db_session, tmp_path):
     _ingest(
         db_session,
@@ -126,6 +245,89 @@ def test_golden_question_fails_when_answer_phrase_is_missing(db_session, tmp_pat
 
     assert result["all_passed"] is False
     assert result["results"][0]["checks"]["expected_answer_phrase_any"] is False
+
+
+def test_golden_question_fails_when_expected_answer_phrases_all_is_missing(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "source-authority.txt",
+        "Source Authority Doctrine\nPlatform Doctrine, Hardening Logs and Developer Logs outrank raw chat history.",
+        source_type="PLATFORM_DOCTRINE",
+        title="Platform Doctrine - Source Authority Doctrine",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "missing-all",
+                "question": "Why does source authority matter?",
+                "expected_source_types": ["PLATFORM_DOCTRINE"],
+                "expected_phrases_any": ["source authority doctrine"],
+                "expected_answer_phrases_all": ["Platform Doctrine", "phrase intentionally absent"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is False
+    assert result["results"][0]["checks"]["expected_answer_phrases_all"] is False
+
+
+def test_golden_question_fails_when_forbidden_answer_phrase_appears(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "boundary.txt",
+        "LLM Boundary\nMinerva must not calculate payroll and must not finalise PayRuns.",
+        source_type="PLATFORM_DOCTRINE",
+        title="Platform Doctrine - LLM Boundary",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "forbidden",
+                "question": "What is Minerva not allowed to do?",
+                "expected_source_types": ["PLATFORM_DOCTRINE"],
+                "expected_phrases_any": ["must not calculate"],
+                "forbidden_answer_phrases_any": ["not allowed to calculate payroll"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is False
+    assert result["results"][0]["checks"]["forbidden_answer_phrases_any"] is False
+
+
+def test_golden_required_top_source_phrase_any_is_enforced(db_session, tmp_path):
+    _ingest(
+        db_session,
+        "developer-direct.txt",
+        "Developer Log: RBAC-Before-LLM Hardening. User permissions must be enforced before evidence reaches the LLM.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - RBAC-Before-LLM Hardening",
+    )
+    manifest_path = _manifest(
+        tmp_path,
+        [
+            {
+                "id": "top-source-phrase",
+                "question": "What does RBAC-before-LLM mean?",
+                "expected_source_types": ["DEVELOPER_LOG"],
+                "expected_phrases_any": ["rbac-before-llm hardening"],
+                "required_top_source_phrases_any": ["rbac-before-llm hardening"],
+                "expected_answer_phrases_any": ["permissions must be checked before evidence"],
+            }
+        ],
+    )
+
+    result = run_golden_questions(db_session, manifest_path)
+
+    assert result["all_passed"] is True
+    assert result["results"][0]["checks"]["required_top_source_phrase_any"] is True
 
 
 def test_golden_source_phrase_can_be_satisfied_by_matched_phrases(db_session, tmp_path):

@@ -39,6 +39,8 @@ def load_golden_manifest(path: str | Path) -> dict[str, Any]:
         try:
             for source_type in question.get("expected_source_types", []):
                 normalize_source_type(source_type)
+            for source_type in question.get("preferred_top_source_types", []):
+                normalize_source_type(source_type)
             preferred = question.get("preferred_top_source_type")
             if preferred:
                 normalize_source_type(preferred)
@@ -50,6 +52,11 @@ def load_golden_manifest(path: str | Path) -> dict[str, Any]:
 def _contains_any(text: str, phrases: list[str]) -> bool:
     lower_text = text.lower()
     return any(phrase.lower() in lower_text for phrase in phrases)
+
+
+def _contains_all(text: str, phrases: list[str]) -> bool:
+    lower_text = text.lower()
+    return all(phrase.lower() in lower_text for phrase in phrases)
 
 
 def _source_phrase_text(source: SourceReference) -> str:
@@ -89,14 +96,23 @@ def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list
     else:
         checks["expected_source_type_present"] = True
 
-    preferred_top_source_type = question_spec.get("preferred_top_source_type")
-    if preferred_top_source_type:
-        checks["preferred_top_source_type"] = bool(sources and sources[0].source_type == preferred_top_source_type)
+    preferred_top_source_types = question_spec.get("preferred_top_source_types")
+    if preferred_top_source_types:
+        checks["preferred_top_source_type"] = bool(sources and sources[0].source_type in preferred_top_source_types)
         if not checks["preferred_top_source_type"]:
             actual = sources[0].source_type if sources else None
-            failure_reasons.append(f"Preferred top source type {preferred_top_source_type} was not top; got {actual}")
+            failure_reasons.append(
+                f"Preferred top source types {preferred_top_source_types} did not include top source type; got {actual}"
+            )
     else:
-        checks["preferred_top_source_type"] = True
+        preferred_top_source_type = question_spec.get("preferred_top_source_type")
+        if preferred_top_source_type:
+            checks["preferred_top_source_type"] = bool(sources and sources[0].source_type == preferred_top_source_type)
+            if not checks["preferred_top_source_type"]:
+                actual = sources[0].source_type if sources else None
+                failure_reasons.append(f"Preferred top source type {preferred_top_source_type} was not top; got {actual}")
+        else:
+            checks["preferred_top_source_type"] = True
 
     source_phrases = question_spec.get("expected_phrases_any", [])
     if source_phrases:
@@ -107,6 +123,15 @@ def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list
     else:
         checks["expected_source_phrase_any"] = True
 
+    top_source_phrases = question_spec.get("required_top_source_phrases_any", [])
+    if top_source_phrases:
+        top_source_text = _source_phrase_text(sources[0]) if sources else ""
+        checks["required_top_source_phrase_any"] = _contains_any(top_source_text, top_source_phrases)
+        if not checks["required_top_source_phrase_any"]:
+            failure_reasons.append(f"Top source did not contain any required phrase: {top_source_phrases}")
+    else:
+        checks["required_top_source_phrase_any"] = True
+
     answer_phrases = question_spec.get("expected_answer_phrases_any", [])
     if answer_phrases:
         checks["expected_answer_phrase_any"] = _contains_any(answer, answer_phrases)
@@ -114,6 +139,22 @@ def _evaluate_question(question_spec: dict[str, Any], answer: str, sources: list
             failure_reasons.append(f"Answer did not contain any of: {answer_phrases}")
     else:
         checks["expected_answer_phrase_any"] = True
+
+    answer_phrases_all = question_spec.get("expected_answer_phrases_all", [])
+    if answer_phrases_all:
+        checks["expected_answer_phrases_all"] = _contains_all(answer, answer_phrases_all)
+        if not checks["expected_answer_phrases_all"]:
+            failure_reasons.append(f"Answer did not contain all required phrases: {answer_phrases_all}")
+    else:
+        checks["expected_answer_phrases_all"] = True
+
+    forbidden_answer_phrases = question_spec.get("forbidden_answer_phrases_any", [])
+    if forbidden_answer_phrases:
+        checks["forbidden_answer_phrases_any"] = not _contains_any(answer, forbidden_answer_phrases)
+        if not checks["forbidden_answer_phrases_any"]:
+            failure_reasons.append(f"Answer contained a forbidden phrase from: {forbidden_answer_phrases}")
+    else:
+        checks["forbidden_answer_phrases_any"] = True
 
     passed = all(checks.values())
     return {"passed": passed, "checks": checks, "failure_reasons": failure_reasons}

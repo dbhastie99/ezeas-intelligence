@@ -14,7 +14,18 @@
         "must not mutate",
         "must not override"
       ],
+      "required_top_source_phrases_any": [
+        "must not calculate",
+        "llm boundary",
+        "not payroll calculation truth"
+      ],
       "expected_answer_phrases_any": [
+        "not allowed to calculate payroll",
+        "determine entitlements",
+        "finalise PayRuns",
+        "advisory"
+      ],
+      "expected_answer_phrases_all": [
         "not allowed to calculate payroll",
         "determine entitlements",
         "finalise PayRuns",
@@ -32,7 +43,17 @@
         "authorized to view",
         "model must not receive sensitive evidence"
       ],
+      "required_top_source_phrases_any": [
+        "rbac-before-llm doctrine",
+        "user permissions must be enforced before evidence reaches the llm",
+        "model must not receive sensitive evidence"
+      ],
       "expected_answer_phrases_any": [
+        "permissions must be checked before evidence is retrieved into model context",
+        "must not receive sensitive evidence",
+        "before context construction"
+      ],
+      "expected_answer_phrases_all": [
         "permissions must be checked before evidence is retrieved into model context",
         "must not receive sensitive evidence",
         "before context construction"
@@ -50,7 +71,17 @@
         "operational database remains authoritative",
         "source of payroll truth"
       ],
+      "required_top_source_phrases_any": [
+        "separate intelligence store",
+        "separate database",
+        "ezeas-intelligence-db"
+      ],
       "expected_answer_phrases_any": [
+        "separate database",
+        "isolated from the operational payroll database",
+        "authoritative source of payroll"
+      ],
+      "expected_answer_phrases_all": [
         "separate database",
         "isolated from the operational payroll database",
         "authoritative source of payroll"
@@ -67,10 +98,25 @@
         "no raw JSON by default",
         "must not receive sensitive evidence"
       ],
+      "required_top_source_phrases_any": [
+        "no raw JSON by default",
+        "minimum necessary evidence",
+        "sensitive JSON boundary",
+        "extracted into facts"
+      ],
       "expected_answer_phrases_any": [
-        "evidence",
-        "Minerva is advisory",
-        "does not calculate or change payroll truth"
+        "raw JSON",
+        "minimum necessary evidence",
+        "facts or safe summaries"
+      ],
+      "expected_answer_phrases_all": [
+        "Raw JSON",
+        "sensitive",
+        "facts or safe summaries",
+        "minimum necessary evidence"
+      ],
+      "forbidden_answer_phrases_any": [
+        "not allowed to calculate payroll"
       ]
     },
     {
@@ -84,10 +130,24 @@
         "source authority",
         "chat history"
       ],
+      "required_top_source_phrases_any": [
+        "source authority doctrine",
+        "Platform Doctrine, Hardening Logs and Developer Logs outrank raw chat history",
+        "must not override formal doctrine"
+      ],
       "expected_answer_phrases_any": [
-        "source",
-        "Minerva is advisory",
-        "does not calculate or change payroll truth"
+        "Platform Doctrine",
+        "chat history",
+        "must not override"
+      ],
+      "expected_answer_phrases_all": [
+        "Platform Doctrine",
+        "Hardening Logs",
+        "Developer Logs",
+        "chat history"
+      ],
+      "forbidden_answer_phrases_any": [
+        "Source 1:"
       ]
     },
     {
@@ -102,10 +162,25 @@
         "User Guide / Rationale",
         "Developer Log"
       ],
+      "required_top_source_phrases_any": [
+        "Developer Logs",
+        "platform memory",
+        "structured memory",
+        "source knowledge"
+      ],
       "expected_answer_phrases_any": [
-        "Developer",
-        "source",
-        "Minerva is advisory"
+        "Developer Logs",
+        "formal knowledge corpus",
+        "implementation decisions"
+      ],
+      "expected_answer_phrases_all": [
+        "Developer Logs",
+        "formal knowledge corpus",
+        "implementation decisions",
+        "why decisions were made"
+      ],
+      "forbidden_answer_phrases_any": [
+        "Source 1:"
       ]
     },
     {
@@ -120,17 +195,32 @@
         "explain the work later",
         "User Guide / Rationale"
       ],
+      "required_top_source_phrases_any": [
+        "User Guide / Rationale and Operating Model",
+        "why the work matters",
+        "future LLM retrieval",
+        "explain the work later"
+      ],
       "expected_answer_phrases_any": [
         "User Guide",
         "Rationale",
-        "Minerva is advisory"
+        "why the work matters"
+      ],
+      "expected_answer_phrases_all": [
+        "User Guide / Rationale",
+        "why the work matters",
+        "how the platform should operate",
+        "retrieve and explain later"
+      ],
+      "forbidden_answer_phrases_any": [
+        "Source 1:"
       ]
     },
     {
       "id": "chat-history-authority",
       "question": "What is the difference between Platform Doctrine and chat history?",
       "expected_source_types": ["PLATFORM_DOCTRINE", "DEVELOPER_LOG", "REQUIREMENTS"],
-      "preferred_top_source_type": "PLATFORM_DOCTRINE",
+      "preferred_top_source_types": ["PLATFORM_DOCTRINE", "HARDENING_LOG", "DEVELOPER_LOG"],
       "expected_phrases_any": [
         "chat history",
         "supporting material",
@@ -138,10 +228,28 @@
         "Platform Doctrine",
         "Developer Logs"
       ],
+      "required_top_source_phrases_any": [
+        "raw chat history",
+        "supporting material",
+        "abandoned ideas",
+        "corrections",
+        "superseded thinking",
+        "must not override",
+        "must not override formal doctrine",
+        "Platform Doctrine, Hardening Logs and Developer Logs outrank raw chat history"
+      ],
       "expected_answer_phrases_any": [
         "Platform Doctrine",
         "chat history",
-        "Minerva is advisory"
+        "must not override"
+      ],
+      "expected_answer_phrases_all": [
+        "Platform Doctrine",
+        "Chat history",
+        "must not override"
+      ],
+      "forbidden_answer_phrases_any": [
+        "Source 1:"
       ]
     }
   ]

@@ -70,6 +70,13 @@ INTENT_PHRASE_SOURCE_PRIORITY = {
     "OTHER": 2.0,
     "SAMPLE": 0.0,
 }
+STRICT_PHRASE_INTENTS = {
+    "NO_RAW_JSON_BY_DEFAULT",
+    "SOURCE_AUTHORITY",
+    "DEVELOPER_LOGS_ROLE",
+    "USER_GUIDE_RATIONALE",
+    "CHAT_HISTORY_AUTHORITY",
+}
 
 
 @dataclass(frozen=True)
@@ -82,6 +89,115 @@ class QueryIntentDefinition:
 
 
 INTENT_DEFINITIONS = {
+    "NO_RAW_JSON_BY_DEFAULT": QueryIntentDefinition(
+        name="NO_RAW_JSON_BY_DEFAULT",
+        trigger_terms=("json", "llm", "facts", "evidence"),
+        trigger_phrases=(
+            "raw json not sent",
+            "no raw json by default",
+            "parse json into facts",
+            "json into facts",
+            "payroll json not be sent wholesale",
+            "not sent wholesale to the llm",
+        ),
+        evidence_phrases=(
+            "no raw json by default",
+            "minimum necessary evidence",
+            "sensitive json boundary",
+            "parsed into facts",
+            "extracted into facts",
+            "safe summaries",
+            "registered, hashed, classified",
+            "not sent wholesale",
+            "redaction",
+            "tenant-filtered",
+            "access-controlled",
+            "audited",
+        ),
+        preferred_source_types=("PLATFORM_DOCTRINE", "HARDENING_LOG"),
+    ),
+    "SOURCE_AUTHORITY": QueryIntentDefinition(
+        name="SOURCE_AUTHORITY",
+        trigger_terms=("source", "authority", "doctrine", "logs"),
+        trigger_phrases=(
+            "source authority",
+            "source authority matter",
+            "doctrine and logs outrank chat history",
+            "doctrine and logs outrank raw chat history",
+        ),
+        evidence_phrases=(
+            "source authority doctrine",
+            "source authority hardening",
+            "platform doctrine, hardening logs and developer logs outrank raw chat history",
+            "platform doctrine hardening logs and developer logs outrank raw chat history",
+            "lower-authority design discussion",
+            "chat history is supporting material",
+            "must not override formal doctrine",
+            "formal logged decisions",
+        ),
+        preferred_source_types=("PLATFORM_DOCTRINE", "HARDENING_LOG", "DEVELOPER_LOG"),
+    ),
+    "DEVELOPER_LOGS_ROLE": QueryIntentDefinition(
+        name="DEVELOPER_LOGS_ROLE",
+        trigger_terms=("developer", "logs", "minerva", "memory"),
+        trigger_phrases=(
+            "role of developer logs",
+            "developer logs used by minerva",
+            "logs part of platform memory",
+        ),
+        evidence_phrases=(
+            "developer logs",
+            "platform memory",
+            "structured memory",
+            "source knowledge",
+            "intelligence layer uses developer logs",
+            "design and hardening decisions must be captured in those same logs",
+            "full project history",
+        ),
+        preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE"),
+    ),
+    "USER_GUIDE_RATIONALE": QueryIntentDefinition(
+        name="USER_GUIDE_RATIONALE",
+        trigger_terms=("user", "guide", "rationale", "operating", "model"),
+        trigger_phrases=(
+            "user guide / rationale",
+            "user guide rationale",
+            "developer log need a user guide",
+            "rationale section",
+        ),
+        evidence_phrases=(
+            "user guide / rationale and operating model",
+            "why the new user guide / rationale section is required",
+            "why the work matters",
+            "how the platform should operate",
+            "future llm retrieval",
+            "explain the work later",
+            "structured explanation",
+            "platform memory",
+        ),
+        preferred_source_types=("DEVELOPER_LOG",),
+    ),
+    "CHAT_HISTORY_AUTHORITY": QueryIntentDefinition(
+        name="CHAT_HISTORY_AUTHORITY",
+        trigger_terms=("chat", "history", "doctrine", "authority"),
+        trigger_phrases=(
+            "difference between platform doctrine and chat history",
+            "chat history override doctrine",
+            "raw chat history be treated",
+        ),
+        evidence_phrases=(
+            "raw chat history",
+            "supporting material",
+            "must not override formal doctrine",
+            "exploratory design discussion",
+            "abandoned ideas",
+            "corrections",
+            "superseded thinking",
+            "platform doctrine, hardening logs and developer logs outrank raw chat history",
+            "platform doctrine hardening logs and developer logs outrank raw chat history",
+        ),
+        preferred_source_types=("PLATFORM_DOCTRINE", "DEVELOPER_LOG", "REQUIREMENTS"),
+    ),
     "MINERVA_BOUNDARY_PROHIBITION": QueryIntentDefinition(
         name="MINERVA_BOUNDARY_PROHIBITION",
         trigger_terms=("minerva", "llm", "boundary", "boundaries"),
@@ -217,6 +333,28 @@ def classify_query_intent(query: str) -> QueryIntentDefinition | None:
                 return definition
         if definition.name == "RBAC_BEFORE_LLM":
             if "rbac" in normalized and "llm" in normalized:
+                return definition
+        if definition.name == "NO_RAW_JSON_BY_DEFAULT":
+            if "json" in normalized and (
+                "llm" in normalized
+                or "facts" in normalized
+                or "wholesale" in normalized
+                or "default" in normalized
+            ):
+                return definition
+        if definition.name == "SOURCE_AUTHORITY":
+            if "source" in normalized and "authority" in normalized:
+                return definition
+            if "outrank" in normalized and "chat history" in normalized:
+                return definition
+        if definition.name == "DEVELOPER_LOGS_ROLE":
+            if "developer logs" in normalized and ("minerva" in normalized or "role" in normalized or "memory" in normalized):
+                return definition
+        if definition.name == "USER_GUIDE_RATIONALE":
+            if "rationale" in normalized and ("user guide" in normalized or "section" in normalized):
+                return definition
+        if definition.name == "CHAT_HISTORY_AUTHORITY":
+            if "chat history" in normalized and ("doctrine" in normalized or "override" in normalized or "treated" in normalized):
                 return definition
     return None
 
@@ -374,6 +512,8 @@ def retrieve_relevant_chunks(
         generic_only_penalty = 0.0
         if intent and distinct_matches <= 1 and not matched_phrases:
             generic_only_penalty = 8.0
+        if intent and intent.name in STRICT_PHRASE_INTENTS and not matched_phrases:
+            generic_only_penalty += 18.0
         score = (
             occurrence_count
             + (distinct_matches * 5.0)

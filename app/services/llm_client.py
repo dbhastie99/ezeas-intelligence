@@ -68,6 +68,41 @@ class StubLLMClient(BaseLLMClient):
                     "Ezeas database remains the authoritative source of payroll, leave, award, workforce and "
                     "reconciliation truth. Minerva is advisory and does not calculate or change payroll truth."
                 )
+            if intent.name == "NO_RAW_JSON_BY_DEFAULT":
+                return (
+                    "Raw JSON is not sent to the LLM by default because operational payroll evidence can contain "
+                    "sensitive worker, payroll, tax, leave, bank/payment and correction data. It should be registered, "
+                    "hashed, classified and extracted into facts or safe summaries first, then only the minimum "
+                    "necessary evidence should be sent after tenant, RBAC and redaction controls. Minerva remains "
+                    "read-only and advisory."
+                )
+            if intent.name == "SOURCE_AUTHORITY":
+                return (
+                    "Source authority matters because formal Platform Doctrine, Hardening Logs and Developer Logs "
+                    "represent governed platform memory. Raw chat history and exploratory discussion can support an "
+                    "answer, but must not override formal logged decisions, doctrine or implemented capability evidence. "
+                    "Minerva remains read-only and advisory."
+                )
+            if intent.name == "DEVELOPER_LOGS_ROLE":
+                return (
+                    "Developer Logs are part of Minerva's formal knowledge corpus. They preserve implementation "
+                    "decisions, rationale, current state, hardening commitments and operating model so Minerva can "
+                    "explain how the platform works and why decisions were made. Minerva remains read-only and advisory."
+                )
+            if intent.name == "USER_GUIDE_RATIONALE":
+                return (
+                    "The User Guide / Rationale and Operating Model section exists to explain why the work matters, "
+                    "how the feature should be understood, and how the platform should operate. It makes each thread's "
+                    "reasoning easier for Minerva and future users to retrieve and explain later. Minerva remains "
+                    "read-only and advisory."
+                )
+            if intent.name == "CHAT_HISTORY_AUTHORITY":
+                return (
+                    "Platform Doctrine is formal governed doctrine. Chat history is useful supporting material because "
+                    "it may contain exploration, abandoned ideas, corrections and superseded thinking. Chat history "
+                    "must not override Platform Doctrine, Hardening Logs or Developer Logs where they conflict. "
+                    "Minerva remains read-only and advisory."
+                )
 
         strong_chunks = [
             result

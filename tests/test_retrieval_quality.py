@@ -380,3 +380,118 @@ def test_rbac_answer_explains_permissions_before_context():
 
     assert "permissions must be checked before evidence is retrieved into model context" in answer
     assert "must not receive sensitive evidence" in answer
+
+
+def test_no_raw_json_intent_returns_json_specific_answer_not_boundary_answer(db_session):
+    _ingest(
+        db_session,
+        "generic-boundary.txt",
+        "LLM Boundary\nMinerva must not calculate payroll and must not finalise PayRuns.",
+        source_type="PLATFORM_DOCTRINE",
+        capability_status="DOCTRINE",
+        title="Platform Doctrine - LLM Boundary",
+    )
+    _ingest(
+        db_session,
+        "json-boundary.txt",
+        "No raw JSON by default\nOperational payroll JSON should be registered, hashed, classified, "
+        "extracted into facts and safe summaries. Only minimum necessary evidence should reach the LLM "
+        "after tenant-filtered, access-controlled redaction.",
+        source_type="HARDENING_LOG",
+        capability_status="OUTSTANDING_HARDENING",
+        title="Hardening Doctrine - Sensitive JSON Boundary",
+    )
+
+    results = retrieve_relevant_chunks(db_session, "Why is raw JSON not sent to the LLM by default?")
+    answer = StubLLMClient().generate_answer("Why is raw JSON not sent to the LLM by default?", results)
+
+    assert results
+    assert results[0].original_file_name == "json-boundary.txt"
+    assert results[0].detected_intent == "NO_RAW_JSON_BY_DEFAULT"
+    assert "no raw json by default" in results[0].matched_phrases
+    assert "Raw JSON is not sent to the LLM by default" in answer
+    assert "facts or safe summaries" in answer
+    assert "not allowed to calculate payroll" not in answer
+
+
+def test_source_authority_answer_is_direct_and_mentions_doctrine_logs_outrank_chat_history(db_session):
+    _ingest(
+        db_session,
+        "source-authority.txt",
+        "Source Authority Doctrine\nPlatform Doctrine, Hardening Logs and Developer Logs outrank raw chat history. "
+        "Chat history is supporting material and must not override formal doctrine or formal logged decisions.",
+        source_type="PLATFORM_DOCTRINE",
+        capability_status="DOCTRINE",
+        title="Platform Doctrine - Source Authority Doctrine",
+    )
+
+    results = retrieve_relevant_chunks(db_session, "Why does source authority matter?")
+    answer = StubLLMClient().generate_answer("Why does source authority matter?", results)
+
+    assert results[0].detected_intent == "SOURCE_AUTHORITY"
+    assert "source authority doctrine" in results[0].matched_phrases
+    assert "Source 1:" not in answer
+    assert "Platform Doctrine" in answer
+    assert "Raw chat history" in answer
+    assert "must not override" in answer
+
+
+def test_chat_history_authority_ranks_direct_raw_chat_history_chunk_above_unrelated_platform_doctrine(db_session):
+    _ingest(
+        db_session,
+        "generic-platform-history.txt",
+        "Platform Doctrine contains general platform history and implementation context for Minerva.",
+        source_type="PLATFORM_DOCTRINE",
+        capability_status="DOCTRINE",
+        title="Platform Doctrine - General History",
+    )
+    _ingest(
+        db_session,
+        "chat-history-authority.txt",
+        "Raw chat history is supporting material. It may include exploratory design discussion, abandoned ideas, "
+        "corrections and superseded thinking. It must not override formal doctrine.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - Chat History Authority",
+    )
+
+    results = retrieve_relevant_chunks(db_session, "What is the difference between Platform Doctrine and chat history?")
+
+    assert results
+    assert results[0].original_file_name == "chat-history-authority.txt"
+    assert results[0].detected_intent == "CHAT_HISTORY_AUTHORITY"
+    assert "raw chat history" in results[0].matched_phrases
+
+
+def test_developer_logs_role_and_user_guide_rationale_answers_are_direct(db_session):
+    _ingest(
+        db_session,
+        "developer-logs-role.txt",
+        "Developer Logs are platform memory and structured memory. The Intelligence Layer uses Developer Logs as "
+        "source knowledge, and full project history captures design and hardening decisions.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - Developer Logs Role",
+    )
+    _ingest(
+        db_session,
+        "user-guide-rationale.txt",
+        "Why the new User Guide / Rationale section is required\nThe User Guide / Rationale and Operating Model "
+        "explains why the work matters, how the platform should operate, and supports future LLM retrieval so "
+        "Minerva can explain the work later.",
+        source_type="DEVELOPER_LOG",
+        capability_status="IMPLEMENTED",
+        title="Developer Log - User Guide / Rationale and Operating Model",
+    )
+
+    developer_results = retrieve_relevant_chunks(db_session, "What is the role of Developer Logs in Minerva?")
+    developer_answer = StubLLMClient().generate_answer("What is the role of Developer Logs in Minerva?", developer_results)
+    rationale_results = retrieve_relevant_chunks(db_session, "What is the User Guide / Rationale section for?")
+    rationale_answer = StubLLMClient().generate_answer("What is the User Guide / Rationale section for?", rationale_results)
+
+    assert developer_results[0].detected_intent == "DEVELOPER_LOGS_ROLE"
+    assert "Source 1:" not in developer_answer
+    assert "formal knowledge corpus" in developer_answer
+    assert rationale_results[0].detected_intent == "USER_GUIDE_RATIONALE"
+    assert "Source 1:" not in rationale_answer
+    assert "why the work matters" in rationale_answer
