@@ -174,10 +174,19 @@ class StubLLMClient(BaseLLMClient):
                 if coverage == "complete":
                     if domain_plan.plan_id == "WORKER_STORY":
                         direct_summary = (
-                            "Worker Story is the worker-facing evidence narrative for calculated payroll outcomes. "
-                            "It explains source truth and inclusion, interpreted worked hours, calculated payroll "
-                            "outcome, Decision Story and Rate Story evidence, current-effective output and known "
-                            "outstanding hardening or limitations."
+                            "Worker Story is a platform evidence surface for explaining a worker-level payroll "
+                            "outcome, not merely a PayRun Detail feature. It presents chapters or evidence layers "
+                            "covering source truth and inclusion, interpreted worked hours where available, calculated "
+                            "payroll outcome from current-effective payroll output truth, separate Decision Story and "
+                            "Rate Story evidence, leave and accrual outcome evidence where available, and links to "
+                            "PayRun Admin Queue, Movement Review and Payroll Bases & Totals."
+                        )
+                        status_text = (
+                            "The retrieved corpus shows Worker Story as an implemented or partially implemented "
+                            "platform explanation surface grounded in current-effective truth. It should not be treated "
+                            "as fully production-complete where the evidence still records outstanding hardening for "
+                            "the shared Worker Story surface/component, explicit break-treatment proof, reusable story "
+                            "surfaces or broader limitations."
                         )
                     else:
                         direct_summary = (
@@ -186,12 +195,12 @@ class StubLLMClient(BaseLLMClient):
                             "hardening items. The system separates configuration, accrual, consumption, valuation, PayRun "
                             "processing and explanatory evidence rather than treating leave as a single opaque balance."
                         )
-                    status_text = (
-                        "The retrieved corpus shows this as an implemented or partially implemented platform area with "
-                        "remaining hardening. It does not prove production completeness. Some mechanisms are implemented; "
-                        "valuation, leave source modelling or production hardening may remain outstanding depending on "
-                        "the specific sub-area."
-                    )
+                        status_text = (
+                            "The retrieved corpus shows this as an implemented or partially implemented platform area with "
+                            "remaining hardening. It does not prove production completeness. Some mechanisms are implemented; "
+                            "valuation, leave source modelling or production hardening may remain outstanding depending on "
+                            "the specific sub-area."
+                        )
                 else:
                     direct_summary = (
                         "Annual Leave is partially described by the loaded formal corpus, but some planned evidence "

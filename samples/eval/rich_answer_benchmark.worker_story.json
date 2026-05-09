@@ -16,16 +16,18 @@
       ],
       "expected_answer_terms_all": [
         "Worker Story",
+        "platform evidence surface",
+        "source truth",
         "calculated payroll outcome",
+        "current-effective payroll output",
+        "Decision Story",
+        "Rate Story",
         "evidence",
-        "current-effective",
         "outstanding hardening"
       ],
       "expected_answer_terms_any": [
-        "source truth",
-        "inclusion",
-        "Decision Story",
-        "Rate Story",
+        "PayRun Admin Queue",
+        "Movement Review",
         "limitations"
       ],
       "expected_source_terms_all": [

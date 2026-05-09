@@ -222,13 +222,90 @@ def test_worker_story_benchmark_style_fixture_can_pass_with_complete_evidence_gr
     )
     _ingest(
         db_session,
-        "Worker Story outstanding hardening records limitations and future work for evidence explanation.",
+        "Worker Story outstanding hardening records limitations, shared Worker Story surface/component work, explicit "
+        "break-treatment proof and future reusable story surfaces for evidence explanation.",
         "Developer Log - Worker Story Outstanding Hardening",
     )
 
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.worker_story.json")
 
     assert result["all_passed"] is True
+
+
+def test_worker_story_answer_uses_platform_specific_concepts_and_status_caveats(db_session):
+    _ingest(
+        db_session,
+        "Worker Story and Worker Calculation Story are the Talking Payslip for worker evidence and explain payroll "
+        "outcomes.",
+        "Developer Log - Worker Story Purpose",
+    )
+    _ingest(
+        db_session,
+        "Worker Story uses SourceTruth and source truth inclusion to show which source truth inputs are included.",
+        "Developer Log - Worker Story SourceTruth",
+    )
+    _ingest(
+        db_session,
+        "Interpreted Worked Hours are shown from the current-effective interpreter run with ObjectTime grouping.",
+        "Developer Log - Worker Story Interpreted Worked Hours",
+    )
+    _ingest(
+        db_session,
+        "Calculated Payroll Outcome shows the current-effective payroll output from PayRun calculation evidence.",
+        "Developer Log - Worker Story Calculated Payroll Outcome",
+    )
+    _ingest(
+        db_session,
+        "Decision Story and Rate Story include DecisionEvidenceIndex and RateSourceEvidenceIndex for rate evidence.",
+        "Developer Log - Worker Story Decision Rate Evidence",
+    )
+    _ingest(
+        db_session,
+        "Worker Story includes Leave and Accrual Outcome evidence using server-owned leave output and ledger evidence.",
+        "Developer Log - Worker Story Leave Accrual",
+    )
+    _ingest(
+        db_session,
+        "Worker Story includes Payroll Bases & Totals evidence with payroll bases and totals.",
+        "Developer Log - Worker Story Payroll Bases Totals",
+    )
+    _ingest(
+        db_session,
+        "Movement Review and PayRun Admin Queue evidence explain review and admin queue relationship.",
+        "Developer Log - Worker Story Movement Review",
+    )
+    _ingest(
+        db_session,
+        "Worker Story uses current-effective truth from current-effective payroll output and current-effective "
+        "interpreter run, with Correction Audit Story where corrections exist.",
+        "Developer Log - Worker Story Current Effective Truth",
+    )
+    _ingest(
+        db_session,
+        "Worker Story outstanding hardening records limitations, shared Worker Story surface/component work, explicit "
+        "break-treatment proof and future reusable story surfaces for evidence explanation.",
+        "Developer Log - Worker Story Outstanding Hardening",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "What is Worker Story and what evidence does it show?")
+    answer, _, _, _ = generate_grounded_answer("What is Worker Story and what evidence does it show?", results)
+    normalized_answer = answer.lower()
+
+    assert "Direct summary" in answer
+    assert "How the system works" in answer
+    assert "Current implementation status" in answer
+    assert "What remains outstanding" in answer
+    assert "Evidence basis" in answer
+    assert "platform evidence surface" in normalized_answer
+    assert "source truth" in normalized_answer
+    assert "current-effective payroll output" in normalized_answer
+    assert "calculated payroll outcome" in normalized_answer
+    assert "decision story" in normalized_answer
+    assert "rate story" in normalized_answer
+    assert "payrun admin queue" in normalized_answer or "movement review" in normalized_answer
+    assert "outstanding hardening" in normalized_answer
+    assert "fully production-complete" in normalized_answer
+    assert "code evidence" not in normalized_answer
 
 
 def test_complete_evidence_coverage_produces_direct_platform_summary(db_session):
