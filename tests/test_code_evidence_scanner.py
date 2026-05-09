@@ -7,6 +7,10 @@ from subprocess import CompletedProcess
 from app.core.enums import normalize_source_type
 from app.services.code_evidence_approval_manifest_service import build_code_evidence_approval_manifest
 from app.services.code_evidence_manifest_validation_service import validate_code_evidence_manifest
+from app.services.code_metadata_ingestion_plan_service import (
+    build_code_metadata_ingestion_plan,
+    validate_code_metadata_ingestion_plan,
+)
 from app.services.code_evidence_scanner_service import scan_code_evidence
 
 
@@ -43,6 +47,28 @@ def _multi_file_approval_manifest_payload(tmp_path, monkeypatch) -> dict:
     validation_result = validate_code_evidence_manifest(payload)
     payload["validation_result"] = validation_result.model_dump()
     return build_code_evidence_approval_manifest(payload)
+
+
+def _set_file_review(
+    approval_manifest: dict,
+    file_path: str,
+    review_status: str,
+    proposed_ingestion_action: str,
+    review_notes: list[str] | None = None,
+) -> dict:
+    payload = _copy_payload(approval_manifest)
+    matching_file = next(item for item in payload["included_files"] if item["file_path"] == file_path)
+    matching_file["review_status"] = review_status
+    matching_file["proposed_ingestion_action"] = proposed_ingestion_action
+    matching_file["review_notes"] = review_notes or []
+    payload["approved_file_count"] = sum(item["review_status"] == "APPROVED" for item in payload["included_files"])
+    payload["rejected_file_count"] = sum(item["review_status"] == "REJECTED" for item in payload["included_files"])
+    payload["approval_status"] = (
+        "PENDING_REVIEW"
+        if any(item["review_status"] == "PENDING_REVIEW" for item in payload["included_files"])
+        else "REVIEWED"
+    )
+    return payload
 
 
 def _copy_payload(payload: dict) -> dict:
@@ -1106,3 +1132,138 @@ def test_update_approval_manifest_never_adds_code_content_and_preserves_safety_f
     assert updated["safety_summary"]["included_code_content_bytes"] == 0
     assert updated["safety_summary"]["database_ingestion_performed"] is False
     assert updated["safety_summary"]["llm_exposure_performed"] is False
+
+
+def test_metadata_ingestion_plan_zero_approved_files_writes_no_approved_files_plan(tmp_path, monkeypatch):
+    approval_manifest = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+
+    assert validation_result.is_valid is True
+    assert plan["plan_type"] == "CODE_METADATA_ONLY_INGESTION_PLAN"
+    assert plan["plan_status"] == "NO_APPROVED_FILES"
+    assert plan["approved_file_count"] == 0
+    assert plan["planned_items"] == []
+    assert plan["source_approval_manifest"] == "approval.json"
+
+
+def test_metadata_ingestion_plan_approved_file_creates_one_planned_item(tmp_path, monkeypatch):
+    approval_manifest = _set_file_review(
+        _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch),
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+        ["Approved for metadata planning."],
+    )
+
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+
+    assert validation_result.is_valid is True
+    assert plan["plan_status"] == "READY_FOR_REVIEW"
+    assert plan["approved_file_count"] == 1
+    assert len(plan["planned_items"]) == 1
+    item = plan["planned_items"][0]
+    assert item["file_path"] == "src/main.py"
+    assert item["repo_name"] == "sample"
+    assert item["source_type"] == "CODE"
+    assert item["language"] == "python"
+    assert item["file_kind"] == "implementation"
+    assert item["review_status"] == "APPROVED"
+    assert item["proposed_ingestion_action"] == "INGEST_METADATA_ONLY"
+    assert item["review_notes"] == ["Approved for metadata planning."]
+
+
+def test_metadata_ingestion_plan_excludes_unapproved_and_rejected_files(tmp_path, monkeypatch):
+    approval_manifest = _multi_file_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    approval_manifest = _set_file_review(approval_manifest, "src/main.py", "REJECTED", "DO_NOT_INGEST_YET")
+
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+
+    assert validation_result.is_valid is True
+    assert plan["plan_status"] == "NO_APPROVED_FILES"
+    assert plan["approved_file_count"] == 0
+    assert plan["planned_items"] == []
+
+
+def test_metadata_ingestion_plan_safety_flags_are_false_and_zero(tmp_path, monkeypatch):
+    approval_manifest = _set_file_review(
+        _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch),
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+    )
+
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+
+    assert validation_result.is_valid is True
+    assert plan["code_content_included"] is False
+    assert plan["code_content_bytes"] == 0
+    assert plan["db_ingestion_performed"] is False
+    assert plan["llm_exposure_performed"] is False
+    assert plan["execution_performed"] is False
+
+
+def test_metadata_ingestion_plan_validation_catches_content_like_fields(tmp_path, monkeypatch):
+    approval_manifest = _set_file_review(
+        _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch),
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+    )
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+    assert validation_result.is_valid is True
+    plan["planned_items"][0]["source_code"] = "print('do not include')"
+    plan["planned_items"][0]["content"] = "do not include"
+
+    result = validate_code_metadata_ingestion_plan(plan)
+
+    assert result.is_valid is False
+    assert "planned_items[0] must not contain content-like field 'source_code'." in result.errors
+    assert "planned_items[0] must not contain content-like field 'content'." in result.errors
+
+
+def test_build_code_metadata_ingestion_plan_cli_writes_valid_json(tmp_path, monkeypatch, capsys):
+    from scripts import build_code_metadata_ingestion_plan
+
+    approval_manifest = _set_file_review(
+        _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch),
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+    )
+    approval_path = tmp_path / "approval.json"
+    output_path = tmp_path / "plan" / "code-metadata-plan.json"
+    approval_path.write_text(json.dumps(approval_manifest, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "build_code_metadata_ingestion_plan.py",
+            "--approval-manifest",
+            str(approval_path),
+            "--output",
+            str(output_path),
+            "--json",
+        ],
+    )
+
+    exit_code = build_code_metadata_ingestion_plan.main()
+    captured = capsys.readouterr()
+
+    summary = json.loads(captured.out)
+    plan = json.loads(output_path.read_text(encoding="utf-8"))
+    serialized = json.dumps(plan)
+    assert exit_code == 0
+    assert output_path.exists()
+    assert summary["plan_path"] == str(output_path.resolve())
+    assert summary["plan_status"] == "READY_FOR_REVIEW"
+    assert summary["approved_file_count"] == 1
+    assert summary["counts_by_source_type"] == {"CODE": 1}
+    assert summary["counts_by_file_kind"] == {"implementation": 1}
+    assert summary["counts_by_language"] == {"python": 1}
+    assert plan["plan_type"] == "CODE_METADATA_ONLY_INGESTION_PLAN"
+    assert plan["approved_file_count"] == 1
+    assert plan["planned_items"][0]["file_path"] == "src/main.py"
+    assert "print('ok')" not in serialized
+    assert all(field not in plan["planned_items"][0] for field in ["content", "text", "source_code", "raw_content", "file_content"])
