@@ -17,6 +17,8 @@ Operational payroll JSON evidence intelligence is intentionally not implemented 
 
 Code Evidence Index tooling is documented in [docs/CODE_EVIDENCE_INDEX.md](docs/CODE_EVIDENCE_INDEX.md). It is metadata-only: no code content capture, DB ingestion, LLM exposure, scanned code execution, or source repo mutation is implemented.
 
+Worker Story evaluation is documented in [docs/WORKER_STORY_EVALUATION_RUNBOOK.md](docs/WORKER_STORY_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, and answer gap report commands.
+
 ## SQL Server Setup
 
 1. Create the database manually:
