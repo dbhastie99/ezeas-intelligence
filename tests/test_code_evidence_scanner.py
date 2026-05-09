@@ -9,6 +9,7 @@ from app.services.code_evidence_approval_manifest_service import build_code_evid
 from app.services.code_evidence_manifest_validation_service import validate_code_evidence_manifest
 from app.services.code_metadata_ingestion_plan_service import (
     build_code_metadata_ingestion_plan,
+    review_code_metadata_ingestion_plan,
     validate_code_metadata_ingestion_plan,
 )
 from app.services.code_evidence_scanner_service import scan_code_evidence
@@ -1267,3 +1268,180 @@ def test_build_code_metadata_ingestion_plan_cli_writes_valid_json(tmp_path, monk
     assert plan["planned_items"][0]["file_path"] == "src/main.py"
     assert "print('ok')" not in serialized
     assert all(field not in plan["planned_items"][0] for field in ["content", "text", "source_code", "raw_content", "file_content"])
+
+
+def test_review_metadata_ingestion_plan_valid_no_approved_files(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_metadata_ingestion_plan
+
+    approval_manifest = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+    assert validation_result.is_valid is True
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan, indent=2), encoding="utf-8")
+    before = plan_path.read_text(encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["review_code_metadata_ingestion_plan.py", "--plan", str(plan_path)],
+    )
+
+    exit_code = review_code_metadata_ingestion_plan.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert "Plan type: CODE_METADATA_ONLY_INGESTION_PLAN" in captured.out
+    assert "Plan status: NO_APPROVED_FILES" in captured.out
+    assert "Approved file count: 0" in captured.out
+    assert "Planned item count: 0" in captured.out
+    assert "Validation valid: True" in captured.out
+    assert plan_path.read_text(encoding="utf-8") == before
+
+
+def test_review_metadata_ingestion_plan_valid_ready_for_review(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_metadata_ingestion_plan
+
+    approval_manifest = _set_file_review(
+        _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch),
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+    )
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+    assert validation_result.is_valid is True
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["review_code_metadata_ingestion_plan.py", "--plan", str(plan_path)],
+    )
+
+    exit_code = review_code_metadata_ingestion_plan.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert "Plan status: READY_FOR_REVIEW" in captured.out
+    assert "Approved file count: 1" in captured.out
+    assert "Planned item count: 1" in captured.out
+    assert "CODE: 1" in captured.out
+    assert "implementation: 1" in captured.out
+    assert "python: 1" in captured.out
+    assert "code_content_included: False" in captured.out
+
+
+def test_review_metadata_ingestion_plan_json_output_shape(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_metadata_ingestion_plan
+
+    approval_manifest = _set_file_review(
+        _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch),
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+    )
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+    assert validation_result.is_valid is True
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["review_code_metadata_ingestion_plan.py", "--plan", str(plan_path), "--json"],
+    )
+
+    exit_code = review_code_metadata_ingestion_plan.main()
+    captured = capsys.readouterr()
+
+    result = json.loads(captured.out)
+    assert exit_code == 0
+    assert result["is_valid"] is True
+    assert result["errors"] == []
+    assert result["warnings"] == []
+    assert result["plan_type"] == "CODE_METADATA_ONLY_INGESTION_PLAN"
+    assert result["plan_status"] == "READY_FOR_REVIEW"
+    assert result["generated_at_utc"]
+    assert result["approved_file_count"] == 1
+    assert result["planned_item_count"] == 1
+    assert result["repository_git_metadata"]["is_git_repo"] is False
+    assert result["safety_metadata_flags"] == {
+        "code_content_included": False,
+        "code_content_bytes": 0,
+        "db_ingestion_performed": False,
+        "llm_exposure_performed": False,
+        "execution_performed": False,
+    }
+    assert result["counts_by_source_type"] == {"CODE": 1}
+    assert result["counts_by_file_kind"] == {"implementation": 1}
+    assert result["counts_by_language"] == {"python": 1}
+
+
+def test_review_metadata_ingestion_plan_invalid_plan_fails(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_metadata_ingestion_plan
+
+    approval_manifest = _set_file_review(
+        _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch),
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+    )
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+    assert validation_result.is_valid is True
+    plan["approved_file_count"] = 2
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["review_code_metadata_ingestion_plan.py", "--plan", str(plan_path)],
+    )
+
+    exit_code = review_code_metadata_ingestion_plan.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "planned_items count must equal approved_file_count." in captured.err
+    assert "Validation valid: False" in captured.out
+
+
+def test_review_metadata_ingestion_plan_unsafe_safety_flag_fails(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_metadata_ingestion_plan
+
+    approval_manifest = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+    assert validation_result.is_valid is True
+    plan["db_ingestion_performed"] = True
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        ["review_code_metadata_ingestion_plan.py", "--plan", str(plan_path)],
+    )
+
+    exit_code = review_code_metadata_ingestion_plan.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "db_ingestion_performed must be False." in captured.err
+
+
+def test_review_metadata_ingestion_plan_service_summary_matches_plan(tmp_path, monkeypatch):
+    approval_manifest = _set_file_review(
+        _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch),
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+    )
+    plan, validation_result = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+    assert validation_result.is_valid is True
+
+    result = review_code_metadata_ingestion_plan(plan).model_dump()
+
+    assert result["is_valid"] is True
+    assert result["plan_status"] == "READY_FOR_REVIEW"
+    assert result["planned_item_count"] == 1
+    assert result["counts_by_language"] == {"python": 1}

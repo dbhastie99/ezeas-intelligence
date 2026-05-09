@@ -35,6 +35,26 @@ class CodeMetadataIngestionPlanValidationResult:
         return asdict(self)
 
 
+@dataclass(frozen=True)
+class CodeMetadataIngestionPlanReviewResult:
+    is_valid: bool
+    errors: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
+    plan_type: str | None = None
+    plan_status: str | None = None
+    generated_at_utc: str | None = None
+    approved_file_count: int = 0
+    planned_item_count: int = 0
+    repository_git_metadata: dict[str, Any] = field(default_factory=dict)
+    safety_metadata_flags: dict[str, Any] = field(default_factory=dict)
+    counts_by_source_type: dict[str, int] = field(default_factory=dict)
+    counts_by_file_kind: dict[str, int] = field(default_factory=dict)
+    counts_by_language: dict[str, int] = field(default_factory=dict)
+
+    def model_dump(self) -> dict[str, Any]:
+        return asdict(self)
+
+
 def build_code_metadata_ingestion_plan(
     approval_manifest: dict[str, Any],
     source_approval_manifest: str | Path,
@@ -116,6 +136,25 @@ def summarize_code_metadata_ingestion_plan(plan: dict[str, Any]) -> dict[str, An
     }
 
 
+def review_code_metadata_ingestion_plan(plan: dict[str, Any]) -> CodeMetadataIngestionPlanReviewResult:
+    validation_result = validate_code_metadata_ingestion_plan(plan)
+    planned_items = [item for item in plan.get("planned_items", []) if isinstance(item, dict)]
+    return CodeMetadataIngestionPlanReviewResult(
+        is_valid=validation_result.is_valid,
+        errors=validation_result.errors,
+        plan_type=plan.get("plan_type"),
+        plan_status=plan.get("plan_status"),
+        generated_at_utc=plan.get("generated_at_utc"),
+        approved_file_count=int(plan.get("approved_file_count") or 0),
+        planned_item_count=len(planned_items),
+        repository_git_metadata=_repository_git_metadata(plan.get("repository_metadata")),
+        safety_metadata_flags=_plan_safety_flags(plan),
+        counts_by_source_type=_counts(planned_items, "source_type"),
+        counts_by_file_kind=_counts(planned_items, "file_kind"),
+        counts_by_language=_counts(planned_items, "language"),
+    )
+
+
 def _planned_item(item: dict[str, Any]) -> dict[str, Any]:
     planned = {field_name: item.get(field_name) for field_name in PLANNED_ITEM_FIELDS}
     planned["review_notes"] = list(item.get("review_notes") or [])
@@ -124,3 +163,25 @@ def _planned_item(item: dict[str, Any]) -> dict[str, Any]:
 
 def _counts(items: list[dict[str, Any]], field_name: str) -> dict[str, int]:
     return {key: count for key, count in Counter(item.get(field_name) for item in items).items() if key is not None}
+
+
+def _repository_git_metadata(repository_metadata: Any) -> dict[str, Any]:
+    if not isinstance(repository_metadata, dict):
+        return {}
+    return {
+        "is_git_repo": repository_metadata.get("is_git_repo"),
+        "branch": repository_metadata.get("branch"),
+        "commit": repository_metadata.get("commit"),
+        "is_dirty": repository_metadata.get("is_dirty"),
+        "metadata_resolution_status": repository_metadata.get("metadata_resolution_status"),
+    }
+
+
+def _plan_safety_flags(plan: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "code_content_included": plan.get("code_content_included"),
+        "code_content_bytes": plan.get("code_content_bytes"),
+        "db_ingestion_performed": plan.get("db_ingestion_performed"),
+        "llm_exposure_performed": plan.get("llm_exposure_performed"),
+        "execution_performed": plan.get("execution_performed"),
+    }
