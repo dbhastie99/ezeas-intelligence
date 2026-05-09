@@ -152,6 +152,25 @@ class CodeEvidenceScanResult:
         counts = Counter(item.reason for item in self.excluded_files)
         return [{"reason": reason, "count": count} for reason, count in counts.most_common()]
 
+    @property
+    def safety_summary(self) -> dict[str, Any]:
+        exclusion_counts = Counter(item.reason for item in self.excluded_files)
+        return {
+            "unsafe_files_excluded_count": (
+                exclusion_counts["environment_file"]
+                + exclusion_counts["private_key"]
+                + exclusion_counts["sensitive_name"]
+            ),
+            "generated_or_cache_excluded_count": (
+                exclusion_counts["generated_or_cache_directory"] + exclusion_counts["generated_file"]
+            ),
+            "binary_files_excluded_count": exclusion_counts["binary_file"],
+            "included_code_content_bytes": 0,
+            "code_content_captured": False,
+            "database_ingestion_performed": False,
+            "llm_exposure_performed": False,
+        }
+
     def model_dump(self) -> dict[str, Any]:
         return {
             "repo_name": self.repo_name,
@@ -163,6 +182,7 @@ class CodeEvidenceScanResult:
             "excluded_count": self.excluded_count,
             "counts_by_source_type": self.counts_by_source_type,
             "top_exclusion_reasons": self.top_exclusion_reasons,
+            "safety_summary": self.safety_summary,
             "included_files": [item.model_dump() for item in self.included_files],
             "excluded_files": [item.model_dump() for item in self.excluded_files],
         }

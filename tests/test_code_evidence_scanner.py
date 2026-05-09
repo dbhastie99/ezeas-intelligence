@@ -1,3 +1,8 @@
+import json
+import subprocess
+import sys
+from pathlib import Path
+
 from app.core.enums import normalize_source_type
 from app.services.code_evidence_scanner_service import scan_code_evidence
 
@@ -99,6 +104,15 @@ def test_scanner_json_output_shape(tmp_path):
     assert result["excluded_count"] == 1
     assert result["counts_by_source_type"] == {"CODE": 1}
     assert result["top_exclusion_reasons"] == [{"reason": "unsupported_or_irrelevant_file", "count": 1}]
+    assert result["safety_summary"] == {
+        "unsafe_files_excluded_count": 0,
+        "generated_or_cache_excluded_count": 0,
+        "binary_files_excluded_count": 0,
+        "included_code_content_bytes": 0,
+        "code_content_captured": False,
+        "database_ingestion_performed": False,
+        "llm_exposure_performed": False,
+    }
     assert result["included_files"][0] == {
         "repo_name": "sample",
         "repo_path": str(tmp_path.resolve()),
@@ -112,3 +126,64 @@ def test_scanner_json_output_shape(tmp_path):
         "classification_reason": "code extension",
     }
     assert result["excluded_files"] == [{"file_path": "README.md", "reason": "unsupported_or_irrelevant_file"}]
+
+
+def test_scanner_safety_summary_counts_exclusions(tmp_path):
+    _write(tmp_path / ".env", "SECRET=value")
+    _write(tmp_path / "generated" / "client.ts")
+    (tmp_path / "logo.png").write_bytes(b"\x89PNG\r\n\x00")
+    _write(tmp_path / "src" / "main.py", "print('ok')")
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    assert result["safety_summary"] == {
+        "unsafe_files_excluded_count": 1,
+        "generated_or_cache_excluded_count": 1,
+        "binary_files_excluded_count": 1,
+        "included_code_content_bytes": 0,
+        "code_content_captured": False,
+        "database_ingestion_performed": False,
+        "llm_exposure_performed": False,
+    }
+
+
+def test_cli_output_writes_valid_metadata_only_json_and_creates_parent_directory(tmp_path):
+    project_root = Path(__file__).resolve().parents[1]
+    repo = tmp_path / "repo"
+    code_content = "def secret_calculation():\n    return 'do not export this content'\n"
+    _write(repo / "src" / "main.py", code_content)
+    _write(repo / ".env", "SECRET=value")
+    output_path = tmp_path / "exports" / "nested" / "code-evidence.json"
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "scripts/scan_code_evidence.py",
+            "--repo-path",
+            str(repo),
+            "--repo-name",
+            "sample",
+            "--output",
+            str(output_path),
+        ],
+        cwd=project_root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    serialized = json.dumps(payload)
+    assert output_path.exists()
+    assert payload["repo_name"] == "sample"
+    assert payload["included_count"] == 1
+    assert payload["safety_summary"]["code_content_captured"] is False
+    assert payload["safety_summary"]["included_code_content_bytes"] == 0
+    assert payload["safety_summary"]["database_ingestion_performed"] is False
+    assert payload["safety_summary"]["llm_exposure_performed"] is False
+    assert "secret_calculation" not in serialized
+    assert "do not export this content" not in serialized
+    assert "Mode: dry-run only" in completed.stdout
+    assert "No code content captured." in completed.stdout
+    assert "No database ingestion performed." in completed.stdout
+    assert "No LLM exposure performed." in completed.stdout

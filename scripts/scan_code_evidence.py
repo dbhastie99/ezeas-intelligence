@@ -13,6 +13,7 @@ def main() -> int:
     parser.add_argument("--repo-path", required=True)
     parser.add_argument("--repo-name", required=True)
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--output")
     args = parser.parse_args()
 
     from app.services.code_evidence_scanner_service import scan_code_evidence
@@ -24,12 +25,20 @@ def main() -> int:
         return 1
 
     payload = result.model_dump()
+    if args.output:
+        write_manifest(payload, args.output)
     if args.json:
         print(json.dumps(payload, indent=2))
         return 0
 
     print(f"Repo: {payload['repo_name']}")
     print(f"Repo path: {payload['repo_path']}")
+    print("Mode: dry-run only")
+    print("No code content captured.")
+    print("No database ingestion performed.")
+    print("No LLM exposure performed.")
+    if args.output:
+        print(f"Manifest written: {Path(args.output).resolve()}")
     print(f"Total files scanned: {payload['total_files_scanned']}")
     print(f"Included files: {payload['included_count']}")
     print(f"Excluded files: {payload['excluded_count']}")
@@ -40,6 +49,13 @@ def main() -> int:
     for item in payload["top_exclusion_reasons"][:10]:
         print(f"  {item['reason']}: {item['count']}")
     return 0
+
+
+def write_manifest(payload: dict, output_path: str | Path) -> Path:
+    path = Path(output_path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    return path
 
 
 if __name__ == "__main__":
