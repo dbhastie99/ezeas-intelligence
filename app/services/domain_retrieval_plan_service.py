@@ -158,6 +158,10 @@ WORKER_STORY_PLAN = DomainRetrievalPlan(
         "how does worker story relate to payrun",
         "what is worker calculation story",
         "what is talking payslip",
+        "how does source truth work",
+        "how does calculated payroll outcome work",
+        "what is the difference between decision story and rate story",
+        "how does movement review relate to payrun admin queue",
     ),
     evidence_groups=(
         EvidenceGroup(
@@ -184,8 +188,22 @@ WORKER_STORY_PLAN = DomainRetrievalPlan(
         EvidenceGroup(
             group_id="calculated_payroll_outcome",
             label="Calculated Payroll Outcome",
-            query_terms=("Worker Story", "Calculated Payroll Outcome", "current-effective payroll output", "PayRun"),
-            required_terms_any=("Calculated Payroll Outcome", "current-effective payroll output", "PayRun"),
+            query_terms=(
+                "Worker Story",
+                "Calculated Payroll Outcome",
+                "current-effective payroll output",
+                "PayRun",
+                "quantity",
+                "rate",
+                "amount",
+                "line proof",
+            ),
+            required_terms_any=(
+                "Calculated Payroll Outcome",
+                "current-effective payroll output",
+                "PayRun",
+                "line proof",
+            ),
             preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
         ),
         EvidenceGroup(
@@ -274,6 +292,12 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "workerstory" in normalized
         or "worker calculation story" in normalized
         or "talking payslip" in normalized
+        or "source truth" in normalized
+        or "sourcetruth" in normalized
+        or "calculated payroll outcome" in normalized
+        or "decision story" in normalized
+        or "rate story" in normalized
+        or ("movement review" in normalized and "admin queue" in normalized)
     ) and (
         "what" in normalized
         or "how" in normalized

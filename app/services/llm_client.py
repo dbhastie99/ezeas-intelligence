@@ -42,6 +42,36 @@ def _evidence_basis_text(planned_chunks: list[RetrievalResult], strong_summaries
     return f"Evidence groups used: {group_text}. Top source references: {source_text}."
 
 
+def _worker_story_focus_points(question: str) -> list[str]:
+    normalized = question.lower().replace("-", " ")
+    points: list[str] = []
+    if "source truth" in normalized or "sourcetruth" in normalized:
+        points.append(
+            "Focused source-truth answer: Worker Story starts from source truth and inclusion evidence so a worker "
+            "and PayRun can be explained from the inputs that were included, excluded or carried into the evidence "
+            "surface."
+        )
+    if "calculated payroll outcome" in normalized or "payroll outcome" in normalized:
+        points.append(
+            "Focused calculated-payroll-outcome answer: Worker Story explains Calculated Payroll Outcome from "
+            "current-effective payroll output or current-effective truth, including quantity, rate, amount and line "
+            "proof evidence where that evidence is present."
+        )
+    if "decision story" in normalized or "rate story" in normalized or "difference" in normalized:
+        points.append(
+            "Focused decision/rate answer: Decision Story explains why a treatment or line exists, while Rate Story "
+            "explains the rate source and rate amount; DecisionEvidenceIndex and RateSourceEvidenceIndex are the "
+            "evidence indexes that support those explanations where retrieved."
+        )
+    if "movement review" in normalized or "admin queue" in normalized:
+        points.append(
+            "Focused review-flow answer: Worker Story is a reusable platform evidence surface that can relate to "
+            "Movement Review and PayRun Admin Queue by giving operators review context, action context, evidence and "
+            "return context without turning Minerva into an action system."
+        )
+    return points
+
+
 class BaseLLMClient(ABC):
     model_name = "BASE_LLM"
 
@@ -144,6 +174,8 @@ class StubLLMClient(BaseLLMClient):
                 strong_summaries = [summary for summary in summaries if not summary.is_weak]
                 weak_summaries = [summary for summary in summaries if summary.is_weak]
                 operation_points = [summary.sentence for summary in summaries]
+                if domain_plan.plan_id == "WORKER_STORY":
+                    operation_points = _worker_story_focus_points(question) + operation_points
                 missing_groups = [summary.label for summary in weak_summaries]
                 coverage = _coverage_label(len(strong_summaries), len(summaries))
 

@@ -191,12 +191,14 @@ def test_worker_story_benchmark_style_fixture_can_pass_with_complete_evidence_gr
     )
     _ingest(
         db_session,
-        "Calculated Payroll Outcome shows the current-effective payroll output from PayRun calculation evidence.",
+        "Calculated Payroll Outcome shows the current-effective payroll output from PayRun calculation evidence, "
+        "including quantity, rate, amount and line proof.",
         "Developer Log - Worker Story Calculated Payroll Outcome",
     )
     _ingest(
         db_session,
-        "Decision Story and Rate Story include DecisionEvidenceIndex and RateSourceEvidenceIndex for rate evidence.",
+        "Decision Story explains why a treatment or line exists. Rate Story explains rate source and rate amount. "
+        "DecisionEvidenceIndex and RateSourceEvidenceIndex provide award decision evidence and rate evidence.",
         "Developer Log - Worker Story Decision Rate Evidence",
     )
     _ingest(
@@ -211,7 +213,8 @@ def test_worker_story_benchmark_style_fixture_can_pass_with_complete_evidence_gr
     )
     _ingest(
         db_session,
-        "Movement Review and PayRun Admin Queue evidence explain review and admin queue relationship.",
+        "Movement Review and PayRun Admin Queue evidence explain operator action, review context, evidence and "
+        "return context for the reusable Worker Story platform evidence surface.",
         "Developer Log - Worker Story Movement Review",
     )
     _ingest(
@@ -251,12 +254,14 @@ def test_worker_story_answer_uses_platform_specific_concepts_and_status_caveats(
     )
     _ingest(
         db_session,
-        "Calculated Payroll Outcome shows the current-effective payroll output from PayRun calculation evidence.",
+        "Calculated Payroll Outcome shows the current-effective payroll output from PayRun calculation evidence, "
+        "including quantity, rate, amount and line proof.",
         "Developer Log - Worker Story Calculated Payroll Outcome",
     )
     _ingest(
         db_session,
-        "Decision Story and Rate Story include DecisionEvidenceIndex and RateSourceEvidenceIndex for rate evidence.",
+        "Decision Story explains why a treatment or line exists. Rate Story explains rate source and rate amount. "
+        "DecisionEvidenceIndex and RateSourceEvidenceIndex provide award decision evidence and rate evidence.",
         "Developer Log - Worker Story Decision Rate Evidence",
     )
     _ingest(
@@ -271,7 +276,8 @@ def test_worker_story_answer_uses_platform_specific_concepts_and_status_caveats(
     )
     _ingest(
         db_session,
-        "Movement Review and PayRun Admin Queue evidence explain review and admin queue relationship.",
+        "Movement Review and PayRun Admin Queue evidence explain operator action, review context, evidence and "
+        "return context for the reusable Worker Story platform evidence surface.",
         "Developer Log - Worker Story Movement Review",
     )
     _ingest(
@@ -306,6 +312,113 @@ def test_worker_story_answer_uses_platform_specific_concepts_and_status_caveats(
     assert "outstanding hardening" in normalized_answer
     assert "fully production-complete" in normalized_answer
     assert "code evidence" not in normalized_answer
+
+
+def test_worker_story_focused_follow_up_questions_answer_core_concepts(db_session):
+    _ingest(
+        db_session,
+        "Worker Story and Worker Calculation Story are the Talking Payslip for worker evidence and explain payroll "
+        "outcomes.",
+        "Developer Log - Worker Story Purpose",
+    )
+    _ingest(
+        db_session,
+        "Worker Story uses SourceTruth and source truth inclusion to show which source truth inputs are included for "
+        "a worker in PayRun evidence.",
+        "Developer Log - Worker Story SourceTruth",
+    )
+    _ingest(
+        db_session,
+        "Interpreted Worked Hours are shown from the current-effective interpreter run with ObjectTime grouping.",
+        "Developer Log - Worker Story Interpreted Worked Hours",
+    )
+    _ingest(
+        db_session,
+        "Calculated Payroll Outcome shows the current-effective payroll output from PayRun calculation evidence, "
+        "including quantity, rate, amount and line proof.",
+        "Developer Log - Worker Story Calculated Payroll Outcome",
+    )
+    _ingest(
+        db_session,
+        "Decision Story explains why a treatment or line exists. Rate Story explains rate source and rate amount. "
+        "DecisionEvidenceIndex and RateSourceEvidenceIndex provide award decision evidence and rate evidence.",
+        "Developer Log - Worker Story Decision Rate Evidence",
+    )
+    _ingest(
+        db_session,
+        "Worker Story includes Leave and Accrual Outcome evidence using server-owned leave output and ledger evidence.",
+        "Developer Log - Worker Story Leave Accrual",
+    )
+    _ingest(
+        db_session,
+        "Worker Story includes Payroll Bases & Totals evidence with payroll bases and totals.",
+        "Developer Log - Worker Story Payroll Bases Totals",
+    )
+    _ingest(
+        db_session,
+        "Movement Review and PayRun Admin Queue evidence explain operator action, review context, evidence and "
+        "return context for the reusable Worker Story platform evidence surface.",
+        "Developer Log - Worker Story Movement Review",
+    )
+    _ingest(
+        db_session,
+        "Worker Story uses current-effective truth from current-effective payroll output and current-effective "
+        "interpreter run, with Correction Audit Story where corrections exist.",
+        "Developer Log - Worker Story Current Effective Truth",
+    )
+    _ingest(
+        db_session,
+        "Worker Story outstanding hardening records limitations, shared Worker Story surface/component work, explicit "
+        "break-treatment proof and future reusable story surfaces for evidence explanation.",
+        "Developer Log - Worker Story Outstanding Hardening",
+    )
+
+    expectations = {
+        "How does Worker Story use source truth?": [
+            "source truth",
+            "inclusion",
+            "payrun",
+            "worker",
+            "evidence",
+        ],
+        "How does Worker Story explain calculated payroll outcome?": [
+            "calculated payroll outcome",
+            "current-effective payroll output",
+            "quantity",
+            "rate",
+            "amount",
+            "line proof",
+            "evidence",
+        ],
+        "What is the difference between Decision Story and Rate Story?": [
+            "decision story",
+            "why a treatment or line exists",
+            "rate story",
+            "rate source and rate amount",
+            "ratesourceevidenceindex",
+            "decisionevidenceindex",
+        ],
+        "How does Worker Story relate to Movement Review and PayRun Admin Queue?": [
+            "worker story",
+            "reusable",
+            "platform evidence surface",
+            "movement review",
+            "payrun admin queue",
+            "review context",
+            "return context",
+            "evidence",
+        ],
+    }
+
+    for question, concepts in expectations.items():
+        results = retrieve_chunks_for_question(db_session, question)
+        answer, _, _, _ = generate_grounded_answer(question, results)
+        normalized_answer = answer.lower()
+        assert "Direct summary" in answer
+        assert "How the system works" in answer
+        for concept in concepts:
+            assert concept in normalized_answer
+        assert "code evidence" not in normalized_answer
 
 
 def test_complete_evidence_coverage_produces_direct_platform_summary(db_session):

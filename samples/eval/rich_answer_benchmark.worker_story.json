@@ -48,6 +48,71 @@
         "closest sources say",
         "using the strongest matches"
       ]
+    },
+    {
+      "id": "worker-story-source-truth",
+      "question": "How does Worker Story use source truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": ["source truth", "inclusion", "PayRun", "worker", "evidence"],
+      "expected_source_terms_any": ["SourceTruth", "source truth", "inclusion"]
+    },
+    {
+      "id": "worker-story-calculated-payroll-outcome",
+      "question": "How does Worker Story explain calculated payroll outcome?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": ["calculated payroll outcome", "evidence"],
+      "expected_answer_terms_any": ["current-effective payroll output", "current-effective truth"],
+      "expected_answer_phrases_any": ["quantity, rate, amount", "line proof"],
+      "expected_source_terms_any": ["Calculated Payroll Outcome", "current-effective payroll output", "line proof"]
+    },
+    {
+      "id": "worker-story-decision-vs-rate-story",
+      "question": "What is the difference between Decision Story and Rate Story?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": ["Decision Story", "Rate Story"],
+      "expected_answer_phrases_all": ["why a treatment or line exists", "rate source and rate amount"],
+      "expected_answer_terms_any": ["RateSourceEvidenceIndex", "RateSource", "DecisionEvidenceIndex"],
+      "expected_source_terms_any": ["DecisionEvidenceIndex", "RateSourceEvidenceIndex", "award decision evidence"]
+    },
+    {
+      "id": "worker-story-movement-review-admin-queue",
+      "question": "How does Worker Story relate to Movement Review and PayRun Admin Queue?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": ["Worker Story", "Movement Review", "PayRun Admin Queue", "evidence"],
+      "expected_answer_terms_any": ["reusable", "platform evidence surface", "operator action", "review context", "return context"],
+      "expected_source_terms_any": ["Movement Review", "PayRun Admin Queue", "Admin Queue"]
     }
   ]
 }
