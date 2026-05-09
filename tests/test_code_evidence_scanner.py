@@ -5,6 +5,7 @@ from pathlib import Path
 from subprocess import CompletedProcess
 
 from app.core.enums import normalize_source_type
+from app.services.code_evidence_approval_manifest_service import build_code_evidence_approval_manifest
 from app.services.code_evidence_manifest_validation_service import validate_code_evidence_manifest
 from app.services.code_evidence_scanner_service import scan_code_evidence
 
@@ -25,6 +26,13 @@ def _valid_manifest_payload(tmp_path, monkeypatch) -> dict:
     _mock_non_git(monkeypatch)
     _write(tmp_path / "src" / "main.py", "print('ok')")
     return scan_code_evidence(tmp_path, "sample").model_dump()
+
+
+def _valid_approval_manifest_payload(tmp_path, monkeypatch) -> dict:
+    payload = _valid_manifest_payload(tmp_path, monkeypatch)
+    validation_result = validate_code_evidence_manifest(payload)
+    payload["validation_result"] = validation_result.model_dump()
+    return build_code_evidence_approval_manifest(payload)
 
 
 def _copy_payload(payload: dict) -> dict:
@@ -664,3 +672,161 @@ def test_cli_approval_manifest_not_written_when_validation_fails(tmp_path, monke
     assert approval_path.exists() is False
     assert payload["validation_result"]["is_valid"] is False
     assert "Approval manifest not written because scanner validation failed." in captured.err
+
+
+def test_review_approval_manifest_summary_for_valid_manifest(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    before = manifest_path.read_text(encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "review_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+        ],
+    )
+
+    exit_code = review_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 0
+    assert "Approval status: PENDING_REVIEW" in captured.out
+    assert "Approval required: True" in captured.out
+    assert "Total included files: 1" in captured.out
+    assert "Approved file count: 0" in captured.out
+    assert "Rejected file count: 0" in captured.out
+    assert "Pending review count: 1" in captured.out
+    assert "Validation valid: True" in captured.out
+    assert "PENDING_REVIEW: 1" in captured.out
+    assert "DO_NOT_INGEST_YET: 1" in captured.out
+    assert manifest_path.read_text(encoding="utf-8") == before
+
+
+def test_review_approval_manifest_json_output_shape(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "review_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--json",
+        ],
+    )
+
+    exit_code = review_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    result = json.loads(captured.out)
+    assert exit_code == 0
+    assert result["is_valid"] is True
+    assert result["errors"] == []
+    assert result["approval_status"] == "PENDING_REVIEW"
+    assert result["approval_required"] is True
+    assert result["total_included_files"] == 1
+    assert result["approved_file_count"] == 0
+    assert result["rejected_file_count"] == 0
+    assert result["pending_review_count"] == 1
+    assert result["counts_by_review_status"] == {"PENDING_REVIEW": 1}
+    assert result["counts_by_proposed_ingestion_action"] == {"DO_NOT_INGEST_YET": 1}
+    assert result["counts_by_source_type"] == {"CODE": 1}
+    assert result["counts_by_file_kind"] == {"implementation": 1}
+    assert result["counts_by_language"] == {"python": 1}
+    assert result["validation_status"] is True
+    assert result["safety_summary_flags"] == {
+        "code_content_captured": False,
+        "included_code_content_bytes": 0,
+        "database_ingestion_performed": False,
+        "llm_exposure_performed": False,
+    }
+
+
+def test_review_approval_manifest_missing_approval_metadata_fails(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    payload.pop("approval_status")
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "review_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+        ],
+    )
+
+    exit_code = review_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "approval_status is required." in captured.err
+
+
+def test_review_approval_manifest_unsafe_safety_flags_fail(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    payload["safety_summary"]["code_content_captured"] = True
+    payload["safety_summary"]["included_code_content_bytes"] = 99
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "review_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+        ],
+    )
+
+    exit_code = review_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "safety_summary.code_content_captured must be False." in captured.err
+    assert "safety_summary.included_code_content_bytes must be 0." in captured.err
+
+
+def test_review_approval_manifest_missing_per_file_review_fields_fails(tmp_path, monkeypatch, capsys):
+    from scripts import review_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    payload["included_files"][0].pop("review_status")
+    payload["included_files"][0].pop("proposed_ingestion_action")
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "review_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+        ],
+    )
+
+    exit_code = review_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "included_files[0].review_status is required." in captured.err
+    assert "included_files[0].proposed_ingestion_action is required." in captured.err
