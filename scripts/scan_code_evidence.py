@@ -33,6 +33,15 @@ def main() -> int:
 
     print(f"Repo: {payload['repo_name']}")
     print(f"Repo path: {payload['repo_path']}")
+    repository_metadata = payload["repository_metadata"]
+    print(f"Git repository: {repository_metadata['is_git_repo']}")
+    print(f"Branch: {repository_metadata['branch'] or 'unresolved'}")
+    print(f"Commit: {repository_metadata['commit'] or 'unresolved'}")
+    dirty_status = repository_metadata["is_dirty"]
+    print(f"Dirty: {'unknown' if dirty_status is None else dirty_status}")
+    print(f"Metadata resolution: {repository_metadata['metadata_resolution_status']}")
+    for warning in repository_metadata["metadata_resolution_warnings"]:
+        print(f"Metadata warning: {warning}")
     print("Mode: dry-run only")
     print("No code content captured.")
     print("No database ingestion performed.")

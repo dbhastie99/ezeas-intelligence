@@ -2,6 +2,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
+from subprocess import CompletedProcess
 
 from app.core.enums import normalize_source_type
 from app.services.code_evidence_scanner_service import scan_code_evidence
@@ -10,6 +11,13 @@ from app.services.code_evidence_scanner_service import scan_code_evidence
 def _write(path, content: str = "content") -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+def _mock_non_git(monkeypatch) -> None:
+    def fake_run(command, check, capture_output, text):
+        return CompletedProcess(command, 128, stdout="", stderr="not a git repository")
+
+    monkeypatch.setattr("app.services.repository_metadata_service.subprocess.run", fake_run)
 
 
 def test_code_evidence_source_types_are_valid():
@@ -89,7 +97,8 @@ def test_scanner_excludes_generated_and_cache_folders(tmp_path):
     assert "generated_or_cache_directory" in reasons
 
 
-def test_scanner_json_output_shape(tmp_path):
+def test_scanner_json_output_shape(tmp_path, monkeypatch):
+    _mock_non_git(monkeypatch)
     _write(tmp_path / "src" / "main.py", "print('ok')")
     _write(tmp_path / "README.md", "# ignored")
 
@@ -99,6 +108,14 @@ def test_scanner_json_output_shape(tmp_path):
     assert result["repo_path"] == str(tmp_path.resolve())
     assert result["branch"] is None
     assert result["commit"] is None
+    assert result["repository_metadata"]["repo_name"] == "sample"
+    assert result["repository_metadata"]["repo_path"] == str(tmp_path.resolve())
+    assert result["repository_metadata"]["is_git_repo"] is False
+    assert result["repository_metadata"]["branch"] is None
+    assert result["repository_metadata"]["commit"] is None
+    assert result["repository_metadata"]["is_dirty"] is None
+    assert result["repository_metadata"]["metadata_resolution_status"] == "not_git_repo"
+    assert result["repository_metadata"]["metadata_resolution_warnings"]
     assert result["total_files_scanned"] == 2
     assert result["included_count"] == 1
     assert result["excluded_count"] == 1
@@ -126,6 +143,88 @@ def test_scanner_json_output_shape(tmp_path):
         "classification_reason": "code extension",
     }
     assert result["excluded_files"] == [{"file_path": "README.md", "reason": "unsupported_or_irrelevant_file"}]
+
+
+def test_non_git_directory_metadata_resolution_does_not_fail(tmp_path, monkeypatch):
+    _mock_non_git(monkeypatch)
+    _write(tmp_path / "src" / "main.py", "print('ok')")
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    assert result["repository_metadata"]["is_git_repo"] is False
+    assert result["repository_metadata"]["branch"] is None
+    assert result["repository_metadata"]["commit"] is None
+    assert result["repository_metadata"]["metadata_resolution_status"] == "not_git_repo"
+    assert result["included_count"] == 1
+
+
+def test_git_command_failure_metadata_resolution_does_not_fail(tmp_path, monkeypatch):
+    _write(tmp_path / "src" / "main.py", "print('ok')")
+
+    def fake_run(command, check, capture_output, text):
+        if command[-1] == "--is-inside-work-tree":
+            return CompletedProcess(command, 0, stdout="true\n", stderr="")
+        if command[-2:] == ["--abbrev-ref", "HEAD"]:
+            return CompletedProcess(command, 1, stdout="", stderr="branch unavailable")
+        return CompletedProcess(command, 0, stdout="", stderr="")
+
+    monkeypatch.setattr("app.services.repository_metadata_service.subprocess.run", fake_run)
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    assert result["repository_metadata"]["is_git_repo"] is True
+    assert result["repository_metadata"]["branch"] is None
+    assert result["repository_metadata"]["commit"] is None
+    assert result["repository_metadata"]["is_dirty"] is None
+    assert result["repository_metadata"]["metadata_resolution_status"] == "partial"
+    assert result["repository_metadata"]["metadata_resolution_warnings"]
+    assert result["included_files"][0]["branch"] is None
+    assert result["included_files"][0]["commit"] is None
+
+
+def test_git_unavailable_metadata_resolution_does_not_fail(tmp_path, monkeypatch):
+    _write(tmp_path / "src" / "main.py", "print('ok')")
+
+    def fake_run(command, check, capture_output, text):
+        raise FileNotFoundError
+
+    monkeypatch.setattr("app.services.repository_metadata_service.subprocess.run", fake_run)
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    assert result["repository_metadata"]["is_git_repo"] is False
+    assert result["repository_metadata"]["branch"] is None
+    assert result["repository_metadata"]["commit"] is None
+    assert result["repository_metadata"]["metadata_resolution_status"] == "git_unavailable"
+    assert result["repository_metadata"]["metadata_resolution_warnings"]
+    assert result["included_count"] == 1
+
+
+def test_git_dirty_status_is_represented(tmp_path, monkeypatch):
+    _write(tmp_path / "src" / "main.py", "print('ok')")
+
+    def fake_run(command, check, capture_output, text):
+        if command[-1] == "--is-inside-work-tree":
+            return CompletedProcess(command, 0, stdout="true\n", stderr="")
+        if command[-2:] == ["--abbrev-ref", "HEAD"]:
+            return CompletedProcess(command, 0, stdout="main\n", stderr="")
+        if command[-1] == "HEAD":
+            return CompletedProcess(command, 0, stdout="abc123\n", stderr="")
+        if command[-2:] == ["status", "--short"]:
+            return CompletedProcess(command, 0, stdout=" M src/main.py\n", stderr="")
+        raise AssertionError(f"Unexpected command: {command}")
+
+    monkeypatch.setattr("app.services.repository_metadata_service.subprocess.run", fake_run)
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    assert result["branch"] == "main"
+    assert result["commit"] == "abc123"
+    assert result["repository_metadata"]["is_git_repo"] is True
+    assert result["repository_metadata"]["is_dirty"] is True
+    assert result["repository_metadata"]["metadata_resolution_status"] == "resolved"
+    assert result["included_files"][0]["branch"] == "main"
+    assert result["included_files"][0]["commit"] == "abc123"
 
 
 def test_scanner_safety_summary_counts_exclusions(tmp_path):
@@ -176,6 +275,17 @@ def test_cli_output_writes_valid_metadata_only_json_and_creates_parent_directory
     serialized = json.dumps(payload)
     assert output_path.exists()
     assert payload["repo_name"] == "sample"
+    assert payload["repository_metadata"]["repo_name"] == "sample"
+    assert set(payload["repository_metadata"]) == {
+        "repo_name",
+        "repo_path",
+        "is_git_repo",
+        "branch",
+        "commit",
+        "is_dirty",
+        "metadata_resolution_status",
+        "metadata_resolution_warnings",
+    }
     assert payload["included_count"] == 1
     assert payload["safety_summary"]["code_content_captured"] is False
     assert payload["safety_summary"]["included_code_content_bytes"] == 0

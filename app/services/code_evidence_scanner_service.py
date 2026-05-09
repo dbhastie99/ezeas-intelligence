@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from app.core.enums import SourceType
+from app.services.repository_metadata_service import RepositoryMetadata, resolve_repository_metadata
 
 
 CODE_EXTENSIONS = {
@@ -128,6 +129,7 @@ class CodeEvidenceScanResult:
     repo_path: str
     branch: str | None
     commit: str | None
+    repository_metadata: RepositoryMetadata
     included_files: list[CodeEvidenceFile]
     excluded_files: list[CodeEvidenceExcludedFile]
 
@@ -177,6 +179,7 @@ class CodeEvidenceScanResult:
             "repo_path": self.repo_path,
             "branch": self.branch,
             "commit": self.commit,
+            "repository_metadata": self.repository_metadata.model_dump(),
             "total_files_scanned": self.total_files_scanned,
             "included_count": self.included_count,
             "excluded_count": self.excluded_count,
@@ -195,6 +198,7 @@ def scan_code_evidence(repo_path: str | Path, repo_name: str) -> CodeEvidenceSca
     if not repo_name.strip():
         raise ValueError("repo_name is required.")
 
+    repository_metadata = resolve_repository_metadata(root, repo_name)
     included: list[CodeEvidenceFile] = []
     excluded: list[CodeEvidenceExcludedFile] = []
     for path in sorted(root.rglob("*")):
@@ -214,8 +218,8 @@ def scan_code_evidence(repo_path: str | Path, repo_name: str) -> CodeEvidenceSca
             CodeEvidenceFile(
                 repo_name=repo_name,
                 repo_path=str(root),
-                branch=None,
-                commit=None,
+                branch=repository_metadata.branch,
+                commit=repository_metadata.commit,
                 file_path=relative_path,
                 source_type=source_type,
                 language=language,
@@ -228,8 +232,9 @@ def scan_code_evidence(repo_path: str | Path, repo_name: str) -> CodeEvidenceSca
     return CodeEvidenceScanResult(
         repo_name=repo_name,
         repo_path=str(root),
-        branch=None,
-        commit=None,
+        branch=repository_metadata.branch,
+        commit=repository_metadata.commit,
+        repository_metadata=repository_metadata,
         included_files=included,
         excluded_files=excluded,
     )
