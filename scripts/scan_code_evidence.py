@@ -54,6 +54,12 @@ def main() -> int:
     print("Counts by source_type:")
     for source_type, count in sorted(payload["counts_by_source_type"].items()):
         print(f"  {source_type}: {count}")
+    print("Counts by language:")
+    for language, count in sorted(payload["counts_by_language"].items()):
+        print(f"  {language}: {count}")
+    print("Counts by file_kind:")
+    for file_kind, count in sorted(payload["counts_by_file_kind"].items()):
+        print(f"  {file_kind}: {count}")
     print("Top exclusion reasons:")
     for item in payload["top_exclusion_reasons"][:10]:
         print(f"  {item['reason']}: {item['count']}")

@@ -8,32 +8,54 @@ from app.services.repository_metadata_service import RepositoryMetadata, resolve
 
 
 CODE_EXTENSIONS = {
-    ".cs": "C#",
-    ".go": "Go",
-    ".java": "Java",
-    ".js": "JavaScript",
-    ".jsx": "JavaScript",
-    ".php": "PHP",
-    ".py": "Python",
-    ".rb": "Ruby",
-    ".rs": "Rust",
-    ".ts": "TypeScript",
-    ".tsx": "TypeScript",
+    ".cs": "csharp",
+    ".go": "go",
+    ".java": "java",
+    ".js": "javascript",
+    ".jsx": "javascript/react",
+    ".php": "php",
+    ".py": "python",
+    ".rb": "ruby",
+    ".rs": "rust",
+    ".ts": "typescript",
+    ".tsx": "typescript/react",
 }
 CONTRACT_EXTENSIONS = {
-    ".graphql": "GraphQL",
-    ".proto": "Protocol Buffers",
+    ".graphql": "graphql",
+    ".proto": "protocol-buffers",
 }
 SCHEMA_EXTENSIONS = {
-    ".sql": "SQL",
+    ".sql": "sql",
 }
 STRUCTURED_EXTENSIONS = {
-    ".json": "JSON",
-    ".yaml": "YAML",
-    ".yml": "YAML",
+    ".json": "json",
+    ".yaml": "yaml",
+    ".yml": "yaml",
 }
-SUPPORTED_EXTENSIONS = set(CODE_EXTENSIONS) | set(CONTRACT_EXTENSIONS) | set(SCHEMA_EXTENSIONS) | set(
-    STRUCTURED_EXTENSIONS
+DOCUMENTATION_EXTENSIONS = {
+    ".md": "markdown",
+}
+CONFIG_EXTENSIONS = {
+    ".cfg": "config",
+    ".css": "css",
+    ".html": "html",
+    ".ini": "config",
+    ".scss": "scss",
+    ".toml": "toml",
+}
+SPECIAL_FILENAMES = {
+    "dockerfile": "dockerfile",
+    "package.json": "node-project",
+    "pyproject.toml": "python-project",
+    "requirements.txt": "python-requirements",
+}
+SUPPORTED_EXTENSIONS = (
+    set(CODE_EXTENSIONS)
+    | set(CONTRACT_EXTENSIONS)
+    | set(SCHEMA_EXTENSIONS)
+    | set(STRUCTURED_EXTENSIONS)
+    | set(DOCUMENTATION_EXTENSIONS)
+    | set(CONFIG_EXTENSIONS)
 )
 
 EXCLUDED_DIR_NAMES = {
@@ -106,6 +128,7 @@ class CodeEvidenceFile:
     file_path: str
     source_type: str
     language: str
+    file_kind: str
     is_test: bool
     is_generated: bool
     classification_reason: str
@@ -150,6 +173,14 @@ class CodeEvidenceScanResult:
         return dict(Counter(item.source_type for item in self.included_files))
 
     @property
+    def counts_by_language(self) -> dict[str, int]:
+        return dict(Counter(item.language for item in self.included_files))
+
+    @property
+    def counts_by_file_kind(self) -> dict[str, int]:
+        return dict(Counter(item.file_kind for item in self.included_files))
+
+    @property
     def top_exclusion_reasons(self) -> list[dict[str, Any]]:
         counts = Counter(item.reason for item in self.excluded_files)
         return [{"reason": reason, "count": count} for reason, count in counts.most_common()]
@@ -184,6 +215,8 @@ class CodeEvidenceScanResult:
             "included_count": self.included_count,
             "excluded_count": self.excluded_count,
             "counts_by_source_type": self.counts_by_source_type,
+            "counts_by_language": self.counts_by_language,
+            "counts_by_file_kind": self.counts_by_file_kind,
             "top_exclusion_reasons": self.top_exclusion_reasons,
             "safety_summary": self.safety_summary,
             "included_files": [item.model_dump() for item in self.included_files],
@@ -213,7 +246,6 @@ def scan_code_evidence(repo_path: str | Path, repo_name: str) -> CodeEvidenceSca
         if classification is None:
             excluded.append(CodeEvidenceExcludedFile(file_path=relative_path, reason="unsupported_or_irrelevant_file"))
             continue
-        source_type, language, is_test, is_generated, reason = classification
         included.append(
             CodeEvidenceFile(
                 repo_name=repo_name,
@@ -221,11 +253,12 @@ def scan_code_evidence(repo_path: str | Path, repo_name: str) -> CodeEvidenceSca
                 branch=repository_metadata.branch,
                 commit=repository_metadata.commit,
                 file_path=relative_path,
-                source_type=source_type,
-                language=language,
-                is_test=is_test,
-                is_generated=is_generated,
-                classification_reason=reason,
+                source_type=classification.source_type,
+                language=classification.language,
+                file_kind=classification.file_kind,
+                is_test=classification.is_test,
+                is_generated=classification.is_generated,
+                classification_reason=classification.classification_reason,
             )
         )
 
@@ -240,34 +273,101 @@ def scan_code_evidence(repo_path: str | Path, repo_name: str) -> CodeEvidenceSca
     )
 
 
-def classify_code_evidence_file(path: str | Path, repo_root: str | Path | None = None) -> tuple[str, str, bool, bool, str] | None:
+@dataclass(frozen=True)
+class CodeEvidenceClassification:
+    source_type: str
+    language: str
+    file_kind: str
+    is_test: bool
+    is_generated: bool
+    classification_reason: str
+
+
+def classify_code_evidence_file(path: str | Path, repo_root: str | Path | None = None) -> CodeEvidenceClassification | None:
     file_path = Path(path)
     extension = file_path.suffix.lower()
-    if extension not in SUPPORTED_EXTENSIONS:
+    normalized_name = file_path.name.lower()
+    if extension not in SUPPORTED_EXTENSIONS and normalized_name not in SPECIAL_FILENAMES:
         return None
 
     relative_parts = _path_parts(file_path, repo_root)
-    normalized_name = file_path.name.lower()
     normalized_path = "/".join(relative_parts).lower()
     is_test = _is_test_file(relative_parts)
     is_generated = _is_generated_file(file_path, relative_parts)
+    language = _language_for_file(file_path)
 
     if is_test:
-        return SourceType.TEST.value, _language_for_extension(extension), True, is_generated, "test path or filename pattern"
-    if _is_api_contract(file_path, normalized_path):
-        return (
-            SourceType.API_CONTRACT.value,
-            _language_for_extension(extension),
-            False,
+        return CodeEvidenceClassification(
+            SourceType.TEST.value,
+            language,
+            "test",
+            True,
             is_generated,
-            "API contract filename, folder, or extension",
+            "test path or filename pattern",
         )
     if _is_migration(relative_parts, normalized_name):
-        return SourceType.MIGRATION.value, _language_for_extension(extension), False, is_generated, "migration path or filename"
+        return CodeEvidenceClassification(
+            SourceType.MIGRATION.value,
+            language,
+            "migration",
+            False,
+            is_generated,
+            "migration path or filename",
+        )
     if _is_schema(relative_parts, normalized_name, extension):
-        return SourceType.SCHEMA.value, _language_for_extension(extension), False, is_generated, "schema path or SQL extension"
+        return CodeEvidenceClassification(
+            SourceType.SCHEMA.value,
+            language,
+            "schema",
+            False,
+            is_generated,
+            "schema or model path, filename, or SQL extension",
+        )
+    if _is_api_contract(file_path, normalized_path):
+        return CodeEvidenceClassification(
+            SourceType.API_CONTRACT.value,
+            language,
+            "api_contract",
+            False,
+            is_generated,
+            "API contract filename, route, controller, or API path",
+        )
+    if _is_project_manifest(normalized_name):
+        return CodeEvidenceClassification(
+            SourceType.CODE.value,
+            language,
+            "project_manifest",
+            False,
+            is_generated,
+            "project manifest filename",
+        )
+    if extension in DOCUMENTATION_EXTENSIONS:
+        return CodeEvidenceClassification(
+            SourceType.CODE.value,
+            language,
+            "documentation",
+            False,
+            is_generated,
+            "project documentation evidence",
+        )
+    if _is_config_file(file_path):
+        return CodeEvidenceClassification(
+            SourceType.CODE.value,
+            language,
+            "config",
+            False,
+            is_generated,
+            "configuration or build metadata file",
+        )
     if extension in CODE_EXTENSIONS:
-        return SourceType.CODE.value, _language_for_extension(extension), False, is_generated, "code extension"
+        return CodeEvidenceClassification(
+            SourceType.CODE.value,
+            language,
+            "implementation",
+            False,
+            is_generated,
+            "code extension",
+        )
     return None
 
 
@@ -309,12 +409,14 @@ def _is_test_file(parts: list[str]) -> bool:
 
 def _is_api_contract(path: Path, normalized_path: str) -> bool:
     name = path.name.lower()
+    path_tokens = set(normalized_path.split("/"))
     return (
         path.suffix.lower() in CONTRACT_EXTENSIONS
         or "openapi" in name
         or "swagger" in name
         or "api_contract" in normalized_path
         or "api-contract" in normalized_path
+        or bool(path_tokens & {"api", "apis", "route", "routes", "controller", "controllers"})
     )
 
 
@@ -325,13 +427,21 @@ def _is_migration(parts: list[str], normalized_name: str) -> bool:
         or "migration" in lower_parts[:-1]
         or "alembic" in lower_parts[:-1]
         or "versions" in lower_parts[:-1]
+        or normalized_name.startswith(("migration_", "migrate_"))
         or "migration" in normalized_name
+        or (normalized_name[:4].isdigit() and normalized_name.endswith((".sql", ".py")))
     )
 
 
 def _is_schema(parts: list[str], normalized_name: str, extension: str) -> bool:
     lower_parts = [part.lower() for part in parts]
-    return extension == ".sql" or "schema" in normalized_name or "schemas" in lower_parts[:-1]
+    return (
+        extension == ".sql"
+        or "schema" in normalized_name
+        or "schemas" in lower_parts[:-1]
+        or "models" in lower_parts[:-1]
+        or normalized_name in {"models.py", "schema.py", "schemas.py"}
+    )
 
 
 def _is_generated_file(path: Path, parts: list[str]) -> bool:
@@ -346,14 +456,32 @@ def _is_generated_file(path: Path, parts: list[str]) -> bool:
     )
 
 
+def _language_for_file(path: Path) -> str:
+    normalized_name = path.name.lower()
+    if normalized_name in SPECIAL_FILENAMES:
+        return SPECIAL_FILENAMES[normalized_name]
+    return _language_for_extension(path.suffix.lower())
+
+
 def _language_for_extension(extension: str) -> str:
     return (
         CODE_EXTENSIONS.get(extension)
         or CONTRACT_EXTENSIONS.get(extension)
         or SCHEMA_EXTENSIONS.get(extension)
         or STRUCTURED_EXTENSIONS.get(extension)
-        or "Unknown"
+        or DOCUMENTATION_EXTENSIONS.get(extension)
+        or CONFIG_EXTENSIONS.get(extension)
+        or "unknown"
     )
+
+
+def _is_project_manifest(normalized_name: str) -> bool:
+    return normalized_name in {"package.json", "pyproject.toml", "requirements.txt"}
+
+
+def _is_config_file(path: Path) -> bool:
+    normalized_name = path.name.lower()
+    return normalized_name == "dockerfile" or path.suffix.lower() in (set(STRUCTURED_EXTENSIONS) | set(CONFIG_EXTENSIONS))
 
 
 def _path_parts(path: Path, repo_root: str | Path | None) -> list[str]:

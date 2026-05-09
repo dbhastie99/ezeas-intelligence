@@ -117,10 +117,12 @@ def test_scanner_json_output_shape(tmp_path, monkeypatch):
     assert result["repository_metadata"]["metadata_resolution_status"] == "not_git_repo"
     assert result["repository_metadata"]["metadata_resolution_warnings"]
     assert result["total_files_scanned"] == 2
-    assert result["included_count"] == 1
-    assert result["excluded_count"] == 1
-    assert result["counts_by_source_type"] == {"CODE": 1}
-    assert result["top_exclusion_reasons"] == [{"reason": "unsupported_or_irrelevant_file", "count": 1}]
+    assert result["included_count"] == 2
+    assert result["excluded_count"] == 0
+    assert result["counts_by_source_type"] == {"CODE": 2}
+    assert result["counts_by_language"] == {"markdown": 1, "python": 1}
+    assert result["counts_by_file_kind"] == {"documentation": 1, "implementation": 1}
+    assert result["top_exclusion_reasons"] == []
     assert result["safety_summary"] == {
         "unsafe_files_excluded_count": 0,
         "generated_or_cache_excluded_count": 0,
@@ -130,19 +132,140 @@ def test_scanner_json_output_shape(tmp_path, monkeypatch):
         "database_ingestion_performed": False,
         "llm_exposure_performed": False,
     }
-    assert result["included_files"][0] == {
+    files = {item["file_path"]: item for item in result["included_files"]}
+    assert files["src/main.py"] == {
         "repo_name": "sample",
         "repo_path": str(tmp_path.resolve()),
         "branch": None,
         "commit": None,
         "file_path": "src/main.py",
         "source_type": "CODE",
-        "language": "Python",
+        "language": "python",
+        "file_kind": "implementation",
         "is_test": False,
         "is_generated": False,
         "classification_reason": "code extension",
     }
-    assert result["excluded_files"] == [{"file_path": "README.md", "reason": "unsupported_or_irrelevant_file"}]
+    readme = files["README.md"]
+    assert readme["file_path"] == "README.md"
+    assert readme["language"] == "markdown"
+    assert readme["file_kind"] == "documentation"
+    assert readme["classification_reason"] == "project documentation evidence"
+    assert result["excluded_files"] == []
+
+
+def test_language_classification_for_common_extensions_and_special_filenames(tmp_path, monkeypatch):
+    _mock_non_git(monkeypatch)
+    paths = [
+        "Dockerfile",
+        "package.json",
+        "pyproject.toml",
+        "requirements.txt",
+        "src/app.py",
+        "src/app.js",
+        "src/component.jsx",
+        "src/app.ts",
+        "src/component.tsx",
+        "config/settings.json",
+        "config/settings.yaml",
+        "config/settings.yml",
+        "db/schema.sql",
+        "README.md",
+        "setup.cfg",
+        "tox.ini",
+        "templates/index.html",
+        "assets/site.css",
+        "assets/site.scss",
+    ]
+    for path in paths:
+        _write(tmp_path / path)
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    languages = {item["file_path"]: item["language"] for item in result["included_files"]}
+    assert languages["Dockerfile"] == "dockerfile"
+    assert languages["package.json"] == "node-project"
+    assert languages["pyproject.toml"] == "python-project"
+    assert languages["requirements.txt"] == "python-requirements"
+    assert languages["src/app.py"] == "python"
+    assert languages["src/app.js"] == "javascript"
+    assert languages["src/component.jsx"] == "javascript/react"
+    assert languages["src/app.ts"] == "typescript"
+    assert languages["src/component.tsx"] == "typescript/react"
+    assert languages["config/settings.json"] == "json"
+    assert languages["config/settings.yaml"] == "yaml"
+    assert languages["config/settings.yml"] == "yaml"
+    assert languages["db/schema.sql"] == "sql"
+    assert languages["README.md"] == "markdown"
+    assert languages["setup.cfg"] == "config"
+    assert languages["tox.ini"] == "config"
+    assert languages["templates/index.html"] == "html"
+    assert languages["assets/site.css"] == "css"
+    assert languages["assets/site.scss"] == "scss"
+
+
+def test_file_kind_classification(tmp_path, monkeypatch):
+    _mock_non_git(monkeypatch)
+    _write(tmp_path / "src" / "service.py")
+    _write(tmp_path / "tests" / "test_service.py")
+    _write(tmp_path / "models" / "user.py")
+    _write(tmp_path / "migrations" / "0001_create_user.py")
+    _write(tmp_path / "api" / "routes" / "users.py")
+    _write(tmp_path / "settings.ini")
+    _write(tmp_path / "README.md")
+    _write(tmp_path / "package.json")
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    kinds = {item["file_path"]: item["file_kind"] for item in result["included_files"]}
+    assert kinds["src/service.py"] == "implementation"
+    assert kinds["tests/test_service.py"] == "test"
+    assert kinds["models/user.py"] == "schema"
+    assert kinds["migrations/0001_create_user.py"] == "migration"
+    assert kinds["api/routes/users.py"] == "api_contract"
+    assert kinds["settings.ini"] == "config"
+    assert kinds["README.md"] == "documentation"
+    assert kinds["package.json"] == "project_manifest"
+
+
+def test_source_type_classification_precedence(tmp_path, monkeypatch):
+    _mock_non_git(monkeypatch)
+    _write(tmp_path / "tests" / "migrations" / "001_test_schema.sql")
+    _write(tmp_path / "api" / "migrations" / "001_create_user.sql")
+    _write(tmp_path / "api" / "schemas" / "user.py")
+    _write(tmp_path / "api" / "routes" / "users.py")
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    source_types = {item["file_path"]: item["source_type"] for item in result["included_files"]}
+    assert source_types["tests/migrations/001_test_schema.sql"] == "TEST"
+    assert source_types["api/migrations/001_create_user.sql"] == "MIGRATION"
+    assert source_types["api/schemas/user.py"] == "SCHEMA"
+    assert source_types["api/routes/users.py"] == "API_CONTRACT"
+
+
+def test_summary_counts_by_language_and_file_kind(tmp_path, monkeypatch):
+    _mock_non_git(monkeypatch)
+    _write(tmp_path / "src" / "service.py")
+    _write(tmp_path / "src" / "widget.tsx")
+    _write(tmp_path / "tests" / "test_service.py")
+    _write(tmp_path / "README.md")
+    _write(tmp_path / "package.json")
+
+    result = scan_code_evidence(tmp_path, "sample").model_dump()
+
+    assert result["counts_by_language"] == {
+        "markdown": 1,
+        "node-project": 1,
+        "python": 2,
+        "typescript/react": 1,
+    }
+    assert result["counts_by_file_kind"] == {
+        "documentation": 1,
+        "implementation": 2,
+        "project_manifest": 1,
+        "test": 1,
+    }
 
 
 def test_non_git_directory_metadata_resolution_does_not_fail(tmp_path, monkeypatch):
