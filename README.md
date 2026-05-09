@@ -15,6 +15,8 @@ Minerva is not a payroll calculation engine. In Walking Skeleton v0.1 it is read
 
 Operational payroll JSON evidence intelligence is intentionally not implemented in this slice.
 
+Code Evidence Index tooling is documented in [docs/CODE_EVIDENCE_INDEX.md](docs/CODE_EVIDENCE_INDEX.md). It is metadata-only: no code content capture, DB ingestion, LLM exposure, scanned code execution, or source repo mutation is implemented.
+
 ## SQL Server Setup
 
 1. Create the database manually:

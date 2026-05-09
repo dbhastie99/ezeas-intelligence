@@ -1270,6 +1270,47 @@ def test_build_code_metadata_ingestion_plan_cli_writes_valid_json(tmp_path, monk
     assert all(field not in plan["planned_items"][0] for field in ["content", "text", "source_code", "raw_content", "file_content"])
 
 
+def test_code_evidence_index_pipeline_is_metadata_only_golden_safety(tmp_path, monkeypatch):
+    _mock_non_git(monkeypatch)
+    code_content = "def harmless_metadata_target():\n    return 'content must not appear in artifacts'\n"
+    _write(tmp_path / "src" / "main.py", code_content)
+
+    scanner_payload = scan_code_evidence(tmp_path, "sample").model_dump()
+    validation_result = validate_code_evidence_manifest(scanner_payload)
+    scanner_payload["validation_result"] = validation_result.model_dump()
+    approval_manifest = build_code_evidence_approval_manifest(scanner_payload)
+    approval_manifest = _set_file_review(
+        approval_manifest,
+        "src/main.py",
+        "APPROVED",
+        "INGEST_METADATA_ONLY",
+        ["Approved for metadata-only plan."],
+    )
+
+    plan, plan_validation = build_code_metadata_ingestion_plan(approval_manifest, "approval.json")
+    plan_review = review_code_metadata_ingestion_plan(plan)
+
+    assert validation_result.is_valid is True
+    assert scanner_payload["safety_summary"]["code_content_captured"] is False
+    assert scanner_payload["safety_summary"]["included_code_content_bytes"] == 0
+    assert scanner_payload["safety_summary"]["database_ingestion_performed"] is False
+    assert scanner_payload["safety_summary"]["llm_exposure_performed"] is False
+    assert plan_validation.is_valid is True
+    assert plan_review.is_valid is True
+    assert plan["code_content_included"] is False
+    assert plan["code_content_bytes"] == 0
+    assert plan["db_ingestion_performed"] is False
+    assert plan["llm_exposure_performed"] is False
+    assert plan["execution_performed"] is False
+    assert len(plan["planned_items"]) == 1
+    for item in plan["planned_items"]:
+        for field_name in ["content", "text", "source_code", "raw_content", "file_content"]:
+            assert field_name not in item
+    serialized_plan = json.dumps(plan)
+    assert "harmless_metadata_target" not in serialized_plan
+    assert "content must not appear in artifacts" not in serialized_plan
+
+
 def test_review_metadata_ingestion_plan_valid_no_approved_files(tmp_path, monkeypatch, capsys):
     from scripts import review_code_metadata_ingestion_plan
 
