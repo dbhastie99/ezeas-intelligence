@@ -401,7 +401,14 @@ py scripts/scan_worker_story_corpus_coverage.py
 py scripts/scan_worker_story_corpus_coverage.py --json --output reports/worker_story_corpus_coverage.json
 ```
 
-The coverage diagnostic is not a benchmark and does not call a live LLM. It reads the already indexed formal corpus, reports whether each Worker Story evidence group is `STRONG`, `WEAK` or `MISSING`, and does not ingest or mutate corpus records.
+Build a coverage-driven Worker Story answer gap report:
+
+```powershell
+py scripts/build_worker_story_answer_gap_report.py --coverage-report reports/worker_story_corpus_coverage.json
+py scripts/build_worker_story_answer_gap_report.py --coverage-report reports/worker_story_corpus_coverage.json --json --output reports/worker_story_answer_gap_report.json
+```
+
+The coverage diagnostic and gap report are not benchmarks and do not call a live LLM. The coverage diagnostic reads the already indexed formal corpus and reports whether each Worker Story evidence group is `STRONG`, `WEAK` or `MISSING`. The gap report consumes that JSON and recommends whether to keep the current path, refine retrieval terms, improve synthesis, or add formal source evidence later. Neither script ingests files or mutates corpus records.
 
 ## Targeted Annual Leave Corpus Supplement
 
