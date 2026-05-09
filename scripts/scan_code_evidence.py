@@ -16,6 +16,7 @@ def main() -> int:
     parser.add_argument("--output")
     args = parser.parse_args()
 
+    from app.services.code_evidence_manifest_validation_service import validate_code_evidence_manifest
     from app.services.code_evidence_scanner_service import scan_code_evidence
 
     try:
@@ -25,11 +26,13 @@ def main() -> int:
         return 1
 
     payload = result.model_dump()
+    validation_result = validate_code_evidence_manifest(payload)
+    payload["validation_result"] = validation_result.model_dump()
     if args.output:
         write_manifest(payload, args.output)
     if args.json:
         print(json.dumps(payload, indent=2))
-        return 0
+        return 0 if validation_result.is_valid else 1
 
     print(f"Repo: {payload['repo_name']}")
     print(f"Repo path: {payload['repo_path']}")
@@ -46,6 +49,13 @@ def main() -> int:
     print("No code content captured.")
     print("No database ingestion performed.")
     print("No LLM exposure performed.")
+    print(f"Validation valid: {validation_result.is_valid}")
+    print(f"Validation errors: {len(validation_result.errors)}")
+    for error in validation_result.errors:
+        print(f"Validation error: {error}")
+    print(f"Validation warnings: {len(validation_result.warnings)}")
+    for warning in validation_result.warnings:
+        print(f"Validation warning: {warning}")
     if args.output:
         print(f"Manifest written: {Path(args.output).resolve()}")
     print(f"Total files scanned: {payload['total_files_scanned']}")
@@ -63,7 +73,7 @@ def main() -> int:
     print("Top exclusion reasons:")
     for item in payload["top_exclusion_reasons"][:10]:
         print(f"  {item['reason']}: {item['count']}")
-    return 0
+    return 0 if validation_result.is_valid else 1
 
 
 def write_manifest(payload: dict, output_path: str | Path) -> Path:

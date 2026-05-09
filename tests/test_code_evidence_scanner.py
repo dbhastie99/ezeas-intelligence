@@ -5,6 +5,7 @@ from pathlib import Path
 from subprocess import CompletedProcess
 
 from app.core.enums import normalize_source_type
+from app.services.code_evidence_manifest_validation_service import validate_code_evidence_manifest
 from app.services.code_evidence_scanner_service import scan_code_evidence
 
 
@@ -18,6 +19,16 @@ def _mock_non_git(monkeypatch) -> None:
         return CompletedProcess(command, 128, stdout="", stderr="not a git repository")
 
     monkeypatch.setattr("app.services.repository_metadata_service.subprocess.run", fake_run)
+
+
+def _valid_manifest_payload(tmp_path, monkeypatch) -> dict:
+    _mock_non_git(monkeypatch)
+    _write(tmp_path / "src" / "main.py", "print('ok')")
+    return scan_code_evidence(tmp_path, "sample").model_dump()
+
+
+def _copy_payload(payload: dict) -> dict:
+    return json.loads(json.dumps(payload))
 
 
 def test_code_evidence_source_types_are_valid():
@@ -268,6 +279,69 @@ def test_summary_counts_by_language_and_file_kind(tmp_path, monkeypatch):
     }
 
 
+def test_valid_scanner_result_passes_manifest_validation(tmp_path, monkeypatch):
+    payload = _valid_manifest_payload(tmp_path, monkeypatch)
+
+    result = validate_code_evidence_manifest(payload).model_dump()
+
+    assert result["is_valid"] is True
+    assert result["errors"] == []
+    assert result["warnings"] == []
+    assert result["included_file_count"] == 1
+    assert result["excluded_file_count"] == 0
+    assert result["checked_at_utc"]
+
+
+def test_missing_safety_summary_fails_manifest_validation(tmp_path, monkeypatch):
+    payload = _copy_payload(_valid_manifest_payload(tmp_path, monkeypatch))
+    payload.pop("safety_summary")
+
+    result = validate_code_evidence_manifest(payload)
+
+    assert result.is_valid is False
+    assert "safety_summary is required." in result.errors
+
+
+def test_code_content_captured_true_fails_manifest_validation(tmp_path, monkeypatch):
+    payload = _copy_payload(_valid_manifest_payload(tmp_path, monkeypatch))
+    payload["safety_summary"]["code_content_captured"] = True
+
+    result = validate_code_evidence_manifest(payload)
+
+    assert result.is_valid is False
+    assert "safety_summary.code_content_captured must be False." in result.errors
+
+
+def test_included_code_content_bytes_fails_manifest_validation(tmp_path, monkeypatch):
+    payload = _copy_payload(_valid_manifest_payload(tmp_path, monkeypatch))
+    payload["safety_summary"]["included_code_content_bytes"] = 1
+
+    result = validate_code_evidence_manifest(payload)
+
+    assert result.is_valid is False
+    assert "safety_summary.included_code_content_bytes must be 0." in result.errors
+
+
+def test_unsafe_included_path_fails_manifest_validation(tmp_path, monkeypatch):
+    payload = _copy_payload(_valid_manifest_payload(tmp_path, monkeypatch))
+    payload["included_files"][0]["file_path"] = "src/secret_token.py"
+
+    result = validate_code_evidence_manifest(payload)
+
+    assert result.is_valid is False
+    assert any("unsafe fragment" in error for error in result.errors)
+
+
+def test_count_mismatch_fails_manifest_validation(tmp_path, monkeypatch):
+    payload = _copy_payload(_valid_manifest_payload(tmp_path, monkeypatch))
+    payload["counts_by_language"] = {"python": 2}
+
+    result = validate_code_evidence_manifest(payload)
+
+    assert result.is_valid is False
+    assert "counts_by_language does not reconcile with included_files." in result.errors
+
+
 def test_non_git_directory_metadata_resolution_does_not_fail(tmp_path, monkeypatch):
     _mock_non_git(monkeypatch)
     _write(tmp_path / "src" / "main.py", "print('ok')")
@@ -409,6 +483,9 @@ def test_cli_output_writes_valid_metadata_only_json_and_creates_parent_directory
         "metadata_resolution_status",
         "metadata_resolution_warnings",
     }
+    assert payload["validation_result"]["is_valid"] is True
+    assert payload["validation_result"]["errors"] == []
+    assert payload["validation_result"]["included_file_count"] == 1
     assert payload["included_count"] == 1
     assert payload["safety_summary"]["code_content_captured"] is False
     assert payload["safety_summary"]["included_code_content_bytes"] == 0
@@ -420,3 +497,42 @@ def test_cli_output_writes_valid_metadata_only_json_and_creates_parent_directory
     assert "No code content captured." in completed.stdout
     assert "No database ingestion performed." in completed.stdout
     assert "No LLM exposure performed." in completed.stdout
+    assert "Validation valid: True" in completed.stdout
+
+
+def test_cli_returns_non_zero_when_manifest_validation_fails(tmp_path, monkeypatch):
+    from scripts import scan_code_evidence
+
+    class InvalidScanResult:
+        def model_dump(self):
+            payload = _valid_manifest_payload(tmp_path / "repo", monkeypatch)
+            payload["safety_summary"]["code_content_captured"] = True
+            return payload
+
+    output_path = tmp_path / "invalid" / "code-evidence.json"
+
+    monkeypatch.setattr(
+        "app.services.code_evidence_scanner_service.scan_code_evidence",
+        lambda repo_path, repo_name: InvalidScanResult(),
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "scan_code_evidence.py",
+            "--repo-path",
+            str(tmp_path),
+            "--repo-name",
+            "sample",
+            "--output",
+            str(output_path),
+            "--json",
+        ],
+    )
+
+    exit_code = scan_code_evidence.main()
+
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert exit_code == 1
+    assert payload["validation_result"]["is_valid"] is False
+    assert "safety_summary.code_content_captured must be False." in payload["validation_result"]["errors"]
