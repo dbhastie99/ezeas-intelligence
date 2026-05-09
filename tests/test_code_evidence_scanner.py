@@ -127,6 +127,11 @@ def test_scanner_json_output_shape(tmp_path, monkeypatch):
     assert result["repository_metadata"]["is_dirty"] is None
     assert result["repository_metadata"]["metadata_resolution_status"] == "not_git_repo"
     assert result["repository_metadata"]["metadata_resolution_warnings"]
+    assert result["approval_required"] is True
+    assert result["approval_status"] == "PENDING_REVIEW"
+    assert result["approval_notes"] == []
+    assert result["approved_file_count"] == 0
+    assert result["rejected_file_count"] == 0
     assert result["total_files_scanned"] == 2
     assert result["included_count"] == 2
     assert result["excluded_count"] == 0
@@ -156,12 +161,18 @@ def test_scanner_json_output_shape(tmp_path, monkeypatch):
         "is_test": False,
         "is_generated": False,
         "classification_reason": "code extension",
+        "review_status": "PENDING_REVIEW",
+        "review_notes": [],
+        "proposed_ingestion_action": "DO_NOT_INGEST_YET",
     }
     readme = files["README.md"]
     assert readme["file_path"] == "README.md"
     assert readme["language"] == "markdown"
     assert readme["file_kind"] == "documentation"
     assert readme["classification_reason"] == "project documentation evidence"
+    assert readme["review_status"] == "PENDING_REVIEW"
+    assert readme["review_notes"] == []
+    assert readme["proposed_ingestion_action"] == "DO_NOT_INGEST_YET"
     assert result["excluded_files"] == []
 
 
@@ -277,6 +288,25 @@ def test_summary_counts_by_language_and_file_kind(tmp_path, monkeypatch):
         "project_manifest": 1,
         "test": 1,
     }
+
+
+def test_approval_metadata_exists(tmp_path, monkeypatch):
+    payload = _valid_manifest_payload(tmp_path, monkeypatch)
+
+    assert payload["approval_required"] is True
+    assert payload["approval_status"] == "PENDING_REVIEW"
+    assert payload["approval_notes"] == []
+    assert payload["approved_file_count"] == 0
+    assert payload["rejected_file_count"] == 0
+
+
+def test_per_file_review_fields_exist(tmp_path, monkeypatch):
+    payload = _valid_manifest_payload(tmp_path, monkeypatch)
+
+    included_file = payload["included_files"][0]
+    assert included_file["review_status"] == "PENDING_REVIEW"
+    assert included_file["review_notes"] == []
+    assert included_file["proposed_ingestion_action"] == "DO_NOT_INGEST_YET"
 
 
 def test_valid_scanner_result_passes_manifest_validation(tmp_path, monkeypatch):
@@ -473,6 +503,10 @@ def test_cli_output_writes_valid_metadata_only_json_and_creates_parent_directory
     assert output_path.exists()
     assert payload["repo_name"] == "sample"
     assert payload["repository_metadata"]["repo_name"] == "sample"
+    assert payload["approval_required"] is True
+    assert payload["approval_status"] == "PENDING_REVIEW"
+    assert payload["approved_file_count"] == 0
+    assert payload["rejected_file_count"] == 0
     assert set(payload["repository_metadata"]) == {
         "repo_name",
         "repo_path",
@@ -487,6 +521,9 @@ def test_cli_output_writes_valid_metadata_only_json_and_creates_parent_directory
     assert payload["validation_result"]["errors"] == []
     assert payload["validation_result"]["included_file_count"] == 1
     assert payload["included_count"] == 1
+    assert payload["included_files"][0]["review_status"] == "PENDING_REVIEW"
+    assert payload["included_files"][0]["review_notes"] == []
+    assert payload["included_files"][0]["proposed_ingestion_action"] == "DO_NOT_INGEST_YET"
     assert payload["safety_summary"]["code_content_captured"] is False
     assert payload["safety_summary"]["included_code_content_bytes"] == 0
     assert payload["safety_summary"]["database_ingestion_performed"] is False
@@ -498,6 +535,54 @@ def test_cli_output_writes_valid_metadata_only_json_and_creates_parent_directory
     assert "No database ingestion performed." in completed.stdout
     assert "No LLM exposure performed." in completed.stdout
     assert "Validation valid: True" in completed.stdout
+
+
+def test_cli_approval_manifest_writes_valid_review_json(tmp_path):
+    project_root = Path(__file__).resolve().parents[1]
+    repo = tmp_path / "repo"
+    code_content = "def secret_calculation():\n    return 'do not export this content'\n"
+    _write(repo / "src" / "main.py", code_content)
+    _write(repo / ".env", "SECRET=value")
+    approval_path = tmp_path / "approval" / "code-evidence-approval.json"
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "scripts/scan_code_evidence.py",
+            "--repo-path",
+            str(repo),
+            "--repo-name",
+            "sample",
+            "--approval-manifest",
+            str(approval_path),
+        ],
+        cwd=project_root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    payload = json.loads(approval_path.read_text(encoding="utf-8"))
+    serialized = json.dumps(payload)
+    assert approval_path.exists()
+    assert payload["repository_metadata"]["repo_name"] == "sample"
+    assert payload["safety_summary"]["code_content_captured"] is False
+    assert payload["validation_result"]["is_valid"] is True
+    assert payload["approval_required"] is True
+    assert payload["approval_status"] == "PENDING_REVIEW"
+    assert payload["approval_notes"] == []
+    assert payload["approved_file_count"] == 0
+    assert payload["rejected_file_count"] == 0
+    assert payload["included_files"][0]["review_status"] == "PENDING_REVIEW"
+    assert payload["included_files"][0]["review_notes"] == []
+    assert payload["included_files"][0]["proposed_ingestion_action"] == "DO_NOT_INGEST_YET"
+    assert payload["excluded_file_summary"]["excluded_count"] == 1
+    assert "excluded_files" not in payload
+    assert "secret_calculation" not in serialized
+    assert "do not export this content" not in serialized
+    assert f"Approval manifest written to {approval_path.resolve()}" in completed.stdout
+    assert "Approval status PENDING_REVIEW" in completed.stdout
+    assert "No files approved for ingestion." in completed.stdout
 
 
 def test_cli_returns_non_zero_when_manifest_validation_fails(tmp_path, monkeypatch):
@@ -536,3 +621,46 @@ def test_cli_returns_non_zero_when_manifest_validation_fails(tmp_path, monkeypat
     assert exit_code == 1
     assert payload["validation_result"]["is_valid"] is False
     assert "safety_summary.code_content_captured must be False." in payload["validation_result"]["errors"]
+
+
+def test_cli_approval_manifest_not_written_when_validation_fails(tmp_path, monkeypatch, capsys):
+    from scripts import scan_code_evidence
+
+    class InvalidScanResult:
+        def model_dump(self):
+            payload = _valid_manifest_payload(tmp_path / "repo", monkeypatch)
+            payload["safety_summary"]["included_code_content_bytes"] = 10
+            return payload
+
+    output_path = tmp_path / "invalid" / "code-evidence.json"
+    approval_path = tmp_path / "invalid" / "approval.json"
+
+    monkeypatch.setattr(
+        "app.services.code_evidence_scanner_service.scan_code_evidence",
+        lambda repo_path, repo_name: InvalidScanResult(),
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "scan_code_evidence.py",
+            "--repo-path",
+            str(tmp_path),
+            "--repo-name",
+            "sample",
+            "--output",
+            str(output_path),
+            "--approval-manifest",
+            str(approval_path),
+        ],
+    )
+
+    exit_code = scan_code_evidence.main()
+    captured = capsys.readouterr()
+
+    payload = json.loads(output_path.read_text(encoding="utf-8"))
+    assert exit_code == 1
+    assert output_path.exists()
+    assert approval_path.exists() is False
+    assert payload["validation_result"]["is_valid"] is False
+    assert "Approval manifest not written because scanner validation failed." in captured.err

@@ -132,9 +132,14 @@ class CodeEvidenceFile:
     is_test: bool
     is_generated: bool
     classification_reason: str
+    review_status: str = "PENDING_REVIEW"
+    review_notes: list[str] | None = None
+    proposed_ingestion_action: str = "DO_NOT_INGEST_YET"
 
     def model_dump(self) -> dict[str, Any]:
-        return asdict(self)
+        payload = asdict(self)
+        payload["review_notes"] = self.review_notes or []
+        return payload
 
 
 @dataclass(frozen=True)
@@ -211,6 +216,11 @@ class CodeEvidenceScanResult:
             "branch": self.branch,
             "commit": self.commit,
             "repository_metadata": self.repository_metadata.model_dump(),
+            "approval_required": True,
+            "approval_status": "PENDING_REVIEW",
+            "approval_notes": [],
+            "approved_file_count": 0,
+            "rejected_file_count": 0,
             "total_files_scanned": self.total_files_scanned,
             "included_count": self.included_count,
             "excluded_count": self.excluded_count,
