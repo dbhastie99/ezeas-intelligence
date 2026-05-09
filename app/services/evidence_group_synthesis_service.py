@@ -80,6 +80,37 @@ GROUP_KEY_TERMS = {
         "revaluation",
         "production hardening",
     ),
+    "worker_story_purpose": ("Worker Story", "Worker Calculation Story", "Talking Payslip", "worker evidence", "explain"),
+    "source_truth_and_inclusion": ("Worker Story", "SourceTruth", "Source truth", "inclusion", "source truth"),
+    "interpreted_worked_hours": (
+        "Worker Story",
+        "Interpreted Worked Hours",
+        "current-effective interpreter run",
+        "ObjectTime grouping",
+    ),
+    "calculated_payroll_outcome": (
+        "Worker Story",
+        "Calculated Payroll Outcome",
+        "current-effective payroll output",
+        "PayRun",
+    ),
+    "decision_story_and_rate_story": (
+        "Decision Story",
+        "Rate Story",
+        "DecisionEvidenceIndex",
+        "RateSourceEvidenceIndex",
+        "rate evidence",
+    ),
+    "leave_and_accrual_outcome": ("Worker Story", "Leave and Accrual Outcome", "leave", "accrual", "evidence"),
+    "payroll_bases_and_totals": ("Worker Story", "Payroll Bases & Totals", "payroll bases", "totals", "evidence"),
+    "movement_review_and_admin_queue": ("Movement Review", "PayRun Admin Queue", "Admin Queue", "PayRun"),
+    "current_effective_truth": (
+        "current-effective truth",
+        "current-effective payroll output",
+        "current-effective interpreter run",
+        "Correction Audit Story",
+    ),
+    "outstanding_hardening": ("Worker Story", "outstanding hardening", "limitations", "future work", "hardening"),
 }
 
 GROUP_SIGNAL_TERMS = {
@@ -90,6 +121,16 @@ GROUP_SIGNAL_TERMS = {
     "payrun": ("PayRun", "Generate Leave Accruals on Process", "leave accruals", "Admin Queue"),
     "worker_story": ("Worker Story", "Leave and Accrual Outcome", "server-owned leave output", "evidence chain"),
     "outstanding": ("outstanding", "hardening", "Leave Source Model", "FIFO", "lot consumption", "revaluation"),
+    "worker_story_purpose": ("Worker Story", "Worker Calculation Story", "Talking Payslip"),
+    "source_truth_and_inclusion": ("SourceTruth", "Source truth", "inclusion"),
+    "interpreted_worked_hours": ("Interpreted Worked Hours", "current-effective interpreter run", "ObjectTime grouping"),
+    "calculated_payroll_outcome": ("Calculated Payroll Outcome", "current-effective payroll output"),
+    "decision_story_and_rate_story": ("Decision Story", "Rate Story", "DecisionEvidenceIndex", "RateSourceEvidenceIndex"),
+    "leave_and_accrual_outcome": ("Leave and Accrual Outcome", "leave", "accrual"),
+    "payroll_bases_and_totals": ("Payroll Bases & Totals", "payroll bases", "totals"),
+    "movement_review_and_admin_queue": ("Movement Review", "PayRun Admin Queue", "Admin Queue"),
+    "current_effective_truth": ("current-effective truth", "current-effective payroll output", "current-effective interpreter run"),
+    "outstanding_hardening": ("outstanding hardening", "limitations", "hardening"),
 }
 
 
@@ -215,6 +256,41 @@ def _outstanding_sentence(terms: list[str], label: str) -> str:
     return f"{label}: {', '.join(clauses)}."
 
 
+def _worker_story_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Worker Story evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Worker Story",
+            "Worker Calculation Story",
+            "Talking Payslip",
+            "SourceTruth",
+            "Source truth",
+            "inclusion",
+            "Interpreted Worked Hours",
+            "Calculated Payroll Outcome",
+            "Decision Story",
+            "Rate Story",
+            "DecisionEvidenceIndex",
+            "RateSourceEvidenceIndex",
+            "current-effective payroll output",
+            "current-effective interpreter run",
+            "ObjectTime grouping",
+            "PayRun Admin Queue",
+            "Movement Review",
+            "Payroll Bases & Totals",
+            "Leave and Accrual Outcome",
+            "Correction Audit Story",
+            "outstanding hardening",
+            "limitations",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:6])}")
+    return f"{', '.join(clauses)}."
+
+
 def _sentence_for_group(group: EvidenceGroup, terms: list[str]) -> str:
     if group.group_id == "configuration":
         return _configuration_sentence(terms, group.label)
@@ -230,6 +306,19 @@ def _sentence_for_group(group: EvidenceGroup, terms: list[str]) -> str:
         return _worker_story_sentence(terms, group.label)
     if group.group_id == "outstanding":
         return _outstanding_sentence(terms, group.label)
+    if group.group_id in {
+        "worker_story_purpose",
+        "source_truth_and_inclusion",
+        "interpreted_worked_hours",
+        "calculated_payroll_outcome",
+        "decision_story_and_rate_story",
+        "leave_and_accrual_outcome",
+        "payroll_bases_and_totals",
+        "movement_review_and_admin_queue",
+        "current_effective_truth",
+        "outstanding_hardening",
+    }:
+        return _worker_story_domain_sentence(terms, group.label)
     return f"{group.label}: Retrieved evidence indicates {', '.join(terms)}."
 
 

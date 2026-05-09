@@ -7,6 +7,11 @@ PROJECT_TERM_ALIASES = {
     "LeaveTypeRule": ("leavetyperule", "leave type rule"),
     "LeaveTypeKind": ("leavetypekind", "leave type kind"),
     "Worker Story": ("workerstory", "worker story"),
+    "SourceTruth": ("sourcetruth", "source truth"),
+    "DecisionEvidenceIndex": ("decisionevidenceindex", "decision evidence index"),
+    "RateSourceEvidenceIndex": ("ratesourceevidenceindex", "rate source evidence index"),
+    "current-effective": ("current effective", "currenteffective"),
+    "ObjectTime": ("objecttime", "object time"),
     "PayRun": ("payrun", "pay run"),
     "DeductsOnPublicHoliday": ("deductsonpublicholiday", "deducts on public holiday"),
 }

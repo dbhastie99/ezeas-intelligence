@@ -145,7 +145,111 @@ ANNUAL_LEAVE_MANAGEMENT_PLAN = DomainRetrievalPlan(
     ),
 )
 
-DOMAIN_RETRIEVAL_PLANS = (ANNUAL_LEAVE_MANAGEMENT_PLAN,)
+WORKER_STORY_PLAN = DomainRetrievalPlan(
+    plan_id="WORKER_STORY",
+    domain="Worker Story / Worker Calculation Story",
+    trigger_phrases=(
+        "what is worker story",
+        "what evidence does worker story show",
+        "how does worker story explain payroll outcomes",
+        "how does worker story explain calculated payroll outcome",
+        "how does worker story use source truth",
+        "how does worker story explain rate and decision evidence",
+        "how does worker story relate to payrun",
+        "what is worker calculation story",
+        "what is talking payslip",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="worker_story_purpose",
+            label="Worker Story purpose",
+            query_terms=("Worker Story", "Worker Calculation Story", "Talking Payslip", "worker evidence", "explain"),
+            required_terms_any=("Worker Story", "Worker Calculation Story", "Talking Payslip"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="source_truth_and_inclusion",
+            label="Source truth and inclusion evidence",
+            query_terms=("Worker Story", "SourceTruth", "Source truth", "inclusion", "source truth"),
+            required_terms_any=("SourceTruth", "Source truth", "inclusion"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="interpreted_worked_hours",
+            label="Interpreted Worked Hours",
+            query_terms=("Worker Story", "Interpreted Worked Hours", "current-effective interpreter run", "ObjectTime grouping"),
+            required_terms_any=("Interpreted Worked Hours", "current-effective interpreter run", "ObjectTime grouping"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="calculated_payroll_outcome",
+            label="Calculated Payroll Outcome",
+            query_terms=("Worker Story", "Calculated Payroll Outcome", "current-effective payroll output", "PayRun"),
+            required_terms_any=("Calculated Payroll Outcome", "current-effective payroll output", "PayRun"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="decision_story_and_rate_story",
+            label="Decision Story and Rate Story",
+            query_terms=(
+                "Decision Story",
+                "Rate Story",
+                "DecisionEvidenceIndex",
+                "RateSourceEvidenceIndex",
+                "rate evidence",
+            ),
+            required_terms_any=("Decision Story", "Rate Story", "DecisionEvidenceIndex", "RateSourceEvidenceIndex"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_and_accrual_outcome",
+            label="Leave and Accrual Outcome",
+            query_terms=("Worker Story", "Leave and Accrual Outcome", "leave", "accrual", "evidence"),
+            required_terms_any=("Leave and Accrual Outcome", "leave", "accrual"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_bases_and_totals",
+            label="Payroll Bases & Totals",
+            query_terms=("Worker Story", "Payroll Bases & Totals", "payroll bases", "totals", "evidence"),
+            required_terms_any=("Payroll Bases & Totals", "payroll bases", "totals"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="movement_review_and_admin_queue",
+            label="Movement Review and Admin Queue",
+            query_terms=("Movement Review", "PayRun Admin Queue", "Admin Queue", "PayRun", "worker evidence"),
+            required_terms_any=("Movement Review", "PayRun Admin Queue", "Admin Queue"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="current_effective_truth",
+            label="Current-effective truth",
+            query_terms=(
+                "current-effective truth",
+                "current-effective payroll output",
+                "current-effective interpreter run",
+                "Correction Audit Story",
+            ),
+            required_terms_any=(
+                "current-effective truth",
+                "current-effective payroll output",
+                "current-effective interpreter run",
+                "Correction Audit Story",
+            ),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Outstanding hardening",
+            query_terms=("Worker Story", "outstanding hardening", "limitations", "future work", "hardening"),
+            required_terms_any=("outstanding hardening", "limitations", "hardening"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+DOMAIN_RETRIEVAL_PLANS = (ANNUAL_LEAVE_MANAGEMENT_PLAN, WORKER_STORY_PLAN)
 
 
 def _normalize_question(text: str) -> str:
@@ -165,6 +269,19 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or ("accrual" in normalized and "taken" in normalized)
     ):
         return ANNUAL_LEAVE_MANAGEMENT_PLAN
+    if (
+        "worker story" in normalized
+        or "workerstory" in normalized
+        or "worker calculation story" in normalized
+        or "talking payslip" in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "relate" in normalized
+    ):
+        return WORKER_STORY_PLAN
     return None
 
 

@@ -1,6 +1,7 @@
 from app.services.answer_generation_service import generate_grounded_answer
 from app.services.domain_retrieval_plan_service import (
     ANNUAL_LEAVE_MANAGEMENT_PLAN,
+    WORKER_STORY_PLAN,
     detect_domain_retrieval_plan,
     retrieve_chunks_for_question,
     retrieve_with_domain_plan,
@@ -44,6 +45,30 @@ def test_annual_leave_plan_contains_expected_evidence_groups():
         "payrun",
         "worker_story",
         "outstanding",
+    }
+
+
+def test_worker_story_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is Worker Story and what evidence does it show?")
+
+    assert plan is not None
+    assert plan.plan_id == "WORKER_STORY"
+
+
+def test_worker_story_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in WORKER_STORY_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "worker_story_purpose",
+        "source_truth_and_inclusion",
+        "interpreted_worked_hours",
+        "calculated_payroll_outcome",
+        "decision_story_and_rate_story",
+        "leave_and_accrual_outcome",
+        "payroll_bases_and_totals",
+        "movement_review_and_admin_queue",
+        "current_effective_truth",
+        "outstanding_hardening",
     }
 
 
@@ -119,3 +144,33 @@ def test_non_domain_question_uses_normal_retrieval_without_group_metadata(db_ses
     assert results
     assert all(result.domain_plan_id is None for result in results)
     assert all(result.evidence_group_id is None for result in results)
+
+
+def test_worker_story_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Worker Story purpose\n"
+        "Worker Story and Worker Calculation Story act as a Talking Payslip that explains worker evidence.",
+        title="Developer Log - Worker Story Purpose",
+    )
+    _ingest(
+        db_session,
+        "Worker Story source evidence\n"
+        "Worker Story uses SourceTruth and source truth inclusion to explain which inputs were included.",
+        title="Developer Log - Worker Story SourceTruth",
+    )
+    _ingest(
+        db_session,
+        "Calculated Payroll Outcome\n"
+        "Worker Story shows Calculated Payroll Outcome using current-effective payroll output during PayRun.",
+        title="Developer Log - Worker Story Payroll Outcome",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "What is Worker Story and what evidence does it show?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "worker_story_purpose",
+        "source_truth_and_inclusion",
+        "calculated_payroll_outcome",
+    }
+    assert all(result.domain_plan_id == "WORKER_STORY" for result in results)

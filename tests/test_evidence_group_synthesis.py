@@ -1,5 +1,9 @@
 from app.services.answer_generation_service import generate_grounded_answer
-from app.services.domain_retrieval_plan_service import ANNUAL_LEAVE_MANAGEMENT_PLAN, retrieve_chunks_for_question
+from app.services.domain_retrieval_plan_service import (
+    ANNUAL_LEAVE_MANAGEMENT_PLAN,
+    WORKER_STORY_PLAN,
+    retrieve_chunks_for_question,
+)
 from app.services.evidence_group_synthesis_service import synthesize_evidence_group
 from app.services.ingestion_service import ingest_file_bytes
 from app.services.knowledge_retrieval_service import RetrievalResult
@@ -164,6 +168,65 @@ def test_annual_leave_benchmark_style_fixture_can_pass_with_complete_evidence_gr
     )
 
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.annual_leave.json")
+
+    assert result["all_passed"] is True
+
+
+def test_worker_story_benchmark_style_fixture_can_pass_with_complete_evidence_groups(db_session):
+    _ingest(
+        db_session,
+        "Worker Story and Worker Calculation Story are the Talking Payslip for worker evidence and explain payroll "
+        "outcomes.",
+        "Developer Log - Worker Story Purpose",
+    )
+    _ingest(
+        db_session,
+        "Worker Story uses SourceTruth and source truth inclusion to show which source truth inputs are included.",
+        "Developer Log - Worker Story SourceTruth",
+    )
+    _ingest(
+        db_session,
+        "Interpreted Worked Hours are shown from the current-effective interpreter run with ObjectTime grouping.",
+        "Developer Log - Worker Story Interpreted Worked Hours",
+    )
+    _ingest(
+        db_session,
+        "Calculated Payroll Outcome shows the current-effective payroll output from PayRun calculation evidence.",
+        "Developer Log - Worker Story Calculated Payroll Outcome",
+    )
+    _ingest(
+        db_session,
+        "Decision Story and Rate Story include DecisionEvidenceIndex and RateSourceEvidenceIndex for rate evidence.",
+        "Developer Log - Worker Story Decision Rate Evidence",
+    )
+    _ingest(
+        db_session,
+        "Worker Story includes Leave and Accrual Outcome evidence for leave and accrual outcomes.",
+        "Developer Log - Worker Story Leave Accrual",
+    )
+    _ingest(
+        db_session,
+        "Worker Story includes Payroll Bases & Totals evidence with payroll bases and totals.",
+        "Developer Log - Worker Story Payroll Bases Totals",
+    )
+    _ingest(
+        db_session,
+        "Movement Review and PayRun Admin Queue evidence explain review and admin queue relationship.",
+        "Developer Log - Worker Story Movement Review",
+    )
+    _ingest(
+        db_session,
+        "Worker Story uses current-effective truth from current-effective payroll output and current-effective "
+        "interpreter run, with Correction Audit Story where corrections exist.",
+        "Developer Log - Worker Story Current Effective Truth",
+    )
+    _ingest(
+        db_session,
+        "Worker Story outstanding hardening records limitations and future work for evidence explanation.",
+        "Developer Log - Worker Story Outstanding Hardening",
+    )
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.worker_story.json")
 
     assert result["all_passed"] is True
 

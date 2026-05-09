@@ -142,6 +142,15 @@ def test_rich_answer_benchmark_manifest_loads_and_can_be_evaluated(db_session):
     assert result["results"][0]["checks"]["answer_mode"] is True
 
 
+def test_worker_story_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.worker_story.json")
+
+    assert manifest["name"] == "Worker Story rich-answer benchmark"
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.worker_story.json")
+    assert result["total"] == 1
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
 def test_run_golden_questions_allow_failures_returns_zero(db_session, tmp_path, monkeypatch):
     manifest_path = _manifest(
         tmp_path,

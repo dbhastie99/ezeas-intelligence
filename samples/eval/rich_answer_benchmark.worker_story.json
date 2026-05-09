@@ -1,0 +1,51 @@
+{
+  "name": "Worker Story rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for Worker Story and worker evidence explanation.",
+  "questions": [
+    {
+      "id": "worker-story-evidence-rich-answer",
+      "question": "What is Worker Story and what evidence does it show?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "Worker Story",
+        "calculated payroll outcome",
+        "evidence",
+        "current-effective",
+        "outstanding hardening"
+      ],
+      "expected_answer_terms_any": [
+        "source truth",
+        "inclusion",
+        "Decision Story",
+        "Rate Story",
+        "limitations"
+      ],
+      "expected_source_terms_all": [
+        "Worker Story",
+        "Calculated Payroll Outcome"
+      ],
+      "expected_source_terms_any": [
+        "SourceTruth",
+        "source truth",
+        "DecisionEvidenceIndex",
+        "RateSourceEvidenceIndex",
+        "current-effective payroll output",
+        "current-effective truth"
+      ],
+      "forbidden_answer_patterns_any": [
+        "Source\\s+1:",
+        "Source\\s+2:",
+        "closest sources say",
+        "using the strongest matches"
+      ]
+    }
+  ]
+}

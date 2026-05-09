@@ -63,6 +63,17 @@ def test_project_term_normalization_matches_deducts_on_public_holiday_variants()
     assert contains_normalized_term("DeductsOnPublicHoliday is configured", "deducts on public holiday")
 
 
+def test_project_term_normalization_matches_worker_story_variants():
+    assert contains_normalized_term("workerstory explains evidence", "Worker Story")
+    assert contains_normalized_term("Worker Story explains evidence", "WorkerStory")
+    assert contains_normalized_term("source truth input exists", "SourceTruth")
+    assert contains_normalized_term("Decision Evidence Index exists", "DecisionEvidenceIndex")
+    assert contains_normalized_term("RateSourceEvidenceIndex exists", "Rate Source Evidence Index")
+    assert contains_normalized_term("current effective payroll output exists", "current-effective")
+    assert contains_normalized_term("Object Time grouping exists", "ObjectTime")
+    assert contains_normalized_term("Pay Run evidence exists", "PayRun")
+
+
 def test_golden_source_terms_all_passes_for_normalized_variants(db_session, tmp_path):
     _ingest(
         db_session,

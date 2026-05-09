@@ -172,12 +172,20 @@ class StubLLMClient(BaseLLMClient):
                     else "All planned evidence groups returned at least one source."
                 )
                 if coverage == "complete":
-                    direct_summary = (
-                        "Annual Leave is managed through configured leave policy, ledger-based accrual and TAKEN "
-                        "movement, PayRun valuation/orchestration evidence, Worker Story explanation and tracked "
-                        "hardening items. The system separates configuration, accrual, consumption, valuation, PayRun "
-                        "processing and explanatory evidence rather than treating leave as a single opaque balance."
-                    )
+                    if domain_plan.plan_id == "WORKER_STORY":
+                        direct_summary = (
+                            "Worker Story is the worker-facing evidence narrative for calculated payroll outcomes. "
+                            "It explains source truth and inclusion, interpreted worked hours, calculated payroll "
+                            "outcome, Decision Story and Rate Story evidence, current-effective output and known "
+                            "outstanding hardening or limitations."
+                        )
+                    else:
+                        direct_summary = (
+                            "Annual Leave is managed through configured leave policy, ledger-based accrual and TAKEN "
+                            "movement, PayRun valuation/orchestration evidence, Worker Story explanation and tracked "
+                            "hardening items. The system separates configuration, accrual, consumption, valuation, PayRun "
+                            "processing and explanatory evidence rather than treating leave as a single opaque balance."
+                        )
                     status_text = (
                         "The retrieved corpus shows this as an implemented or partially implemented platform area with "
                         "remaining hardening. It does not prove production completeness. Some mechanisms are implemented; "
