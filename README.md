@@ -356,7 +356,13 @@ Run the Annual Leave rich-answer benchmark:
 py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark.annual_leave.json --verbose --allow-failures
 ```
 
-This benchmark may fail until Annual Leave domain retrieval and supporting formal corpus/chat-history context are implemented. Use `--allow-failures` for benchmark tracking so it does not block local proof runs.
+Run the Worker Story rich-answer benchmark:
+
+```powershell
+py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark.worker_story.json --verbose --allow-failures
+```
+
+Rich benchmarks are source-grounded answer-quality checks over the loaded Minerva corpus. They use deterministic retrieval and the stub answer generator; they are not live LLM calls. Use `--allow-failures` for benchmark tracking when the target formal corpus has not yet been loaded.
 
 ## Domain Retrieval Plans
 
@@ -378,6 +384,14 @@ Run the Annual Leave rich-answer benchmark after corpus changes:
 
 ```powershell
 py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark.annual_leave.json --verbose --allow-failures
+```
+
+Worker Story / Worker Calculation Story is also implemented as a domain retrieval plan. It searches evidence groups for source truth and inclusion, interpreted worked hours, calculated payroll outcome, Decision Story and Rate Story, leave/accrual outcome, Payroll Bases & Totals, Movement Review, PayRun Admin Queue, current-effective truth and outstanding hardening.
+
+Run the Worker Story rich-answer benchmark after corpus changes:
+
+```powershell
+py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark.worker_story.json --verbose --allow-failures
 ```
 
 ## Targeted Annual Leave Corpus Supplement
