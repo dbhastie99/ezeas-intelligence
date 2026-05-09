@@ -35,6 +35,16 @@ def _valid_approval_manifest_payload(tmp_path, monkeypatch) -> dict:
     return build_code_evidence_approval_manifest(payload)
 
 
+def _multi_file_approval_manifest_payload(tmp_path, monkeypatch) -> dict:
+    _mock_non_git(monkeypatch)
+    _write(tmp_path / "src" / "main.py", "print('ok')")
+    _write(tmp_path / "src" / "worker.py", "print('ok')")
+    payload = scan_code_evidence(tmp_path, "sample").model_dump()
+    validation_result = validate_code_evidence_manifest(payload)
+    payload["validation_result"] = validation_result.model_dump()
+    return build_code_evidence_approval_manifest(payload)
+
+
 def _copy_payload(payload: dict) -> dict:
     return json.loads(json.dumps(payload))
 
@@ -830,3 +840,269 @@ def test_review_approval_manifest_missing_per_file_review_fields_fails(tmp_path,
     assert exit_code == 1
     assert "included_files[0].review_status is required." in captured.err
     assert "included_files[0].proposed_ingestion_action is required." in captured.err
+
+
+def test_update_approval_manifest_approves_one_file_as_metadata_only(tmp_path, monkeypatch, capsys):
+    from scripts import update_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _multi_file_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "update_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--file-path",
+            "src/main.py",
+            "--review-status",
+            "APPROVED",
+            "--proposed-ingestion-action",
+            "INGEST_METADATA_ONLY",
+            "--note",
+            "Reviewed metadata only.",
+        ],
+    )
+
+    exit_code = update_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    updated = json.loads(manifest_path.read_text(encoding="utf-8"))
+    files = {item["file_path"]: item for item in updated["included_files"]}
+    assert exit_code == 0
+    assert files["src/main.py"]["review_status"] == "APPROVED"
+    assert files["src/main.py"]["proposed_ingestion_action"] == "INGEST_METADATA_ONLY"
+    assert files["src/main.py"]["review_notes"] == ["Reviewed metadata only."]
+    assert files["src/worker.py"]["review_status"] == "PENDING_REVIEW"
+    assert updated["approved_file_count"] == 1
+    assert updated["rejected_file_count"] == 0
+    assert updated["approval_status"] == "PENDING_REVIEW"
+    assert "Pending review count: 1" in captured.out
+    assert "Approval status: PENDING_REVIEW" in captured.out
+
+
+def test_update_approval_manifest_rejects_one_file(tmp_path, monkeypatch, capsys):
+    from scripts import update_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "update_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--file-path",
+            "src/main.py",
+            "--review-status",
+            "REJECTED",
+            "--proposed-ingestion-action",
+            "DO_NOT_INGEST_YET",
+            "--note",
+            "Not needed.",
+            "--json",
+        ],
+    )
+
+    exit_code = update_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    result = json.loads(captured.out)
+    updated = json.loads(manifest_path.read_text(encoding="utf-8"))
+    included_file = updated["included_files"][0]
+    assert exit_code == 0
+    assert result["review_status"] == "REJECTED"
+    assert result["proposed_ingestion_action"] == "DO_NOT_INGEST_YET"
+    assert result["rejected_file_count"] == 1
+    assert result["pending_review_count"] == 0
+    assert result["approval_status"] == "REVIEWED"
+    assert included_file["review_status"] == "REJECTED"
+    assert included_file["proposed_ingestion_action"] == "DO_NOT_INGEST_YET"
+    assert included_file["review_notes"] == ["Not needed."]
+    assert updated["approved_file_count"] == 0
+    assert updated["rejected_file_count"] == 1
+    assert updated["approval_status"] == "REVIEWED"
+
+
+def test_update_approval_manifest_invalid_action_status_combination_fails(tmp_path, monkeypatch, capsys):
+    from scripts import update_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    before = manifest_path.read_text(encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "update_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--file-path",
+            "src/main.py",
+            "--review-status",
+            "PENDING_REVIEW",
+            "--proposed-ingestion-action",
+            "INGEST_METADATA_ONLY",
+        ],
+    )
+
+    exit_code = update_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "INGEST_METADATA_ONLY requires review_status APPROVED." in captured.err
+    assert manifest_path.read_text(encoding="utf-8") == before
+
+
+def test_update_approval_manifest_unknown_file_path_fails_without_modifying(tmp_path, monkeypatch, capsys):
+    from scripts import update_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    before = manifest_path.read_text(encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "update_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--file-path",
+            "src/missing.py",
+            "--review-status",
+            "APPROVED",
+            "--proposed-ingestion-action",
+            "INGEST_METADATA_ONLY",
+        ],
+    )
+
+    exit_code = update_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "Expected exactly one included file matching file_path 'src/missing.py'; found 0." in captured.err
+    assert manifest_path.read_text(encoding="utf-8") == before
+
+
+def test_update_approval_manifest_validation_failure_fails_without_modifying(tmp_path, monkeypatch, capsys):
+    from scripts import update_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    payload["safety_summary"]["code_content_captured"] = True
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    before = manifest_path.read_text(encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "update_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--file-path",
+            "src/main.py",
+            "--review-status",
+            "APPROVED",
+            "--proposed-ingestion-action",
+            "INGEST_METADATA_ONLY",
+        ],
+    )
+
+    exit_code = update_code_approval_manifest.main()
+    captured = capsys.readouterr()
+
+    assert exit_code == 1
+    assert "safety_summary.code_content_captured must be False." in captured.err
+    assert manifest_path.read_text(encoding="utf-8") == before
+
+
+def test_update_approval_manifest_counts_status_recompute_correctly(tmp_path, monkeypatch):
+    from scripts import update_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _multi_file_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "update_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--file-path",
+            "src/main.py",
+            "--review-status",
+            "APPROVED",
+            "--proposed-ingestion-action",
+            "INGEST_METADATA_ONLY",
+        ],
+    )
+    assert update_code_approval_manifest.main() == 0
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "update_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--file-path",
+            "src/worker.py",
+            "--review-status",
+            "REJECTED",
+            "--proposed-ingestion-action",
+            "DO_NOT_INGEST_YET",
+        ],
+    )
+    assert update_code_approval_manifest.main() == 0
+
+    updated = json.loads(manifest_path.read_text(encoding="utf-8"))
+    assert updated["approved_file_count"] == 1
+    assert updated["rejected_file_count"] == 1
+    assert updated["approval_status"] == "REVIEWED"
+
+
+def test_update_approval_manifest_never_adds_code_content_and_preserves_safety_flags(tmp_path, monkeypatch):
+    from scripts import update_code_approval_manifest
+
+    manifest_path = tmp_path / "approval.json"
+    payload = _valid_approval_manifest_payload(tmp_path / "repo", monkeypatch)
+    manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "update_code_approval_manifest.py",
+            "--manifest",
+            str(manifest_path),
+            "--file-path",
+            "src/main.py",
+            "--review-status",
+            "APPROVED",
+            "--proposed-ingestion-action",
+            "INGEST_METADATA_ONLY",
+        ],
+    )
+    assert update_code_approval_manifest.main() == 0
+
+    serialized = manifest_path.read_text(encoding="utf-8")
+    updated = json.loads(serialized)
+    assert "print('ok')" not in serialized
+    assert "code_content" not in updated["included_files"][0]
+    assert updated["safety_summary"]["code_content_captured"] is False
+    assert updated["safety_summary"]["included_code_content_bytes"] == 0
+    assert updated["safety_summary"]["database_ingestion_performed"] is False
+    assert updated["safety_summary"]["llm_exposure_performed"] is False
