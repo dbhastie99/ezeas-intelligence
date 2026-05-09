@@ -74,6 +74,96 @@ def test_project_term_normalization_matches_worker_story_variants():
     assert contains_normalized_term("Pay Run evidence exists", "PayRun")
 
 
+def test_project_term_normalization_matches_payroll_bases_variants():
+    assert contains_normalized_term("Payroll Bases and Totals evidence exists", "Payroll Bases & Totals")
+    assert contains_normalized_term("Payroll Bases & Totals evidence exists", "Payroll Bases and Totals")
+    assert contains_normalized_term("payrollbucketresult rows exist", "Payroll Bucket Result")
+    assert contains_normalized_term("Payroll Bucket Result rows exist", "PayrollBucketResult")
+    assert contains_normalized_term("payrollbucketdefinition exists", "Payroll Bucket Definition")
+    assert contains_normalized_term("Payroll Bucket Definition exists", "PayrollBucketDefinition")
+
+
+def test_project_term_normalization_matches_payrun_admin_queue_variants():
+    assert contains_normalized_term("PayRun Admin Queue shows actions", "Admin Queue")
+    assert contains_normalized_term("PayRun Queue shows actions", "PayRun Admin Queue")
+    assert contains_normalized_term("WorkerAttention exists", "Worker Attention")
+    assert contains_normalized_term("dirtycontacts need review", "dirty contacts")
+    assert contains_normalized_term("finalization readiness is checked", "finalisation readiness")
+    assert contains_normalized_term("AssuranceSnapshot exists", "Assurance Snapshot")
+    assert contains_normalized_term("Command Center opens review", "Command Centre")
+    assert contains_normalized_term("MovementReview opens review", "Movement Review")
+
+
+def test_project_term_normalization_matches_movement_review_variants():
+    assert contains_normalized_term("Payroll Movement Review explains variance", "Movement Review")
+    assert contains_normalized_term("review worthy movement exists", "review-worthy")
+    assert contains_normalized_term("comparableperiod is available", "comparable period")
+    assert contains_normalized_term("rollingaverage is shown", "rolling average")
+    assert contains_normalized_term("trend only evidence exists", "trend-only")
+
+
+def test_project_term_normalization_matches_comparison_remediation_variants():
+    assert contains_normalized_term("Comparison Remediation evidence exists", "Comparison / Remediation")
+    assert contains_normalized_term("Award Comparison policy exists", "Award Comparison")
+    assert contains_normalized_term("PayRun Comparison Run exists", "PayRunComparisonRun")
+    assert contains_normalized_term("PayRunComparisonLine exists", "PayRun Comparison Line")
+    assert contains_normalized_term("PayRun Variance Line exists", "PayRunVarianceLine")
+    assert contains_normalized_term("Award Comparison Policy exists", "AwardComparisonPolicy")
+    assert contains_normalized_term("comparatoraward evidence exists", "comparator award")
+    assert contains_normalized_term("importedactuals are separate", "imported actuals")
+    assert contains_normalized_term("actualslane is separate", "actuals lane")
+    assert contains_normalized_term("remediation top up exists", "remediation top-up")
+    assert contains_normalized_term("Award Position Class Comparison Map exists", "AwardPositionClassComparisonMap")
+    assert contains_normalized_term(
+        "Employee Appointment Award Class Assignment exists",
+        "EmployeeAppointmentAwardClassAssignment",
+    )
+    assert contains_normalized_term("Object Time Classification Resolution exists", "ObjectTimeClassificationResolution")
+
+
+def test_project_term_normalization_matches_tax_payg_variants():
+    assert contains_normalized_term("Tax PAYG evidence exists", "Tax / PAYG")
+    assert contains_normalized_term("PAYG withholding exists", "PAYG withholding")
+    assert contains_normalized_term("Tax Story explains withholding", "TaxStory")
+    assert contains_normalized_term("taxablebasis is governed", "taxable basis")
+    assert contains_normalized_term("taxableearnings are aligned", "taxable earnings")
+    assert contains_normalized_term("worker tax declaration exists", "worker tax declaration")
+    assert contains_normalized_term("withholdinginstruction exists", "withholding instruction")
+    assert contains_normalized_term("Process Period Payment Date exists", "ProcessPeriod PaymentDate")
+    assert contains_normalized_term("paymentdate drives tax", "payment date")
+    assert contains_normalized_term("gross to net is shown", "gross-to-net")
+    assert contains_normalized_term("finalized totals exist", "finalised totals")
+    assert contains_normalized_term("supplementaryincrementalpayg exists", "supplementary incremental PAYG")
+
+
+def test_project_term_normalization_matches_deductions_obligations_variants():
+    assert contains_normalized_term("Deductions and Obligations evidence exists", "Deductions / Obligations")
+    assert contains_normalized_term("Library Deduction Template exists", "LibraryDeductionTemplate")
+    assert contains_normalized_term("AccountDeductionTemplate exists", "Account Deduction Template")
+    assert contains_normalized_term("Contact Payroll Deduction exists", "ContactPayrollDeduction")
+    assert contains_normalized_term("PayRunDeductionApplication exists", "PayRun Deduction Application")
+    assert contains_normalized_term("Contact Payroll Obligation exists", "ContactPayrollObligation")
+    assert contains_normalized_term("ContactPayrollObligationLedger exists", "Contact Payroll Obligation Ledger")
+    assert contains_normalized_term("supplementarydeductionmemory exists", "supplementary deduction memory")
+    assert contains_normalized_term("reducing balance recovery exists", "reducing-balance recovery")
+    assert contains_normalized_term("carry forward is visible", "carry-forward")
+    assert contains_normalized_term("negativenetpay is governed", "negative net pay")
+
+
+def test_project_term_normalization_matches_retro_replay_variants():
+    assert contains_normalized_term("Retro Replay evidence exists", "Retro / Replay")
+    assert contains_normalized_term("retro pay run exists", "retro PayRun")
+    assert contains_normalized_term("supplementarypayrun exists", "supplementary PayRun")
+    assert contains_normalized_term("attributedperiod is preserved", "attributed period")
+    assert contains_normalized_term("paid period is preserved", "paid period")
+    assert contains_normalized_term("finalized outcome memory exists", "finalised outcome memory")
+    assert contains_normalized_term("current effective truth is distinct", "current-effective truth")
+    assert contains_normalized_term("dependencydetection creates candidates", "dependency detection")
+    assert contains_normalized_term("bucket rebuild needs governance", "bucket rebuild")
+    assert contains_normalized_term("historicalbucketevidence exists", "historical bucket evidence")
+    assert contains_normalized_term("correction replay is auditable", "correction/replay")
+
+
 def test_golden_source_terms_all_passes_for_normalized_variants(db_session, tmp_path):
     _ingest(
         db_session,

@@ -396,6 +396,144 @@ Run the Worker Story rich-answer benchmark after corpus changes:
 py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark.worker_story.json --verbose --allow-failures
 ```
 
+Run the Payroll Bases & Totals rich-answer benchmark, including broad and focused follow-up coverage, after corpus changes:
+
+```powershell
+.\.venv\Scripts\python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payroll_bases_and_totals.json
+```
+
+Payroll Bases & Totals evaluation is documented in [docs/PAYROLL_BASES_AND_TOTALS_EVALUATION_RUNBOOK.md](docs/PAYROLL_BASES_AND_TOTALS_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, answer gap report commands and diagnostic-only guardrails.
+
+Run the PayRun Admin Queue rich-answer benchmark, including broad and focused follow-up coverage, after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payrun_admin_queue.json
+```
+
+PayRun Admin Queue evaluation is documented in [docs/PAYRUN_ADMIN_QUEUE_EVALUATION_RUNBOOK.md](docs/PAYRUN_ADMIN_QUEUE_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, answer gap report commands and diagnostic-only guardrails.
+
+Run the Movement Review rich-answer benchmark, including broad and focused follow-up coverage, after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.movement_review.json
+```
+
+Movement Review evaluation is documented in [docs/MOVEMENT_REVIEW_EVALUATION_RUNBOOK.md](docs/MOVEMENT_REVIEW_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, answer gap report commands and diagnostic-only guardrails.
+
+Run the Comparison / Remediation rich-answer benchmark, including broad and focused follow-up coverage, after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.comparison_remediation.json
+```
+
+Run the Tax / PAYG rich-answer benchmark, including broad and focused follow-up coverage, after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.tax_payg.json
+```
+
+Run the Deductions / Obligations rich-answer benchmark, including broad and focused follow-up coverage, after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.deductions_obligations.json
+```
+
+Run the Retro / Replay rich-answer benchmark after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.retro_replay.json
+```
+
+Run the diagnostic-only Deductions / Obligations corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_deductions_obligations_corpus_coverage.py --json --output .\artifacts\eval\deductions_obligations_corpus_coverage.json
+```
+
+Build a diagnostic-only Deductions / Obligations answer gap report from the coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_deductions_obligations_answer_gap_report.py --coverage-report .\artifacts\eval\deductions_obligations_corpus_coverage.json --output .\artifacts\eval\deductions_obligations_answer_gap_report.json
+```
+
+These Deductions / Obligations diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, or connect Code Evidence Index to answer generation.
+
+Deductions / Obligations evaluation is documented in [docs/DEDUCTIONS_OBLIGATIONS_EVALUATION_RUNBOOK.md](docs/DEDUCTIONS_OBLIGATIONS_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, answer gap report commands and diagnostic-only guardrails.
+
+Run the diagnostic-only Tax / PAYG corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_tax_payg_corpus_coverage.py --json --output .\artifacts\eval\tax_payg_corpus_coverage.json
+```
+
+Build a diagnostic-only Tax / PAYG answer gap report from the coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_tax_payg_answer_gap_report.py --coverage-report .\artifacts\eval\tax_payg_corpus_coverage.json --output .\artifacts\eval\tax_payg_answer_gap_report.json
+```
+
+These Tax / PAYG diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, or connect Code Evidence Index to answer generation.
+
+Tax / PAYG evaluation is documented in [docs/TAX_PAYG_EVALUATION_RUNBOOK.md](docs/TAX_PAYG_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, answer gap report commands and diagnostic-only guardrails.
+
+Run the diagnostic-only Comparison / Remediation corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_comparison_remediation_corpus_coverage.py --json --output .\artifacts\eval\comparison_remediation_corpus_coverage.json
+```
+
+Build a diagnostic-only Comparison / Remediation answer gap report from the coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_comparison_remediation_answer_gap_report.py --coverage-report .\artifacts\eval\comparison_remediation_corpus_coverage.json --output .\artifacts\eval\comparison_remediation_answer_gap_report.json
+```
+
+These Comparison / Remediation diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, or connect Code Evidence Index to answer generation.
+
+Comparison / Remediation evaluation is documented in [docs/COMPARISON_REMEDIATION_EVALUATION_RUNBOOK.md](docs/COMPARISON_REMEDIATION_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, answer gap report commands and diagnostic-only guardrails.
+
+Run the diagnostic-only Movement Review corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_movement_review_corpus_coverage.py --json --output .\artifacts\eval\movement_review_corpus_coverage.json
+```
+
+Build a diagnostic-only Movement Review answer gap report from the coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_movement_review_answer_gap_report.py --coverage-report .\artifacts\eval\movement_review_corpus_coverage.json --output .\artifacts\eval\movement_review_answer_gap_report.json
+```
+
+These Movement Review diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, or connect Code Evidence Index to answer generation.
+
+Run the diagnostic-only PayRun Admin Queue corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_payrun_admin_queue_corpus_coverage.py --json --output .\artifacts\eval\payrun_admin_queue_corpus_coverage.json
+```
+
+Build a diagnostic-only PayRun Admin Queue answer gap report from the coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_payrun_admin_queue_answer_gap_report.py --coverage-report .\artifacts\eval\payrun_admin_queue_corpus_coverage.json --output .\artifacts\eval\payrun_admin_queue_answer_gap_report.json
+```
+
+These PayRun Admin Queue diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, or connect Code Evidence Index to answer generation.
+
+Run the diagnostic-only Payroll Bases & Totals corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_payroll_bases_corpus_coverage.py --json --output .\artifacts\eval\payroll_bases_corpus_coverage.json
+```
+
+Build a diagnostic-only Payroll Bases & Totals answer gap report from the coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_payroll_bases_answer_gap_report.py --coverage-report .\artifacts\eval\payroll_bases_corpus_coverage.json --output .\artifacts\eval\payroll_bases_answer_gap_report.json
+```
+
+These Payroll Bases diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, or connect Code Evidence Index to answer generation.
+
 Run the Worker Story corpus coverage diagnostic:
 
 ```powershell
