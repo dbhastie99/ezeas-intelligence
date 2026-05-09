@@ -394,6 +394,15 @@ Run the Worker Story rich-answer benchmark after corpus changes:
 py scripts/run_golden_questions.py --manifest samples/eval/rich_answer_benchmark.worker_story.json --verbose --allow-failures
 ```
 
+Run the Worker Story corpus coverage diagnostic:
+
+```powershell
+py scripts/scan_worker_story_corpus_coverage.py
+py scripts/scan_worker_story_corpus_coverage.py --json --output reports/worker_story_corpus_coverage.json
+```
+
+The coverage diagnostic is not a benchmark and does not call a live LLM. It reads the already indexed formal corpus, reports whether each Worker Story evidence group is `STRONG`, `WEAK` or `MISSING`, and does not ingest or mutate corpus records.
+
 ## Targeted Annual Leave Corpus Supplement
 
 If the Annual Leave golden pack fails against SQL Server, the loaded foundation corpus likely does not yet include enough leave-specific formal logs. Before bulk raw chat-history ingestion, load targeted formal leave documents only.
