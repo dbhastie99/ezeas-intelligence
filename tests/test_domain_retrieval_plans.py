@@ -4,6 +4,7 @@ from app.services.domain_retrieval_plan_service import (
     AWARD_BUILD_EVIDENCE_PLAN,
     COMPARISON_REMEDIATION_PLAN,
     CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN,
+    CONTACT_PAYROLL_HISTORY_PLAN,
     COSTING_GL_CONSEQUENCE_PLAN,
     DECISION_STORY_PLAN,
     DEDUCTIONS_OBLIGATIONS_PLAN,
@@ -11,6 +12,7 @@ from app.services.domain_retrieval_plan_service import (
     GROSS_TO_NET_PLAN,
     IMPORTS_ACTUALS_PLAN,
     LEAVE_ACCRUAL_PROCESSING_PLAN,
+    LEAVE_REQUESTS_WORKFLOW_PLAN,
     LEAVE_SOURCE_MODEL_PLAN,
     MOVEMENT_REVIEW_PLAN,
     OBJECTTIME_SOURCE_TRUTH_PLAN,
@@ -184,6 +186,50 @@ def test_worker_attention_issue_resolution_focused_questions_detect_domain_plan(
         assert plan.plan_id == "WORKER_ATTENTION_ISSUE_RESOLUTION"
 
 
+def test_leave_requests_workflow_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is Leave Requests / Leave Workflow in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "LEAVE_REQUESTS_WORKFLOW"
+
+
+def test_leave_requests_workflow_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in LEAVE_REQUESTS_WORKFLOW_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "leave_request_purpose",
+        "request_creation_and_draft_editing",
+        "status_transitions_and_idempotency",
+        "submission_review_approval_reopen",
+        "overlap_and_shortfall_handling",
+        "taken_leave_valuation_and_hard_fail",
+        "leave_ledger_posting",
+        "leave_source_and_applicability_relationship",
+        "worker_story_and_payrun_relationship",
+        "finalisation_and_readiness_relationship",
+        "outstanding_hardening",
+    }
+
+
+def test_leave_requests_workflow_routing_overlaps_keep_existing_domain_owners():
+    cases = {
+        "How does leave accrue and get processed in Ezeas?": "LEAVE_ACCRUAL_PROCESSING",
+        "What is the Leave Source Model and why does it matter?": "LEAVE_SOURCE_MODEL",
+        "What is Payroll Output in the platform?": "PAYROLL_OUTPUT",
+        "What is Worker Story and what evidence does it show?": "WORKER_STORY",
+        "What is Finalisation Readiness in the platform?": "FINALISATION_READINESS",
+        "How does Contact Payroll History relate to leave, accrual and Worker Story?": "CONTACT_PAYROLL_HISTORY",
+        "What are Deductions / Obligations and how should they work?": "DEDUCTIONS_OBLIGATIONS",
+        "How does Gross-to-Net move from gross earnings to net pay?": "GROSS_TO_NET",
+    }
+
+    for question, expected_plan_id in cases.items():
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == expected_plan_id
+
+
 def test_gross_to_net_question_detects_domain_plan():
     plan = detect_domain_retrieval_plan("What is Gross-to-Net in the platform?")
 
@@ -330,6 +376,69 @@ def test_payroll_output_focused_questions_detect_domain_plan():
 
         assert plan is not None
         assert plan.plan_id == "PAYROLL_OUTPUT"
+
+
+def test_contact_payroll_history_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is Contact Payroll History in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "CONTACT_PAYROLL_HISTORY"
+
+
+def test_contact_payroll_history_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in CONTACT_PAYROLL_HISTORY_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "contact_payroll_history_purpose",
+        "contact_identity_and_payrun_participation",
+        "current_and_historical_payroll_output",
+        "gross_to_net_history",
+        "deductions_obligations_and_negative_net_pay",
+        "tax_and_payment_readiness_history",
+        "leave_and_accrual_history",
+        "worker_story_relationship",
+        "movement_review_and_admin_queue_relationship",
+        "retro_replay_and_correction_relationship",
+        "outstanding_hardening",
+    }
+
+
+def test_contact_payroll_history_focused_questions_detect_domain_plan():
+    questions = [
+        "How does Contact Payroll History show PayRun participation?",
+        "How should Contact Payroll History distinguish current and historical payroll output?",
+        "How does Contact Payroll History relate to deductions, obligations and negative net pay?",
+        "How does Contact Payroll History relate to tax, payment and readiness history?",
+        "How does Contact Payroll History relate to leave, accrual and Worker Story?",
+        "How does Contact Payroll History support retro, replay and correction context?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "CONTACT_PAYROLL_HISTORY"
+
+
+def test_contact_payroll_history_routing_overlaps_keep_existing_domain_owners():
+    cases = {
+        "How do Contacts / Employee Appointments explain contact identity and appointment context?": "CONTACTS_EMPLOYEE_APPOINTMENTS",
+        "What is Payroll Output in the platform?": "PAYROLL_OUTPUT",
+        "How does Gross-to-Net move from gross earnings to net pay?": "GROSS_TO_NET",
+        "What is Worker Story and what evidence does it show?": "WORKER_STORY",
+        "How do Deductions / Obligations explain obligations and reducing-balance recovery?": "DEDUCTIONS_OBLIGATIONS",
+        "How should Tax / PAYG explain PAYG withholding?": "TAX_PAYG",
+        "How does Payment Execution / Remittance handle payment files?": "PAYMENT_EXECUTION_REMITTANCE",
+        "What is Retro / Replay and how should replay work?": "RETRO_REPLAY",
+        "What is Movement Review and what does it show?": "MOVEMENT_REVIEW",
+        "What is the PayRun Admin Queue and what does it show?": "PAYRUN_ADMIN_QUEUE",
+    }
+
+    for question, expected_plan_id in cases.items():
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == expected_plan_id
 
 
 def test_gross_to_net_focused_questions_detect_domain_plan():

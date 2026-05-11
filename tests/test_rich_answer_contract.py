@@ -575,6 +575,88 @@ def _ingest_payroll_output_benchmark_evidence(db_session):
         _ingest(db_session, text, title=title)
 
 
+def _ingest_contact_payroll_history_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Contact Payroll History is the contact/worker-level historical payroll evidence surface for payroll "
+            "history, worker payroll history, contact-level payroll history and payroll outcome history.",
+            "Developer Log - Contact Payroll History Purpose",
+        ),
+        (
+            "Contact identity, worker history, PayRunContact and PayRun participation show how a contact or worker "
+            "participated in process periods and historical PayRuns. Contact Payroll History shows "
+            "contact/worker-level payroll history, worker-level output/history and current and historical payroll "
+            "evidence, but it is not proof of payroll correctness by itself.",
+            "Developer Log - Contact Payroll History Participation",
+        ),
+        (
+            "Current payroll output, current-effective payroll output, current-effective payroll output truth and "
+            "historical payroll output distinguish current and historical payroll output. Historical/finalised output "
+            "evidence, Run Output and Process Period Output are separate lenses where relevant. Superseded/stale "
+            "outputs should not be described as current truth, finalised truth should not be overwritten silently, "
+            "and status honesty is required.",
+            "Developer Log - Contact Payroll History Output",
+        ),
+        (
+            "Gross-to-Net history, gross to net history, gross earnings history, net pay history and payroll outcome "
+            "history are part of the contact payroll history inspection lens.",
+            "Developer Log - Contact Payroll History Gross-to-Net",
+        ),
+        (
+            "Contact-level deduction history, contact deductions, contact obligations, deductions, obligations, "
+            "reducing balance, recovery context, negative net pay governed treatment and out-of-pay records can "
+            "appear as historical payroll evidence. Carry-forward, write-off and recovery implications relate to "
+            "Gross-to-Net and Worker Attention, but Contact Payroll History is not automatic net-pay subtraction or "
+            "Minerva resolution.",
+            "Developer Log - Contact Payroll History Deductions Obligations",
+        ),
+        (
+            "Contact tax, tax/PAYG history, tax history, PAYG, tax readiness evidence, contact payment, payment "
+            "allocation, payment readiness history and bank/payment destination context are historical readiness and "
+            "outcome signals for Contact Payroll History. The finalisation/payment execution boundary remains visible: "
+            "readiness is not payment file generation, and Minerva does not withhold tax or generate payment files.",
+            "Developer Log - Contact Payroll History Tax Payment",
+        ),
+        (
+            "Leave history, accrual history, leave/accrual evidence over time, leave accrual, leave evidence, "
+            "LeaveLedger, leave output and valuation basis can connect Contact Payroll History to leave and accrual "
+            "outcomes through evidence links rather than recalculation.",
+            "Developer Log - Contact Payroll History Leave Accrual",
+        ),
+        (
+            "Worker Story, worker evidence, worker-level story, payroll explanation and contact history connect "
+            "Contact Payroll History to worker-level explanation.",
+            "Developer Log - Contact Payroll History Worker Story",
+        ),
+        (
+            "Movement Review, Admin Queue, PayRun Admin Queue, review context, action workbench and reasonableness "
+            "provide movement/review context and operator action context without making those surfaces identical.",
+            "Developer Log - Contact Payroll History Review Queue",
+        ),
+        (
+            "Retro history, correction history, retro/replay/correction context, retro replay and correction "
+            "implications are future implications and evidence relationships. Historical payroll evidence, finalised "
+            "truth preservation, correction, retro and replay pathways, and attributed-period versus paid-period "
+            "distinction matter where formal evidence supports them. Contact Payroll History does not silently mutate "
+            "history, and it is not proof that Minerva performs retro/replay or corrections.",
+            "Developer Log - Contact Payroll History Retro Correction",
+        ),
+        (
+            "Minerva does not calculate payroll history, change historical payroll records, correct payroll outcomes, "
+            "perform retro/replay, approve payroll changes, finalise PayRuns or mutate operational payroll truth. "
+            "Contact Payroll History alone does not prove payroll correctness.",
+            "Platform Doctrine - Contact Payroll History Minerva Boundary",
+        ),
+        (
+            "Outstanding hardening remains around Contact Payroll History status honesty, historical payroll records, "
+            "finalised truth, correction implications and broader evidence contracts.",
+            "Developer Log - Contact Payroll History Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
 def _ingest_movement_review_benchmark_evidence(db_session):
     evidence = [
         (
@@ -892,6 +974,76 @@ def _ingest_retro_replay_benchmark_evidence(db_session):
             "Retro / Replay outstanding hardening remains future work because full retro/replay implementation and "
             "dependency detection are not complete.",
             "Developer Log - Retro Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_leave_requests_workflow_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Leave Requests / Leave Workflow is the governed leave request workflow for creating, drafting, "
+            "submitting, reviewing, approving, rejecting, reopening, valuing, posting and explaining employee leave "
+            "requests. Leave Request and LeaveRequest records represent workflow evidence.",
+            "Developer Log - Leave Requests Workflow Purpose",
+        ),
+        (
+            "Request creation and draft editing support create leave request, draft leave, draft editing and leave "
+            "request preview before submission.",
+            "Developer Log - Leave Requests Draft Editing",
+        ),
+        (
+            "Leave status, status transitions, IdempotencyKey, idempotency and idempotent leave handling should make "
+            "workflow actions repeat-safe and explainable.",
+            "Developer Log - Leave Requests Status Idempotency",
+        ),
+        (
+            "Leave submission, submit leave, approve leave, reject leave, reopen leave and review leave are governed "
+            "workflow transitions. Minerva explains the workflow evidence but does not approve leave or reopen leave "
+            "requests.",
+            "Developer Log - Leave Requests Submission Approval Reopen",
+        ),
+        (
+            "Leave overlap, overlap handling, shortfall substitution, shortfall and substitution should be explicit "
+            "workflow evidence where supported. Minerva does not resolve shortfalls.",
+            "Developer Log - Leave Requests Overlap Shortfall",
+        ),
+        (
+            "TAKEN leave valuation, leave valuation, leave valuation basis and hard fail behaviour are required when "
+            "valuation evidence is mandatory.",
+            "Developer Log - Leave Requests Taken Valuation",
+        ),
+        (
+            "LeaveLedger, leave posting, LeaveLedger posting, leave balance and leave ledger rows are deterministic "
+            "platform posting evidence. Minerva does not post LeaveLedger rows or change leave balances.",
+            "Developer Log - Leave Requests Ledger Posting",
+        ),
+        (
+            "Leave Source Model, leave applicability, LeaveTypeRule, source applicability and leave source evidence "
+            "should be caveated because LeaveTypeRule alone does not prove final leave applicability.",
+            "Developer Log - Leave Requests Source Applicability",
+        ),
+        (
+            "Worker Story, PayRun, leave request payment, Leave and Accrual Outcome and worker leave evidence connect "
+            "Leave Requests / Leave Workflow to worker-level explanation and PayRun context.",
+            "Developer Log - Leave Requests Worker Story PayRun",
+        ),
+        (
+            "Finalisation readiness, leave readiness, missing leave output, PayRun finalisation and readiness connect "
+            "leave requests to finalisation readiness without Minerva finalising PayRuns.",
+            "Developer Log - Leave Requests Finalisation Readiness",
+        ),
+        (
+            "Minerva does not approve leave, calculate leave, post LeaveLedger rows, change leave balances, reopen "
+            "leave requests, resolve shortfalls, finalise PayRuns or mutate operational leave or payroll truth. Leave "
+            "Requests alone does not prove payroll correctness.",
+            "Platform Doctrine - Leave Requests Minerva Boundary",
+        ),
+        (
+            "Outstanding hardening remains around Leave Requests / Leave Workflow, leave workflow, request ownership, "
+            "leave hardening, status honesty and broader workflow contracts.",
+            "Developer Log - Leave Requests Outstanding Hardening",
         ),
     ]
     for text, title in evidence:
@@ -1868,6 +2020,36 @@ def test_payroll_output_rich_answer_benchmark_manifest_loads(db_session):
     assert all(item["checks"]["answer_mode"] is True for item in result["results"])
 
 
+def test_leave_requests_workflow_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.leave_requests_workflow.json")
+
+    assert manifest["name"] == "Leave Requests / Leave Workflow rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "leave-requests-workflow-rich-answer",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.leave_requests_workflow.json")
+    assert result["total"] == 1
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_contact_payroll_history_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.contact_payroll_history.json")
+
+    assert manifest["name"] == "Contact Payroll History rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "contact-payroll-history-rich-answer",
+        "contact-payroll-history-payrun-participation",
+        "contact-payroll-history-current-historical-output",
+        "contact-payroll-history-deductions-obligations-negative-net-pay",
+        "contact-payroll-history-tax-payment-readiness",
+        "contact-payroll-history-leave-accrual-worker-story",
+        "contact-payroll-history-retro-replay-correction",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.contact_payroll_history.json")
+    assert result["total"] == 7
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
 def test_movement_review_rich_answer_benchmark_manifest_loads(db_session):
     manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.movement_review.json")
 
@@ -2410,6 +2592,56 @@ def test_payroll_output_benchmark_runner_returns_pass_status_with_seeded_evidenc
         "payroll-output-gross-to-net",
         "payroll-output-payroll-bases-totals",
         "payroll-output-finalisation-payment-execution",
+    }
+
+
+def test_leave_requests_workflow_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_leave_requests_workflow_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.leave_requests_workflow.json")
+
+    assert result["name"] == "Leave Requests / Leave Workflow rich-answer benchmark"
+    assert result["total"] == 1
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "leave-requests-workflow-rich-answer",
+    }
+
+
+def test_contact_payroll_history_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_contact_payroll_history_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.contact_payroll_history.json")
+
+    assert result["name"] == "Contact Payroll History rich-answer benchmark"
+    assert result["total"] == 7
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "contact-payroll-history-rich-answer",
+        "contact-payroll-history-payrun-participation",
+        "contact-payroll-history-current-historical-output",
+        "contact-payroll-history-deductions-obligations-negative-net-pay",
+        "contact-payroll-history-tax-payment-readiness",
+        "contact-payroll-history-leave-accrual-worker-story",
+        "contact-payroll-history-retro-replay-correction",
     }
 
 

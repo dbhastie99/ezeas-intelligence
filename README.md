@@ -542,6 +542,34 @@ Run the Payroll Output rich-answer benchmark, including broad and focused follow
 .\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payroll_output.json
 ```
 
+Run the Contact Payroll History rich-answer benchmark, including broad and focused follow-up coverage, after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.contact_payroll_history.json
+```
+
+Run the Leave Requests / Leave Workflow rich-answer benchmark after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.leave_requests_workflow.json
+```
+
+Run the diagnostic-only Contact Payroll History corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_contact_payroll_history_corpus_coverage.py --json --output .\artifacts\eval\contact_payroll_history_corpus_coverage.json
+```
+
+Build the diagnostic-only Contact Payroll History answer gap report from coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_contact_payroll_history_answer_gap_report.py --coverage-report .\artifacts\eval\contact_payroll_history_corpus_coverage.json --output .\artifacts\eval\contact_payroll_history_answer_gap_report.json
+```
+
+These Contact Payroll History diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, read source code as Minerva evidence, or connect Code Evidence Index to answer generation.
+
+For the repeatable Contact Payroll History evaluation workflow and interpretation guidance, see [docs/CONTACT_PAYROLL_HISTORY_EVALUATION_RUNBOOK.md](docs/CONTACT_PAYROLL_HISTORY_EVALUATION_RUNBOOK.md).
+
 Run the diagnostic-only Payroll Output corpus coverage scan:
 
 ```powershell

@@ -264,6 +264,25 @@ def test_project_term_normalization_matches_payroll_output_variants():
     assert contains_normalized_term("CalcInterpreterLine exists", "CalcInterpreterLine")
 
 
+def test_project_term_normalization_matches_contact_payroll_history_variants():
+    assert contains_normalized_term("ContactPayrollHistory explains history", "Contact Payroll History")
+    assert contains_normalized_term("payrollhistory is visible", "Payroll history")
+    assert contains_normalized_term("worker payroll history is visible", "worker payroll history")
+    assert contains_normalized_term("contact level payroll history is visible", "contact-level payroll history")
+    assert contains_normalized_term("historicalpayrolloutput is visible", "historical payroll output")
+    assert contains_normalized_term("PayRun participation is visible", "PayRun participation")
+    assert contains_normalized_term("workerhistory is visible", "worker history")
+    assert contains_normalized_term("payroll outcome history is visible", "payroll outcome history")
+    assert contains_normalized_term("contactdeductions are visible", "contact deductions")
+    assert contains_normalized_term("contact obligations are visible", "contact obligations")
+    assert contains_normalized_term("contacttax is visible", "contact tax")
+    assert contains_normalized_term("contact payment is visible", "contact payment")
+    assert contains_normalized_term("leavehistory is visible", "leave history")
+    assert contains_normalized_term("accrual history is visible", "accrual history")
+    assert contains_normalized_term("retrohistory is visible", "retro history")
+    assert contains_normalized_term("correction history is visible", "correction history")
+
+
 def test_project_term_normalization_matches_leave_accrual_processing_variants():
     assert contains_normalized_term("Leave Accrual evidence exists", "Leave Accrual")
     assert contains_normalized_term("LeaveProcessing is queued", "Leave Processing")
@@ -276,6 +295,28 @@ def test_project_term_normalization_matches_leave_accrual_processing_variants():
     assert contains_normalized_term("Leave Process Run exists", "LeaveProcessRun")
     assert contains_normalized_term("takenleave needs valuation", "TAKEN leave")
     assert contains_normalized_term("per hour accrual exists", "PER_HOUR")
+
+
+def test_project_term_normalization_matches_leave_requests_workflow_variants():
+    assert contains_normalized_term("LeaveRequest is visible", "LeaveRequest")
+    assert contains_normalized_term("Leave Requests are visible", "Leave Requests")
+    assert contains_normalized_term("leaveworkflow is visible", "leave workflow")
+    assert contains_normalized_term("leave submission is visible", "leave submission")
+    assert contains_normalized_term("submitleave is visible", "submit leave")
+    assert contains_normalized_term("approve leave is visible", "approve leave")
+    assert contains_normalized_term("rejectleave is visible", "reject leave")
+    assert contains_normalized_term("reopen leave is visible", "reopen leave")
+    assert contains_normalized_term("leavestatus is visible", "leave status")
+    assert contains_normalized_term("IdempotencyKey is visible", "IdempotencyKey")
+    assert contains_normalized_term("leaveoverlap is visible", "leave overlap")
+    assert contains_normalized_term("shortfall substitution is visible", "shortfall substitution")
+    assert contains_normalized_term("takenleave needs valuation", "TAKEN leave")
+    assert contains_normalized_term("leavevaluation is visible", "leave valuation")
+    assert contains_normalized_term("LeaveLedger exists", "LeaveLedger")
+    assert contains_normalized_term("leaveposting is visible", "leave posting")
+    assert contains_normalized_term("leave request payment exists", "leave request payment")
+    assert contains_normalized_term("leave balance is visible", "leave balance")
+    assert contains_normalized_term("leaverequestpreview is visible", "leave request preview")
 
 
 def test_project_term_normalization_matches_leave_source_model_variants():

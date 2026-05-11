@@ -440,6 +440,34 @@ PAYROLL_OUTPUT_GROUP_SIGNAL_TERMS = {
     "outstanding_hardening": ("Payroll Output", "outstanding hardening", "status honesty"),
 }
 
+CONTACT_PAYROLL_HISTORY_GROUP_KEY_TERMS = {
+    "contact_payroll_history_purpose": ("Contact Payroll History", "payroll history", "worker payroll history", "contact-level payroll history", "payroll outcome history"),
+    "contact_identity_and_payrun_participation": ("Contact", "worker", "contact identity", "PayRun participation", "PayRunContact", "worker history"),
+    "current_and_historical_payroll_output": ("current payroll output", "historical payroll output", "current-effective payroll output", "payroll output history", "historical evidence"),
+    "gross_to_net_history": ("Gross-to-Net history", "gross to net history", "gross earnings history", "net pay history", "payroll outcome history"),
+    "deductions_obligations_and_negative_net_pay": ("contact deductions", "contact obligations", "deductions", "obligations", "negative net pay", "out-of-pay"),
+    "tax_and_payment_readiness_history": ("contact tax", "contact payment", "tax history", "payment readiness history", "payment allocation", "PAYG"),
+    "leave_and_accrual_history": ("leave history", "accrual history", "leave/accrual evidence", "leave accrual", "leave evidence"),
+    "worker_story_relationship": ("Worker Story", "worker evidence", "worker-level story", "payroll explanation", "contact history"),
+    "movement_review_and_admin_queue_relationship": ("Movement Review", "Admin Queue", "PayRun Admin Queue", "review context", "action workbench", "reasonableness"),
+    "retro_replay_and_correction_relationship": ("retro history", "correction history", "retro/replay/correction context", "retro replay", "correction implications"),
+    "outstanding_hardening": ("Contact Payroll History", "outstanding hardening", "status honesty", "historical payroll records", "finalised truth"),
+}
+
+CONTACT_PAYROLL_HISTORY_GROUP_SIGNAL_TERMS = {
+    "contact_payroll_history_purpose": ("Contact Payroll History", "payroll history", "worker payroll history"),
+    "contact_identity_and_payrun_participation": ("Contact", "PayRun participation", "worker history"),
+    "current_and_historical_payroll_output": ("historical payroll output", "current-effective payroll output", "historical evidence"),
+    "gross_to_net_history": ("Gross-to-Net history", "net pay history", "payroll outcome history"),
+    "deductions_obligations_and_negative_net_pay": ("contact deductions", "contact obligations", "negative net pay"),
+    "tax_and_payment_readiness_history": ("contact tax", "contact payment", "payment readiness history"),
+    "leave_and_accrual_history": ("leave history", "accrual history", "leave/accrual evidence"),
+    "worker_story_relationship": ("Worker Story", "worker evidence", "contact history"),
+    "movement_review_and_admin_queue_relationship": ("Movement Review", "Admin Queue", "review context"),
+    "retro_replay_and_correction_relationship": ("retro history", "correction history", "retro/replay/correction context"),
+    "outstanding_hardening": ("Contact Payroll History", "outstanding hardening", "status honesty"),
+}
+
 PAYRUN_ADMIN_QUEUE_GROUP_KEY_TERMS = {
     "purpose_and_operator_meaning": (
         "PayRun Admin Queue",
@@ -1174,6 +1202,34 @@ LEAVE_ACCRUAL_PROCESSING_GROUP_SIGNAL_TERMS = {
     "worker_story_connection": ("Worker Story", "Leave and Accrual Outcome", "server-owned leave output"),
     "payroll_bases_connection": ("Payroll Bases & Totals", "worked hours", "basis quantity"),
     "outstanding_hardening": ("outstanding hardening", "Leave Source Model", "leave-processing UI"),
+}
+
+LEAVE_REQUESTS_WORKFLOW_GROUP_KEY_TERMS = {
+    "leave_request_purpose": ("Leave Requests / Leave Workflow", "Leave Request", "LeaveRequest", "leave workflow", "governed leave request workflow"),
+    "request_creation_and_draft_editing": ("Leave Request", "create leave request", "draft leave", "draft editing", "leave request preview"),
+    "status_transitions_and_idempotency": ("leave status", "status transitions", "IdempotencyKey", "idempotency", "idempotent leave"),
+    "submission_review_approval_reopen": ("leave submission", "submit leave", "approve leave", "reject leave", "reopen leave", "review leave"),
+    "overlap_and_shortfall_handling": ("leave overlap", "overlap handling", "shortfall substitution", "shortfall", "substitution"),
+    "taken_leave_valuation_and_hard_fail": ("TAKEN leave", "leave valuation", "hard fail", "hard-fail", "leave valuation basis"),
+    "leave_ledger_posting": ("LeaveLedger", "leave posting", "LeaveLedger posting", "leave balance", "leave ledger rows"),
+    "leave_source_and_applicability_relationship": ("Leave Source Model", "leave applicability", "LeaveTypeRule", "source applicability", "leave source"),
+    "worker_story_and_payrun_relationship": ("Worker Story", "PayRun", "leave request payment", "Leave and Accrual Outcome", "worker leave evidence"),
+    "finalisation_and_readiness_relationship": ("finalisation readiness", "leave readiness", "missing leave output", "PayRun finalisation", "readiness"),
+    "outstanding_hardening": ("Leave Requests / Leave Workflow", "outstanding hardening", "leave workflow", "request ownership", "leave hardening"),
+}
+
+LEAVE_REQUESTS_WORKFLOW_GROUP_SIGNAL_TERMS = {
+    "leave_request_purpose": ("Leave Requests / Leave Workflow", "Leave Request", "leave workflow"),
+    "request_creation_and_draft_editing": ("create leave request", "draft leave", "leave request preview"),
+    "status_transitions_and_idempotency": ("leave status", "status transitions", "IdempotencyKey"),
+    "submission_review_approval_reopen": ("submit leave", "approve leave", "reject leave", "reopen leave"),
+    "overlap_and_shortfall_handling": ("leave overlap", "shortfall substitution", "substitution"),
+    "taken_leave_valuation_and_hard_fail": ("TAKEN leave", "leave valuation", "hard fail"),
+    "leave_ledger_posting": ("LeaveLedger", "leave posting", "leave balance"),
+    "leave_source_and_applicability_relationship": ("Leave Source Model", "leave applicability", "LeaveTypeRule"),
+    "worker_story_and_payrun_relationship": ("Worker Story", "PayRun", "Leave and Accrual Outcome"),
+    "finalisation_and_readiness_relationship": ("finalisation readiness", "leave readiness", "missing leave output"),
+    "outstanding_hardening": ("Leave Requests / Leave Workflow", "outstanding hardening", "leave workflow"),
 }
 
 FINALISATION_READINESS_GROUP_KEY_TERMS = {
@@ -2412,6 +2468,10 @@ def _is_payroll_output_group(group: EvidenceGroup) -> bool:
     return group.label.startswith("Payroll Output")
 
 
+def _is_contact_payroll_history_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Contact Payroll History")
+
+
 def _is_movement_review_group(group: EvidenceGroup) -> bool:
     return group.label.startswith("Movement Review") or group.group_id in {
         "reasonableness_not_error",
@@ -2493,6 +2553,10 @@ def _is_payment_execution_remittance_group(group: EvidenceGroup) -> bool:
 
 def _is_leave_accrual_processing_group(group: EvidenceGroup) -> bool:
     return group.label.startswith("Leave Accrual / Processing")
+
+
+def _is_leave_requests_workflow_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Leave Requests / Leave Workflow")
 
 
 def _is_finalisation_readiness_group(group: EvidenceGroup) -> bool:
@@ -3284,6 +3348,40 @@ def _payroll_output_domain_sentence(terms: list[str], label: str) -> str:
     return f"{', '.join(clauses)}."
 
 
+def _contact_payroll_history_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Contact Payroll History evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Contact Payroll History",
+            "payroll history",
+            "worker payroll history",
+            "contact-level payroll history",
+            "PayRun participation",
+            "current payroll output",
+            "historical payroll output",
+            "current-effective payroll output",
+            "Gross-to-Net history",
+            "deductions",
+            "obligations",
+            "negative net pay",
+            "tax history",
+            "payment readiness history",
+            "leave history",
+            "accrual history",
+            "Worker Story",
+            "Movement Review",
+            "Admin Queue",
+            "retro/replay/correction context",
+            "outstanding hardening",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
 def _comparison_remediation_domain_sentence(terms: list[str], label: str) -> str:
     clauses = [f"{label} is described in the retrieved Comparison / Remediation evidence"]
     detail_terms = [
@@ -3679,6 +3777,51 @@ def _finalisation_readiness_domain_sentence(terms: list[str], label: str) -> str
     return f"{', '.join(clauses)}."
 
 
+def _leave_requests_workflow_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Leave Requests / Leave Workflow evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Leave Requests / Leave Workflow",
+            "Leave Request",
+            "LeaveRequest",
+            "leave workflow",
+            "governed leave request workflow",
+            "create leave request",
+            "draft leave",
+            "leave request preview",
+            "leave status",
+            "status transitions",
+            "IdempotencyKey",
+            "leave submission",
+            "submit leave",
+            "approve leave",
+            "reject leave",
+            "reopen leave",
+            "leave overlap",
+            "shortfall substitution",
+            "TAKEN leave",
+            "leave valuation",
+            "hard fail",
+            "LeaveLedger",
+            "leave posting",
+            "leave balance",
+            "Leave Source Model",
+            "leave applicability",
+            "LeaveTypeRule",
+            "Worker Story",
+            "PayRun",
+            "finalisation readiness",
+            "leave readiness",
+            "outstanding hardening",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
 def _leave_source_model_domain_sentence(terms: list[str], label: str) -> str:
     clauses = [f"{label} is described in the retrieved Leave Source Model evidence"]
     detail_terms = [
@@ -3801,6 +3944,8 @@ def _sentence_for_group(group: EvidenceGroup, terms: list[str]) -> str:
         return _costing_gl_consequence_domain_sentence(terms, group.label)
     if _is_process_period_payrun_lifecycle_group(group):
         return _process_period_payrun_lifecycle_domain_sentence(terms, group.label)
+    if _is_contact_payroll_history_group(group):
+        return _contact_payroll_history_domain_sentence(terms, group.label)
     if _is_contacts_employee_appointments_group(group):
         return _contacts_employee_appointments_domain_sentence(terms, group.label)
     if _is_objecttime_source_truth_group(group):
@@ -3817,6 +3962,8 @@ def _sentence_for_group(group: EvidenceGroup, terms: list[str]) -> str:
         return _finalisation_readiness_domain_sentence(terms, group.label)
     if _is_leave_accrual_processing_group(group):
         return _leave_accrual_processing_domain_sentence(terms, group.label)
+    if _is_leave_requests_workflow_group(group):
+        return _leave_requests_workflow_domain_sentence(terms, group.label)
     if _is_payment_execution_remittance_group(group):
         return _payment_execution_remittance_domain_sentence(terms, group.label)
     if _is_retro_replay_group(group):
@@ -3889,6 +4036,9 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         PAYROLL_OUTPUT_GROUP_KEY_TERMS.get(group.group_id)
         if _is_payroll_output_group(group)
         else
+        CONTACT_PAYROLL_HISTORY_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_contact_payroll_history_group(group)
+        else
         GROSS_TO_NET_GROUP_KEY_TERMS.get(group.group_id)
         if _is_gross_to_net_group(group)
         else
@@ -3925,6 +4075,9 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         LEAVE_ACCRUAL_PROCESSING_GROUP_KEY_TERMS.get(group.group_id)
         if _is_leave_accrual_processing_group(group)
         else
+        LEAVE_REQUESTS_WORKFLOW_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_leave_requests_workflow_group(group)
+        else
         PAYMENT_EXECUTION_REMITTANCE_GROUP_KEY_TERMS.get(group.group_id)
         if _is_payment_execution_remittance_group(group)
         else
@@ -3956,6 +4109,9 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         else
         PAYROLL_OUTPUT_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_payroll_output_group(group)
+        else
+        CONTACT_PAYROLL_HISTORY_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_contact_payroll_history_group(group)
         else
         GROSS_TO_NET_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_gross_to_net_group(group)
@@ -3992,6 +4148,9 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         else
         LEAVE_ACCRUAL_PROCESSING_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_leave_accrual_processing_group(group)
+        else
+        LEAVE_REQUESTS_WORKFLOW_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_leave_requests_workflow_group(group)
         else
         PAYMENT_EXECUTION_REMITTANCE_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_payment_execution_remittance_group(group)

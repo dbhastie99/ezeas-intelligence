@@ -1889,6 +1889,97 @@ OBJECTTIME_SOURCE_TRUTH_PLAN = DomainRetrievalPlan(
     ),
 )
 
+LEAVE_REQUESTS_WORKFLOW_PLAN = DomainRetrievalPlan(
+    plan_id="LEAVE_REQUESTS_WORKFLOW",
+    domain="Leave Requests / Leave Workflow",
+    trigger_phrases=(
+        "what is leave requests / leave workflow",
+        "what is leave requests leave workflow",
+        "what is leave workflow",
+        "how should leave requests work",
+        "how should leave workflow work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="leave_request_purpose",
+            label="Leave Requests / Leave Workflow purpose",
+            query_terms=("Leave Requests / Leave Workflow", "Leave Request", "LeaveRequest", "leave workflow", "governed leave request workflow"),
+            required_terms_any=("Leave Requests / Leave Workflow", "Leave Request", "LeaveRequest", "leave workflow", "governed leave request workflow"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="request_creation_and_draft_editing",
+            label="Leave Requests / Leave Workflow request creation and draft editing",
+            query_terms=("Leave Request", "create leave request", "draft leave", "draft editing", "leave request preview"),
+            required_terms_any=("Leave Request", "create leave request", "draft leave", "draft editing", "leave request preview"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="status_transitions_and_idempotency",
+            label="Leave Requests / Leave Workflow status transitions and idempotency",
+            query_terms=("leave status", "status transitions", "IdempotencyKey", "idempotency", "idempotent leave"),
+            required_terms_any=("leave status", "status transitions", "IdempotencyKey", "idempotency", "idempotent leave"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="submission_review_approval_reopen",
+            label="Leave Requests / Leave Workflow submission review approval reopen",
+            query_terms=("leave submission", "submit leave", "approve leave", "reject leave", "reopen leave", "review leave"),
+            required_terms_any=("leave submission", "submit leave", "approve leave", "reject leave", "reopen leave", "review leave"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="overlap_and_shortfall_handling",
+            label="Leave Requests / Leave Workflow overlap and shortfall handling",
+            query_terms=("leave overlap", "overlap handling", "shortfall substitution", "shortfall", "substitution"),
+            required_terms_any=("leave overlap", "overlap handling", "shortfall substitution", "shortfall", "substitution"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="taken_leave_valuation_and_hard_fail",
+            label="Leave Requests / Leave Workflow TAKEN leave valuation and hard fail",
+            query_terms=("TAKEN leave", "leave valuation", "hard fail", "hard-fail", "leave valuation basis"),
+            required_terms_any=("TAKEN leave", "leave valuation", "hard fail", "hard-fail", "leave valuation basis"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_ledger_posting",
+            label="Leave Requests / Leave Workflow LeaveLedger posting",
+            query_terms=("LeaveLedger", "leave posting", "LeaveLedger posting", "leave balance", "leave ledger rows"),
+            required_terms_any=("LeaveLedger", "leave posting", "LeaveLedger posting", "leave balance", "leave ledger rows"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_source_and_applicability_relationship",
+            label="Leave Requests / Leave Workflow Leave Source and applicability relationship",
+            query_terms=("Leave Source Model", "leave applicability", "LeaveTypeRule", "source applicability", "leave source"),
+            required_terms_any=("Leave Source Model", "leave applicability", "LeaveTypeRule", "source applicability", "leave source"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_and_payrun_relationship",
+            label="Leave Requests / Leave Workflow Worker Story and PayRun relationship",
+            query_terms=("Worker Story", "PayRun", "leave request payment", "Leave and Accrual Outcome", "worker leave evidence"),
+            required_terms_any=("Worker Story", "PayRun", "leave request payment", "Leave and Accrual Outcome", "worker leave evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="finalisation_and_readiness_relationship",
+            label="Leave Requests / Leave Workflow finalisation and readiness relationship",
+            query_terms=("finalisation readiness", "leave readiness", "missing leave output", "PayRun finalisation", "readiness"),
+            required_terms_any=("finalisation readiness", "leave readiness", "missing leave output", "PayRun finalisation", "readiness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Leave Requests / Leave Workflow outstanding hardening",
+            query_terms=("Leave Requests / Leave Workflow", "outstanding hardening", "leave workflow", "request ownership", "leave hardening"),
+            required_terms_any=("Leave Requests / Leave Workflow", "outstanding hardening", "leave workflow", "request ownership", "leave hardening"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
 CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN = DomainRetrievalPlan(
     plan_id="CONTACTS_EMPLOYEE_APPOINTMENTS",
     domain="Contacts / Employee Appointments",
@@ -2468,6 +2559,96 @@ PAYROLL_OUTPUT_PLAN = DomainRetrievalPlan(
     ),
 )
 
+CONTACT_PAYROLL_HISTORY_PLAN = DomainRetrievalPlan(
+    plan_id="CONTACT_PAYROLL_HISTORY",
+    domain="Contact Payroll History",
+    trigger_phrases=(
+        "what is contact payroll history",
+        "what is payroll history",
+        "what is worker payroll history",
+        "how should contact payroll history work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="contact_payroll_history_purpose",
+            label="Contact Payroll History purpose",
+            query_terms=("Contact Payroll History", "payroll history", "worker payroll history", "contact-level payroll history", "payroll outcome history"),
+            required_terms_any=("Contact Payroll History", "payroll history", "worker payroll history", "contact-level payroll history", "payroll outcome history"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="contact_identity_and_payrun_participation",
+            label="Contact Payroll History contact identity and PayRun participation",
+            query_terms=("Contact", "worker", "contact identity", "PayRun participation", "PayRunContact", "worker history"),
+            required_terms_any=("Contact", "worker", "contact identity", "PayRun participation", "PayRunContact", "worker history"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="current_and_historical_payroll_output",
+            label="Contact Payroll History current and historical payroll output",
+            query_terms=("current payroll output", "historical payroll output", "current-effective payroll output", "payroll output history", "historical evidence"),
+            required_terms_any=("current payroll output", "historical payroll output", "current-effective payroll output", "payroll output history", "historical evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="gross_to_net_history",
+            label="Contact Payroll History Gross-to-Net history",
+            query_terms=("Gross-to-Net history", "gross to net history", "gross earnings history", "net pay history", "payroll outcome history"),
+            required_terms_any=("Gross-to-Net history", "gross to net history", "gross earnings history", "net pay history", "payroll outcome history"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="deductions_obligations_and_negative_net_pay",
+            label="Contact Payroll History deductions obligations and negative net pay",
+            query_terms=("contact deductions", "contact obligations", "deductions", "obligations", "negative net pay", "out-of-pay"),
+            required_terms_any=("contact deductions", "contact obligations", "deductions", "obligations", "negative net pay", "out-of-pay"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="tax_and_payment_readiness_history",
+            label="Contact Payroll History tax and payment readiness history",
+            query_terms=("contact tax", "contact payment", "tax history", "payment readiness history", "payment allocation", "PAYG"),
+            required_terms_any=("contact tax", "contact payment", "tax history", "payment readiness history", "payment allocation", "PAYG"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_and_accrual_history",
+            label="Contact Payroll History leave and accrual history",
+            query_terms=("leave history", "accrual history", "leave/accrual evidence", "leave accrual", "leave evidence"),
+            required_terms_any=("leave history", "accrual history", "leave/accrual evidence", "leave accrual", "leave evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_relationship",
+            label="Contact Payroll History Worker Story relationship",
+            query_terms=("Worker Story", "worker evidence", "worker-level story", "payroll explanation", "contact history"),
+            required_terms_any=("Worker Story", "worker evidence", "worker-level story", "payroll explanation", "contact history"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="movement_review_and_admin_queue_relationship",
+            label="Contact Payroll History Movement Review and Admin Queue relationship",
+            query_terms=("Movement Review", "Admin Queue", "PayRun Admin Queue", "review context", "action workbench", "reasonableness"),
+            required_terms_any=("Movement Review", "Admin Queue", "PayRun Admin Queue", "review context", "action workbench", "reasonableness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="retro_replay_and_correction_relationship",
+            label="Contact Payroll History retro replay and correction relationship",
+            query_terms=("retro history", "correction history", "retro/replay/correction context", "retro replay", "correction implications"),
+            required_terms_any=("retro history", "correction history", "retro/replay/correction context", "retro replay", "correction implications"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Contact Payroll History outstanding hardening",
+            query_terms=("Contact Payroll History", "outstanding hardening", "status honesty", "historical payroll records", "finalised truth"),
+            required_terms_any=("Contact Payroll History", "outstanding hardening", "status honesty", "historical payroll records", "finalised truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
 GROSS_TO_NET_PLAN = DomainRetrievalPlan(
     plan_id="GROSS_TO_NET",
     domain="Gross-to-Net",
@@ -2683,6 +2864,7 @@ DOMAIN_RETRIEVAL_PLANS = (
     PAYMENT_EXECUTION_REMITTANCE_PLAN,
     LEAVE_ACCRUAL_PROCESSING_PLAN,
     LEAVE_SOURCE_MODEL_PLAN,
+    LEAVE_REQUESTS_WORKFLOW_PLAN,
     ONCOSTS_EMPLOYER_LIABILITIES_PLAN,
     AWARD_BUILD_EVIDENCE_PLAN,
     IMPORTS_ACTUALS_PLAN,
@@ -2693,6 +2875,7 @@ DOMAIN_RETRIEVAL_PLANS = (
     RATE_SOURCE_RATE_STORY_PLAN,
     DECISION_STORY_PLAN,
     PAYROLL_OUTPUT_PLAN,
+    CONTACT_PAYROLL_HISTORY_PLAN,
     GROSS_TO_NET_PLAN,
     FINALISATION_READINESS_PLAN,
 )
@@ -2711,6 +2894,16 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or normalized.startswith("what is the difference between run output and process period output")
         or "payroll output relate" in normalized
         or "payroll output explain" in normalized
+    )
+    contact_payroll_history_framed = (
+        "contact payroll history" in normalized
+        or "contact level payroll history" in normalized
+        or "worker payroll history" in normalized
+        or "payroll outcome history" in normalized
+        or ("payroll history" in normalized and ("contact" in normalized or "worker" in normalized or "platform" in normalized))
+        or ("historical payroll output" in normalized and ("contact" in normalized or "worker" in normalized or "history" in normalized))
+        or ("payrun participation" in normalized and ("history" in normalized or "contact" in normalized or "worker" in normalized))
+        or ("contact history" in normalized and "payroll" in normalized)
     )
     if (
         "worker attention / issue resolution" in normalized
@@ -2937,6 +3130,34 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "platform" in normalized
     ):
         return PAYROLL_OUTPUT_PLAN
+    if (
+        contact_payroll_history_framed
+    ) and not (
+        "contacts / employee appointments" in normalized
+        or "contacts and employee appointments" in normalized
+        or "employee appointment" in normalized
+        or "employeeappointment" in normalized
+        or ("appointment" in normalized and "history" not in normalized)
+        or "payroll output" in normalized and "history" not in normalized
+        or "gross to net" in normalized and "history" not in normalized
+        or "gross-to-net" in normalized and "history" not in normalized
+        or "deductions / obligations" in normalized
+        or "tax / payg" in normalized
+        or "payment execution / remittance" in normalized
+        or "retro / replay" in normalized and "history" not in normalized
+        or "movement review" in normalized and "history" not in normalized
+        or "payrun admin queue" in normalized and "history" not in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return CONTACT_PAYROLL_HISTORY_PLAN
     if (
         "gross to net" in normalized
         or "gross-to-net" in normalized
@@ -3212,6 +3433,46 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "matter" in normalized
     ):
         return LEAVE_SOURCE_MODEL_PLAN
+    if (
+        "leave requests / leave workflow" in normalized
+        or "leave requests leave workflow" in normalized
+        or ("leave workflow" in normalized and ("what" in normalized or "how" in normalized or "platform" in normalized))
+        or ("leave request" in normalized and ("workflow" in normalized or "status" in normalized or "draft" in normalized or "submit" in normalized or "approve" in normalized or "reject" in normalized or "reopen" in normalized))
+        or ("leaverequest" in normalized and ("workflow" in normalized or "status" in normalized or "draft" in normalized or "submit" in normalized or "approve" in normalized or "reject" in normalized or "reopen" in normalized))
+        or ("leave submission" in normalized and ("workflow" in normalized or "review" in normalized or "approval" in normalized))
+        or ("submit leave" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("approve leave" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("reject leave" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("reopen leave" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("idempotencykey" in normalized and "leave" in normalized)
+        or ("leave overlap" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("shortfall substitution" in normalized and ("leave" in normalized or "request" in normalized))
+        or ("leave request preview" in normalized)
+    ) and not (
+        "leave source model" in normalized
+        or "leave source truth" in normalized
+        or ("leave source" in normalized and "applicability" in normalized and "workflow" not in normalized)
+        or ("leave accrual processing" in normalized)
+        or ("leave accrual" in normalized and "workflow" not in normalized and "request" not in normalized)
+        or ("leave processing" in normalized and "workflow" not in normalized and "request" not in normalized)
+        or ("payroll output" in normalized and "workflow" not in normalized)
+        or ("worker story" in normalized and "workflow" not in normalized and "leave request" not in normalized)
+        or ("finalisation readiness" in normalized and "workflow" not in normalized and "leave request" not in normalized)
+        or ("contact payroll history" in normalized)
+        or ("deductions / obligations" in normalized)
+        or ("gross to net" in normalized and "workflow" not in normalized and "leave request" not in normalized)
+        or ("gross-to-net" in normalized and "workflow" not in normalized and "leave request" not in normalized)
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return LEAVE_REQUESTS_WORKFLOW_PLAN
     if (
         "finalisation readiness" in normalized
         or "finalization readiness" in normalized

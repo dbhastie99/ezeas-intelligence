@@ -761,3 +761,47 @@ def test_payroll_output_evaluation_runbook_exists_and_lists_required_guidance():
     assert "no operational JSON ingestion" in runbook
     assert "no Code Evidence answer integration" in runbook or "no Code Evidence Index answer integration" in runbook
     assert "Minerva does not calculate payroll output, change output lines, finalise PayRuns, approve output, select treatments, select rates, generate payment files or mutate payroll truth" in runbook
+
+
+def test_contact_payroll_history_evaluation_runbook_exists_and_lists_required_guidance():
+    runbook_path = Path("docs/CONTACT_PAYROLL_HISTORY_EVALUATION_RUNBOOK.md")
+
+    assert runbook_path.exists()
+
+    runbook = runbook_path.read_text(encoding="utf-8")
+    assert "samples\\eval\\rich_answer_benchmark.contact_payroll_history.json" in runbook
+    assert "scan_contact_payroll_history_corpus_coverage.py" in runbook
+    assert "build_contact_payroll_history_answer_gap_report.py" in runbook
+    assert "diagnostic-only" in runbook
+    assert "no corpus mutation" in runbook
+    assert "no live LLM" in runbook
+    assert "no database schema change" in runbook
+    assert "no operational JSON ingestion" in runbook
+    assert "no Code Evidence answer integration" in runbook
+    assert "no Code Evidence Index answer integration" in runbook
+    assert "STRONG" in runbook
+    assert "WEAK" in runbook
+    assert "MISSING" in runbook
+    assert "GOOD" in runbook
+    assert "NEEDS_REFINEMENT" in runbook
+    assert "INSUFFICIENT_CORPUS" in runbook
+    assert "KEEP" in runbook
+    assert "IMPROVE_RETRIEVAL_TERMS" in runbook
+    assert "IMPROVE_SYNTHESIS" in runbook
+    assert "ADD_FORMAL_SOURCE_EVIDENCE_LATER" in runbook
+    assert "Contact Payroll History" in runbook
+    assert "contact/worker-level payroll history" in runbook
+    assert "PayRun participation" in runbook
+    assert "current and historical payroll output" in runbook
+    assert "Gross-to-Net" in runbook
+    assert "deductions and obligations" in runbook
+    assert "tax/payment readiness" in runbook
+    assert "leave/accrual evidence" in runbook
+    assert "Worker Story" in runbook
+    assert "Retro / Replay" in runbook
+    assert "correction context" in runbook
+    assert "Movement Review" in runbook
+    assert "PayRun Admin Queue" in runbook
+    assert "no operational JSON ingestion" in runbook
+    assert "no Code Evidence answer integration" in runbook or "no Code Evidence Index answer integration" in runbook
+    assert "Minerva does not calculate payroll history, change historical records, correct payroll outcomes, perform retro/replay, approve payroll changes, finalise PayRuns or mutate payroll truth" in runbook

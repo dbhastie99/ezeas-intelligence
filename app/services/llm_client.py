@@ -439,6 +439,78 @@ def _payroll_output_focus_points(question: str) -> list[str]:
     return points
 
 
+def _contact_payroll_history_focus_points(question: str) -> list[str]:
+    normalized = question.lower().replace("-", " ")
+    points: list[str] = []
+    if "contact payroll history" in normalized or "payroll history" in normalized or "historical payroll output" in normalized:
+        points.append(
+            "Focused Contact Payroll History answer: Contact Payroll History is the contact/worker-level historical "
+            "payroll evidence surface for inspecting payroll history, payroll outcome history and PayRun participation."
+        )
+        points.append(
+            "Focused PayRun participation answer: Contact Payroll History should show contact/worker-level payroll "
+            "history across process periods and PayRuns where the worker was included, including worker-level "
+            "output/history and current and historical payroll evidence. It is not proof of payroll correctness by "
+            "itself, and Minerva does not calculate payroll history or change historical payroll records."
+        )
+        points.append(
+            "Focused output-history answer: it connects current and historical payroll output, historical payroll "
+            "output and current-effective payroll output without treating historical evidence as permission to "
+            "overwrite finalised truth."
+        )
+        points.append(
+            "Focused current-versus-historical answer: Contact Payroll History should distinguish current-effective "
+            "payroll output from historical/finalised output evidence. Run Output and Process Period Output remain "
+            "separate lenses where relevant; superseded/stale outputs should not be described as current truth, and "
+            "finalised truth should not be overwritten silently. Keep status honesty visible."
+        )
+        points.append(
+            "Focused outcome-history answer: it can explain Gross-to-Net history, deductions, obligations, negative "
+            "net pay, contact tax, contact payment and payment readiness history where formal evidence supports "
+            "those history lenses."
+        )
+        points.append(
+            "Focused deduction/obligation answer: Contact Payroll History can show contact-level deduction history, "
+            "obligations, reducing balance and recovery context, negative net pay governed treatment, and "
+            "carry-forward, write-off or recovery implications where supported. It relates to Gross-to-Net and "
+            "Worker Attention, but it is not automatic net-pay subtraction or Minerva resolution."
+        )
+        points.append(
+            "Focused tax/payment readiness answer: Contact Payroll History can expose tax/PAYG history, tax readiness "
+            "evidence, payment allocation, payment readiness history and bank/payment destination context. "
+            "Finalisation/payment execution boundary stays visible: readiness is not payment file generation, and "
+            "Minerva does not withhold tax or generate payment files."
+        )
+        points.append(
+            "Focused leave/story/review answer: it connects leave history, accrual history and leave/accrual evidence "
+            "to Worker Story, Movement Review and PayRun Admin Queue so operators can inspect context, review signals "
+            "and action surfaces without collapsing those surfaces into the same feature."
+        )
+        points.append(
+            "Focused leave/accrual answer: Contact Payroll History can connect leave/accrual evidence over time, "
+            "LeaveLedger, leave output and valuation basis where formal evidence supports them. Worker Story remains "
+            "the worker-level evidence explanation, while Contact Payroll History is the historical/contact lens with "
+            "evidence links rather than recalculation."
+        )
+        points.append(
+            "Focused retro boundary answer: retro history, correction history and retro/replay/correction context are "
+            "future implications and evidence relationships, not proof that Minerva performs retro/replay or corrects "
+            "payroll outcomes."
+        )
+        points.append(
+            "Focused retro/replay/correction answer: Contact Payroll History supports retro, replay and correction "
+            "context through historical payroll evidence, finalised truth preservation, correction, retro and replay "
+            "pathways, and attributed-period versus paid-period distinction where supported. It does not silently "
+            "mutate history, and Minerva does not perform retro/replay or corrections."
+        )
+        points.append(
+            "Focused boundary answer: Minerva does not calculate payroll history, change historical payroll records, "
+            "correct payroll outcomes, perform retro/replay, approve payroll changes, finalise PayRuns or mutate "
+            "operational payroll truth. Contact Payroll History alone does not prove payroll correctness."
+        )
+    return points
+
+
 def _movement_review_focus_points(question: str) -> list[str]:
     normalized = question.lower().replace("-", " ")
     points: list[str] = []
@@ -970,6 +1042,45 @@ def _leave_accrual_processing_focus_points(question: str) -> list[str]:
             "Focused hardening answer: keep status honest about Leave Source Model, full leave-processing UI/runs, "
             "leave request ownership/contact-vs-appointment design, leave story polish and finalisation warning "
             "acknowledgement."
+        )
+    return points
+
+
+def _leave_requests_workflow_focus_points(question: str) -> list[str]:
+    normalized = question.lower().replace("-", " ")
+    points: list[str] = []
+    if "leave" in normalized and ("request" in normalized or "workflow" in normalized):
+        points.append(
+            "Focused Leave Requests / Leave Workflow answer: Leave Requests / Leave Workflow is the governed leave "
+            "request workflow for creating, drafting, submitting, reviewing, approving, rejecting, reopening, valuing, "
+            "posting and explaining employee leave requests."
+        )
+        points.append(
+            "Focused workflow-state answer: create, draft, submit, approve, reject and reopen actions should follow "
+            "governed leave status transitions with idempotency, including IdempotencyKey where formal evidence "
+            "supports it."
+        )
+        points.append(
+            "Focused exception answer: leave overlap and shortfall substitution should be handled explicitly where "
+            "formal evidence supports those policies, rather than Minerva resolving shortfalls or silently changing "
+            "operational leave truth."
+        )
+        points.append(
+            "Focused valuation/posting answer: TAKEN leave valuation and leave valuation basis should hard fail where "
+            "required evidence is missing; LeaveLedger posting and leave balance movement remain deterministic platform "
+            "actions, not Minerva actions."
+        )
+        points.append(
+            "Focused source/story/readiness answer: Leave Requests / Leave Workflow relates to Leave Source Model and "
+            "leave applicability, Worker Story and Leave and Accrual Outcome, PayRun processing, finalisation readiness, "
+            "leave readiness and missing leave output without replacing those domain surfaces. Keep status honesty "
+            "visible around outstanding hardening."
+        )
+        points.append(
+            "Focused boundary answer: Minerva does not approve leave, calculate leave, post LeaveLedger rows, change "
+            "leave balances, reopen leave requests, resolve shortfalls, finalise PayRuns or mutate operational leave "
+            "or payroll truth. Leave Requests alone does not prove payroll correctness, and LeaveTypeRule alone does "
+            "not prove final leave applicability without the Leave Source Model caveat."
         )
     return points
 
@@ -1759,6 +1870,8 @@ class StubLLMClient(BaseLLMClient):
                     operation_points = _decision_story_focus_points(question) + operation_points
                 if domain_plan.plan_id == "PAYROLL_OUTPUT":
                     operation_points = _payroll_output_focus_points(question) + operation_points
+                if domain_plan.plan_id == "CONTACT_PAYROLL_HISTORY":
+                    operation_points = _contact_payroll_history_focus_points(question) + operation_points
                 if domain_plan.plan_id == "PAYRUN_ADMIN_QUEUE":
                     operation_points = _payrun_admin_queue_focus_points(question) + operation_points
                 if domain_plan.plan_id == "MOVEMENT_REVIEW":
@@ -1775,6 +1888,8 @@ class StubLLMClient(BaseLLMClient):
                     operation_points = _payment_execution_remittance_focus_points(question) + operation_points
                 if domain_plan.plan_id == "LEAVE_ACCRUAL_PROCESSING":
                     operation_points = _leave_accrual_processing_focus_points(question) + operation_points
+                if domain_plan.plan_id == "LEAVE_REQUESTS_WORKFLOW":
+                    operation_points = _leave_requests_workflow_focus_points(question) + operation_points
                 if domain_plan.plan_id == "FINALISATION_READINESS":
                     operation_points = _finalisation_readiness_focus_points(question) + operation_points
                 if domain_plan.plan_id == "LEAVE_SOURCE_MODEL":
@@ -1944,6 +2059,22 @@ class StubLLMClient(BaseLLMClient):
                             "proves payroll correctness from Payroll Output alone, or collapses Run Output and Process "
                             "Period Output into the same lens without explanation."
                         )
+                    elif domain_plan.plan_id == "CONTACT_PAYROLL_HISTORY":
+                        direct_summary = (
+                            "Contact Payroll History is the contact/worker-level historical payroll evidence surface "
+                            "for inspecting payroll outcomes, PayRun participation, current and historical payroll "
+                            "output, Gross-to-Net history, deductions, obligations, tax, payment readiness, "
+                            "leave/accrual evidence, Worker Story links, Movement Review and Admin Queue context, "
+                            "and future retro/replay/correction implications."
+                        )
+                        status_text = (
+                            "The retrieved corpus describes Contact Payroll History as historical payroll evidence "
+                            "with important status honesty and outstanding hardening. It should not imply Minerva "
+                            "calculates payroll history, changes historical payroll records, corrects payroll outcomes, "
+                            "performs retro/replay, approves payroll changes, finalises PayRuns, mutates operational "
+                            "payroll truth, proves payroll correctness from Contact Payroll History alone, or lets "
+                            "historical evidence overwrite finalised truth."
+                        )
                     elif domain_plan.plan_id == "MOVEMENT_REVIEW":
                         direct_summary = (
                             "Movement Review is a payroll reasonableness and review surface that helps operators "
@@ -2059,6 +2190,22 @@ class StubLLMClient(BaseLLMClient):
                             "final applicability truth, TAKEN leave can post without mandatory valuation and hard "
                             "failure controls, or leave processing/finalisation UI is complete unless formal evidence "
                             "explicitly says so."
+                        )
+                    elif domain_plan.plan_id == "LEAVE_REQUESTS_WORKFLOW":
+                        direct_summary = (
+                            "Leave Requests / Leave Workflow is the governed leave request workflow for creating, "
+                            "drafting, submitting, reviewing, approving, rejecting, reopening, valuing, posting and "
+                            "explaining employee leave requests. It covers status transitions, idempotency, overlap "
+                            "and shortfall handling, TAKEN leave valuation, LeaveLedger posting, Leave Source Model "
+                            "and applicability relationships, Worker Story, PayRun and finalisation readiness links."
+                        )
+                        status_text = (
+                            "The retrieved corpus describes Leave Requests / Leave Workflow as governed workflow "
+                            "evidence with important outstanding hardening. It should not imply Minerva approves "
+                            "leave, calculates leave, posts LeaveLedger rows, changes leave balances, reopens leave "
+                            "requests, resolves shortfalls, finalises PayRuns, mutates operational leave or payroll "
+                            "truth, proves payroll correctness from Leave Requests alone, or treats LeaveTypeRule "
+                            "alone as final leave applicability without the Leave Source Model caveat."
                         )
                     elif domain_plan.plan_id == "FINALISATION_READINESS":
                         direct_summary = (

@@ -50,6 +50,16 @@ def classify_answer_mode(question: str) -> str:
         or "payroll output relate" in normalized
         or "payroll output explain" in normalized
     )
+    contact_payroll_history_framed = (
+        "contact payroll history" in normalized
+        or "contact level payroll history" in normalized
+        or "worker payroll history" in normalized
+        or "payroll outcome history" in normalized
+        or ("payroll history" in normalized and ("contact" in normalized or "worker" in normalized or "platform" in normalized))
+        or ("historical payroll output" in normalized and ("contact" in normalized or "worker" in normalized or "history" in normalized))
+        or ("payrun participation" in normalized and ("history" in normalized or "contact" in normalized or "worker" in normalized))
+        or ("contact history" in normalized and "payroll" in normalized)
+    )
     if (
         "worker attention / issue resolution" in normalized
         or "worker attention issue resolution" in normalized
@@ -127,6 +137,8 @@ def classify_answer_mode(question: str) -> str:
         or ("current effective output" in normalized and "payroll output" in normalized)
         or ("calculated payroll output" in normalized and ("what" in normalized or "how" in normalized or "explain" in normalized))
     ):
+        return AnswerMode.PRODUCT_DOMAIN.value
+    if contact_payroll_history_framed:
         return AnswerMode.PRODUCT_DOMAIN.value
     if (
         "gross to net" in normalized
@@ -299,6 +311,24 @@ def classify_answer_mode(question: str) -> str:
         or "finalized outcome" in normalized
         or ("finalisation" in normalized and ("readiness" in normalized or "blockers" in normalized or "warnings" in normalized))
         or ("finalization" in normalized and ("readiness" in normalized or "blockers" in normalized or "warnings" in normalized))
+    ):
+        return AnswerMode.PRODUCT_DOMAIN.value
+
+    if (
+        "leave requests / leave workflow" in normalized
+        or "leave requests leave workflow" in normalized
+        or ("leave workflow" in normalized and ("what" in normalized or "how" in normalized or "platform" in normalized))
+        or ("leave request" in normalized and ("workflow" in normalized or "status" in normalized or "draft" in normalized or "submit" in normalized or "approve" in normalized or "reject" in normalized or "reopen" in normalized))
+        or ("leaverequest" in normalized and ("workflow" in normalized or "status" in normalized or "draft" in normalized or "submit" in normalized or "approve" in normalized or "reject" in normalized or "reopen" in normalized))
+        or ("leave submission" in normalized and ("workflow" in normalized or "review" in normalized or "approval" in normalized))
+        or ("submit leave" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("approve leave" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("reject leave" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("reopen leave" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("idempotencykey" in normalized and "leave" in normalized)
+        or ("leave overlap" in normalized and ("workflow" in normalized or "request" in normalized))
+        or ("shortfall substitution" in normalized and ("leave" in normalized or "request" in normalized))
+        or "leave request preview" in normalized
     ):
         return AnswerMode.PRODUCT_DOMAIN.value
 
