@@ -477,6 +477,97 @@ PAYRUN_ADMIN_QUEUE_PLAN = DomainRetrievalPlan(
     ),
 )
 
+WORKER_ATTENTION_ISSUE_RESOLUTION_PLAN = DomainRetrievalPlan(
+    plan_id="WORKER_ATTENTION_ISSUE_RESOLUTION",
+    domain="Worker Attention / Issue Resolution",
+    trigger_phrases=(
+        "what is worker attention / issue resolution",
+        "what is worker attention issue resolution",
+        "what is worker attention in the platform",
+        "what is issue resolution in the platform",
+        "how should worker attention issue resolution work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="worker_attention_purpose",
+            label="Worker Attention / Issue Resolution purpose",
+            query_terms=("Worker Attention", "WorkerAttention", "Worker Attention Centre", "Issue Resolution", "worker-level issue surface"),
+            required_terms_any=("Worker Attention", "WorkerAttention", "Worker Attention Centre", "Issue Resolution", "worker-level issue surface"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_issue_model",
+            label="Worker Attention worker issue model",
+            query_terms=("Worker issue", "WorkerIssue", "issue scope", "issue class", "issue type", "issue severity"),
+            required_terms_any=("Worker issue", "WorkerIssue", "issue scope", "issue class", "issue type", "issue severity"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="blockers_warnings_and_readiness",
+            label="Worker Attention blockers warnings and readiness",
+            query_terms=("blockers", "warnings", "readiness gaps", "worker-level blockers", "worker-level warnings", "ready actions"),
+            required_terms_any=("blockers", "warnings", "readiness gaps", "worker-level blockers", "worker-level warnings", "ready actions"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="deterministic_fix_links",
+            label="Worker Attention deterministic fix links",
+            query_terms=("deterministic fix link", "deterministic fix links", "resolution surfaces", "fix action", "server-owned fix target"),
+            required_terms_any=("deterministic fix link", "deterministic fix links", "resolution surfaces", "fix action", "server-owned fix target"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="dirty_contact_and_reprocessing",
+            label="Worker Attention dirty contact and reprocessing",
+            query_terms=("dirty contact", "dirty contacts", "PayRunContact dirty", "reprocessing", "reprocess", "contact changes"),
+            required_terms_any=("dirty contact", "dirty contacts", "PayRunContact dirty", "reprocessing", "reprocess", "contact changes"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payment_allocation_readiness",
+            label="Worker Attention payment allocation readiness",
+            query_terms=("payment allocation", "payment allocation readiness", "payment destination", "bank allocation", "payment readiness"),
+            required_terms_any=("payment allocation", "payment allocation readiness", "payment destination", "bank allocation", "payment readiness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="tax_deduction_leave_readiness",
+            label="Worker Attention tax deduction leave readiness",
+            query_terms=("tax readiness", "deduction readiness", "leave readiness", "tax/deduction/leave readiness", "readiness evidence"),
+            required_terms_any=("tax readiness", "deduction readiness", "leave readiness", "tax/deduction/leave readiness", "readiness evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="negative_net_pay_and_obligations",
+            label="Worker Attention negative net pay and obligations",
+            query_terms=("negative net pay", "obligations", "out-of-pay", "recoveries", "worker obligation", "obligation issue"),
+            required_terms_any=("negative net pay", "obligations", "out-of-pay", "recoveries", "worker obligation", "obligation issue"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_relationship",
+            label="Worker Attention Worker Story relationship",
+            query_terms=("Worker Attention", "Worker Story", "worker issue evidence", "worker evidence", "explanation surface"),
+            required_terms_any=("Worker Attention", "Worker Story", "worker issue evidence", "worker evidence", "explanation surface"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="admin_queue_relationship",
+            label="Worker Attention PayRun Admin Queue relationship",
+            query_terms=("Worker Attention", "PayRun Admin Queue", "Admin Queue", "operator workbench", "not the same surface"),
+            required_terms_any=("Worker Attention", "PayRun Admin Queue", "Admin Queue", "operator workbench", "not the same surface"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Worker Attention outstanding hardening",
+            query_terms=("Worker Attention", "outstanding hardening", "WorkerIssue", "issue taxonomy", "resolution workflow", "contract tests"),
+            required_terms_any=("Worker Attention", "outstanding hardening", "WorkerIssue", "issue taxonomy", "resolution workflow", "contract tests"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
 MOVEMENT_REVIEW_PLAN = DomainRetrievalPlan(
     plan_id="MOVEMENT_REVIEW",
     domain="Movement Review",
@@ -1088,16 +1179,1522 @@ RETRO_REPLAY_PLAN = DomainRetrievalPlan(
     ),
 )
 
+PAYMENT_EXECUTION_REMITTANCE_PLAN = DomainRetrievalPlan(
+    plan_id="PAYMENT_EXECUTION_REMITTANCE",
+    domain="Payment Execution / Remittance",
+    trigger_phrases=(
+        "how should payment execution and remittance work",
+        "how should payment execution / remittance work",
+        "what is payment execution and remittance",
+        "what is payment execution / remittance",
+        "how does payment execution and remittance work",
+        "how does payment execution / remittance work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Payment Execution / Remittance purpose and operator meaning",
+            query_terms=("Payment Execution / Remittance", "governed payment execution", "remittance evidence", "generic file export"),
+            required_terms_any=("Payment Execution / Remittance", "governed payment execution", "remittance evidence", "generic file export"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="finalised_gross_to_net_source",
+            label="Payment Execution / Remittance finalised gross-to-net source",
+            query_terms=("finalised gross-to-net", "finalised payroll outcome", "payment outcome", "payroll calculation truth"),
+            required_terms_any=("finalised gross-to-net", "finalised payroll outcome", "payment outcome", "payroll calculation truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_net_pay_and_bank_allocation",
+            label="Payment Execution / Remittance worker net pay and bank allocation",
+            query_terms=("worker net pay", "bank allocation", "payment allocation", "bank instruction readiness"),
+            required_terms_any=("worker net pay", "bank allocation", "payment allocation", "bank instruction readiness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payment_destination_readiness",
+            label="Payment Execution / Remittance payment destination readiness",
+            query_terms=("payment destination", "missing payment destination", "partial payment destinations", "payment execution readiness"),
+            required_terms_any=("payment destination", "missing payment destination", "partial payment destinations", "payment execution readiness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="negative_net_pay_and_obligation_interaction",
+            label="Payment Execution / Remittance negative net pay and obligation interaction",
+            query_terms=("negative net pay", "obligations", "carry-forward", "recovery", "write-off", "out-of-pay treatment"),
+            required_terms_any=("negative net pay", "obligations", "carry-forward", "recovery", "write-off", "out-of-pay treatment"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="deduction_and_third_party_remittance",
+            label="Payment Execution / Remittance deduction and third-party remittance",
+            query_terms=("deduction remittance", "third-party remittance", "third-party payments", "remittance files", "payment destinations"),
+            required_terms_any=("deduction remittance", "third-party remittance", "third-party payments", "remittance files", "payment destinations"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payment_file_generation_and_period_close",
+            label="Payment Execution / Remittance payment file generation and period close",
+            query_terms=("Generate Bank File", "Bank File", "payment file", "Period Close", "payment-file execution"),
+            required_terms_any=("Generate Bank File", "Bank File", "payment file", "Period Close", "payment-file execution"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="remittance_batching_and_reconciliation",
+            label="Payment Execution / Remittance batching and reconciliation",
+            query_terms=("remittance batching", "remittance reconciliation", "reconciliation", "batching", "remittance batch"),
+            required_terms_any=("remittance batching", "remittance reconciliation", "reconciliation", "batching", "remittance batch"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_attention_and_admin_queue_connection",
+            label="Payment Execution / Remittance Worker Attention and Admin Queue connection",
+            query_terms=("Payment Execution / Remittance", "Worker Attention", "PayRun Admin Queue", "blockers", "warnings", "actions"),
+            required_terms_any=("Payment Execution / Remittance", "Worker Attention", "PayRun Admin Queue", "blockers", "warnings", "actions"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_and_audit_evidence",
+            label="Payment Execution / Remittance Worker Story and audit evidence",
+            query_terms=("Payment Execution / Remittance", "Worker Story", "audit evidence", "payment allocation", "remittance", "skipped", "unpaid", "unmet"),
+            required_terms_any=("Payment Execution / Remittance", "Worker Story", "audit evidence", "payment allocation", "remittance", "skipped", "unpaid", "unmet"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Payment Execution / Remittance outstanding hardening",
+            query_terms=(
+                "Payment Execution / Remittance",
+                "outstanding hardening",
+                "bank file generation",
+                "remittance execution",
+                "reconciliation",
+                "payment close",
+                "obligation write-off",
+                "financial consequences",
+                "UI surfaces",
+            ),
+            required_terms_any=(
+                "outstanding hardening",
+                "bank file generation",
+                "remittance execution",
+                "reconciliation",
+                "payment close",
+                "obligation write-off",
+                "financial consequences",
+                "UI surfaces",
+            ),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+LEAVE_ACCRUAL_PROCESSING_PLAN = DomainRetrievalPlan(
+    plan_id="LEAVE_ACCRUAL_PROCESSING",
+    domain="Leave Accrual Detail / Leave Processing",
+    trigger_phrases=(
+        "how does leave accrue and get processed",
+        "how does leave accrue and get processed in ezeas",
+        "how does leave accrual processing work",
+        "what is leave accrual processing",
+        "how does leave processing work",
+        "leave accrual detail",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Leave Accrual / Processing purpose and operator meaning",
+            query_terms=("Leave Accrual", "Leave Processing", "deterministic platform outcomes", "Minerva calculations", "generic leave policy advice"),
+            required_terms_any=("Leave Accrual", "Leave Processing", "deterministic platform outcomes", "Minerva calculations", "generic leave policy advice"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_source_truth_and_applicability",
+            label="Leave Accrual / Processing source truth and applicability",
+            query_terms=("leave source truth", "applicability", "LeaveTypeRule", "Leave Source Model", "source truth"),
+            required_terms_any=("leave source truth", "applicability", "LeaveTypeRule", "Leave Source Model", "source truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="accrual_basis_and_quantity",
+            label="Leave Accrual / Processing accrual basis and quantity",
+            query_terms=("accrual basis", "PER_HOUR", "minute", "hour", "accrual quantity"),
+            required_terms_any=("accrual basis", "PER_HOUR", "minute", "hour", "accrual quantity"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_output_and_calc_interpreter_source",
+            label="Leave Accrual / Processing payroll output and CalcInterpreter source",
+            query_terms=("CalcInterpreterLine", "current-effective payroll output", "canonical processed payroll result truth", "payroll result truth"),
+            required_terms_any=("CalcInterpreterLine", "current-effective payroll output", "canonical processed payroll result truth", "payroll result truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_type_and_rule_configuration",
+            label="Leave Accrual / Processing leave type and rule configuration",
+            query_terms=("LeaveType", "LeaveTypeRule", "AwardRateType", "RateType", "accrualability"),
+            required_terms_any=("LeaveType", "LeaveTypeRule", "AwardRateType", "RateType", "accrualability"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_ledger_and_accrual_posting",
+            label="Leave Accrual / Processing LeaveLedger and accrual posting",
+            query_terms=("LeaveLedger", "Leave Ledger", "accrual", "payment", "balance movements", "story evidence"),
+            required_terms_any=("LeaveLedger", "Leave Ledger", "accrual", "payment", "balance movements", "story evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_valuation_basis",
+            label="Leave Accrual / Processing leave valuation basis",
+            query_terms=("leave valuation basis", "TAKEN leave", "valuation", "mandatory", "hard failure", "silent fallback"),
+            required_terms_any=("leave valuation basis", "TAKEN leave", "valuation", "mandatory", "hard failure", "silent fallback"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_request_payment_effects",
+            label="Leave Accrual / Processing leave request payment effects",
+            query_terms=("leave request", "payment effects", "before payroll interpretation", "within payroll interpretation", "after payroll interpretation"),
+            required_terms_any=("leave request", "payment effects", "before payroll interpretation", "within payroll interpretation", "after payroll interpretation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payrun_processing_and_finalisation",
+            label="Leave Accrual / Processing PayRun processing and finalisation",
+            query_terms=("LeaveProcessRun", "PayRun", "finalisation readiness", "missing leave output", "leave readiness"),
+            required_terms_any=("LeaveProcessRun", "PayRun", "finalisation readiness", "missing leave output", "leave readiness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_connection",
+            label="Leave Accrual / Processing Worker Story connection",
+            query_terms=("Worker Story", "Leave and Accrual Outcome", "server-owned leave output", "ledger", "valuation evidence"),
+            required_terms_any=("Worker Story", "Leave and Accrual Outcome", "server-owned leave output", "ledger", "valuation evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_bases_connection",
+            label="Leave Accrual / Processing Payroll Bases connection",
+            query_terms=("Payroll Bases & Totals", "worked hours", "basis quantity", "governed basis evidence", "leave basis quantities"),
+            required_terms_any=("Payroll Bases & Totals", "worked hours", "basis quantity", "governed basis evidence", "leave basis quantities"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Leave Accrual / Processing outstanding hardening",
+            query_terms=(
+                "outstanding hardening",
+                "Leave Source Model",
+                "leave-processing UI",
+                "leave request ownership",
+                "contact-vs-appointment",
+                "leave story polish",
+                "finalisation warning acknowledgement",
+            ),
+            required_terms_any=(
+                "outstanding hardening",
+                "Leave Source Model",
+                "leave-processing UI",
+                "leave request ownership",
+                "contact-vs-appointment",
+                "leave story polish",
+                "finalisation warning acknowledgement",
+            ),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+LEAVE_SOURCE_MODEL_PLAN = DomainRetrievalPlan(
+    plan_id="LEAVE_SOURCE_MODEL",
+    domain="Leave Source Model",
+    trigger_phrases=(
+        "what is the leave source model",
+        "why does the leave source model matter",
+        "what is the leave source model and why does it matter",
+        "how should the leave source model work",
+        "leave source model",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Leave Source Model purpose and operator meaning",
+            query_terms=("Leave Source Model", "governed applicability", "source-truth layer", "leave applies", "worker context"),
+            required_terms_any=("Leave Source Model", "governed applicability", "source-truth layer", "leave applies", "worker context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="applicability_vs_rule_content",
+            label="Leave Source Model applicability versus rule content",
+            query_terms=("applicability", "rule content", "LeaveTypeRule", "policy calculation content", "source truth"),
+            required_terms_any=("applicability", "rule content", "LeaveTypeRule", "policy calculation content", "source truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_type_rule_limitations",
+            label="Leave Source Model LeaveTypeRule limitations",
+            query_terms=("LeaveTypeRule", "final applicability truth", "active LeaveTypeRule", "every worker", "leave output"),
+            required_terms_any=("LeaveTypeRule", "final applicability truth", "active LeaveTypeRule", "every worker", "leave output"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="contact_vs_appointment_scope",
+            label="Leave Source Model contact versus appointment scope",
+            query_terms=("Contact scope", "EmployeeAppointment scope", "appointment-aware leave", "contact-level", "appointment-level"),
+            required_terms_any=("Contact scope", "EmployeeAppointment scope", "appointment-aware leave", "contact-level", "appointment-level"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="source_dimensions_and_precedence",
+            label="Leave Source Model source dimensions and precedence",
+            query_terms=("Account", "EmploymentType", "WorksitePosition", "Worksite", "EmployeeAppointment", "Contact", "AwardPositionClass", "AwardPosition", "Position", "Award", "State", "precedence"),
+            required_terms_any=("Account", "EmploymentType", "WorksitePosition", "Worksite", "EmployeeAppointment", "Contact", "AwardPositionClass", "AwardPosition", "Position", "Award", "State", "precedence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_accrual_connection",
+            label="Leave Source Model leave accrual connection",
+            query_terms=("leave accrual", "source applicability decisions", "accrual", "consume source", "infer ad hoc"),
+            required_terms_any=("leave accrual", "source applicability decisions", "accrual", "consume source", "infer ad hoc"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_request_and_payment_effects_connection",
+            label="Leave Source Model leave request and payment effects connection",
+            query_terms=("leave request", "payment effects", "source applicability decisions", "leave ownership", "request ownership"),
+            required_terms_any=("leave request", "payment effects", "source applicability decisions", "leave ownership", "request ownership"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_connection",
+            label="Leave Source Model Worker Story connection",
+            query_terms=("Worker Story", "leave chapters", "source applicability decisions", "leave output", "warnings"),
+            required_terms_any=("Worker Story", "leave chapters", "source applicability decisions", "leave output", "warnings"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="command_centre_and_finalisation_connection",
+            label="Leave Source Model Command Centre and finalisation connection",
+            query_terms=("Command Centre", "Finalisation Readiness", "PayRun finalisation warnings", "leave readiness", "honestly"),
+            required_terms_any=("Command Centre", "Finalisation Readiness", "PayRun finalisation warnings", "leave readiness", "honestly"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="readiness_and_missing_output_detection",
+            label="Leave Source Model readiness and missing output detection",
+            query_terms=("leave readiness", "missing leave output", "leave does not apply", "leave output is missing", "source truth"),
+            required_terms_any=("leave readiness", "missing leave output", "leave does not apply", "leave output is missing", "source truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Leave Source Model outstanding hardening",
+            query_terms=("outstanding hardening", "planned model", "required model", "not complete", "runtime capability"),
+            required_terms_any=("outstanding hardening", "planned model", "required model", "not complete", "runtime capability"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+ONCOSTS_EMPLOYER_LIABILITIES_PLAN = DomainRetrievalPlan(
+    plan_id="ONCOSTS_EMPLOYER_LIABILITIES",
+    domain="On-costs / Employer Liabilities",
+    trigger_phrases=(
+        "how should on-costs and employer liabilities work",
+        "how should oncosts and employer liabilities work",
+        "what are on-costs and employer liabilities",
+        "what are employer liabilities",
+        "how should employer liability work",
+        "how should employer liabilities work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="On-costs / Employer Liabilities purpose and operator meaning",
+            query_terms=("On-costs", "Employer Liabilities", "governed employer liability evidence", "operator meaning", "not reporting add-on"),
+            required_terms_any=("On-costs", "Employer Liabilities", "governed employer liability evidence", "operator meaning", "not reporting add-on"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="employer_liability_not_worker_pay",
+            label="On-costs / Employer Liabilities not worker pay",
+            query_terms=("employer liability", "not worker pay", "not worker net pay", "not payroll calculation truth", "Minerva does not calculate"),
+            required_terms_any=("employer liability", "not worker pay", "not worker net pay", "not payroll calculation truth", "Minerva does not calculate"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rate_source_and_date_effective_rates",
+            label="On-costs / Employer Liabilities RateSource and date-effective rates",
+            query_terms=("RateSource", "date-effective rates", "date-effective RateSource", "rule-pack configuration", "application code"),
+            required_terms_any=("RateSource", "date-effective rates", "date-effective RateSource", "rule-pack configuration", "application code"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="award_rate_type_and_rate_type_settings",
+            label="On-costs / Employer Liabilities AwardRateType and RateType settings",
+            query_terms=("AwardRateType", "RateType", "SUPER_ONCOST", "PAYROLLTAX_ONCOST", "WORKCOVER_ONCOST", "award defaults"),
+            required_terms_any=("AwardRateType", "RateType", "SUPER_ONCOST", "PAYROLLTAX_ONCOST", "WORKCOVER_ONCOST", "award defaults"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="governed_basis_membership",
+            label="On-costs / Employer Liabilities governed basis membership",
+            query_terms=("governed basis membership", "bucket membership", "basis membership", "raw flags", "runtime basis decisions"),
+            required_terms_any=("governed basis membership", "bucket membership", "basis membership", "raw flags", "runtime basis decisions"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="super_payroll_tax_and_workcover_wic",
+            label="On-costs / Employer Liabilities super payroll tax and WorkCover WIC",
+            query_terms=("superannuation on-cost", "payroll tax on-cost", "WorkCover", "WIC", "jurisdiction"),
+            required_terms_any=("superannuation on-cost", "payroll tax on-cost", "WorkCover", "WIC", "jurisdiction"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="state_worksite_and_runtime_location_resolution",
+            label="On-costs / Employer Liabilities state worksite and runtime location resolution",
+            query_terms=("state", "worksite", "runtime location", "state-scoped RateSource", "state-scoped employer liabilities"),
+            required_terms_any=("state", "worksite", "runtime location", "state-scoped RateSource", "state-scoped employer liabilities"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payrun_output_and_worker_story_connection",
+            label="On-costs / Employer Liabilities PayRun output and Worker Story connection",
+            query_terms=("PayRun output", "Worker Story", "worker-payable lines", "employer liability lines", "on-cost evidence"),
+            required_terms_any=("PayRun output", "Worker Story", "worker-payable lines", "employer liability lines", "on-cost evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_bases_connection",
+            label="On-costs / Employer Liabilities Payroll Bases connection",
+            query_terms=("Payroll Bases & Totals", "governed basis evidence", "liability calculations", "basis evidence", "basis totals"),
+            required_terms_any=("Payroll Bases & Totals", "governed basis evidence", "liability calculations", "basis evidence", "basis totals"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="finalisation_and_readiness_connection",
+            label="On-costs / Employer Liabilities finalisation and readiness connection",
+            query_terms=("Finalisation Readiness", "unresolved basis", "liability configuration", "policy requires", "readiness"),
+            required_terms_any=("Finalisation Readiness", "unresolved basis", "liability configuration", "policy requires", "readiness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="demo_fallback_vs_production_truth",
+            label="On-costs / Employer Liabilities demo fallback versus production truth",
+            query_terms=("demo fallback", "account-wide fallback", "RateSource rows", "production truth", "unblock demos"),
+            required_terms_any=("demo fallback", "account-wide fallback", "RateSource rows", "production truth", "unblock demos"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="On-costs / Employer Liabilities outstanding hardening",
+            query_terms=("outstanding hardening", "runtime state", "worksite resolution", "award creation seeding", "production replacement"),
+            required_terms_any=("outstanding hardening", "runtime state", "worksite resolution", "award creation seeding", "production replacement"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+AWARD_BUILD_EVIDENCE_PLAN = DomainRetrievalPlan(
+    plan_id="AWARD_BUILD_EVIDENCE",
+    domain="Award Build / Award Evidence",
+    trigger_phrases=(
+        "how should award build and award evidence work",
+        "what is award build and award evidence",
+        "how does award build evidence work",
+        "how should award evidence work",
+        "how should award build work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Award Build / Award Evidence purpose and operator meaning",
+            query_terms=("Award Build", "Award Evidence", "governed configuration", "traceable evidence", "not runtime payroll calculation"),
+            required_terms_any=("Award Build", "Award Evidence", "governed configuration", "traceable evidence", "not runtime payroll calculation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="award_document_and_pay_guide_sources",
+            label="Award Build / Award Evidence award document and pay guide sources",
+            query_terms=("award document", "pay guide", "pay guide evidence", "source evidence", "row column page evidence"),
+            required_terms_any=("award document", "pay guide", "pay guide evidence", "source evidence", "row column page evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rate_type_and_award_rate_type_creation",
+            label="Award Build / Award Evidence RateType and AwardRateType creation",
+            query_terms=("RateType", "Rate Type", "AwardRateType", "Award Rate Type", "stable conceptual pay type", "award-scoped treatment"),
+            required_terms_any=("RateType", "Rate Type", "AwardRateType", "Award Rate Type", "stable conceptual pay type", "award-scoped treatment"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rate_source_and_date_effective_rate_evidence",
+            label="Award Build / Award Evidence RateSource and date-effective rate evidence",
+            query_terms=("RateSource", "date-effective", "rate amounts", "rate evidence", "hardcoded rates"),
+            required_terms_any=("RateSource", "date-effective", "rate amounts", "rate evidence", "hardcoded rates"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="classification_position_and_class_evidence",
+            label="Award Build / Award Evidence classification position and class evidence",
+            query_terms=("classification", "position", "class evidence", "deterministically derived", "reviewed", "not guessed"),
+            required_terms_any=("classification", "position", "class evidence", "deterministically derived", "reviewed", "not guessed"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="allowances_penalties_and_conditions",
+            label="Award Build / Award Evidence allowances penalties and conditions",
+            query_terms=("allowances", "penalties", "conditions", "shift", "overtime", "source evidence"),
+            required_terms_any=("allowances", "penalties", "conditions", "shift", "overtime", "source evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="decision_evidence_index",
+            label="Award Build / Award Evidence DecisionEvidenceIndex",
+            query_terms=("DecisionEvidenceIndex", "Decision Evidence Index", "why a treatment", "why a line exists", "decision evidence"),
+            required_terms_any=("DecisionEvidenceIndex", "Decision Evidence Index", "why a treatment", "why a line exists", "decision evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rate_source_evidence_index",
+            label="Award Build / Award Evidence RateSourceEvidenceIndex",
+            query_terms=("RateSourceEvidenceIndex", "Rate Source Evidence Index", "why a rate", "why an amount", "rate source evidence"),
+            required_terms_any=("RateSourceEvidenceIndex", "Rate Source Evidence Index", "why a rate", "why an amount", "rate source evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_decision_and_rate_story_connection",
+            label="Award Build / Award Evidence Worker Story Decision Story and Rate Story connection",
+            query_terms=("Worker Story", "Decision Story", "Rate Story", "award build", "runtime artifacts", "PayRun interpretation evidence"),
+            required_terms_any=("Worker Story", "Decision Story", "Rate Story", "award build", "runtime artifacts", "PayRun interpretation evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="needs_configuration_and_build_status",
+            label="Award Build / Award Evidence NEEDS_CONFIGURATION and build status",
+            query_terms=("NEEDS_CONFIGURATION", "award build status", "missing evidence", "missing configuration", "valid build outcome"),
+            required_terms_any=("NEEDS_CONFIGURATION", "award build status", "missing evidence", "missing configuration", "valid build outcome"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="durable_award_evidence_set",
+            label="Award Build / Award Evidence durable AwardEvidenceSet",
+            query_terms=("AwardEvidenceSet", "Durable AwardEvidenceSet", "durable evidence", "artifact based", "file based", "future hardening"),
+            required_terms_any=("AwardEvidenceSet", "Durable AwardEvidenceSet", "durable evidence", "artifact based", "file based", "future hardening"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Award Build / Award Evidence outstanding hardening",
+            query_terms=("outstanding hardening", "semantic table classification", "durable evidence sets", "parser routing", "conditional award regimes", "source evidence coverage"),
+            required_terms_any=("outstanding hardening", "semantic table classification", "durable evidence sets", "parser routing", "conditional award regimes", "source evidence coverage"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+IMPORTS_ACTUALS_PLAN = DomainRetrievalPlan(
+    plan_id="IMPORTS_ACTUALS",
+    domain="Imports / Actuals",
+    trigger_phrases=(
+        "how should imports and actuals work",
+        "how should imports / actuals work",
+        "what are imports and actuals",
+        "how should imported timesheets work",
+        "how should imported payroll actuals work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Imports / Actuals purpose and operator meaning",
+            query_terms=("Imports / Actuals", "Imports and Actuals", "governed imported evidence", "external source evidence", "not calculated interpreter truth"),
+            required_terms_any=("Imports / Actuals", "Imports and Actuals", "governed imported evidence", "external source evidence", "not calculated interpreter truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="imported_timesheet_source_truth",
+            label="Imports / Actuals imported timesheet source truth",
+            query_terms=("imported timesheets", "timesheet source truth", "ObjectTime", "work evidence", "validation and mapping"),
+            required_terms_any=("imported timesheets", "timesheet source truth", "ObjectTime", "work evidence", "validation and mapping"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="imported_payroll_actuals_lane",
+            label="Imports / Actuals imported payroll actuals lane",
+            query_terms=("imported payroll actuals", "payroll actuals", "actuals lane", "external outcome lane", "calculated interpreter output"),
+            required_terms_any=("imported payroll actuals", "payroll actuals", "actuals lane", "external outcome lane", "calculated interpreter output"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="source_system_mapping_and_validation",
+            label="Imports / Actuals source-system mapping and validation",
+            query_terms=("source-system mapping", "source system mapping", "validation", "workers", "dates", "source rows"),
+            required_terms_any=("source-system mapping", "source system mapping", "validation", "workers", "dates", "source rows"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="pay_code_and_rate_type_mapping",
+            label="Imports / Actuals pay code and RateType mapping",
+            query_terms=("pay code mapping", "source-system pay code", "RateType mapping", "platform concepts", "unmapped actuals"),
+            required_terms_any=("pay code mapping", "source-system pay code", "RateType mapping", "platform concepts", "unmapped actuals"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="position_classification_mapping",
+            label="Imports / Actuals position and classification mapping",
+            query_terms=("ImportedPositionClassificationMap", "position mapping", "classification mapping", "source-system classification", "source-system position"),
+            required_terms_any=("ImportedPositionClassificationMap", "position mapping", "classification mapping", "source-system classification", "source-system position"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="objecttime_and_source_truth_connection",
+            label="Imports / Actuals ObjectTime and source truth connection",
+            query_terms=("ObjectTime source truth", "ObjectTime", "source truth", "source row", "import provenance"),
+            required_terms_any=("ObjectTime source truth", "ObjectTime", "source truth", "source row", "import provenance"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="comparison_and_remediation_connection",
+            label="Imports / Actuals Comparison / Remediation connection",
+            query_terms=("Comparison / Remediation", "primary calculated", "comparator calculated", "imported actual lanes", "variance"),
+            required_terms_any=("Comparison / Remediation", "primary calculated", "comparator calculated", "imported actual lanes", "variance"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="reconciliation_and_movement_review_connection",
+            label="Imports / Actuals reconciliation and Movement Review connection",
+            query_terms=("reconciliation", "Movement Review", "imported actuals", "source evidence", "review outcomes"),
+            required_terms_any=("reconciliation", "Movement Review", "imported actuals", "source evidence", "review outcomes"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_and_admin_queue_connection",
+            label="Imports / Actuals Worker Story and Admin Queue connection",
+            query_terms=("Worker Story", "Admin Queue", "import provenance", "mapping issues", "unmapped actuals", "missing classifications"),
+            required_terms_any=("Worker Story", "Admin Queue", "import provenance", "mapping issues", "unmapped actuals", "missing classifications"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="evidence_provenance_and_audit",
+            label="Imports / Actuals evidence provenance and audit",
+            query_terms=("evidence provenance", "audit", "source file", "source row", "import run", "mapping decision", "validation status"),
+            required_terms_any=("evidence provenance", "audit", "source file", "source row", "import run", "mapping decision", "validation status"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Imports / Actuals outstanding hardening",
+            query_terms=("outstanding hardening", "actuals lane model", "import mapping UI", "comparison-line models", "source-system classification mapping", "source-row evidence", "validation workflows"),
+            required_terms_any=("outstanding hardening", "actuals lane model", "import mapping UI", "comparison-line models", "source-system classification mapping", "source-row evidence", "validation workflows"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+OBJECTTIME_SOURCE_TRUTH_PLAN = DomainRetrievalPlan(
+    plan_id="OBJECTTIME_SOURCE_TRUTH",
+    domain="ObjectTime / Source Truth",
+    trigger_phrases=(
+        "what is objecttime source truth",
+        "what is objecttime / source truth",
+        "why does objecttime source truth matter",
+        "why does objecttime / source truth matter",
+        "how should objecttime source truth work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="ObjectTime / Source Truth purpose and operator meaning",
+            query_terms=("ObjectTime / Source Truth", "ObjectTime", "Source Truth", "governed source evidence", "not payroll calculation truth"),
+            required_terms_any=("ObjectTime / Source Truth", "ObjectTime", "Source Truth", "governed source evidence", "not payroll calculation truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="objecttime_as_source_evidence",
+            label="ObjectTime / Source Truth ObjectTime as source evidence",
+            query_terms=("ObjectTime", "source evidence", "work time", "source row", "inclusion context"),
+            required_terms_any=("ObjectTime", "source evidence", "work time", "source row", "inclusion context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payrun_inclusion_and_source_truth",
+            label="ObjectTime / Source Truth PayRun inclusion and SourceTruth",
+            query_terms=("PayRun inclusion", "SourceTruth", "Source Truth", "source inclusion", "belongs in a PayRun"),
+            required_terms_any=("PayRun inclusion", "SourceTruth", "Source Truth", "source inclusion", "belongs in a PayRun"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="imported_and_generated_source_rows",
+            label="ObjectTime / Source Truth imported and generated source rows",
+            query_terms=("imported source rows", "generated source rows", "source row", "provenance", "validation mapping status"),
+            required_terms_any=("imported source rows", "generated source rows", "source row", "provenance", "validation mapping status"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="source_truth_vs_worked_hours",
+            label="ObjectTime / Source Truth SourceTruth versus WorkedHours",
+            query_terms=("SourceTruth", "WorkedHours", "worked hours", "raw span hours", "span hours", "interpreted payable hours"),
+            required_terms_any=("SourceTruth", "WorkedHours", "worked hours", "raw span hours", "span hours", "interpreted payable hours"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="current_effective_output_connection",
+            label="ObjectTime / Source Truth current-effective output connection",
+            query_terms=("current-effective output", "current-effective payroll output", "processed source truth", "payroll outcome", "current-effective truth"),
+            required_terms_any=("current-effective output", "current-effective payroll output", "processed source truth", "payroll outcome", "current-effective truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_connection",
+            label="ObjectTime / Source Truth Worker Story connection",
+            query_terms=("Worker Story", "Source Truth", "source inclusion", "calculated payroll outcome", "Decision Story"),
+            required_terms_any=("Worker Story", "Source Truth", "source inclusion", "calculated payroll outcome", "Decision Story"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_bases_and_leave_accrual_connection",
+            label="ObjectTime / Source Truth Payroll Bases and leave accrual connection",
+            query_terms=("Payroll Bases & Totals", "leave accrual", "processed payroll", "bucket evidence", "raw source span duration"),
+            required_terms_any=("Payroll Bases & Totals", "leave accrual", "processed payroll", "bucket evidence", "raw source span duration"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="comparison_movement_and_replay_connection",
+            label="ObjectTime / Source Truth comparison movement and replay connection",
+            query_terms=("Comparison / Remediation", "Movement Review", "Retro / Replay", "source truth", "historical current-effective distinctions"),
+            required_terms_any=("Comparison / Remediation", "Movement Review", "Retro / Replay", "source truth", "historical current-effective distinctions"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="corrections_dirty_contacts_and_reprocessing",
+            label="ObjectTime / Source Truth corrections dirty contacts and reprocessing",
+            query_terms=("correction audit", "dirty contact", "dirty PayRunContact", "reprocessing", "source truth correction"),
+            required_terms_any=("correction audit", "dirty contact", "dirty PayRunContact", "reprocessing", "source truth correction"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="evidence_provenance_and_audit",
+            label="ObjectTime / Source Truth evidence provenance and audit",
+            query_terms=("evidence provenance", "audit", "source file", "source row", "ObjectTime", "correction history", "evidence story"),
+            required_terms_any=("evidence provenance", "audit", "source file", "source row", "ObjectTime", "correction history", "evidence story"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="ObjectTime / Source Truth outstanding hardening",
+            query_terms=("outstanding hardening", "command-centre source hours cleanup", "schema contracts", "dependency detection", "source-truth provenance coverage"),
+            required_terms_any=("outstanding hardening", "command-centre source hours cleanup", "schema contracts", "dependency detection", "source-truth provenance coverage"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN = DomainRetrievalPlan(
+    plan_id="CONTACTS_EMPLOYEE_APPOINTMENTS",
+    domain="Contacts / Employee Appointments",
+    trigger_phrases=(
+        "how should contacts and employee appointments work",
+        "how should contacts / employee appointments work",
+        "what are contacts and employee appointments",
+        "how should employee appointments work",
+        "how should contact appointments work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Contacts / Employee Appointments purpose and operator meaning",
+            query_terms=("Contacts / Employee Appointments", "Contact", "EmployeeAppointment", "worker identity context", "employment context", "not payroll calculation truth"),
+            required_terms_any=("Contacts / Employee Appointments", "Contact", "EmployeeAppointment", "worker identity context", "employment context", "not payroll calculation truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="contact_identity_and_worker_context",
+            label="Contacts / Employee Appointments contact identity and worker context",
+            query_terms=("Contact", "worker identity", "person payroll identity", "worker context", "payroll identity context"),
+            required_terms_any=("Contact", "worker identity", "person payroll identity", "worker context", "payroll identity context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="employee_appointment_as_employment_assignment",
+            label="Contacts / Employee Appointments EmployeeAppointment as employment assignment",
+            query_terms=("EmployeeAppointment", "Employee Appointment", "employment assignment", "work assignment", "position worksite classification award"),
+            required_terms_any=("EmployeeAppointment", "Employee Appointment", "employment assignment", "work assignment", "position worksite classification award"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="appointment_scope_and_payrun_admission",
+            label="Contacts / Employee Appointments appointment scope and PayRun admission",
+            query_terms=("appointment scope", "PayRun admission", "source truth", "appointment context", "worker inclusion"),
+            required_terms_any=("appointment scope", "PayRun admission", "source truth", "appointment context", "worker inclusion"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="award_classification_and_position_context",
+            label="Contacts / Employee Appointments award classification and position context",
+            query_terms=("award classification", "AwardPositionClass", "WorksitePosition", "Position", "classification evidence", "appointment"),
+            required_terms_any=("award classification", "AwardPositionClass", "WorksitePosition", "Position", "classification evidence", "appointment"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worksite_state_and_runtime_location",
+            label="Contacts / Employee Appointments worksite state and runtime location",
+            query_terms=("worksite", "state", "runtime location", "worksite state", "state evidence", "appointment"),
+            required_terms_any=("worksite", "state", "runtime location", "worksite state", "state evidence", "appointment"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="objecttime_and_source_truth_connection",
+            label="Contacts / Employee Appointments ObjectTime and source truth connection",
+            query_terms=("ObjectTime", "source truth", "source rows", "appointments", "contacts", "worker inclusion"),
+            required_terms_any=("ObjectTime", "source truth", "source rows", "appointments", "contacts", "worker inclusion"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_source_and_accrual_connection",
+            label="Contacts / Employee Appointments leave source and accrual connection",
+            query_terms=("leave source", "leave applicability", "leave accrual", "contact scope", "appointment scope"),
+            required_terms_any=("leave source", "leave applicability", "leave accrual", "contact scope", "appointment scope"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_and_contact_history_connection",
+            label="Contacts / Employee Appointments Worker Story and contact history connection",
+            query_terms=("Worker Story", "Contact history", "finalised payroll outcome memory", "cumulative movement", "source truth context"),
+            required_terms_any=("Worker Story", "Contact history", "finalised payroll outcome memory", "cumulative movement", "source truth context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_readiness_tax_bank_deduction_payment",
+            label="Contacts / Employee Appointments worker readiness tax bank deduction payment",
+            query_terms=("worker readiness", "tax declarations", "bank", "payment allocation", "deductions", "obligations"),
+            required_terms_any=("worker readiness", "tax declarations", "bank", "payment allocation", "deductions", "obligations"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="dirty_contact_and_reprocessing",
+            label="Contacts / Employee Appointments dirty contact and reprocessing",
+            query_terms=("dirty contact", "dirty contacts", "reprocessing", "PayRun output unsafe", "payroll-affecting changes"),
+            required_terms_any=("dirty contact", "dirty contacts", "reprocessing", "PayRun output unsafe", "payroll-affecting changes"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="comparison_and_classification_lenses",
+            label="Contacts / Employee Appointments comparison and classification lenses",
+            query_terms=("comparison", "classification lens", "classification lenses", "appointment", "duplicate full appointments", "remediation"),
+            required_terms_any=("comparison", "classification lens", "classification lenses", "appointment", "duplicate full appointments", "remediation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Contacts / Employee Appointments outstanding hardening",
+            query_terms=("outstanding hardening", "GUID boundary", "schema contracts", "contact-level history", "WorkerAttention schemas", "classification lenses", "dirty-contact propagation"),
+            required_terms_any=("outstanding hardening", "GUID boundary", "schema contracts", "contact-level history", "WorkerAttention schemas", "classification lenses", "dirty-contact propagation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN = DomainRetrievalPlan(
+    plan_id="PROCESS_PERIOD_PAYRUN_LIFECYCLE",
+    domain="Process Periods / PayRun Lifecycle",
+    trigger_phrases=(
+        "how should process periods and payrun lifecycle work",
+        "how should process periods / payrun lifecycle work",
+        "what are process periods and payrun lifecycle",
+        "how should processperiod work",
+        "how should payrun lifecycle work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Process Periods / PayRun Lifecycle purpose and operator meaning",
+            query_terms=("Process Periods / PayRun Lifecycle", "ProcessPeriod", "governed payroll-period context", "payment-event lifecycle evidence", "not payroll calculation truth", "not a generic date range"),
+            required_terms_any=("Process Periods / PayRun Lifecycle", "ProcessPeriod", "governed payroll-period context", "payment-event lifecycle evidence", "not payroll calculation truth", "not a generic date range"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="process_period_and_group_context",
+            label="Process Periods / PayRun Lifecycle ProcessPeriod and ProcessPeriodGroup context",
+            query_terms=("ProcessPeriod", "Process Period", "ProcessPeriodGroup", "Process Period Group", "recurring calendar policy", "payment policy context"),
+            required_terms_any=("ProcessPeriod", "Process Period", "ProcessPeriodGroup", "Process Period Group", "recurring calendar policy", "payment policy context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="open_not_open_closed_lifecycle",
+            label="Process Periods / PayRun Lifecycle open not-open closed lifecycle",
+            query_terms=("open", "not-open", "not open", "closed", "closed dominates open", "period lifecycle"),
+            required_terms_any=("open", "not-open", "not open", "closed", "closed dominates open", "period lifecycle"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="close_rolls_forward",
+            label="Process Periods / PayRun Lifecycle close rolls forward",
+            query_terms=("close rolls forward", "roll forward", "close period", "open next period", "create next period", "period close"),
+            required_terms_any=("close rolls forward", "roll forward", "close period", "open next period", "create next period", "period close"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payment_date_and_calendar_policy",
+            label="Process Periods / PayRun Lifecycle PaymentDate and calendar policy",
+            query_terms=("PaymentDate", "payment date", "calendar policy", "tax/PAYG", "payment context", "governed derived", "not hardcoded"),
+            required_terms_any=("PaymentDate", "payment date", "calendar policy", "tax/PAYG", "payment context", "governed derived", "not hardcoded"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payrun_creation_and_admission",
+            label="Process Periods / PayRun Lifecycle PayRun creation and admission",
+            query_terms=("PayRun creation", "PayRun admission", "process-period context", "worker inclusion", "admission is not processing", "payment event"),
+            required_terms_any=("PayRun creation", "PayRun admission", "process-period context", "worker inclusion", "admission is not processing", "payment event"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="run_type_and_run_purpose",
+            label="Process Periods / PayRun Lifecycle RunType and RunPurpose",
+            query_terms=("RunType", "RunPurpose", "separate", "run type", "run purpose", "payment/processing event"),
+            required_terms_any=("RunType", "RunPurpose", "separate", "run type", "run purpose", "payment/processing event"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="regular_supplementary_retro_distinction",
+            label="Process Periods / PayRun Lifecycle regular supplementary retro distinction",
+            query_terms=("regular PayRun", "supplementary PayRun", "retro PayRun", "termination PayRun", "reversal PayRun", "adjustment PayRun", "different lifecycle concepts"),
+            required_terms_any=("regular PayRun", "supplementary PayRun", "retro PayRun", "termination PayRun", "reversal PayRun", "adjustment PayRun", "different lifecycle concepts"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payrun_contact_lifecycle",
+            label="Process Periods / PayRun Lifecycle PayRunContact lifecycle",
+            query_terms=("PayRunContact", "worker participation", "admission", "processing state", "operational state layer", "dirty PayRunContact"),
+            required_terms_any=("PayRunContact", "worker participation", "admission", "processing state", "operational state layer", "dirty PayRunContact"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="current_effective_output_and_finalisation",
+            label="Process Periods / PayRun Lifecycle current-effective output and finalisation",
+            query_terms=("current-effective output", "current-effective payroll output", "stale", "superseded", "current truth", "finalisation readiness"),
+            required_terms_any=("current-effective output", "current-effective payroll output", "stale", "superseded", "current truth", "finalisation readiness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payment_execution_and_period_close",
+            label="Process Periods / PayRun Lifecycle payment execution and period close",
+            query_terms=("payment execution", "period close", "downstream governed outcome", "payment outcome", "not payroll calculation", "closed period"),
+            required_terms_any=("payment execution", "period close", "downstream governed outcome", "payment outcome", "not payroll calculation", "closed period"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_admin_queue_and_movement_review_connection",
+            label="Process Periods / PayRun Lifecycle Worker Story Admin Queue and Movement Review connection",
+            query_terms=("Worker Story", "PayRun Admin Queue", "Admin Queue", "Movement Review", "worker participation", "readiness", "review implications"),
+            required_terms_any=("Worker Story", "PayRun Admin Queue", "Admin Queue", "Movement Review", "worker participation", "readiness", "review implications"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Process Periods / PayRun Lifecycle outstanding hardening",
+            query_terms=("outstanding hardening", "operation trackers", "lifecycle contracts", "supplementary/retro policies", "payment execution", "finalisation warning acknowledgement", "broader contract tests"),
+            required_terms_any=("outstanding hardening", "operation trackers", "lifecycle contracts", "supplementary/retro policies", "payment execution", "finalisation warning acknowledgement", "broader contract tests"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+COSTING_GL_CONSEQUENCE_PLAN = DomainRetrievalPlan(
+    plan_id="COSTING_GL_CONSEQUENCE",
+    domain="Costing / GL Consequence Evidence",
+    trigger_phrases=(
+        "how should costing and gl consequence evidence work",
+        "how should costing / gl consequence evidence work",
+        "what is costing and gl consequence evidence",
+        "what is costing / gl consequence evidence",
+        "how should costing work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Costing / GL Consequence Evidence purpose and operator meaning",
+            query_terms=("Costing / GL Consequence Evidence", "Costing", "GL consequence", "financial consequence evidence", "downstream financial consequence evidence", "not payroll calculation truth"),
+            required_terms_any=("Costing / GL Consequence Evidence", "Costing", "GL consequence", "financial consequence evidence", "downstream financial consequence evidence", "not payroll calculation truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="downstream_not_payroll_calculation_truth",
+            label="Costing / GL Consequence Evidence downstream not payroll calculation truth",
+            query_terms=("downstream financial consequence", "not payroll calculation truth", "not payment execution", "Minerva does not post GL", "does not calculate costing"),
+            required_terms_any=("downstream financial consequence", "not payroll calculation truth", "not payment execution", "Minerva does not post GL", "does not calculate costing"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="finalised_payroll_outcome_source",
+            label="Costing / GL Consequence Evidence finalised payroll outcome source",
+            query_terms=("finalised payroll outcome", "finalised payroll outcomes", "finalised gross-to-net", "payment outcome", "source outcome", "finalised truth"),
+            required_terms_any=("finalised payroll outcome", "finalised payroll outcomes", "finalised gross-to-net", "payment outcome", "source outcome", "finalised truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payment_execution_and_remittance_connection",
+            label="Costing / GL Consequence Evidence payment execution and remittance connection",
+            query_terms=("payment execution", "remittance", "payment outcome", "downstream payment", "payment execution performance", "period close"),
+            required_terms_any=("payment execution", "remittance", "payment outcome", "downstream payment", "payment execution performance", "period close"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="employer_liability_and_oncost_connection",
+            label="Costing / GL Consequence Evidence employer liability and on-cost connection",
+            query_terms=("employer liabilities", "employer liability", "on-costs", "on costs", "super", "payroll tax", "WorkCover", "WIC"),
+            required_terms_any=("employer liabilities", "employer liability", "on-costs", "on costs", "super", "payroll tax", "WorkCover", "WIC"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="deduction_obligation_and_writeoff_consequences",
+            label="Costing / GL Consequence Evidence deduction obligation and write-off consequences",
+            query_terms=("deductions", "obligations", "obligation write-off", "obligation writeoff", "forgiveness", "balance reduction", "material adjustment", "GL/provision/costing treatment"),
+            required_terms_any=("deductions", "obligations", "obligation write-off", "obligation writeoff", "forgiveness", "balance reduction", "material adjustment", "GL/provision/costing treatment"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="comparison_remediation_variance_connection",
+            label="Costing / GL Consequence Evidence comparison remediation variance connection",
+            query_terms=("Comparison / Remediation", "remediation variance", "variance line", "remediation top-up", "downstream tax", "super", "payroll tax", "WIC", "costing treatment"),
+            required_terms_any=("Comparison / Remediation", "remediation variance", "variance line", "remediation top-up", "downstream tax", "super", "payroll tax", "WIC", "costing treatment"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_valuation_and_accrual_connection",
+            label="Costing / GL Consequence Evidence leave valuation and accrual connection",
+            query_terms=("leave valuation", "leave accrual", "leave valuation basis", "LeaveLedger", "accrual evidence", "costing flow"),
+            required_terms_any=("leave valuation", "leave accrual", "leave valuation basis", "LeaveLedger", "accrual evidence", "costing flow"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="negative_net_pay_and_out_of_pay_consequences",
+            label="Costing / GL Consequence Evidence negative net pay and out-of-pay consequences",
+            query_terms=("negative net pay", "recoveries", "obligations", "write-offs", "out-of-pay", "out of pay", "financial consequences"),
+            required_terms_any=("negative net pay", "recoveries", "obligations", "write-offs", "out-of-pay", "out of pay", "financial consequences"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="audit_story_and_financial_evidence",
+            label="Costing / GL Consequence Evidence audit story and financial evidence",
+            query_terms=("audit story", "financial evidence", "source outcome", "reason", "treatment", "amount", "ledger status", "costing status", "deferred accounting design status"),
+            required_terms_any=("audit story", "financial evidence", "source outcome", "reason", "treatment", "amount", "ledger status", "costing status", "deferred accounting design status"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="deferred_costing_slice_boundary",
+            label="Costing / GL Consequence Evidence deferred costing slice boundary",
+            query_terms=("deferred costing slice", "future costing slice", "later/final slice", "not completed costing engine", "status-honest", "deferred accounting"),
+            required_terms_any=("deferred costing slice", "future costing slice", "later/final slice", "not completed costing engine", "status-honest", "deferred accounting"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Costing / GL Consequence Evidence outstanding hardening",
+            query_terms=("outstanding hardening", "costing engine", "GL posting", "remediation downstream treatment", "negative net pay financial treatment", "obligation write-off", "contract tests"),
+            required_terms_any=("outstanding hardening", "costing engine", "GL posting", "remediation downstream treatment", "negative net pay financial treatment", "obligation write-off", "contract tests"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+RATE_SOURCE_RATE_STORY_PLAN = DomainRetrievalPlan(
+    plan_id="RATE_SOURCE_RATE_STORY",
+    domain="RateSource / Rate Story",
+    trigger_phrases=(
+        "what is ratesource / rate story",
+        "what is ratesource rate story",
+        "what is rate source / rate story",
+        "what is rate source rate story",
+        "what is rate story",
+        "what is ratesource",
+        "how should rate story work",
+        "how should ratesource work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="rate_story_purpose",
+            label="RateSource / Rate Story purpose",
+            query_terms=("RateSource / Rate Story", "Rate Story", "RateStory", "selected rate", "rate explanation"),
+            required_terms_any=("RateSource / Rate Story", "Rate Story", "RateStory", "selected rate", "rate explanation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rate_source_selection",
+            label="RateSource / Rate Story RateSource selection",
+            query_terms=("RateSource", "Rate Source", "selected rate", "rate selection", "rate source selection"),
+            required_terms_any=("RateSource", "Rate Source", "selected rate", "rate selection", "rate source selection"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rate_amount_evidence",
+            label="RateSource / Rate Story rate amount evidence",
+            query_terms=("rate amount", "amount came from", "rate evidence", "selected amount", "rate value"),
+            required_terms_any=("rate amount", "amount came from", "rate evidence", "selected amount", "rate value"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="date_effective_rates",
+            label="RateSource / Rate Story date-effective rates",
+            query_terms=("date-effective rate", "date-effective rates", "effective date", "date effective rates", "RateSource"),
+            required_terms_any=("date-effective rate", "date-effective rates", "effective date", "date effective rates", "RateSource"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="award_account_class_scope",
+            label="RateSource / Rate Story award account class scope",
+            query_terms=("award rate", "account rate", "class rate", "award scope", "account scope", "class scope", "AwardRateType", "RateType"),
+            required_terms_any=("award rate", "account rate", "class rate", "award scope", "account scope", "class scope", "AwardRateType", "RateType"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="pay_guide_rate_evidence",
+            label="RateSource / Rate Story pay guide rate evidence",
+            query_terms=("pay guide rate evidence", "pay guide evidence", "RateSourceEvidenceIndex", "Rate Source Evidence Index", "source row"),
+            required_terms_any=("pay guide rate evidence", "pay guide evidence", "RateSourceEvidenceIndex", "Rate Source Evidence Index", "source row"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rate_source_evidence_index",
+            label="RateSource / Rate Story RateSourceEvidenceIndex",
+            query_terms=("RateSourceEvidenceIndex", "Rate Source Evidence Index", "rate source evidence index", "why a rate", "rate evidence index"),
+            required_terms_any=("RateSourceEvidenceIndex", "Rate Source Evidence Index", "rate source evidence index", "why a rate", "rate evidence index"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rate_story_vs_decision_story",
+            label="RateSource / Rate Story versus Decision Story",
+            query_terms=("Rate Story", "Decision Story", "rate amount", "treatment selection", "entitlement", "not the same"),
+            required_terms_any=("Rate Story", "Decision Story", "rate amount", "treatment selection", "entitlement", "not the same"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_relationship",
+            label="RateSource / Rate Story Worker Story relationship",
+            query_terms=("Rate Story", "Worker Story", "Worker Calculation Story", "worker evidence", "rate explanation"),
+            required_terms_any=("Rate Story", "Worker Story", "Worker Calculation Story", "worker evidence", "rate explanation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_output_and_gross_to_net_relationship",
+            label="RateSource / Rate Story payroll output and Gross-to-Net relationship",
+            query_terms=("Rate Story", "payroll output", "gross-to-net", "Gross-to-Net", "calculated payroll outcome", "line proof"),
+            required_terms_any=("Rate Story", "payroll output", "gross-to-net", "Gross-to-Net", "calculated payroll outcome", "line proof"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="RateSource / Rate Story outstanding hardening",
+            query_terms=("RateSource", "Rate Story", "outstanding hardening", "RateSourceEvidenceIndex", "contract tests", "pay guide evidence"),
+            required_terms_any=("RateSource", "Rate Story", "outstanding hardening", "RateSourceEvidenceIndex", "contract tests", "pay guide evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+DECISION_STORY_PLAN = DomainRetrievalPlan(
+    plan_id="DECISION_STORY",
+    domain="Decision Story",
+    trigger_phrases=(
+        "what is decision story",
+        "what is decisionstory",
+        "how should decision story work",
+        "how does decision story explain",
+        "what is decision evidence index",
+        "what is decisionevidenceindex",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="decision_story_purpose",
+            label="Decision Story purpose",
+            query_terms=("Decision Story", "DecisionStory", "payroll decision", "why a treatment", "why a line exists"),
+            required_terms_any=("Decision Story", "DecisionStory", "payroll decision", "why a treatment", "why a line exists"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="treatment_and_entitlement_selection",
+            label="Decision Story treatment and entitlement selection",
+            query_terms=("treatment selection", "entitlement decision", "why a treatment was selected", "why the line exists", "payroll decision"),
+            required_terms_any=("treatment selection", "entitlement decision", "why a treatment was selected", "why the line exists", "payroll decision"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="decision_evidence_index",
+            label="Decision Story DecisionEvidenceIndex",
+            query_terms=("DecisionEvidenceIndex", "Decision Evidence Index", "decision evidence", "why a treatment", "why a line exists"),
+            required_terms_any=("DecisionEvidenceIndex", "Decision Evidence Index", "decision evidence", "why a treatment", "why a line exists"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="award_rule_and_runtime_fact_evidence",
+            label="Decision Story award rule and runtime fact evidence",
+            query_terms=("award rule", "configured rules", "runtime facts", "source evidence", "rule outcome"),
+            required_terms_any=("award rule", "configured rules", "runtime facts", "source evidence", "rule outcome"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="allowance_penalty_overtime_shift_evidence",
+            label="Decision Story allowance penalty overtime shift evidence",
+            query_terms=("allowance decision", "penalty decision", "overtime decision", "shift decision", "allowance", "penalty", "overtime", "shift"),
+            required_terms_any=("allowance decision", "penalty decision", "overtime decision", "shift decision", "allowance", "penalty", "overtime", "shift"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="break_public_holiday_and_special_condition_evidence",
+            label="Decision Story break public holiday and special condition evidence",
+            query_terms=("break treatment", "missed break", "public holiday decision", "minimum engagement", "special condition"),
+            required_terms_any=("break treatment", "missed break", "public holiday decision", "minimum engagement", "special condition"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="decision_story_vs_rate_story",
+            label="Decision Story versus Rate Story",
+            query_terms=("Decision Story", "Rate Story", "treatment or line exists", "rate amount", "not the same"),
+            required_terms_any=("Decision Story", "Rate Story", "treatment or line exists", "rate amount", "not the same"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_relationship",
+            label="Decision Story Worker Story relationship",
+            query_terms=("Decision Story", "Worker Story", "payroll line explanation", "worker evidence", "DecisionEvidenceIndex"),
+            required_terms_any=("Decision Story", "Worker Story", "payroll line explanation", "worker evidence", "DecisionEvidenceIndex"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_output_and_gross_to_net_relationship",
+            label="Decision Story payroll output and Gross-to-Net relationship",
+            query_terms=("Decision Story", "payroll output", "Gross-to-Net", "calculated payroll outcome", "line proof"),
+            required_terms_any=("Decision Story", "payroll output", "Gross-to-Net", "calculated payroll outcome", "line proof"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Decision Story outstanding hardening",
+            query_terms=("Decision Story", "DecisionEvidenceIndex", "outstanding hardening", "contract tests", "evidence limitation"),
+            required_terms_any=("Decision Story", "DecisionEvidenceIndex", "outstanding hardening", "contract tests", "evidence limitation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+PAYROLL_OUTPUT_PLAN = DomainRetrievalPlan(
+    plan_id="PAYROLL_OUTPUT",
+    domain="Payroll Output",
+    trigger_phrases=(
+        "what is payroll output",
+        "what is payrun output",
+        "what is process period output",
+        "what is run output",
+        "how should payroll output work",
+        "how should payrun output work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="payroll_output_purpose",
+            label="Payroll Output purpose",
+            query_terms=("Payroll Output", "PayRun Output", "calculated payroll output", "payroll result", "calculated payroll result"),
+            required_terms_any=("Payroll Output", "PayRun Output", "calculated payroll output", "payroll result", "calculated payroll result"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="calculated_payroll_lines",
+            label="Payroll Output calculated payroll lines",
+            query_terms=("calculated payroll lines", "payroll line", "output line", "line-level payroll outcome", "CalcInterpreterLine"),
+            required_terms_any=("calculated payroll lines", "payroll line", "output line", "line-level payroll outcome", "CalcInterpreterLine"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="current_effective_output_truth",
+            label="Payroll Output current-effective output truth",
+            query_terms=("current-effective output", "current effective payroll output", "current-effective payroll output truth", "current truth", "superseded output"),
+            required_terms_any=("current-effective output", "current effective payroll output", "current-effective payroll output truth", "current truth", "superseded output"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="run_output_vs_process_period_output",
+            label="Payroll Output run output versus process-period output",
+            query_terms=("Run Output", "Process Period Output", "PayRun Output", "run output", "process-period output"),
+            required_terms_any=("Run Output", "Process Period Output", "PayRun Output", "run output", "process-period output"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_level_output",
+            label="Payroll Output worker-level output",
+            query_terms=("worker-level output", "worker output", "worker payroll output", "Worker Story", "worker evidence"),
+            required_terms_any=("worker-level output", "worker output", "worker payroll output", "Worker Story", "worker evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payrun_totals_and_line_totals",
+            label="Payroll Output PayRun totals and line totals",
+            query_terms=("PayRun totals", "line totals", "payroll totals", "output totals", "CalcInterpreterRun"),
+            required_terms_any=("PayRun totals", "line totals", "payroll totals", "output totals", "CalcInterpreterRun"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="decision_story_and_rate_story_relationship",
+            label="Payroll Output Decision Story and Rate Story relationship",
+            query_terms=("Decision Story", "Rate Story", "why line exists", "selected rate", "rate amount"),
+            required_terms_any=("Decision Story", "Rate Story", "why line exists", "selected rate", "rate amount"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="gross_to_net_relationship",
+            label="Payroll Output Gross-to-Net relationship",
+            query_terms=("Gross-to-Net", "gross to net", "gross earnings", "net pay", "payroll outcome"),
+            required_terms_any=("Gross-to-Net", "gross to net", "gross earnings", "net pay", "payroll outcome"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_bases_relationship",
+            label="Payroll Output Payroll Bases & Totals relationship",
+            query_terms=("Payroll Bases & Totals", "Payroll Bases", "basis evidence", "bucket evidence", "basis totals"),
+            required_terms_any=("Payroll Bases & Totals", "Payroll Bases", "basis evidence", "bucket evidence", "basis totals"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="finalisation_and_payment_execution_relationship",
+            label="Payroll Output finalisation and payment execution relationship",
+            query_terms=("Finalisation Readiness", "Payment Execution", "finalised outcome truth", "payment execution boundary", "payment file"),
+            required_terms_any=("Finalisation Readiness", "Payment Execution", "finalised outcome truth", "payment execution boundary", "payment file"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Payroll Output outstanding hardening",
+            query_terms=("Payroll Output", "outstanding hardening", "current-effective output", "contract tests", "status honesty"),
+            required_terms_any=("Payroll Output", "outstanding hardening", "current-effective output", "contract tests", "status honesty"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+GROSS_TO_NET_PLAN = DomainRetrievalPlan(
+    plan_id="GROSS_TO_NET",
+    domain="Gross-to-Net",
+    trigger_phrases=(
+        "what is gross-to-net",
+        "what is gross to net",
+        "what is grosstonet",
+        "how should gross-to-net work",
+        "how should gross to net work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="gross_to_net_purpose",
+            label="Gross-to-Net purpose and operator meaning",
+            query_terms=("Gross-to-Net", "Gross to Net", "GrossToNet", "payroll outcome calculation", "payroll outcome explanation surface"),
+            required_terms_any=("Gross-to-Net", "Gross to Net", "GrossToNet", "payroll outcome calculation", "payroll outcome explanation surface"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="gross_earnings_and_payroll_output",
+            label="Gross-to-Net gross earnings and payroll output",
+            query_terms=("gross earnings", "gross pay", "payroll output", "earnings lines", "payroll outcome"),
+            required_terms_any=("gross earnings", "gross pay", "payroll output", "earnings lines", "payroll outcome"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="taxable_basis_and_payg",
+            label="Gross-to-Net taxable basis and PAYG",
+            query_terms=("taxable basis", "taxable earnings", "PAYG", "withholding", "tax withholding", "final withholding"),
+            required_terms_any=("taxable basis", "taxable earnings", "PAYG", "withholding", "tax withholding", "final withholding"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="deductions_and_obligations",
+            label="Gross-to-Net deductions and obligations",
+            query_terms=("deductions", "obligations", "deduction applications", "obligation recovery", "post-tax deductions"),
+            required_terms_any=("deductions", "obligations", "deduction applications", "obligation recovery", "post-tax deductions"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="negative_net_pay",
+            label="Gross-to-Net negative net pay",
+            query_terms=("negative net pay", "governed treatment", "carry-forward", "recovery", "write-off", "not silently converted to zero"),
+            required_terms_any=("negative net pay", "governed treatment", "carry-forward", "recovery", "write-off", "not silently converted to zero"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="net_pay_and_payment_allocation",
+            label="Gross-to-Net net pay and payment allocation",
+            query_terms=("net pay", "payment allocation", "payment execution readiness", "payment destination", "worker net pay"),
+            required_terms_any=("net pay", "payment allocation", "payment execution readiness", "payment destination", "worker net pay"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_relationship",
+            label="Gross-to-Net Worker Story relationship",
+            query_terms=("Gross-to-Net", "Worker Story", "gross-to-net evidence", "worker evidence", "payroll outcome explanation"),
+            required_terms_any=("Gross-to-Net", "Worker Story", "gross-to-net evidence", "worker evidence", "payroll outcome explanation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="finalisation_and_payment_execution",
+            label="Gross-to-Net finalisation and payment execution",
+            query_terms=("finalisation", "finalised outcome truth", "payment execution", "payment execution readiness", "not payment execution"),
+            required_terms_any=("finalisation", "finalised outcome truth", "payment execution", "payment execution readiness", "not payment execution"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="current_effective_output_truth",
+            label="Gross-to-Net current-effective output truth",
+            query_terms=("current-effective payroll output", "current effective payroll output", "current truth", "stale", "superseded"),
+            required_terms_any=("current-effective payroll output", "current effective payroll output", "current truth", "stale", "superseded"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Gross-to-Net outstanding hardening",
+            query_terms=("Gross-to-Net", "outstanding hardening", "negative net pay", "taxable basis", "payment allocation", "contract tests"),
+            required_terms_any=("Gross-to-Net", "outstanding hardening", "negative net pay", "taxable basis", "payment allocation", "contract tests"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+FINALISATION_READINESS_PLAN = DomainRetrievalPlan(
+    plan_id="FINALISATION_READINESS",
+    domain="Finalisation Readiness",
+    trigger_phrases=(
+        "how should finalisation readiness work",
+        "how should finalization readiness work",
+        "what is finalisation readiness",
+        "what is finalization readiness",
+        "how does finalisation readiness work",
+        "how does finalization readiness work",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="purpose_and_operator_meaning",
+            label="Finalisation Readiness purpose and operator meaning",
+            query_terms=("Finalisation Readiness", "governed readiness gate", "assurance gate", "not payroll calculation truth", "green means done"),
+            required_terms_any=("Finalisation Readiness", "governed readiness gate", "assurance gate", "not payroll calculation truth", "green means done"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="blockers_warnings_and_green_state",
+            label="Finalisation Readiness blockers warnings and green state",
+            query_terms=("blockers", "warnings", "red blockers", "amber warnings", "green", "ready", "cleared"),
+            required_terms_any=("blockers", "warnings", "red blockers", "amber warnings", "green", "ready", "cleared"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="current_effective_payroll_output",
+            label="Finalisation Readiness current-effective payroll output",
+            query_terms=("current-effective payroll output", "stale", "superseded", "current truth", "finalised as current truth"),
+            required_terms_any=("current-effective payroll output", "stale", "superseded", "current truth", "finalised as current truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_attention_and_admin_queue",
+            label="Finalisation Readiness Worker Attention and Admin Queue",
+            query_terms=("Worker Attention", "Admin Queue", "worker-level blockers", "worker-level warnings", "ready actions"),
+            required_terms_any=("Worker Attention", "Admin Queue", "worker-level blockers", "worker-level warnings", "ready actions"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_bases_readiness",
+            label="Finalisation Readiness Payroll Bases readiness",
+            query_terms=("Payroll Bases readiness", "Payroll Bases & Totals", "unresolved basis evidence", "stale basis evidence", "finalisation"),
+            required_terms_any=("Payroll Bases readiness", "Payroll Bases & Totals", "unresolved basis evidence", "stale basis evidence", "finalisation"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_readiness",
+            label="Finalisation Readiness leave readiness",
+            query_terms=("leave readiness", "missing leave output", "leave valuation basis", "LeaveLedger", "TAKEN leave"),
+            required_terms_any=("leave readiness", "missing leave output", "leave valuation basis", "LeaveLedger", "TAKEN leave"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="tax_deduction_and_payment_readiness",
+            label="Finalisation Readiness tax deduction and payment readiness",
+            query_terms=("tax readiness", "deduction readiness", "negative net pay", "payment destination readiness", "gross-to-net"),
+            required_terms_any=("tax readiness", "deduction readiness", "negative net pay", "payment destination readiness", "gross-to-net"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payment_execution_and_bank_readiness",
+            label="Finalisation Readiness payment execution and bank readiness",
+            query_terms=("payment execution readiness", "payment readiness", "bank readiness", "gross-to-net readiness", "payment destination"),
+            required_terms_any=("payment execution readiness", "payment readiness", "bank readiness", "gross-to-net readiness", "payment destination"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="finalised_outcome_truth",
+            label="Finalisation Readiness finalised outcome truth",
+            query_terms=("finalised outcome truth", "finalised outcome", "finalised totals", "durable payment outcome memory", "finalised payroll truth"),
+            required_terms_any=("finalised outcome truth", "finalised outcome", "finalised totals", "durable payment outcome memory", "finalised payroll truth"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="warning_acknowledgement_and_audit",
+            label="Finalisation Readiness warning acknowledgement and audit",
+            query_terms=("warning acknowledgement", "warning acknowledgment", "finalisation audit", "reviewed", "accepted", "unresolved"),
+            required_terms_any=("warning acknowledgement", "warning acknowledgment", "finalisation audit", "reviewed", "accepted", "unresolved"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_and_review_surfaces",
+            label="Finalisation Readiness Worker Story and review surfaces",
+            query_terms=("Worker Story", "review surfaces", "readiness evidence", "worker-specific issues", "Movement Review", "Admin Queue"),
+            required_terms_any=("Worker Story", "review surfaces", "readiness evidence", "worker-specific issues", "Movement Review", "Admin Queue"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="outstanding_hardening",
+            label="Finalisation Readiness outstanding hardening",
+            query_terms=(
+                "outstanding hardening",
+                "warning acknowledgement",
+                "WorkerAttention schemas",
+                "finalisation policy",
+                "server-owned operation",
+                "readiness evidence",
+                "payment execution readiness",
+                "contract tests",
+            ),
+            required_terms_any=(
+                "outstanding hardening",
+                "warning acknowledgement",
+                "WorkerAttention schemas",
+                "finalisation policy",
+                "server-owned operation",
+                "readiness evidence",
+                "payment execution readiness",
+                "contract tests",
+            ),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
 DOMAIN_RETRIEVAL_PLANS = (
     ANNUAL_LEAVE_MANAGEMENT_PLAN,
     WORKER_STORY_PLAN,
     PAYROLL_BASES_AND_TOTALS_PLAN,
+    WORKER_ATTENTION_ISSUE_RESOLUTION_PLAN,
     PAYRUN_ADMIN_QUEUE_PLAN,
     MOVEMENT_REVIEW_PLAN,
     COMPARISON_REMEDIATION_PLAN,
     TAX_PAYG_PLAN,
     DEDUCTIONS_OBLIGATIONS_PLAN,
     RETRO_REPLAY_PLAN,
+    PAYMENT_EXECUTION_REMITTANCE_PLAN,
+    LEAVE_ACCRUAL_PROCESSING_PLAN,
+    LEAVE_SOURCE_MODEL_PLAN,
+    ONCOSTS_EMPLOYER_LIABILITIES_PLAN,
+    AWARD_BUILD_EVIDENCE_PLAN,
+    IMPORTS_ACTUALS_PLAN,
+    OBJECTTIME_SOURCE_TRUTH_PLAN,
+    CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN,
+    PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN,
+    COSTING_GL_CONSEQUENCE_PLAN,
+    RATE_SOURCE_RATE_STORY_PLAN,
+    DECISION_STORY_PLAN,
+    PAYROLL_OUTPUT_PLAN,
+    GROSS_TO_NET_PLAN,
+    FINALISATION_READINESS_PLAN,
 )
 
 
@@ -1107,15 +2704,623 @@ def _normalize_question(text: str) -> str:
 
 def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
     normalized = _normalize_question(question)
+    payroll_output_framed = (
+        normalized.startswith("how does payroll output")
+        or normalized.startswith("how should payroll output")
+        or normalized.startswith("what does current effective payroll output")
+        or normalized.startswith("what is the difference between run output and process period output")
+        or "payroll output relate" in normalized
+        or "payroll output explain" in normalized
+    )
+    if (
+        "worker attention / issue resolution" in normalized
+        or "worker attention issue resolution" in normalized
+        or "issue resolution" in normalized and "worker" in normalized
+        or "worker attention centre" in normalized
+        or "workerattention" in normalized and ("issue" in normalized or "resolution" in normalized)
+        or "worker issue" in normalized and ("resolution" in normalized or "surface" in normalized or "platform" in normalized)
+        or "worker attention" in normalized and (
+            "model worker issue" in normalized
+            or "worker issues" in normalized
+            or "fix an issue" in normalized
+            or "guide users" in normalized
+            or "dirty contact state" in normalized
+            or "payment allocation" in normalized
+            or "negative net pay" in normalized
+            or ("admin queue" in normalized and "worker story" in normalized and "relate" in normalized)
+        )
+    ) and not (
+        "payrun admin queue" in normalized
+        or "contacts / employee appointments" in normalized
+        or "contacts and employee appointments" in normalized
+        or "employee appointment" in normalized
+        or "employeeappointment" in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return WORKER_ATTENTION_ISSUE_RESOLUTION_PLAN
+    costing_focused_anchor = (
+        "finalised payroll outcome" in normalized
+        or "finalized payroll outcome" in normalized
+        or "payment execution" in normalized
+        or "remittance" in normalized
+        or "employer liabilities" in normalized
+        or "employer liability" in normalized
+        or "on costs" in normalized
+        or "oncosts" in normalized
+        or "deduction obligations" in normalized
+        or "deduction obligation" in normalized
+        or "write offs" in normalized
+        or "write off" in normalized
+        or "comparison / remediation" in normalized
+        or "comparison remediation" in normalized
+        or "remediation variance" in normalized
+        or "variance line" in normalized
+        or "leave valuation" in normalized
+        or "leave accrual" in normalized
+        or "negative net pay" in normalized
+        or "out of pay" in normalized
+        or "audit story" in normalized
+        or "financial evidence" in normalized
+        or "deferred/final slice" in normalized
+        or "deferred final slice" in normalized
+        or "payroll processing blocker" in normalized
+        or "final slice" in normalized
+    )
+    if (
+        "costing / gl consequence" in normalized
+        or "costing and gl consequence" in normalized
+        or "costing gl consequence" in normalized
+        or ("costing" in normalized and ("gl" in normalized or "financial consequence" in normalized or "financial consequences" in normalized))
+        or ("costing" in normalized and costing_focused_anchor)
+        or ("gl consequence" in normalized and ("costing" in normalized or "financial" in normalized))
+        or ("gl consequences" in normalized and ("costing" in normalized or "financial" in normalized))
+        or ("financial consequence" in normalized and ("costing" in normalized or "gl" in normalized))
+        or ("financial consequences" in normalized and ("costing" in normalized or "gl" in normalized))
+        or ("financial consequence" in normalized and costing_focused_anchor)
+        or ("financial consequences" in normalized and costing_focused_anchor)
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "matter" in normalized
+        or "work" in normalized
+    ):
+        return COSTING_GL_CONSEQUENCE_PLAN
+    if (
+        "ratesource / rate story" in normalized
+        or "ratesource rate story" in normalized
+        or "rate source / rate story" in normalized
+        or "rate source rate story" in normalized
+        or ("rate story" in normalized and ("ratesource" in normalized or "rate source" in normalized))
+        or ("rate story" in normalized and ("selected rate" in normalized or "rate amount" in normalized or "platform" in normalized))
+        or ("rate story" in normalized and "pay guide" in normalized)
+        or ("rate story" in normalized and ("date effective" in normalized or "scoped rates" in normalized or "effective date" in normalized))
+        or ("rate story" in normalized and ("worker story" in normalized or "gross to net" in normalized or "payroll output" in normalized))
+        or ("ratesource" in normalized and ("rate story" in normalized or "selected rate" in normalized or "rate amount" in normalized or "evidence layer" in normalized))
+        or ("rate source" in normalized and ("rate story" in normalized or "selected rate" in normalized or "rate amount" in normalized or "evidence layer" in normalized))
+    ) and not (
+        "tax / payg" in normalized
+        or "tax payg" in normalized
+        or "on costs" in normalized
+        or "oncosts" in normalized
+        or "employer liabilities" in normalized
+        or "employer liability" in normalized
+        or "award build" in normalized
+        or "award evidence" in normalized
+        or "payroll bases" in normalized
+        or ("gross to net" in normalized and "rate story" not in normalized)
+        or normalized.startswith("what is worker story")
+        or "worker story" in normalized and "rate story" not in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return RATE_SOURCE_RATE_STORY_PLAN
+    if (
+        "what is decision story" in normalized
+        or "what is decisionstory" in normalized
+        or ("decision story" in normalized and ("platform" in normalized or "evidence layer" in normalized))
+        or ("decisionstory" in normalized and ("platform" in normalized or "evidence layer" in normalized))
+        or ("decision story" in normalized and ("treatment" in normalized or "entitlement" in normalized or "line exists" in normalized or "payroll decision" in normalized))
+        or ("decisionstory" in normalized and ("treatment" in normalized or "entitlement" in normalized or "line exists" in normalized or "payroll decision" in normalized))
+        or ("decision story" in normalized and "rate story" in normalized and ("treatment" in normalized or "entitlement" in normalized or "decision evidence" in normalized))
+        or ("decision story" in normalized and ("worker story" in normalized or "gross to net" in normalized or "payroll output" in normalized))
+        or ("decisionevidenceindex" in normalized and ("decision story" in normalized or "why a treatment" in normalized or "why a line" in normalized))
+        or ("decision evidence index" in normalized and ("decision story" in normalized or "why a treatment" in normalized or "why a line" in normalized))
+        or ("decisionevidenceindex" in normalized and ("what" in normalized or "used for" in normalized or "explain" in normalized))
+        or ("decision evidence index" in normalized and ("what" in normalized or "used for" in normalized or "explain" in normalized))
+        or "treatment selection" in normalized
+        or "entitlement decision" in normalized
+        or "why the line exists" in normalized
+        or "why a treatment was selected" in normalized
+        or "payroll decision" in normalized and ("why" in normalized or "explain" in normalized)
+        or ("allowance decision" in normalized or "penalty decision" in normalized or "overtime decision" in normalized or "shift decision" in normalized)
+        or ("public holiday decision" in normalized or "public holidays" in normalized or "break treatment" in normalized or "breaks" in normalized or "missed break" in normalized or "minimum engagement" in normalized)
+    ) and not (
+        "ratesource / rate story" in normalized
+        or "rate source / rate story" in normalized
+        or "ratesource rate story" in normalized
+        or "rate source rate story" in normalized
+        or ("rate story" in normalized and ("selected rate" in normalized or "rate amount" in normalized or "ratesource" in normalized or "rate source" in normalized))
+        or normalized.startswith("what is worker story")
+        or ("worker story" in normalized and "decision story" not in normalized)
+        or "award build" in normalized
+        or "award evidence" in normalized
+        or "pay guide" in normalized and "award" in normalized
+        or ("decisionevidenceindex" in normalized and "why does it matter" in normalized)
+        or ("decision evidence index" in normalized and "why does it matter" in normalized)
+        or "gross to net" in normalized and "decision story" not in normalized
+        or "gross-to-net" in normalized and "decision story" not in normalized
+        or "net pay" in normalized and "decision story" not in normalized
+        or "payroll bases" in normalized
+        or "payroll bases & totals" in normalized
+        or ("leave accrual" in normalized or "leave processing" in normalized or "leave calculation" in normalized)
+        or "finalisation readiness" in normalized
+        or "finalization readiness" in normalized
+        or ("readiness" in normalized and ("finalisation" in normalized or "finalization" in normalized))
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return DECISION_STORY_PLAN
+    if (
+        payroll_output_framed
+        or "what is payroll output" in normalized
+        or "what is payrun output" in normalized
+        or "what is process period output" in normalized
+        or "what is run output" in normalized
+        or ("payroll output" in normalized and ("platform" in normalized or "evidence surface" in normalized or "calculated" in normalized))
+        or ("payrun output" in normalized and ("platform" in normalized or "evidence" in normalized or "calculated" in normalized))
+        or ("process period output" in normalized and ("payroll" in normalized or "payrun" in normalized or "run output" in normalized))
+        or ("run output" in normalized and ("process period output" in normalized or "payroll output" in normalized or "platform" in normalized))
+        or ("current effective payroll output" in normalized and "payroll output" in normalized)
+        or ("current effective output" in normalized and "payroll output" in normalized)
+        or ("calculated payroll output" in normalized and ("what" in normalized or "how" in normalized or "explain" in normalized))
+    ) and not (
+        ("gross to net" in normalized and not payroll_output_framed)
+        or ("gross-to-net" in normalized and not payroll_output_framed)
+        or ("net pay" in normalized and "payroll output" not in normalized)
+        or "decision story" in normalized and "payroll output" not in normalized
+        or "rate story" in normalized and "payroll output" not in normalized
+        or "ratesource" in normalized and "payroll output" not in normalized
+        or "rate source" in normalized and "payroll output" not in normalized
+        or normalized.startswith("what is worker story")
+        or ("worker story" in normalized and "payroll output" not in normalized)
+        or ("payroll bases" in normalized and not payroll_output_framed)
+        or ("payroll bases & totals" in normalized and not payroll_output_framed)
+        or "leave accrual" in normalized
+        or "leave processing" in normalized
+        or "objecttime" in normalized
+        or "objecttime / source truth" in normalized
+        or "source truth" in normalized
+        or ("finalisation readiness" in normalized and not payroll_output_framed)
+        or ("finalization readiness" in normalized and not payroll_output_framed)
+        or ("finalisation" in normalized and not payroll_output_framed)
+        or ("finalization" in normalized and not payroll_output_framed)
+        or ("payment execution / remittance" in normalized and not payroll_output_framed)
+        or ("payment execution and remittance" in normalized and not payroll_output_framed)
+        or ("payment execution remittance" in normalized and not payroll_output_framed)
+        or ("payment file" in normalized and "payroll output" not in normalized)
+        or "payrun admin queue" in normalized
+        or "admin queue" in normalized and ("action" in normalized or "workbench" in normalized)
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return PAYROLL_OUTPUT_PLAN
+    if (
+        "gross to net" in normalized
+        or "gross-to-net" in normalized
+        or "grosstonet" in normalized
+        or ("gross earnings" in normalized and "net pay" in normalized)
+        or ("gross" in normalized and "taxable" in normalized and "net pay" in normalized)
+    ) and not (
+        "tax / payg" in normalized
+        or "tax payg" in normalized
+        or ("payg" in normalized and "gross to net" not in normalized and "gross-to-net" not in normalized)
+        or "deductions / obligations" in normalized
+        or ("deductions and obligations" in normalized and "gross to net" not in normalized)
+        or "payment execution / remittance" in normalized
+        or "payment execution and remittance" in normalized
+        or "payment execution remittance" in normalized
+        or "payment execution" in normalized
+        or "payment destination" in normalized
+        or "payment execution readiness" in normalized
+        or "gross to net readiness" in normalized
+        or "worker attention" in normalized
+        or "issue resolution" in normalized
+        or "payroll bases" in normalized
+        or "payroll bases & totals" in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return GROSS_TO_NET_PLAN
+    if (
+        "process periods / payrun lifecycle" in normalized
+        or "process periods and payrun lifecycle" in normalized
+        or (
+            "processperiod" in normalized
+            and (
+                "payrun" in normalized
+                or "lifecycle" in normalized
+                or "period" in normalized
+                or "processperiodgroup" in normalized
+                or "open" in normalized
+                or "closed" in normalized
+                or "state" in normalized
+                or "governance" in normalized
+            )
+        )
+        or ("process period" in normalized and ("payrun" in normalized or "lifecycle" in normalized or "period" in normalized))
+        or ("processperiodgroup" in normalized and ("payrun" in normalized or "calendar" in normalized or "payment" in normalized))
+        or ("process period group" in normalized and ("payrun" in normalized or "calendar" in normalized or "payment" in normalized))
+        or "payrun lifecycle" in normalized
+        or ("paymentdate" in normalized and ("process period" in normalized or "payrun lifecycle" in normalized))
+        or ("payment date" in normalized and ("process period" in normalized or "payrun lifecycle" in normalized))
+        or ("payruncontact" in normalized and ("process period" in normalized or "lifecycle" in normalized or "admission" in normalized))
+        or ("runpurpose" in normalized and ("runtype" in normalized or "payrun" in normalized))
+        or ("run purpose" in normalized and ("run type" in normalized or "payrun" in normalized))
+        or "close rolls forward" in normalized
+        or ("admission" in normalized and "processing" in normalized)
+        or ("regular" in normalized and "supplementary" in normalized and "retro" in normalized and "payrun" in normalized)
+    ) and not (
+        "tax / payg" in normalized
+        or "tax payg" in normalized
+        or "payg" in normalized
+        or "payment execution / remittance" in normalized
+        or "payment execution and remittance" in normalized
+        or "payment execution remittance" in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "matter" in normalized
+        or "work" in normalized
+    ):
+        return PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN
+    if (
+        "contacts and employee appointments" in normalized
+        or "contacts / employee appointments" in normalized
+        or "contact and employee appointment" in normalized
+        or "contact / employee appointment" in normalized
+        or ("employeeappointment" in normalized and ("contact" in normalized or "worker" in normalized or "appointment" in normalized))
+        or ("employee appointment" in normalized and ("contact" in normalized or "worker" in normalized or "appointment" in normalized))
+        or ("contact" in normalized and "appointment" in normalized and ("payrun admission" in normalized or "worker context" in normalized or "employment" in normalized))
+        or ("contact history" in normalized and ("worker" in normalized or "payroll" in normalized or "finalised" in normalized))
+        or ("worksiteposition" in normalized and ("appointment" in normalized or "contact" in normalized))
+        or ("awardpositionclass" in normalized and ("appointment" in normalized or "contact" in normalized))
+        or ("classification lens" in normalized and ("appointment" in normalized or "contact" in normalized))
+        or ("worker readiness" in normalized and ("contact" in normalized or "appointment" in normalized))
+        or ("contact" in normalized and ("tax" in normalized or "bank" in normalized or "deduction" in normalized or "payment readiness" in normalized))
+        or ("worker attention" in normalized and "appointment" in normalized)
+        or ("dirty contact" in normalized and ("appointment" in normalized or "employee" in normalized or "payroll affecting" in normalized))
+    ) and not (
+        "imports / actuals" in normalized
+        or "imports and actuals" in normalized
+        or "leave source model" in normalized
+        or "leave accrual processing" in normalized
+        or "comparison / remediation" in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "matter" in normalized
+        or "work" in normalized
+    ):
+        return CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN
+    if (
+        "objecttime source truth" in normalized
+        or "objecttime / source truth" in normalized
+        or ("objecttime" in normalized and "source truth" in normalized)
+        or ("objecttime" in normalized and ("source evidence" in normalized or "payroll calculation truth" in normalized))
+        or ("objecttime" in normalized and ("source rows" in normalized or "source row" in normalized or "imported" in normalized or "generated" in normalized))
+        or ("objecttime" in normalized and "payrun inclusion" in normalized)
+        or ("sourcetruth" in normalized and ("workedhours" in normalized or "worked hours" in normalized))
+        or ("source truth" in normalized and "worked hours" in normalized and "objecttime" in normalized)
+        or ("source truth" in normalized and ("worker story" in normalized or "payroll bases" in normalized or "leave accrual" in normalized))
+        or ("source truth" in normalized and ("comparison" in normalized or "movement review" in normalized or "retro" in normalized or "replay" in normalized))
+        or ("source truth" in normalized and ("correction" in normalized or "dirty contact" in normalized or "reprocessing" in normalized))
+        or ("raw span hours" in normalized and ("worked hours" in normalized or "objecttime" in normalized))
+        or ("span hours" in normalized and ("worked hours" in normalized or "objecttime" in normalized))
+        or ("dirty contact" in normalized and ("source truth" in normalized or "objecttime" in normalized))
+        or ("reprocessing" in normalized and ("source truth" in normalized or "objecttime" in normalized))
+        or ("correction audit" in normalized and ("source truth" in normalized or "objecttime" in normalized))
+    ) and not (
+        "imports / actuals" in normalized
+        or "imports and actuals" in normalized
+        or "imports actuals" in normalized
+        or "imported timesheets" in normalized
+        or "imported actuals" in normalized
+        or "leave source truth" in normalized
+        or "leave source model" in normalized
+        or ("leave accrual" in normalized and "source truth" in normalized and "objecttime" not in normalized)
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "matter" in normalized
+        or "work" in normalized
+    ):
+        return OBJECTTIME_SOURCE_TRUTH_PLAN
+    if (
+        "imports and actuals" in normalized
+        or "imports / actuals" in normalized
+        or "imports actuals" in normalized
+        or "imported timesheets" in normalized
+        or "imported payroll actuals" in normalized
+        or "imported actuals" in normalized and ("calculated interpreter truth" in normalized or "interpreter truth" in normalized or "calculated interpreter output" in normalized)
+        or "payroll actuals" in normalized and ("import" in normalized or "source system" in normalized)
+        or "actuals lane" in normalized and ("import" in normalized or "source system" in normalized)
+        or "source system mapping" in normalized and ("import" in normalized or "actuals" in normalized)
+        or "source-system mapping" in normalized and ("import" in normalized or "actuals" in normalized)
+        or "pay code mapping" in normalized and ("import" in normalized or "actuals" in normalized)
+        or "ratetype mapping" in normalized and ("import" in normalized or "actuals" in normalized)
+        or "importedpositionclassificationmap" in normalized
+        or "objecttime source truth" in normalized
+        or "source row" in normalized and ("import" in normalized or "actuals" in normalized)
+        or "import provenance" in normalized
+        or "import run" in normalized
+        or "import" in normalized and "actuals" in normalized and ("worker story" in normalized or "admin queue" in normalized)
+        or "unmapped actuals" in normalized and ("import" in normalized or "admin queue" in normalized or "mapping" in normalized)
+    ) and not (
+        "comparison / remediation" in normalized
+        or "comparison remediation" in normalized
+        or "comparison lane" in normalized
+        or "three comparison lanes" in normalized
+        or "primary award path" in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+    ):
+        return IMPORTS_ACTUALS_PLAN
+    if (
+        "award build" in normalized
+        or "award evidence" in normalized
+        or "awardevidenceset" in normalized
+        or "durable award evidence set" in normalized
+        or ("pay guide" in normalized and "evidence" in normalized)
+        or ("award document" in normalized and ("evidence" in normalized or "build" in normalized))
+        or ("needs configuration" in normalized and "award" in normalized)
+        or ("needs_configuration" in normalized and "award" in normalized)
+        or "decisionevidenceindex" in normalized
+        or "decision evidence index" in normalized
+        or "ratesourceevidenceindex" in normalized
+        or "rate source evidence index" in normalized
+        or ("ratetype" in normalized and "awardratetype" in normalized)
+        or ("rate type" in normalized and "award rate type" in normalized)
+        or ("ratesource" in normalized and "date effective" in normalized and "rate evidence" in normalized)
+        or ("rate source" in normalized and "date effective" in normalized and "rate evidence" in normalized)
+        or ("classification" in normalized and "position" in normalized and "class evidence" in normalized)
+    ) and not (
+        "on costs" in normalized
+        or "oncosts" in normalized
+        or "employer liabilities" in normalized
+        or "employer liability" in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+    ):
+        return AWARD_BUILD_EVIDENCE_PLAN
+    if (
+        "on costs" in normalized
+        or "oncosts" in normalized
+        or "employer liabilities" in normalized
+        or "employer liability" in normalized
+        or "super oncost" in normalized
+        or "superannuation on cost" in normalized
+        or "superannuation oncost" in normalized
+        or "payrolltax oncost" in normalized
+        or "payroll tax on cost" in normalized
+        or "workcover oncost" in normalized
+        or "workcover" in normalized
+        or ("wic" in normalized and ("on cost" in normalized or "liability" in normalized or "rate" in normalized))
+        or ("ratesource" in normalized and ("employer" in normalized or "liability" in normalized or "state scoped" in normalized))
+        or ("date effective rates" in normalized and ("employer" in normalized or "liability" in normalized))
+        or ("runtime location" in normalized and ("employer" in normalized or "liability" in normalized))
+        or ("account wide fallback" in normalized and "ratesource" in normalized)
+        or ("account wide fallback" in normalized and ("demo" in normalized or "production truth" in normalized))
+        or ("demo fallback" in normalized and ("employer" in normalized or "liability" in normalized or "production truth" in normalized))
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+    ):
+        return ONCOSTS_EMPLOYER_LIABILITIES_PLAN
+    if (
+        "leave source model" in normalized
+        or "leave source truth" in normalized
+        or ("leave source" in normalized and "applicability" in normalized)
+        or ("leave applicability" in normalized and "leave rule content" in normalized)
+        or ("leave applicability" in normalized and ("source" in normalized or "model" in normalized or "leavetyperule" in normalized))
+        or ("leave type rule" in normalized and "final applicability truth" in normalized)
+        or ("leavetyperule" in normalized and "final applicability truth" in normalized)
+        or ("missing leave output" in normalized and ("applicability" in normalized or "source truth" in normalized))
+        or ("contact scope" in normalized and "leave" in normalized)
+        or ("contact versus appointment" in normalized and "leave" in normalized)
+        or ("contact vs appointment" in normalized and "leave" in normalized)
+        or ("employeeappointment scope" in normalized and "leave" in normalized)
+        or ("employee appointment scope" in normalized and "leave" in normalized)
+        or ("appointment aware leave" in normalized)
+        or ("source dimensions" in normalized and "leave" in normalized)
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "matter" in normalized
+    ):
+        return LEAVE_SOURCE_MODEL_PLAN
+    if (
+        "finalisation readiness" in normalized
+        or "finalization readiness" in normalized
+        or ("finalisation" in normalized and ("readiness" in normalized or "ready" in normalized or "warning" in normalized or "blocker" in normalized or "current effective" in normalized or "payroll output" in normalized or "worker story" in normalized or "review surface" in normalized))
+        or ("finalization" in normalized and ("readiness" in normalized or "ready" in normalized or "warning" in normalized or "blocker" in normalized or "current effective" in normalized or "payroll output" in normalized or "worker story" in normalized or "review surface" in normalized))
+        or ("payment execution readiness" in normalized and "gross to net readiness" in normalized)
+        or ("payment execution readiness" in normalized and "gross-to-net readiness" in normalized)
+        or "finalised outcome truth" in normalized
+        or "finalized outcome truth" in normalized
+        or "finalisation audit" in normalized
+        or "finalization audit" in normalized
+        or ("warning acknowledgement" in normalized and ("finalisation" in normalized or "payrun" in normalized))
+        or ("warning acknowledgment" in normalized and ("finalization" in normalized or "payrun" in normalized))
+        or ("green" in normalized and "readiness" in normalized)
+        or ("finalised outcome" in normalized and ("readiness" in normalized or "finalisation" in normalized))
+        or ("finalized outcome" in normalized and ("readiness" in normalized or "finalization" in normalized))
+    ) and (
+        not normalized.startswith("how does the payrun admin queue")
+        and not normalized.startswith("how does payrun admin queue")
+        and not ("payrun processing" in normalized and "leave readiness" in normalized)
+        and "missing leave output" not in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+    ):
+        return FINALISATION_READINESS_PLAN
+    if (
+        "leave accrual processing" in normalized
+        or "leave accrual detail" in normalized
+        or ("leave accrual" in normalized and ("minerva" in normalized or "source truth" in normalized or "applicability" in normalized))
+        or ("leave accrual" in normalized and ("calcinterpreterline" in normalized or "current effective payroll output" in normalized))
+        or ("leave accrual" in normalized and ("worker story" in normalized or "payroll bases" in normalized or "finalisation" in normalized))
+        or ("leave accrue" in normalized and ("processed" in normalized or "processing" in normalized or "ezeas" in normalized))
+        or ("leave processing" in normalized and ("how" in normalized or "what" in normalized or "ezeas" in normalized))
+        or ("leavetyperule" in normalized and ("leave" in normalized or "applicability" in normalized or "processing" in normalized))
+        or ("leave type rule" in normalized and ("leave" in normalized or "applicability" in normalized or "processing" in normalized))
+        or ("leavetype" in normalized and "leave processing" in normalized)
+        or ("leave type" in normalized and "leave processing" in normalized)
+        or ("leaveledger" in normalized and ("what" in normalized or "explain" in normalized or "leave" in normalized))
+        or ("leave ledger" in normalized and ("what" in normalized or "explain" in normalized or "leave" in normalized))
+        or ("leave request" in normalized and ("payment effects" in normalized or "sequencing" in normalized))
+        or ("leave readiness" in normalized and ("payrun" in normalized or "finalisation" in normalized))
+        or ("missing leave output" in normalized and ("payrun" in normalized or "finalisation" in normalized))
+        or ("leave source model" in normalized and "leave" in normalized)
+        or ("leave valuation basis" in normalized and "leave" in normalized)
+        or ("accrual basis" in normalized and "leave" in normalized)
+        or ("accrualability" in normalized and ("leave" in normalized or "awardratetype" in normalized or "rate type" in normalized))
+        or ("calcinterpreterline" in normalized and ("leave" in normalized or "accrual" in normalized))
+        or ("calc interpreter line" in normalized and ("leave" in normalized or "accrual" in normalized))
+        or ("current effective payroll output" in normalized and ("leave" in normalized or "accrual" in normalized))
+        or ("leaveprocessrun" in normalized or "leave process run" in normalized)
+        or ("taken leave" in normalized and "valuation" in normalized)
+        or ("per hour" in normalized and ("leave" in normalized or "accrual" in normalized))
+        or ("per_hour" in normalized and ("leave" in normalized or "accrual" in normalized))
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+    ):
+        return LEAVE_ACCRUAL_PROCESSING_PLAN
+    if (
+        "payment execution remittance" in normalized
+        or "payment execution and remittance" in normalized
+        or "payment execution" in normalized
+        or ("remittance" in normalized and ("payment" in normalized or "deduction" in normalized or "third party" in normalized))
+        or "generate bank file" in normalized
+        or "bank file" in normalized
+        or "period close" in normalized
+        or "payment allocation" in normalized
+        or "payment destination" in normalized
+        or "bank allocation" in normalized
+        or "worker net pay" in normalized
+        or "third party remittance" in normalized
+        or "remittance batching" in normalized
+        or "remittance reconciliation" in normalized
+        or "payment file" in normalized
+        or "obligation write off" in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+    ):
+        return PAYMENT_EXECUTION_REMITTANCE_PLAN
     if (
         "retro replay" in normalized
+        or "retro / replay" in normalized
         or "retro payrun" in normalized
         or "retro pay run" in normalized
         or "attributed period" in normalized
         or "paid period" in normalized
         or "finalised outcome memory" in normalized
         or "finalized outcome memory" in normalized
+        or "finalised payroll truth" in normalized
+        or "finalized payroll truth" in normalized
         or ("current effective truth" in normalized and ("historical" in normalized or "finalised" in normalized or "finalized" in normalized))
+        or ("current-effective truth" in normalized and ("historical" in normalized or "finalised" in normalized or "finalized" in normalized))
         or "historical bucket evidence" in normalized
         or "dependency detection" in normalized
         or ("bucket rebuild" in normalized and ("finalised" in normalized or "finalized" in normalized or "history" in normalized))

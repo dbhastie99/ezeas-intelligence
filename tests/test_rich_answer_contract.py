@@ -200,6 +200,381 @@ def _ingest_payrun_admin_queue_benchmark_evidence(db_session):
         _ingest(db_session, text, title=title)
 
 
+def _ingest_worker_attention_issue_resolution_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Worker Attention / Issue Resolution and Worker Attention Centre are the worker-level issue surface for "
+            "payroll-affecting blockers, warnings, readiness gaps and deterministic fix links.",
+            "Developer Log - Worker Attention Purpose",
+        ),
+        (
+            "WorkerIssue and Worker issue evidence preserve issue scope, issue class, issue type and issue severity "
+            "for worker-specific issue handling. IssueScope, IssueClass, IssueType and IssueSeverity describe the "
+            "worker issue model, blocker vs warning readiness, recommended action, resolution surface, evidence/story "
+            "and not payroll calculation truth.",
+            "Developer Log - Worker Issue Model",
+        ),
+        (
+            "Worker Attention surfaces blockers, warnings, worker-level blockers, worker-level warnings and readiness "
+            "gaps without treating readiness as proof payroll is correct.",
+            "Developer Log - Worker Attention Blockers Warnings",
+        ),
+        (
+            "Deterministic fix links, deterministic fix link records and resolution surfaces provide in-context "
+            "remediation, no dead-end issue, server-owned fix targets, backend-owned truth, guided action, governed "
+            "user action and audit/evidence where applicable. This is guided action, not Minerva mutation.",
+            "Developer Log - Worker Attention Fix Links",
+        ),
+        (
+            "Dirty contact, dirty contacts, payroll-affecting source/configuration change, PayRunContact dirty, "
+            "PENDING, contact changes and reprocessing can create worker attention issues. Current PayRun output no "
+            "longer safe means reprocessing required, with full contact-level reprocessing default as a platform "
+            "safety signal.",
+            "Developer Log - Worker Attention Dirty Contact",
+        ),
+        (
+            "Payment allocation readiness, payment execution readiness, payment destination, bank allocation and "
+            "payment readiness can create worker attention blockers or warnings.",
+            "Developer Log - Worker Attention Payment Allocation",
+        ),
+        (
+            "Tax readiness, deduction readiness and leave readiness are tax/deduction/leave readiness evidence that "
+            "can surface worker-level issues.",
+            "Developer Log - Worker Attention Tax Deduction Leave",
+        ),
+        (
+            "Negative net pay in gross-to-net context requires governed treatment; obligation, carry-forward, "
+            "recovery, write-off and out-of-pay pathways may apply where supported. Negative net pay is not silently "
+            "converted to zero and may be a blocker or review-worthy issue depending on policy/evidence.",
+            "Developer Log - Worker Attention Negative Net Pay",
+        ),
+        (
+            "Worker Story explains evidence and context for a worker and should expose the same resolution path where "
+            "a worker has an issue. Worker Story should explain Worker Attention worker issue evidence as worker "
+            "evidence and an explanation surface.",
+            "Developer Log - Worker Attention Worker Story",
+        ),
+        (
+            "PayRun Admin Queue and Admin Queue are the operator workbench for what needs action now and broader "
+            "action workflow; Worker Attention is the worker-level issue resolution surface. The surfaces are "
+            "related but not identical, and Admin Queue and Worker Attention are not the same surface. Minerva "
+            "explains relationships, not runtime state.",
+            "Developer Log - Worker Attention Admin Queue",
+        ),
+        (
+            "Minerva explains but does not resolve issues, clear blockers, mark dirty, mark PayRunContact dirty, "
+            "mutate PayRunContact state, reprocess workers, calculate payroll, approve, suppress, finalise or repair "
+            "payroll truth.",
+            "Platform Doctrine - Worker Attention Minerva Boundary",
+        ),
+        (
+            "Outstanding hardening remains around Worker Attention status honesty, WorkerIssue issue taxonomy, "
+            "resolution workflow, deterministic fix link contracts, dirty-contact/reprocessing propagation and "
+            "contract tests.",
+            "Developer Log - Worker Attention Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_gross_to_net_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Gross-to-Net, Gross to Net and GrossToNet are the payroll outcome calculation and payroll outcome "
+            "explanation surface that connects gross earnings, payroll output and net pay.",
+            "Developer Log - Gross-to-Net Purpose",
+        ),
+        (
+            "Gross earnings, gross pay, payroll output, earnings lines and payroll outcome evidence form the gross "
+            "earnings side of the Gross-to-Net chain.",
+            "Developer Log - Gross-to-Net Gross Earnings",
+        ),
+        (
+            "Taxable basis, taxable earnings, PAYG, withholding, tax withholding and final withholding connect tax "
+            "context to Gross-to-Net. TaxStory, tax evidence and PaymentDate are relevant where tax context is "
+            "involved. Payroll Bases relationship and the deterministic tax provider/service boundary matter. Taxable "
+            "basis and final withholding are connected to but not the same as general payroll basis evidence unless "
+            "that relationship is explained.",
+            "Developer Log - Gross-to-Net Taxable Basis PAYG",
+        ),
+        (
+            "Deductions, deduction applications, obligations, obligation recovery and post-tax deductions can affect "
+            "net pay where governed policy supports them. Deductions reduce net pay where applicable, while "
+            "obligations, reducing-balance recovery, affordability, priority, partial deductions, skipped deductions, "
+            "carry-forward, unmet deduction story and linked obligation recovery are governed evidence and not "
+            "automatic blind subtraction. Worker Attention and Admin Queue can surface issues.",
+            "Developer Log - Gross-to-Net Deductions Obligations",
+        ),
+        (
+            "Negative net pay needs governed treatment such as carry-forward, recovery, obligation and write-off "
+            "pathways where formal evidence supports them; it must not be silently converted to zero. Allow, block, "
+            "recover later, convert to obligation, write-off and out-of-pay record pathways may apply where supported. "
+            "Negative net pay can affect payment execution readiness, Worker Attention issue resolution, financial "
+            "consequence and obligation evidence.",
+            "Developer Log - Gross-to-Net Negative Net Pay",
+        ),
+        (
+            "Net pay, worker net pay, payment allocation, payment readiness, payment execution readiness, payment "
+            "destination and worker net pay consume Gross-to-Net evidence, but Gross-to-Net and Payment Execution are "
+            "not the same surface and Gross-to-Net is not payment execution itself.",
+            "Developer Log - Gross-to-Net Net Pay Payment Allocation",
+        ),
+        (
+            "Worker Story should explain Gross-to-Net evidence, worker evidence and payroll outcome explanation for "
+            "worker-level outcome review.",
+            "Developer Log - Gross-to-Net Worker Story",
+        ),
+        (
+            "Finalisation, finalised outcome truth, payment execution and payment execution readiness consume "
+            "Gross-to-Net evidence, but Gross-to-Net is not payment execution.",
+            "Developer Log - Gross-to-Net Finalisation Payment Execution",
+        ),
+        (
+            "Current-effective payroll output, current effective payroll output, current-effective payroll output "
+            "truth, full run, targeted reprocess, current truth, stale output and superseded output determine which "
+            "Gross-to-Net outcome is current truth. Worker Story calculated payroll outcome should expose line proof, "
+            "amounts, deductions, net pay and audit story.",
+            "Developer Log - Gross-to-Net Current Effective Truth",
+        ),
+        (
+            "Minerva does not calculate gross-to-net, withhold tax, apply deductions, change net pay, approve or "
+            "resolve negative net pay, generate payment files, finalise PayRuns or mutate operational payroll truth.",
+            "Platform Doctrine - Gross-to-Net Minerva Boundary",
+        ),
+        (
+            "Outstanding hardening remains around Gross-to-Net status-honest explanation, negative net pay, taxable "
+            "basis, payment allocation and contract tests.",
+            "Developer Log - Gross-to-Net Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_rate_source_rate_story_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "RateSource / Rate Story and RateStory are the evidence layer for explaining the selected rate and rate "
+            "amount for a payroll line.",
+            "Developer Log - Rate Story Purpose",
+        ),
+        (
+            "RateSource and Rate Source selection explain which selected rate was chosen and preserve rate source "
+            "selection evidence. Rate Story can identify the selected RateSource, runtime context, evidence basis and "
+            "effective date for rate selection.",
+            "Developer Log - RateSource Selection",
+        ),
+        (
+            "Rate amount evidence explains where the amount came from, including selected amount, rate value and rate "
+            "evidence.",
+            "Developer Log - Rate Amount Evidence",
+        ),
+        (
+            "Date-effective rates, date-effective rate and effective date evidence explain which RateSource row applies "
+            "for the relevant date. Superseded and historical rates should not be described as current unless in audit "
+            "context.",
+            "Developer Log - Date Effective Rates",
+        ),
+        (
+            "Award rate, account rate and class rate scope can use award scope, account scope, class scope, RateType "
+            "and AwardRateType where formal evidence supports that rate source. Scope resolution depends on "
+            "runtime/class/context and selected rate evidence.",
+            "Developer Log - Rate Scope Evidence",
+        ),
+        (
+            "Pay guide rate evidence, pay guide evidence, RateSourceEvidenceIndex and Rate Source Evidence Index can "
+            "preserve pay guide row, column, page and source text evidence for why a rate amount exists and provide "
+            "rate amount support. Evidence limitation honesty is required where pay guide evidence is absent.",
+            "Developer Log - Rate Source Evidence Index",
+        ),
+        (
+            "Rate Story is not the same as Decision Story. Decision Story explains entitlement or treatment selection; "
+            "Decision Story explains why a treatment or line exists and owns entitlement/treatment logic. Rate Story "
+            "explains why a rate/amount was used through selected RateSource and rate amount evidence.",
+            "Developer Log - Rate Story Decision Story Boundary",
+        ),
+        (
+            "Worker Story and Worker Calculation Story can expose Rate Story as worker evidence, payroll line "
+            "explanation and rate explanation.",
+            "Developer Log - Rate Story Worker Story",
+        ),
+        (
+            "Payroll output, calculated payroll outcome, line proof, formula and Gross-to-Net can reference Rate Story "
+            "evidence. Gross-to-Net uses output lines and amounts, not Rate Story as calculation authority. Rate Story "
+            "supports explanation/audit without making Rate Story the payroll calculation engine.",
+            "Developer Log - Rate Story Payroll Output",
+        ),
+        (
+            "Minerva does not select rates, calculate pay, interpret awards at runtime, change RateSource records, "
+            "validate payroll correctness, calculate payroll or mutate operational payroll truth. Minerva explains but "
+            "does not select rate.",
+            "Platform Doctrine - Rate Story Minerva Boundary",
+        ),
+        (
+            "Outstanding hardening remains around RateSource, Rate Story, RateSourceEvidenceIndex, pay guide evidence "
+            "and contract tests. RateSource evidence alone does not prove entitlement and pay guide evidence alone "
+            "does not prove treatment entitlement.",
+            "Developer Log - Rate Story Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_decision_story_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Decision Story and DecisionStory are the evidence layer for explaining why a payroll treatment, "
+            "entitlement, line, rule outcome or calculated payroll decision exists.",
+            "Developer Log - Decision Story Purpose",
+        ),
+        (
+            "Treatment selection and entitlement decision evidence explain why a treatment was selected and why the "
+            "line exists for a payroll decision. Decision Story explains treatment or entitlement selection from a "
+            "configured rule, runtime facts and award/source evidence where available. It is not rate amount selection.",
+            "Developer Log - Decision Story Treatment Selection",
+        ),
+        (
+            "DecisionEvidenceIndex and Decision Evidence Index are a compact decision evidence index that links "
+            "emitted payroll lines to decision evidence, supports explanation and audit, and can reference award/source "
+            "evidence where available. DecisionEvidenceIndex does not by itself prove the full award-source chain and "
+            "requires evidence limitation honesty.",
+            "Developer Log - Decision Evidence Index",
+        ),
+        (
+            "Award rule, configured rules, runtime facts, source evidence and rule outcome evidence support Decision "
+            "Story where formal award/source evidence is available.",
+            "Developer Log - Decision Story Award Rule Runtime Facts",
+        ),
+        (
+            "Allowance decision, penalty decision, overtime decision and shift decision evidence explain allowance, "
+            "penalty, overtime and shift treatment outcomes. Allowance, penalty, overtime and shift treatment are "
+            "explained through runtime facts, configured rules, decision evidence, exact clause/source evidence where "
+            "available and a generic limitation where source evidence is incomplete.",
+            "Developer Log - Decision Story Allowance Penalty Overtime Shift",
+        ),
+        (
+            "Break treatment, missed break, public holiday decision, minimum engagement and special condition evidence "
+            "can explain calculated payroll decision outcomes. Unpaid break evidence where supported, public holiday "
+            "treatment, special conditions, configured rules, runtime facts, Worker Story, payroll line explanation "
+            "and outstanding hardening remain visible where evidence coverage is incomplete.",
+            "Developer Log - Decision Story Break Public Holiday",
+        ),
+        (
+            "Decision Story explains why a treatment or line exists. Decision Story explains why a treatment/line exists "
+            "and owns entitlement/treatment logic. Rate Story explains why a rate or amount was used through selected "
+            "RateSource and rate amount evidence. Decision Story is not the same as Rate Story. RateSource evidence "
+            "alone does not prove entitlement.",
+            "Developer Log - Decision Story Rate Story Boundary",
+        ),
+        (
+            "Worker Story can expose Decision Story as worker evidence and payroll line explanation.",
+            "Developer Log - Decision Story Worker Story",
+        ),
+        (
+            "Payroll output, calculated payroll outcome, line proof and Gross-to-Net can consume Decision Story "
+            "evidence as payroll output amounts/outcomes, explanation and audit evidence, not net-pay calculation "
+            "authority.",
+            "Developer Log - Decision Story Payroll Output",
+        ),
+        (
+            "Minerva does not select treatments, decide entitlements, interpret awards at runtime, calculate payroll, "
+            "change decision evidence, validate payroll correctness or mutate operational payroll truth. Minerva does "
+            "not calculate or select treatments and Minerva does not decide entitlements.",
+            "Platform Doctrine - Decision Story Minerva Boundary",
+        ),
+        (
+            "Outstanding hardening remains around Decision Story, DecisionEvidenceIndex, contract tests, evidence "
+            "limitation honesty and status honesty. DecisionEvidenceIndex alone does not prove the full award-source "
+            "chain.",
+            "Developer Log - Decision Story Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_payroll_output_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Payroll Output and PayRun Output are the evidence surface for calculated payroll results, calculated "
+            "payroll output, payroll result and calculated payroll result.",
+            "Developer Log - Payroll Output Purpose",
+        ),
+        (
+            "Calculated payroll lines, payroll line, output line, line-level payroll outcome and CalcInterpreterLine "
+            "represent line-level payroll outcome evidence. Payroll Output should explain amount, quantity and "
+            "treatment where formal evidence supports those line attributes.",
+            "Developer Log - Payroll Output Lines",
+        ),
+        (
+            "Current-effective output, current effective payroll output and current-effective payroll output truth "
+            "separate current truth from stale or superseded output. Current-effective payroll output truth is the "
+            "latest/current worker outcome for the process period. Targeted reprocessing versus full run must "
+            "preserve current-effective truth, and superseded or stale run rows should not appear as current truth.",
+            "Developer Log - Payroll Output Current Effective Truth",
+        ),
+        (
+            "Run Output, PayRun Output and Process Period Output are related but different lenses. Run output explains "
+            "results for a PayRun or calculation run, while process-period output is the period-context view; they "
+            "should not be collapsed without explanation. Run Output is scoped to the selected run/subrun lens. "
+            "Process Period Output should show current-effective whole-period worker truth, and targeted reprocess "
+            "should not hide non-target workers from process-period output.",
+            "Developer Log - Payroll Output Run Period Lenses",
+        ),
+        (
+            "Worker-level output, worker output, worker payroll output, Worker Story and worker evidence expose "
+            "worker-level Payroll Output for review.",
+            "Developer Log - Payroll Output Worker Level",
+        ),
+        (
+            "PayRun totals, line totals, payroll totals, output totals and CalcInterpreterRun preserve run-level "
+            "summary evidence for Payroll Output.",
+            "Developer Log - Payroll Output Totals",
+        ),
+        (
+            "Decision Story explains why a payroll line or treatment exists. Rate Story explains why a selected rate "
+            "or rate amount was used. Payroll Output can reference both without selecting treatments or selecting rates.",
+            "Developer Log - Payroll Output Decision Rate Story",
+        ),
+        (
+            "Gross-to-Net consumes Payroll Output amounts and lines to explain gross earnings, taxable basis, "
+            "deductions, obligations, payroll outcome and net pay. Payroll output lines feed or support the "
+            "gross-to-net outcome, but Payroll Output is not payment execution and Minerva does not calculate "
+            "gross-to-net.",
+            "Developer Log - Payroll Output Gross-to-Net",
+        ),
+        (
+            "Payroll Bases & Totals, Payroll Bases, basis evidence, bucket evidence and basis totals support Payroll "
+            "Output explanation but do not replace output lines. Basis results should use current-effective payroll "
+            "source truth and may support taxable, superable, payroll tax, WIC, ordinary and worked-hours evidence. "
+            "Output totals and basis evidence are related but distinct.",
+            "Developer Log - Payroll Output Bases",
+        ),
+        (
+            "Finalisation Readiness and Payment Execution consume Payroll Output evidence downstream. Finalised "
+            "outcome truth, payment execution boundary and payment file concerns are downstream boundaries, not "
+            "Payroll Output itself. Finalisation readiness uses current-effective output and blockers/warnings, and "
+            "payment execution consumes finalised, gross-to-net and payment-ready outcome.",
+            "Developer Log - Payroll Output Finalisation Payment",
+        ),
+        (
+            "Minerva does not calculate payroll output, change payroll output lines, finalise PayRuns, approve payroll "
+            "output, select treatments, select rates, generate payment files or mutate operational payroll truth. "
+            "Payroll Output alone does not prove payroll correctness.",
+            "Platform Doctrine - Payroll Output Minerva Boundary",
+        ),
+        (
+            "Outstanding hardening remains around Payroll Output status honesty, current-effective output, contract "
+            "tests, Run Output versus Process Period Output boundaries and broader output evidence contracts.",
+            "Developer Log - Payroll Output Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
 def _ingest_movement_review_benchmark_evidence(db_session):
     evidence = [
         (
@@ -523,6 +898,734 @@ def _ingest_retro_replay_benchmark_evidence(db_session):
         _ingest(db_session, text, title=title)
 
 
+def _ingest_payment_execution_remittance_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Payment Execution / Remittance is governed payment execution and remittance evidence that turns finalised "
+            "payroll outcome into payment and remittance action, not a generic file export.",
+            "Developer Log - Payment Execution Purpose",
+        ),
+        (
+            "Payment Execution / Remittance consumes finalised gross-to-net, finalised payroll outcome and payment "
+            "outcome evidence; it is not payroll calculation truth.",
+            "Developer Log - Payment Execution Finalised Gross Net Source",
+        ),
+        (
+            "Worker net pay requires payment allocation, bank allocation and bank instruction readiness before complete "
+            "payment execution.",
+            "Developer Log - Payment Execution Worker Net Pay Allocation",
+        ),
+        (
+            "Payment destination readiness matters because missing payment destination or partial payment destinations "
+            "may block complete payment execution without invalidating gross-to-net calculation.",
+            "Developer Log - Payment Destination Readiness",
+        ),
+        (
+            "Negative net pay is a governed outcome that may interact with obligations, carry-forward, recovery, "
+            "write-off and out-of-pay treatment.",
+            "Developer Log - Payment Negative Net Pay Obligation",
+        ),
+        (
+            "Deduction remittance and third-party remittance can require third-party payments, payment destinations, "
+            "remittance files and reconciliation.",
+            "Developer Log - Deduction Third Party Remittance",
+        ),
+        (
+            "Generate Bank File, Bank File, payment file, payment-file execution and Period Close remain governed "
+            "payment execution concerns.",
+            "Developer Log - Payment File Period Close",
+        ),
+        (
+            "Remittance batching, remittance batch handling, remittance reconciliation and reconciliation should be "
+            "visible for remittance evidence.",
+            "Developer Log - Remittance Batching Reconciliation",
+        ),
+        (
+            "Payment Execution / Remittance should connect to Worker Attention and PayRun Admin Queue so blockers, "
+            "warnings and actions are surfaced.",
+            "Developer Log - Payment Worker Attention Admin Queue",
+        ),
+        (
+            "Payment Execution / Remittance should connect to Worker Story and audit evidence for payment allocation, "
+            "remittance, skipped, unpaid and unmet amounts.",
+            "Developer Log - Payment Worker Story Audit Evidence",
+        ),
+        (
+            "Payment Execution / Remittance outstanding hardening remains around bank file generation, remittance "
+            "execution, reconciliation, payment close, obligation write-off financial consequences and UI surfaces.",
+            "Developer Log - Payment Execution Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_leave_accrual_processing_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Leave Accrual / Processing uses Leave Accrual and Leave Processing as deterministic platform outcomes, "
+            "not Minerva calculations or generic leave policy advice.",
+            "Developer Log - Leave Accrual Processing Purpose",
+        ),
+        (
+            "Leave source truth and applicability decide accrual eligibility; LeaveTypeRule alone is not final "
+            "applicability truth and Leave Source Model remains outstanding where formal evidence says so.",
+            "Developer Log - Leave Source Truth Applicability",
+        ),
+        (
+            "Accrual basis uses PER_HOUR baseline with minute and hour based accrual quantity where supported.",
+            "Developer Log - Leave Accrual Basis Quantity",
+        ),
+        (
+            "Canonical processed payroll result truth such as CalcInterpreterLine and current-effective payroll output "
+            "should provide accrual quantity where applicable.",
+            "Developer Log - Leave Payroll Output Calc Interpreter",
+        ),
+        (
+            "LeaveType, LeaveTypeRule, AwardRateType-first accrualability and RateType fallback are baseline "
+            "configuration directions where formal evidence supports them.",
+            "Developer Log - Leave Type Rule Configuration",
+        ),
+        (
+            "LeaveLedger and Leave Ledger record leave accrual, payment and balance movements and should preserve "
+            "explanation story evidence.",
+            "Developer Log - Leave Ledger Posting",
+        ),
+        (
+            "Leave valuation basis supports TAKEN leave valuation and mandatory valuation should hard failure rather "
+            "than silent fallback.",
+            "Developer Log - Leave Valuation Basis",
+        ),
+        (
+            "Leave request payment effects occur before payroll interpretation or within payroll interpretation, "
+            "while leave accrual occurs after payroll interpretation.",
+            "Developer Log - Leave Request Payment Effects",
+        ),
+        (
+            "LeaveProcessRun and PayRun processing should surface finalisation readiness, leave readiness and missing "
+            "leave output honestly.",
+            "Developer Log - Leave PayRun Processing Finalisation",
+        ),
+        (
+            "Worker Story should explain Leave and Accrual Outcome using server-owned leave output, ledger and "
+            "valuation evidence.",
+            "Developer Log - Leave Worker Story",
+        ),
+        (
+            "Payroll Bases & Totals may provide governed basis evidence for worked hours, basis quantity and leave "
+            "basis quantities.",
+            "Developer Log - Leave Payroll Bases",
+        ),
+        (
+            "Leave Accrual / Processing outstanding hardening includes Leave Source Model, full leave-processing "
+            "UI/runs, leave request ownership contact-vs-appointment design, leave story polish and finalisation "
+            "warning acknowledgement.",
+            "Developer Log - Leave Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_finalisation_readiness_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Finalisation Readiness is the governed readiness gate and assurance gate for whether a PayRun can be "
+            "finalised safely; it is not payroll calculation truth and not a simple green means done status.",
+            "Developer Log - Finalisation Readiness Purpose",
+        ),
+        (
+            "Finalisation Readiness uses blockers and warnings: red blockers prevent the relevant action, amber "
+            "warnings require governed review, and green means ready or cleared for that evidence dimension.",
+            "Developer Log - Finalisation Blockers Warnings Green",
+        ),
+        (
+            "Current-effective payroll output matters because stale or superseded PayRun output must not be finalised "
+            "as current truth.",
+            "Developer Log - Finalisation Current Effective Output",
+        ),
+        (
+            "Worker Attention and Admin Queue surface worker-level blockers, worker-level warnings and ready actions.",
+            "Developer Log - Finalisation Worker Attention Admin Queue",
+        ),
+        (
+            "Payroll Bases readiness and Payroll Bases & Totals readiness matter where unresolved basis evidence or "
+            "stale basis evidence can affect finalisation.",
+            "Developer Log - Finalisation Payroll Bases Readiness",
+        ),
+        (
+            "Leave readiness must surface missing leave output, LeaveLedger evidence or leave valuation basis issues "
+            "honestly, including TAKEN leave valuation concerns.",
+            "Developer Log - Finalisation Leave Readiness",
+        ),
+        (
+            "Tax readiness, deduction readiness, negative net pay, payment destination readiness and gross-to-net "
+            "readiness can affect finalisation or payment execution depending on policy.",
+            "Developer Log - Finalisation Tax Deduction Payment Readiness",
+        ),
+        (
+            "Payment execution readiness, payment readiness and bank readiness are related to but distinct from "
+            "gross-to-net readiness and payment destination readiness.",
+            "Developer Log - Finalisation Payment Execution Readiness",
+        ),
+        (
+            "Finalised outcome truth, finalised outcome and finalised totals should become durable payment outcome "
+            "memory and finalised payroll truth once finalised.",
+            "Developer Log - Finalisation Outcome Truth",
+        ),
+        (
+            "Warning acknowledgement, warning acknowledgment and finalisation audit evidence must preserve what was "
+            "reviewed, accepted or unresolved.",
+            "Developer Log - Finalisation Warning Acknowledgement Audit",
+        ),
+        (
+            "Worker Story and review surfaces such as Movement Review and Admin Queue should explain readiness evidence "
+            "and worker-specific issues.",
+            "Developer Log - Finalisation Worker Story Review Surfaces",
+        ),
+        (
+            "Finalisation Readiness outstanding hardening remains around warning acknowledgement, WorkerAttention "
+            "schemas, finalisation policy, server-owned operation and readiness evidence, payment execution readiness "
+            "and broader contract tests.",
+            "Developer Log - Finalisation Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_leave_source_model_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Leave Source Model is the governed applicability and source-truth layer for determining whether leave "
+            "applies to a worker context.",
+            "Developer Log - Leave Source Model Purpose",
+        ),
+        (
+            "Applicability is separate from rule content: LeaveTypeRule is policy calculation content and not the "
+            "whole source truth.",
+            "Developer Log - Leave Source Applicability Rule Content",
+        ),
+        (
+            "LeaveTypeRule must not be treated as final applicability truth; every active LeaveTypeRule does not mean "
+            "every worker should have leave output.",
+            "Developer Log - Leave Source Rule Limitations",
+        ),
+        (
+            "Contact scope, EmployeeAppointment scope, contact-level and appointment-level ownership require "
+            "appointment-aware leave handling.",
+            "Developer Log - Leave Source Contact Appointment Scope",
+        ),
+        (
+            "Leave applicability may depend on Account, EmploymentType, WorksitePosition, Worksite, "
+            "EmployeeAppointment, Contact, AwardPositionClass, AwardPosition, Position, Award, State and precedence.",
+            "Developer Log - Leave Source Dimensions Precedence",
+        ),
+        (
+            "Leave accrual should consume source applicability decisions instead of trying to infer ad hoc source "
+            "truth during accrual.",
+            "Developer Log - Leave Source Accrual Connection",
+        ),
+        (
+            "Leave request and payment effects should consume source applicability decisions and respect leave "
+            "ownership and request ownership.",
+            "Developer Log - Leave Source Request Payment Effects",
+        ),
+        (
+            "Worker Story leave chapters should explain source applicability decisions where leave output or warnings "
+            "are shown.",
+            "Developer Log - Leave Source Worker Story",
+        ),
+        (
+            "Command Centre and Finalisation Readiness should surface leave readiness and PayRun finalisation warnings "
+            "honestly.",
+            "Developer Log - Leave Source Command Centre Finalisation",
+        ),
+        (
+            "Leave readiness should distinguish no leave entitlement and leave does not apply from leave output is "
+            "missing so missing leave output is not automatically wrong without source truth.",
+            "Developer Log - Leave Source Missing Output Detection",
+        ),
+        (
+            "Leave Source Model outstanding hardening remains because it is a planned model and required model, not "
+            "complete runtime capability unless formal evidence says so.",
+            "Developer Log - Leave Source Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_oncosts_employer_liabilities_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "On-costs and Employer Liabilities are governed employer liability evidence with operator meaning, "
+            "not ordinary worker pay and not a reporting add-on.",
+            "Developer Log - On-costs Employer Liabilities Purpose",
+        ),
+        (
+            "Employer liability evidence is not worker pay, not worker net pay and not payroll calculation truth; "
+            "Minerva does not calculate on-costs.",
+            "Developer Log - On-costs Worker Pay Boundary",
+        ),
+        (
+            "RateSource and date-effective rates should live in date-effective RateSource rule-pack configuration "
+            "rather than application code, with production truth governed outside code constants.",
+            "Developer Log - On-costs RateSource Date Effective",
+        ),
+        (
+            "AwardRateType settings and RateType defaults drive SUPER_ONCOST, PAYROLLTAX_ONCOST and "
+            "WORKCOVER_ONCOST; AwardRateType can inherit defaults at build time and diverge by award.",
+            "Developer Log - On-costs AwardRateType RateType",
+        ),
+        (
+            "Governed basis membership, bucket membership and basis membership matter because raw flags may seed "
+            "defaults, but runtime basis decisions should resolve from governed membership where implemented.",
+            "Developer Log - On-costs Governed Basis Membership",
+        ),
+        (
+            "Superannuation on-cost, payroll tax on-cost, WorkCover and WIC have different basis and jurisdiction "
+            "implications.",
+            "Developer Log - On-costs Liability Types",
+        ),
+        (
+            "State, worksite and runtime location resolution matter for state-scoped RateSource selection and "
+            "state-scoped employer liabilities; runtime state and worksite resolution remain outstanding.",
+            "Developer Log - On-costs Runtime Location",
+        ),
+        (
+            "PayRun output and Worker Story should distinguish worker-payable lines from employer liability lines "
+            "and on-cost evidence.",
+            "Developer Log - On-costs PayRun Worker Story",
+        ),
+        (
+            "Payroll Bases & Totals can provide governed basis evidence, basis evidence and basis totals for "
+            "liability calculations.",
+            "Developer Log - On-costs Payroll Bases",
+        ),
+        (
+            "Finalisation Readiness may depend on unresolved basis or liability configuration where policy requires "
+            "that readiness evidence.",
+            "Developer Log - On-costs Finalisation Readiness",
+        ),
+        (
+            "Demo fallback account-wide fallback RateSource rows may unblock demos but are not production truth.",
+            "Developer Log - On-costs Demo Fallback",
+        ),
+        (
+            "Outstanding hardening remains around runtime state worksite resolution, award creation seeding, "
+            "governed basis membership, product tests and production replacement of demo fallback.",
+            "Developer Log - On-costs Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_award_build_evidence_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Award Build and Award Evidence are governed configuration and traceable evidence creation, not runtime "
+            "payroll calculation by Minerva.",
+            "Developer Log - Award Build Purpose",
+        ),
+        (
+            "Award documents and pay guide evidence are source evidence; build artifacts should preserve row column "
+            "page evidence.",
+            "Developer Log - Award Document Pay Guide Sources",
+        ),
+        (
+            "RateType is the stable conceptual pay type while AwardRateType is award-scoped treatment and "
+            "configuration.",
+            "Developer Log - Award RateType AwardRateType",
+        ),
+        (
+            "RateSource stores date-effective rate amounts and rate evidence and must not be replaced by hardcoded "
+            "rates.",
+            "Developer Log - Award RateSource Evidence",
+        ),
+        (
+            "Classification, position and class evidence should be deterministically derived or reviewed, not guessed.",
+            "Developer Log - Award Classification Evidence",
+        ),
+        (
+            "Allowances, penalties, conditions, shift and overtime rules need source evidence and status-honest "
+            "configuration.",
+            "Developer Log - Award Allowance Penalty Conditions",
+        ),
+        (
+            "DecisionEvidenceIndex and Decision Evidence Index support why a treatment and why a line exists.",
+            "Developer Log - Award Decision Evidence Index",
+        ),
+        (
+            "RateSourceEvidenceIndex and Rate Source Evidence Index support why a rate and why an amount was used.",
+            "Developer Log - Award Rate Source Evidence Index",
+        ),
+        (
+            "Worker Story should use Decision Story and Rate Story evidence from award build and runtime artifacts "
+            "for PayRun interpretation evidence.",
+            "Developer Log - Award Worker Story Connection",
+        ),
+        (
+            "NEEDS_CONFIGURATION is a valid award build status and valid build outcome where missing evidence or "
+            "missing configuration remains.",
+            "Developer Log - Award Needs Configuration",
+        ),
+        (
+            "AwardEvidenceSet and Durable AwardEvidenceSet remain future hardening where durable evidence is still "
+            "artifact based or file based.",
+            "Developer Log - Award Evidence Set",
+        ),
+        (
+            "Outstanding hardening remains around semantic table classification, durable evidence sets, code/test "
+            "verification, parser routing, conditional award regimes and source evidence coverage.",
+            "Developer Log - Award Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_imports_actuals_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Imports / Actuals and Imports and Actuals are governed imported evidence and external source evidence, "
+            "not calculated interpreter truth.",
+            "Developer Log - Imports Actuals Purpose",
+        ),
+        (
+            "Imported timesheets may become ObjectTime work evidence and timesheet source truth only after validation "
+            "and mapping.",
+            "Developer Log - Imports Actuals Timesheets",
+        ),
+        (
+            "Imported payroll actuals and payroll actuals are an actuals lane and external outcome lane, not "
+            "calculated interpreter output.",
+            "Developer Log - Imports Actuals Lane",
+        ),
+        (
+            "Source-system mapping and source system mapping require validation for workers, dates and source rows.",
+            "Developer Log - Imports Actuals Source System Mapping",
+        ),
+        (
+            "Pay code mapping, source-system pay code mapping and RateType mapping connect external pay codes to "
+            "platform concepts; unmapped actuals should surface as deterministic issues.",
+            "Developer Log - Imports Actuals Pay Code RateType",
+        ),
+        (
+            "ImportedPositionClassificationMap, position mapping and classification mapping matter for "
+            "source-system classification and source-system position evidence.",
+            "Developer Log - Imports Actuals Position Classification",
+        ),
+        (
+            "ObjectTime source truth must preserve source truth, source row and import provenance from imported "
+            "source rows.",
+            "Developer Log - Imports Actuals ObjectTime Source Truth",
+        ),
+        (
+            "Comparison / Remediation can compare primary calculated, comparator calculated and imported actual "
+            "lanes when explaining variance.",
+            "Developer Log - Imports Actuals Comparison Remediation",
+        ),
+        (
+            "Reconciliation and Movement Review use imported actuals and source evidence to explain variance and "
+            "review outcomes.",
+            "Developer Log - Imports Actuals Reconciliation Movement Review",
+        ),
+        (
+            "Worker Story and Admin Queue should surface import provenance, mapping issues, unmapped actuals, "
+            "missing classifications and review actions.",
+            "Developer Log - Imports Actuals Worker Story Admin Queue",
+        ),
+        (
+            "Evidence provenance and audit should preserve source file, source row, import run, mapping decision, "
+            "validation status and story evidence.",
+            "Developer Log - Imports Actuals Provenance Audit",
+        ),
+        (
+            "Outstanding hardening remains around actuals lane model, import mapping UI, comparison-line models, "
+            "source-system classification mapping, source-row evidence and validation workflows.",
+            "Developer Log - Imports Actuals Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_objecttime_source_truth_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "ObjectTime / Source Truth and ObjectTime Source Truth are governed source evidence for work time and "
+            "source-row inclusion, not payroll calculation truth and not user-facing worked hours.",
+            "Developer Log - ObjectTime Source Truth Purpose",
+        ),
+        (
+            "ObjectTime acts as source evidence with source row and inclusion context for work time.",
+            "Developer Log - ObjectTime Source Evidence",
+        ),
+        (
+            "PayRun inclusion uses SourceTruth and Source Truth source inclusion to explain why a worker source row "
+            "belongs in a PayRun.",
+            "Developer Log - ObjectTime PayRun Inclusion",
+        ),
+        (
+            "Imported source rows and generated source rows must preserve provenance and validation mapping status.",
+            "Developer Log - ObjectTime Imported Generated Rows",
+        ),
+        (
+            "SourceTruth and WorkedHours are separate; raw span hours and span hours are not interpreted payable "
+            "hours or worked hours.",
+            "Developer Log - ObjectTime Worked Hours Boundary",
+        ),
+        (
+            "Current-effective output and current-effective payroll output connect processed source truth to payroll "
+            "outcome and current-effective truth.",
+            "Developer Log - ObjectTime Current Effective Output",
+        ),
+        (
+            "Worker Story should begin with Source Truth and source inclusion before calculated payroll outcome and "
+            "Decision Story.",
+            "Developer Log - ObjectTime Worker Story",
+        ),
+        (
+            "Payroll Bases & Totals and leave accrual should consume governed processed payroll and bucket evidence, "
+            "not raw source span duration.",
+            "Developer Log - ObjectTime Payroll Bases Leave",
+        ),
+        (
+            "Comparison / Remediation, Movement Review and Retro / Replay depend on source truth, provenance and "
+            "historical current-effective distinctions.",
+            "Developer Log - ObjectTime Comparison Movement Replay",
+        ),
+        (
+            "Correction audit and source truth correction should mark dirty contact and dirty PayRunContact records "
+            "for governed reprocessing.",
+            "Developer Log - ObjectTime Corrections Dirty Contacts",
+        ),
+        (
+            "Evidence provenance and audit should preserve source file, source row, ObjectTime, correction history "
+            "and evidence story.",
+            "Developer Log - ObjectTime Provenance Audit",
+        ),
+        (
+            "Outstanding hardening remains around command-centre source hours cleanup, schema contracts, dependency "
+            "detection and source-truth provenance coverage.",
+            "Developer Log - ObjectTime Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_contacts_employee_appointments_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Contacts / Employee Appointments use Contact and EmployeeAppointment as governed worker identity "
+            "context and employment context, not payroll calculation truth or a generic HR profile.",
+            "Developer Log - Contacts Appointments Purpose",
+        ),
+        (
+            "Contact is the worker identity, person payroll identity, worker context and payroll identity context.",
+            "Developer Log - Contacts Worker Identity",
+        ),
+        (
+            "EmployeeAppointment and Employee Appointment are the employment assignment and work assignment; "
+            "appointment context can carry position worksite classification award dimensions.",
+            "Developer Log - Employee Appointment Assignment",
+        ),
+        (
+            "Appointment scope and PayRun admission use source truth, appointment context and worker inclusion.",
+            "Developer Log - Contacts PayRun Admission",
+        ),
+        (
+            "Award classification, AwardPositionClass, WorksitePosition, Position and classification evidence belong "
+            "under appointment context where appointment-specific truth matters.",
+            "Developer Log - Contacts Award Classification Position",
+        ),
+        (
+            "Worksite, state, runtime location, worksite state and state evidence matter for appointment payroll, "
+            "award and employer-liability contexts.",
+            "Developer Log - Contacts Worksite State Runtime Location",
+        ),
+        (
+            "ObjectTime and source truth source rows connect appointments and contacts to worker inclusion.",
+            "Developer Log - Contacts ObjectTime Source Truth",
+        ),
+        (
+            "Leave source, leave applicability and leave accrual may depend on contact scope versus appointment scope.",
+            "Developer Log - Contacts Leave Source Accrual",
+        ),
+        (
+            "Worker Story should surface source truth context, and Contact history should eventually surface finalised "
+            "payroll outcome memory and cumulative movement.",
+            "Developer Log - Contacts Worker Story History",
+        ),
+        (
+            "Worker readiness includes contact-level tax declarations, bank, payment allocation, deductions and "
+            "obligations evidence surfaces.",
+            "Developer Log - Contacts Worker Readiness",
+        ),
+        (
+            "Dirty contact and dirty contacts mean payroll-affecting changes can make current PayRun output unsafe "
+            "until governed reprocessing.",
+            "Developer Log - Contacts Dirty Reprocessing",
+        ),
+        (
+            "Comparison and remediation may need classification lens and classification lenses under the appointment "
+            "rather than duplicate full appointments.",
+            "Developer Log - Contacts Classification Lenses",
+        ),
+        (
+            "Outstanding hardening remains around GUID boundary, schema contracts, contact-level history, "
+            "WorkerAttention schemas, appointment classification lenses, leave request ownership, source-truth "
+            "provenance and dirty-contact propagation.",
+            "Developer Log - Contacts Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_process_period_payrun_lifecycle_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Process Periods / PayRun Lifecycle uses ProcessPeriod as governed payroll-period context and "
+            "payment-event lifecycle evidence, not payroll calculation truth and not a generic date range.",
+            "Developer Log - Process Period Lifecycle Purpose",
+        ),
+        (
+            "ProcessPeriod and Process Period use ProcessPeriodGroup and Process Period Group for recurring calendar "
+            "policy and payment policy context.",
+            "Developer Log - Process Period Group Context",
+        ),
+        (
+            "Open, not-open, not open and closed are distinct period lifecycle states, and closed dominates open.",
+            "Developer Log - Process Period Open Closed Lifecycle",
+        ),
+        (
+            "Close rolls forward and roll forward period close may close period state then open next period or create "
+            "next period where implemented.",
+            "Developer Log - Process Period Close Rolls Forward",
+        ),
+        (
+            "PaymentDate and payment date matter for tax/PAYG and payment context and should be governed derived "
+            "calendar policy, not hardcoded.",
+            "Developer Log - Process Period PaymentDate",
+        ),
+        (
+            "PayRun creation and PayRun admission happen inside process-period context for worker inclusion and "
+            "payment event setup, but admission is not processing.",
+            "Developer Log - Process Period PayRun Admission",
+        ),
+        (
+            "RunType and RunPurpose should remain separate run type and run purpose evidence for each "
+            "payment/processing event.",
+            "Developer Log - PayRun RunType RunPurpose",
+        ),
+        (
+            "Regular PayRun, supplementary PayRun, retro PayRun, termination PayRun, reversal PayRun and adjustment "
+            "PayRun are different lifecycle concepts.",
+            "Developer Log - PayRun Run Type Distinctions",
+        ),
+        (
+            "PayRunContact is the operational state layer for worker participation, admission and processing state; "
+            "dirty PayRunContact records can require review.",
+            "Developer Log - PayRunContact Lifecycle",
+        ),
+        (
+            "Current-effective output and current-effective payroll output matter because stale and superseded runs "
+            "must not present as current truth for finalisation readiness.",
+            "Developer Log - Process Period Current Effective Output",
+        ),
+        (
+            "Finalisation readiness consumes payroll, leave, tax, deductions, payment, bases and worker issues; "
+            "payment execution and period close are downstream governed outcomes, not payroll calculation.",
+            "Developer Log - Process Period Finalisation Payment Close",
+        ),
+        (
+            "Worker Story, PayRun Admin Queue, Admin Queue and Movement Review should explain worker participation, "
+            "readiness and review implications.",
+            "Developer Log - Process Period Review Connections",
+        ),
+        (
+            "Outstanding hardening remains around operation trackers, lifecycle contracts, supplementary/retro "
+            "policies, payment execution, finalisation warning acknowledgement and broader contract tests.",
+            "Developer Log - Process Period Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_costing_gl_consequence_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Costing / GL Consequence Evidence and Costing GL consequence are downstream financial consequence "
+            "evidence, not payroll calculation truth, not payment execution and not a completed costing engine.",
+            "Developer Log - Costing GL Purpose",
+        ),
+        (
+            "Costing should consume finalised payroll outcome truth, finalised payroll outcome, finalised payroll "
+            "outcomes, finalised gross-to-net, payment outcome and liability truth rather than block payroll close or "
+            "payment execution performance.",
+            "Developer Log - Costing Finalised Outcome Source",
+        ),
+        (
+            "Payment Execution / Remittance, payment execution, remittance, downstream payment and period close can "
+            "create financial consequence evidence but remain separate from costing.",
+            "Developer Log - Costing Payment Execution Remittance",
+        ),
+        (
+            "Employer liabilities, employer liability, on-costs, on costs, super, payroll tax, WorkCover and WIC can "
+            "have costing or GL consequences.",
+            "Developer Log - Costing Employer Liability Oncost",
+        ),
+        (
+            "Deductions, deduction obligations and obligations can have financial consequences; obligation write-off, "
+            "obligation writeoff, forgiveness, balance reduction and material adjustment may require "
+            "GL/provision/costing treatment.",
+            "Developer Log - Costing Obligation Writeoff",
+        ),
+        (
+            "Comparison / Remediation remediation variance, variance line and remediation top-up evidence may need "
+            "downstream treatment, downstream tax, super, payroll tax, WIC, leave, deduction and costing treatment.",
+            "Developer Log - Costing Remediation Variance",
+        ),
+        (
+            "Leave valuation, leave accrual, leave valuation basis, LeaveLedger and accrual evidence may eventually "
+            "flow to costing.",
+            "Developer Log - Costing Leave Valuation Accrual",
+        ),
+        (
+            "Negative net pay may create recoveries, obligations, write-offs or out-of-pay and out of pay records "
+            "with financial consequences.",
+            "Developer Log - Costing Negative Net Pay",
+        ),
+        (
+            "Audit story and financial evidence should preserve source outcome, reason, treatment, amount, ledger "
+            "status, costing status and deferred accounting design status.",
+            "Developer Log - Costing Audit Story",
+        ),
+        (
+            "Deferred/final slice, deferred costing slice, future costing slice and later/final slice language means "
+            "status-honest deferred accounting design, not completed costing engine and not a payroll-processing "
+            "blocker.",
+            "Developer Log - Costing Deferred Slice",
+        ),
+        (
+            "Minerva explains evidence and status, does not post GL entries and does not calculate costing.",
+            "Platform Doctrine - Costing Minerva Boundary",
+        ),
+        (
+            "Outstanding hardening remains around costing engine, GL posting, remediation downstream treatment, "
+            "negative net pay financial treatment, obligation write-off handling and contract tests.",
+            "Developer Log - Costing Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
 def test_answer_mode_classification_examples():
     assert classify_answer_mode("What is Minerva not allowed to do?") == AnswerMode.DOCTRINE.value
     assert classify_answer_mode("How is Annual Leave managed in the system?") == AnswerMode.PRODUCT_DOMAIN.value
@@ -675,6 +1778,96 @@ def test_payrun_admin_queue_rich_answer_benchmark_manifest_loads(db_session):
     assert result["results"][0]["checks"]["answer_mode"] is True
 
 
+def test_worker_attention_issue_resolution_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.worker_attention_issue_resolution.json")
+
+    assert manifest["name"] == "Worker Attention / Issue Resolution rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "worker-attention-issue-resolution-rich-answer",
+        "worker-attention-worker-issue-model",
+        "worker-attention-deterministic-fix-links",
+        "worker-attention-dirty-contact-reprocessing",
+        "worker-attention-payment-allocation-negative-net-pay",
+        "worker-attention-admin-queue-worker-story-relationship",
+    }
+    result = run_golden_questions(
+        db_session,
+        "samples/eval/rich_answer_benchmark.worker_attention_issue_resolution.json",
+    )
+    assert result["total"] == 6
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_gross_to_net_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.gross_to_net.json")
+
+    assert manifest["name"] == "Gross-to-Net rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "gross-to-net-rich-answer",
+        "gross-to-net-gross-earnings-to-net-pay",
+        "gross-to-net-taxable-basis-payg",
+        "gross-to-net-deductions-obligations",
+        "gross-to-net-negative-net-pay",
+        "gross-to-net-current-effective-worker-story",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.gross_to_net.json")
+    assert result["total"] == 6
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_rate_source_rate_story_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.rate_source_rate_story.json")
+
+    assert manifest["name"] == "RateSource / Rate Story rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "rate-source-rate-story-rich-answer",
+        "rate-source-rate-story-selection",
+        "rate-source-rate-story-pay-guide-evidence",
+        "rate-source-rate-story-vs-decision-story",
+        "rate-source-rate-story-date-effective-scoped-rates",
+        "rate-source-rate-story-worker-story-gross-to-net",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.rate_source_rate_story.json")
+    assert result["total"] == 6
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_decision_story_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.decision_story.json")
+
+    assert manifest["name"] == "Decision Story rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "decision-story-rich-answer",
+        "decision-story-why-line-exists",
+        "decision-story-decision-evidence-index",
+        "decision-story-vs-rate-story",
+        "decision-story-allowance-penalty-overtime-shift",
+        "decision-story-break-public-holiday-special-conditions",
+        "decision-story-worker-story-gross-to-net",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.decision_story.json")
+    assert result["total"] == 7
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_payroll_output_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.payroll_output.json")
+
+    assert manifest["name"] == "Payroll Output rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "payroll-output-rich-answer",
+        "payroll-output-current-effective-output",
+        "payroll-output-run-vs-process-period-output",
+        "payroll-output-payroll-lines",
+        "payroll-output-gross-to-net",
+        "payroll-output-payroll-bases-totals",
+        "payroll-output-finalisation-payment-execution",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.payroll_output.json")
+    assert result["total"] == 7
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
 def test_movement_review_rich_answer_benchmark_manifest_loads(db_session):
     manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.movement_review.json")
 
@@ -761,10 +1954,268 @@ def test_retro_replay_rich_answer_benchmark_manifest_loads(db_session):
     assert manifest["name"] == "Retro / Replay rich-answer benchmark"
     assert {question["id"] for question in manifest["questions"]} >= {
         "retro-replay-rich-answer",
+        "retro-replay-attributed-vs-paid-period",
+        "retro-replay-finalised-not-overwritten",
+        "retro-replay-current-effective-vs-historical",
+        "retro-replay-buckets-basis-snapshots",
+        "retro-replay-source-dependency-detection",
+        "retro-replay-retro-vs-supplementary-payrun",
+        "retro-replay-comparison-remediation",
+        "retro-replay-worker-story",
+        "retro-replay-admin-queue-movement-review",
     }
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.retro_replay.json")
-    assert result["total"] == 1
+    assert result["total"] == 10
     assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_payment_execution_remittance_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.payment_execution_remittance.json")
+
+    assert manifest["name"] == "Payment Execution / Remittance rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "payment-execution-remittance-rich-answer",
+        "payment-execution-remittance-not-payroll-calculation",
+        "payment-execution-remittance-finalised-gross-to-net",
+        "payment-execution-remittance-worker-net-pay-bank-allocation",
+        "payment-execution-remittance-missing-destinations",
+        "payment-execution-remittance-negative-net-pay-obligations",
+        "payment-execution-remittance-deduction-third-party",
+        "payment-execution-remittance-generate-bank-file-period-close",
+        "payment-execution-remittance-batching-reconciliation",
+        "payment-execution-remittance-worker-attention-admin-queue-worker-story",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.payment_execution_remittance.json")
+    assert result["total"] == 10
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_leave_accrual_processing_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.leave_accrual_processing.json")
+
+    assert manifest["name"] == "Leave Accrual / Processing rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "leave-accrual-processing-rich-answer",
+        "leave-accrual-processing-minerva-not-calculate",
+        "leave-accrual-processing-source-truth",
+        "leave-accrual-processing-calc-interpreter-output",
+        "leave-accrual-processing-leavetype-rule-role",
+        "leave-accrual-processing-leavetyperule-not-final-applicability",
+        "leave-accrual-processing-leaveledger-explanation",
+        "leave-accrual-processing-taken-valuation-hard-fail",
+        "leave-accrual-processing-request-payment-sequencing",
+        "leave-accrual-processing-worker-story-payroll-bases",
+        "leave-accrual-processing-payrun-finalisation-readiness",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.leave_accrual_processing.json")
+    assert result["total"] == 11
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_finalisation_readiness_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.finalisation_readiness.json")
+
+    assert manifest["name"] == "Finalisation Readiness rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "finalisation-readiness-rich-answer",
+        "finalisation-readiness-minerva-not-determine",
+        "finalisation-readiness-blockers-warnings-green",
+        "finalisation-readiness-current-effective-output",
+        "finalisation-readiness-worker-attention-admin-queue",
+        "finalisation-readiness-payroll-bases",
+        "finalisation-readiness-leave-readiness",
+        "finalisation-readiness-tax-deduction-payment",
+        "finalisation-readiness-payment-vs-gross-to-net",
+        "finalisation-readiness-finalised-outcome-truth",
+        "finalisation-readiness-warning-acknowledgement-audit",
+        "finalisation-readiness-worker-story-review-surfaces",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.finalisation_readiness.json")
+    assert result["total"] == 12
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_leave_source_model_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.leave_source_model.json")
+
+    assert manifest["name"] == "Leave Source Model rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "leave-source-model-rich-answer",
+        "leave-source-model-leavetyperule-not-final",
+        "leave-source-model-applicability-vs-rule-content",
+        "leave-source-model-no-entitlement-vs-missing-output",
+        "leave-source-model-contact-vs-appointment",
+        "leave-source-model-source-dimensions",
+        "leave-source-model-accrual-connection",
+        "leave-source-model-request-payment-effects",
+        "leave-source-model-worker-story",
+        "leave-source-model-command-centre-finalisation",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.leave_source_model.json")
+    assert result["total"] == 10
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_oncosts_employer_liabilities_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.oncosts_employer_liabilities.json")
+
+    assert manifest["name"] == "On-costs / Employer Liabilities rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "oncosts-employer-liabilities-rich-answer",
+        "oncosts-not-worker-pay",
+        "oncosts-minerva-not-calculate",
+        "oncosts-ratesource-date-effective",
+        "oncosts-award-rate-type-settings",
+        "oncosts-governed-basis-membership",
+        "oncosts-liability-types-jurisdiction",
+        "oncosts-state-worksite-location",
+        "oncosts-payrun-output-worker-story",
+        "oncosts-payroll-bases-connection",
+        "oncosts-demo-fallback-not-production",
+        "oncosts-finalisation-readiness",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.oncosts_employer_liabilities.json")
+    assert result["total"] == 12
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_award_build_evidence_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.award_build_evidence.json")
+
+    assert manifest["name"] == "Award Build / Award Evidence rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "award-build-evidence-rich-answer",
+        "award-build-not-runtime-payroll-calculation",
+        "award-build-source-documents-pay-guides",
+        "award-build-ratetype-vs-awardratetype",
+        "award-build-ratesource-date-effective",
+        "award-build-classification-position-class",
+        "award-build-allowances-penalties-conditions",
+        "award-build-decision-evidence-index",
+        "award-build-rate-source-evidence-index",
+        "award-build-worker-story-decision-rate-story",
+        "award-build-needs-configuration-status",
+        "award-build-durable-award-evidence-set",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.award_build_evidence.json")
+    assert result["total"] == 12
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_imports_actuals_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.imports_actuals.json")
+
+    assert manifest["name"] == "Imports / Actuals rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "imports-actuals-rich-answer",
+        "imports-actuals-external-not-interpreter",
+        "imports-actuals-imported-timesheet-source-truth",
+        "imports-actuals-source-system-mappings",
+        "imports-actuals-pay-code-ratetype-mapping",
+        "imports-actuals-position-classification-mapping",
+        "imports-actuals-objecttime-source-truth",
+        "imports-actuals-comparison-remediation-connection",
+        "imports-actuals-reconciliation-movement-review",
+        "imports-actuals-worker-story-admin-queue",
+        "imports-actuals-provenance-audit",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.imports_actuals.json")
+    assert result["total"] == 11
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_objecttime_source_truth_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.objecttime_source_truth.json")
+
+    assert manifest["name"] == "ObjectTime / Source Truth rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "objecttime-source-truth-rich-answer",
+        "objecttime-source-evidence-not-calculation",
+        "objecttime-payrun-inclusion",
+        "objecttime-sourcetruth-vs-workedhours",
+        "objecttime-raw-span-not-user-worked-hours",
+        "objecttime-imported-generated-source-rows",
+        "objecttime-current-effective-output",
+        "objecttime-worker-story-source-truth",
+        "objecttime-payroll-bases-leave-accrual",
+        "objecttime-comparison-movement-replay",
+        "objecttime-corrections-dirty-reprocessing",
+        "objecttime-provenance-audit",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.objecttime_source_truth.json")
+    assert result["total"] == 12
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_contacts_employee_appointments_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.contacts_employee_appointments.json")
+
+    assert manifest["name"] == "Contacts / Employee Appointments rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "contacts-employee-appointments-rich-answer",
+        "contacts-vs-employeeappointment",
+        "contacts-payrun-admission",
+        "contacts-objecttime-source-truth",
+        "contacts-award-classification-position-worksite",
+        "contacts-worksite-state-runtime-location",
+        "contacts-leave-source-accrual",
+        "contacts-worker-story-history",
+        "contacts-readiness-tax-bank-deduction-payment",
+        "contacts-dirty-contact-reprocessing",
+        "contacts-classification-lenses-not-duplicate-appointments",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.contacts_employee_appointments.json")
+    assert result["total"] == 11
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_process_period_payrun_lifecycle_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.process_period_payrun_lifecycle.json")
+
+    assert manifest["name"] == "Process Periods / PayRun Lifecycle rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} >= {
+        "process-period-payrun-lifecycle-rich-answer",
+        "process-period-vs-processperiodgroup",
+        "process-period-open-not-open-closed",
+        "process-period-closed-dominates-open",
+        "process-period-close-rolls-forward",
+        "process-period-paymentdate",
+        "process-period-payrun-creation-admission",
+        "process-period-runtype-runpurpose",
+        "process-period-regular-supplementary-retro",
+        "process-period-payruncontact-lifecycle",
+        "process-period-admission-not-processing",
+        "process-period-current-effective-output",
+        "process-period-lifecycle-cross-domain-connections",
+    }
+    result = run_golden_questions(
+        db_session,
+        "samples/eval/rich_answer_benchmark.process_period_payrun_lifecycle.json",
+    )
+    assert result["total"] == 13
+    assert result["results"][0]["checks"]["answer_mode"] is True
+
+
+def test_costing_gl_consequence_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.costing_gl_consequence.json")
+
+    assert manifest["name"] == "Costing / GL Consequence Evidence rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "costing-gl-consequence-rich-answer",
+        "costing-downstream-of-payroll-calculation",
+        "costing-finalised-payroll-outcome-truth",
+        "costing-payment-execution-remittance",
+        "costing-employer-liabilities-oncosts",
+        "costing-deduction-obligation-writeoffs",
+        "costing-comparison-remediation-variance",
+        "costing-leave-valuation-accrual",
+        "costing-negative-net-pay-out-of-pay",
+        "costing-audit-story-financial-evidence",
+        "costing-deferred-final-slice",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.costing_gl_consequence.json")
+    assert result["total"] == 11
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
 
 
 def test_worker_story_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
@@ -819,6 +2270,146 @@ def test_payrun_admin_queue_benchmark_runner_returns_pass_status_with_seeded_evi
         "payrun-admin-queue-finalisation-readiness",
         "payrun-admin-queue-assurance-snapshot",
         "payrun-admin-queue-review-surface-connections",
+    }
+
+
+def test_worker_attention_issue_resolution_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_worker_attention_issue_resolution_benchmark_evidence(db_session)
+
+    result = run_golden_questions(
+        db_session,
+        "samples/eval/rich_answer_benchmark.worker_attention_issue_resolution.json",
+    )
+
+    assert result["name"] == "Worker Attention / Issue Resolution rich-answer benchmark"
+    assert result["total"] == 6
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "worker-attention-issue-resolution-rich-answer",
+        "worker-attention-worker-issue-model",
+        "worker-attention-deterministic-fix-links",
+        "worker-attention-dirty-contact-reprocessing",
+        "worker-attention-payment-allocation-negative-net-pay",
+        "worker-attention-admin-queue-worker-story-relationship",
+    }
+
+
+def test_gross_to_net_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_gross_to_net_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.gross_to_net.json")
+
+    assert result["name"] == "Gross-to-Net rich-answer benchmark"
+    assert result["total"] == 6
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "gross-to-net-rich-answer",
+        "gross-to-net-gross-earnings-to-net-pay",
+        "gross-to-net-taxable-basis-payg",
+        "gross-to-net-deductions-obligations",
+        "gross-to-net-negative-net-pay",
+        "gross-to-net-current-effective-worker-story",
+    }
+
+
+def test_rate_source_rate_story_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_rate_source_rate_story_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.rate_source_rate_story.json")
+
+    assert result["name"] == "RateSource / Rate Story rich-answer benchmark"
+    assert result["total"] == 6
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "rate-source-rate-story-rich-answer",
+        "rate-source-rate-story-selection",
+        "rate-source-rate-story-pay-guide-evidence",
+        "rate-source-rate-story-vs-decision-story",
+        "rate-source-rate-story-date-effective-scoped-rates",
+        "rate-source-rate-story-worker-story-gross-to-net",
+    }
+
+
+def test_decision_story_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_decision_story_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.decision_story.json")
+
+    assert result["name"] == "Decision Story rich-answer benchmark"
+    assert result["total"] == 7
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "decision-story-rich-answer",
+        "decision-story-why-line-exists",
+        "decision-story-decision-evidence-index",
+        "decision-story-vs-rate-story",
+        "decision-story-allowance-penalty-overtime-shift",
+        "decision-story-break-public-holiday-special-conditions",
+        "decision-story-worker-story-gross-to-net",
+    }
+
+
+def test_payroll_output_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_payroll_output_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.payroll_output.json")
+
+    assert result["name"] == "Payroll Output rich-answer benchmark"
+    assert result["total"] == 7
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "payroll-output-rich-answer",
+        "payroll-output-current-effective-output",
+        "payroll-output-run-vs-process-period-output",
+        "payroll-output-payroll-lines",
+        "payroll-output-gross-to-net",
+        "payroll-output-payroll-bases-totals",
+        "payroll-output-finalisation-payment-execution",
     }
 
 
@@ -912,10 +2503,378 @@ def test_retro_replay_benchmark_runner_returns_pass_status_with_seeded_evidence(
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.retro_replay.json")
 
     assert result["name"] == "Retro / Replay rich-answer benchmark"
-    assert result["total"] == 1
+    assert result["total"] == 10
     assert result["all_passed"] is True
     assert {item["id"] for item in result["results"]} == {
         "retro-replay-rich-answer",
+        "retro-replay-attributed-vs-paid-period",
+        "retro-replay-finalised-not-overwritten",
+        "retro-replay-current-effective-vs-historical",
+        "retro-replay-buckets-basis-snapshots",
+        "retro-replay-source-dependency-detection",
+        "retro-replay-retro-vs-supplementary-payrun",
+        "retro-replay-comparison-remediation",
+        "retro-replay-worker-story",
+        "retro-replay-admin-queue-movement-review",
+    }
+
+
+def test_payment_execution_remittance_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_payment_execution_remittance_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.payment_execution_remittance.json")
+
+    assert result["name"] == "Payment Execution / Remittance rich-answer benchmark"
+    assert result["total"] == 10
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "payment-execution-remittance-rich-answer",
+        "payment-execution-remittance-not-payroll-calculation",
+        "payment-execution-remittance-finalised-gross-to-net",
+        "payment-execution-remittance-worker-net-pay-bank-allocation",
+        "payment-execution-remittance-missing-destinations",
+        "payment-execution-remittance-negative-net-pay-obligations",
+        "payment-execution-remittance-deduction-third-party",
+        "payment-execution-remittance-generate-bank-file-period-close",
+        "payment-execution-remittance-batching-reconciliation",
+        "payment-execution-remittance-worker-attention-admin-queue-worker-story",
+    }
+
+
+def test_leave_accrual_processing_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_leave_accrual_processing_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.leave_accrual_processing.json")
+
+    assert result["name"] == "Leave Accrual / Processing rich-answer benchmark"
+    assert result["total"] == 11
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "leave-accrual-processing-rich-answer",
+        "leave-accrual-processing-minerva-not-calculate",
+        "leave-accrual-processing-source-truth",
+        "leave-accrual-processing-calc-interpreter-output",
+        "leave-accrual-processing-leavetype-rule-role",
+        "leave-accrual-processing-leavetyperule-not-final-applicability",
+        "leave-accrual-processing-leaveledger-explanation",
+        "leave-accrual-processing-taken-valuation-hard-fail",
+        "leave-accrual-processing-request-payment-sequencing",
+        "leave-accrual-processing-worker-story-payroll-bases",
+        "leave-accrual-processing-payrun-finalisation-readiness",
+    }
+
+
+def test_finalisation_readiness_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_finalisation_readiness_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.finalisation_readiness.json")
+
+    assert result["name"] == "Finalisation Readiness rich-answer benchmark"
+    assert result["total"] == 12
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "finalisation-readiness-rich-answer",
+        "finalisation-readiness-minerva-not-determine",
+        "finalisation-readiness-blockers-warnings-green",
+        "finalisation-readiness-current-effective-output",
+        "finalisation-readiness-worker-attention-admin-queue",
+        "finalisation-readiness-payroll-bases",
+        "finalisation-readiness-leave-readiness",
+        "finalisation-readiness-tax-deduction-payment",
+        "finalisation-readiness-payment-vs-gross-to-net",
+        "finalisation-readiness-finalised-outcome-truth",
+        "finalisation-readiness-warning-acknowledgement-audit",
+        "finalisation-readiness-worker-story-review-surfaces",
+    }
+
+
+def test_leave_source_model_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_leave_source_model_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.leave_source_model.json")
+
+    assert result["name"] == "Leave Source Model rich-answer benchmark"
+    assert result["total"] == 10
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "leave-source-model-rich-answer",
+        "leave-source-model-leavetyperule-not-final",
+        "leave-source-model-applicability-vs-rule-content",
+        "leave-source-model-no-entitlement-vs-missing-output",
+        "leave-source-model-contact-vs-appointment",
+        "leave-source-model-source-dimensions",
+        "leave-source-model-accrual-connection",
+        "leave-source-model-request-payment-effects",
+        "leave-source-model-worker-story",
+        "leave-source-model-command-centre-finalisation",
+    }
+
+
+def test_oncosts_employer_liabilities_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_oncosts_employer_liabilities_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.oncosts_employer_liabilities.json")
+
+    assert result["name"] == "On-costs / Employer Liabilities rich-answer benchmark"
+    assert result["total"] == 12
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "oncosts-employer-liabilities-rich-answer",
+        "oncosts-not-worker-pay",
+        "oncosts-minerva-not-calculate",
+        "oncosts-ratesource-date-effective",
+        "oncosts-award-rate-type-settings",
+        "oncosts-governed-basis-membership",
+        "oncosts-liability-types-jurisdiction",
+        "oncosts-state-worksite-location",
+        "oncosts-payrun-output-worker-story",
+        "oncosts-payroll-bases-connection",
+        "oncosts-demo-fallback-not-production",
+        "oncosts-finalisation-readiness",
+    }
+
+
+def test_award_build_evidence_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_award_build_evidence_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.award_build_evidence.json")
+
+    assert result["name"] == "Award Build / Award Evidence rich-answer benchmark"
+    assert result["total"] == 12
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "award-build-evidence-rich-answer",
+        "award-build-not-runtime-payroll-calculation",
+        "award-build-source-documents-pay-guides",
+        "award-build-ratetype-vs-awardratetype",
+        "award-build-ratesource-date-effective",
+        "award-build-classification-position-class",
+        "award-build-allowances-penalties-conditions",
+        "award-build-decision-evidence-index",
+        "award-build-rate-source-evidence-index",
+        "award-build-worker-story-decision-rate-story",
+        "award-build-needs-configuration-status",
+        "award-build-durable-award-evidence-set",
+    }
+
+
+def test_imports_actuals_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_imports_actuals_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.imports_actuals.json")
+
+    assert result["name"] == "Imports / Actuals rich-answer benchmark"
+    assert result["total"] == 11
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "imports-actuals-rich-answer",
+        "imports-actuals-external-not-interpreter",
+        "imports-actuals-imported-timesheet-source-truth",
+        "imports-actuals-source-system-mappings",
+        "imports-actuals-pay-code-ratetype-mapping",
+        "imports-actuals-position-classification-mapping",
+        "imports-actuals-objecttime-source-truth",
+        "imports-actuals-comparison-remediation-connection",
+        "imports-actuals-reconciliation-movement-review",
+        "imports-actuals-worker-story-admin-queue",
+        "imports-actuals-provenance-audit",
+    }
+
+
+def test_objecttime_source_truth_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_objecttime_source_truth_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.objecttime_source_truth.json")
+
+    assert result["name"] == "ObjectTime / Source Truth rich-answer benchmark"
+    assert result["total"] == 12
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "objecttime-source-truth-rich-answer",
+        "objecttime-source-evidence-not-calculation",
+        "objecttime-payrun-inclusion",
+        "objecttime-sourcetruth-vs-workedhours",
+        "objecttime-raw-span-not-user-worked-hours",
+        "objecttime-imported-generated-source-rows",
+        "objecttime-current-effective-output",
+        "objecttime-worker-story-source-truth",
+        "objecttime-payroll-bases-leave-accrual",
+        "objecttime-comparison-movement-replay",
+        "objecttime-corrections-dirty-reprocessing",
+        "objecttime-provenance-audit",
+    }
+
+
+def test_contacts_employee_appointments_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_contacts_employee_appointments_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.contacts_employee_appointments.json")
+
+    assert result["name"] == "Contacts / Employee Appointments rich-answer benchmark"
+    assert result["total"] == 11
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "contacts-employee-appointments-rich-answer",
+        "contacts-vs-employeeappointment",
+        "contacts-payrun-admission",
+        "contacts-objecttime-source-truth",
+        "contacts-award-classification-position-worksite",
+        "contacts-worksite-state-runtime-location",
+        "contacts-leave-source-accrual",
+        "contacts-worker-story-history",
+        "contacts-readiness-tax-bank-deduction-payment",
+        "contacts-dirty-contact-reprocessing",
+        "contacts-classification-lenses-not-duplicate-appointments",
+    }
+
+
+def test_process_period_payrun_lifecycle_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_process_period_payrun_lifecycle_benchmark_evidence(db_session)
+
+    result = run_golden_questions(
+        db_session,
+        "samples/eval/rich_answer_benchmark.process_period_payrun_lifecycle.json",
+    )
+
+    assert result["name"] == "Process Periods / PayRun Lifecycle rich-answer benchmark"
+    assert result["total"] == 13
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "process-period-payrun-lifecycle-rich-answer",
+        "process-period-vs-processperiodgroup",
+        "process-period-open-not-open-closed",
+        "process-period-closed-dominates-open",
+        "process-period-close-rolls-forward",
+        "process-period-paymentdate",
+        "process-period-payrun-creation-admission",
+        "process-period-runtype-runpurpose",
+        "process-period-regular-supplementary-retro",
+        "process-period-payruncontact-lifecycle",
+        "process-period-admission-not-processing",
+        "process-period-current-effective-output",
+        "process-period-lifecycle-cross-domain-connections",
+    }
+
+
+def test_costing_gl_consequence_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_costing_gl_consequence_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.costing_gl_consequence.json")
+
+    assert result["name"] == "Costing / GL Consequence Evidence rich-answer benchmark"
+    assert result["total"] == 11
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "costing-gl-consequence-rich-answer",
+        "costing-downstream-of-payroll-calculation",
+        "costing-finalised-payroll-outcome-truth",
+        "costing-payment-execution-remittance",
+        "costing-employer-liabilities-oncosts",
+        "costing-deduction-obligation-writeoffs",
+        "costing-comparison-remediation-variance",
+        "costing-leave-valuation-accrual",
+        "costing-negative-net-pay-out-of-pay",
+        "costing-audit-story-financial-evidence",
+        "costing-deferred-final-slice",
     }
 
 

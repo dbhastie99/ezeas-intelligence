@@ -184,6 +184,262 @@ GROUP_SIGNAL_TERMS = {
     "outstanding_hardening": ("outstanding hardening", "limitations", "hardening", "bucket lifecycle", "versioning"),
 }
 
+WORKER_ATTENTION_ISSUE_RESOLUTION_GROUP_KEY_TERMS = {
+    "worker_attention_purpose": (
+        "Worker Attention",
+        "WorkerAttention",
+        "Worker Attention Centre",
+        "Issue Resolution",
+        "worker-level issue surface",
+    ),
+    "worker_issue_model": ("Worker issue", "WorkerIssue", "issue scope", "issue class", "issue type", "issue severity"),
+    "blockers_warnings_and_readiness": (
+        "blockers",
+        "warnings",
+        "readiness gaps",
+        "worker-level blockers",
+        "worker-level warnings",
+        "ready actions",
+    ),
+    "deterministic_fix_links": (
+        "deterministic fix link",
+        "deterministic fix links",
+        "resolution surfaces",
+        "fix action",
+        "server-owned fix target",
+    ),
+    "dirty_contact_and_reprocessing": (
+        "dirty contact",
+        "dirty contacts",
+        "PayRunContact dirty",
+        "reprocessing",
+        "reprocess",
+        "contact changes",
+    ),
+    "payment_allocation_readiness": (
+        "payment allocation",
+        "payment allocation readiness",
+        "payment destination",
+        "bank allocation",
+        "payment readiness",
+    ),
+    "tax_deduction_leave_readiness": (
+        "tax readiness",
+        "deduction readiness",
+        "leave readiness",
+        "tax/deduction/leave readiness",
+        "readiness evidence",
+    ),
+    "negative_net_pay_and_obligations": (
+        "negative net pay",
+        "obligations",
+        "out-of-pay",
+        "recoveries",
+        "worker obligation",
+        "obligation issue",
+    ),
+    "worker_story_relationship": (
+        "Worker Attention",
+        "Worker Story",
+        "worker issue evidence",
+        "worker evidence",
+        "explanation surface",
+    ),
+    "admin_queue_relationship": (
+        "Worker Attention",
+        "PayRun Admin Queue",
+        "Admin Queue",
+        "operator workbench",
+        "not the same surface",
+    ),
+    "outstanding_hardening": (
+        "Worker Attention",
+        "outstanding hardening",
+        "WorkerIssue",
+        "issue taxonomy",
+        "resolution workflow",
+        "contract tests",
+    ),
+}
+
+WORKER_ATTENTION_ISSUE_RESOLUTION_GROUP_SIGNAL_TERMS = {
+    "worker_attention_purpose": ("Worker Attention", "Issue Resolution", "worker-level issue surface"),
+    "worker_issue_model": ("WorkerIssue", "Worker issue", "issue scope", "issue severity"),
+    "blockers_warnings_and_readiness": ("blockers", "warnings", "readiness gaps"),
+    "deterministic_fix_links": ("deterministic fix link", "resolution surfaces", "fix action"),
+    "dirty_contact_and_reprocessing": ("dirty contact", "PayRunContact dirty", "reprocessing"),
+    "payment_allocation_readiness": ("payment allocation", "payment destination", "payment readiness"),
+    "tax_deduction_leave_readiness": ("tax readiness", "deduction readiness", "leave readiness"),
+    "negative_net_pay_and_obligations": ("negative net pay", "obligations", "out-of-pay"),
+    "worker_story_relationship": ("Worker Attention", "Worker Story", "worker issue evidence"),
+    "admin_queue_relationship": ("Worker Attention", "PayRun Admin Queue", "not the same surface"),
+    "outstanding_hardening": ("Worker Attention", "outstanding hardening", "contract tests"),
+}
+
+GROSS_TO_NET_GROUP_KEY_TERMS = {
+    "gross_to_net_purpose": (
+        "Gross-to-Net",
+        "Gross to Net",
+        "GrossToNet",
+        "payroll outcome calculation",
+        "payroll outcome explanation surface",
+    ),
+    "gross_earnings_and_payroll_output": ("gross earnings", "gross pay", "payroll output", "earnings lines", "payroll outcome"),
+    "taxable_basis_and_payg": ("taxable basis", "taxable earnings", "PAYG", "withholding", "tax withholding", "final withholding"),
+    "deductions_and_obligations": (
+        "deductions",
+        "obligations",
+        "deduction applications",
+        "obligation recovery",
+        "post-tax deductions",
+    ),
+    "negative_net_pay": (
+        "negative net pay",
+        "governed treatment",
+        "carry-forward",
+        "recovery",
+        "write-off",
+        "not silently converted to zero",
+    ),
+    "net_pay_and_payment_allocation": (
+        "net pay",
+        "payment allocation",
+        "payment execution readiness",
+        "payment destination",
+        "worker net pay",
+    ),
+    "worker_story_relationship": (
+        "Gross-to-Net",
+        "Worker Story",
+        "gross-to-net evidence",
+        "worker evidence",
+        "payroll outcome explanation",
+    ),
+    "finalisation_and_payment_execution": (
+        "finalisation",
+        "finalised outcome truth",
+        "payment execution",
+        "payment execution readiness",
+        "not payment execution",
+    ),
+    "current_effective_output_truth": (
+        "current-effective payroll output",
+        "current effective payroll output",
+        "current truth",
+        "stale",
+        "superseded",
+    ),
+    "outstanding_hardening": (
+        "Gross-to-Net",
+        "outstanding hardening",
+        "negative net pay",
+        "taxable basis",
+        "payment allocation",
+        "contract tests",
+    ),
+}
+
+GROSS_TO_NET_GROUP_SIGNAL_TERMS = {
+    "gross_to_net_purpose": ("Gross-to-Net", "payroll outcome calculation", "payroll outcome explanation surface"),
+    "gross_earnings_and_payroll_output": ("gross earnings", "payroll output", "payroll outcome"),
+    "taxable_basis_and_payg": ("taxable basis", "PAYG", "withholding"),
+    "deductions_and_obligations": ("deductions", "obligations", "deduction applications"),
+    "negative_net_pay": ("negative net pay", "governed treatment", "not silently converted to zero"),
+    "net_pay_and_payment_allocation": ("net pay", "payment allocation", "payment execution readiness"),
+    "worker_story_relationship": ("Gross-to-Net", "Worker Story", "gross-to-net evidence"),
+    "finalisation_and_payment_execution": ("finalised outcome truth", "payment execution", "not payment execution"),
+    "current_effective_output_truth": ("current-effective payroll output", "current truth", "stale"),
+    "outstanding_hardening": ("Gross-to-Net", "outstanding hardening", "contract tests"),
+}
+
+RATE_SOURCE_RATE_STORY_GROUP_KEY_TERMS = {
+    "rate_story_purpose": ("RateSource / Rate Story", "Rate Story", "RateStory", "selected rate", "rate explanation"),
+    "rate_source_selection": ("RateSource", "Rate Source", "selected rate", "rate selection", "rate source selection"),
+    "rate_amount_evidence": ("rate amount", "amount came from", "rate evidence", "selected amount", "rate value"),
+    "date_effective_rates": ("date-effective rate", "date-effective rates", "effective date", "date effective rates", "RateSource"),
+    "award_account_class_scope": ("award rate", "account rate", "class rate", "award scope", "account scope", "class scope", "AwardRateType", "RateType"),
+    "pay_guide_rate_evidence": ("pay guide rate evidence", "pay guide evidence", "RateSourceEvidenceIndex", "Rate Source Evidence Index", "source row"),
+    "rate_source_evidence_index": (
+        "RateSourceEvidenceIndex",
+        "Rate Source Evidence Index",
+        "rate source evidence index",
+        "why a rate",
+        "rate evidence index",
+    ),
+    "rate_story_vs_decision_story": ("Rate Story", "Decision Story", "rate amount", "treatment selection", "entitlement", "not the same"),
+    "worker_story_relationship": ("Rate Story", "Worker Story", "Worker Calculation Story", "worker evidence", "rate explanation"),
+    "payroll_output_and_gross_to_net_relationship": ("Rate Story", "payroll output", "gross-to-net", "Gross-to-Net", "calculated payroll outcome", "line proof"),
+    "outstanding_hardening": ("RateSource", "Rate Story", "outstanding hardening", "RateSourceEvidenceIndex", "contract tests", "pay guide evidence"),
+}
+
+RATE_SOURCE_RATE_STORY_GROUP_SIGNAL_TERMS = {
+    "rate_story_purpose": ("RateSource / Rate Story", "Rate Story", "selected rate"),
+    "rate_source_selection": ("RateSource", "selected rate", "rate selection"),
+    "rate_amount_evidence": ("rate amount", "rate evidence", "amount came from"),
+    "date_effective_rates": ("date-effective rate", "date-effective rates", "effective date"),
+    "award_account_class_scope": ("award rate", "account rate", "class rate", "AwardRateType", "RateType"),
+    "pay_guide_rate_evidence": ("pay guide rate evidence", "RateSourceEvidenceIndex", "pay guide evidence"),
+    "rate_source_evidence_index": ("RateSourceEvidenceIndex", "Rate Source Evidence Index", "why a rate"),
+    "rate_story_vs_decision_story": ("Rate Story", "Decision Story", "not the same"),
+    "worker_story_relationship": ("Rate Story", "Worker Story", "worker evidence"),
+    "payroll_output_and_gross_to_net_relationship": ("Rate Story", "payroll output", "Gross-to-Net"),
+    "outstanding_hardening": ("RateSource", "Rate Story", "outstanding hardening"),
+}
+
+DECISION_STORY_GROUP_KEY_TERMS = {
+    "decision_story_purpose": ("Decision Story", "DecisionStory", "payroll decision", "why a treatment", "why a line exists"),
+    "treatment_and_entitlement_selection": ("treatment selection", "entitlement decision", "why a treatment was selected", "why the line exists", "payroll decision"),
+    "decision_evidence_index": ("DecisionEvidenceIndex", "Decision Evidence Index", "decision evidence", "why a treatment", "why a line exists"),
+    "award_rule_and_runtime_fact_evidence": ("award rule", "configured rules", "runtime facts", "source evidence", "rule outcome"),
+    "allowance_penalty_overtime_shift_evidence": ("allowance decision", "penalty decision", "overtime decision", "shift decision", "allowance", "penalty", "overtime", "shift"),
+    "break_public_holiday_and_special_condition_evidence": ("break treatment", "missed break", "public holiday decision", "minimum engagement", "special condition"),
+    "decision_story_vs_rate_story": ("Decision Story", "Rate Story", "treatment or line exists", "rate amount", "not the same"),
+    "worker_story_relationship": ("Decision Story", "Worker Story", "payroll line explanation", "worker evidence", "DecisionEvidenceIndex"),
+    "payroll_output_and_gross_to_net_relationship": ("Decision Story", "payroll output", "Gross-to-Net", "calculated payroll outcome", "line proof"),
+    "outstanding_hardening": ("Decision Story", "DecisionEvidenceIndex", "outstanding hardening", "contract tests", "evidence limitation"),
+}
+
+DECISION_STORY_GROUP_SIGNAL_TERMS = {
+    "decision_story_purpose": ("Decision Story", "payroll decision", "why a treatment"),
+    "treatment_and_entitlement_selection": ("treatment selection", "entitlement decision", "why the line exists"),
+    "decision_evidence_index": ("DecisionEvidenceIndex", "Decision Evidence Index", "decision evidence"),
+    "award_rule_and_runtime_fact_evidence": ("award rule", "runtime facts", "rule outcome"),
+    "allowance_penalty_overtime_shift_evidence": ("allowance", "penalty", "overtime", "shift"),
+    "break_public_holiday_and_special_condition_evidence": ("break treatment", "public holiday decision", "minimum engagement"),
+    "decision_story_vs_rate_story": ("Decision Story", "Rate Story", "not the same"),
+    "worker_story_relationship": ("Decision Story", "Worker Story", "payroll line explanation"),
+    "payroll_output_and_gross_to_net_relationship": ("Decision Story", "payroll output", "Gross-to-Net"),
+    "outstanding_hardening": ("Decision Story", "DecisionEvidenceIndex", "outstanding hardening"),
+}
+
+PAYROLL_OUTPUT_GROUP_KEY_TERMS = {
+    "payroll_output_purpose": ("Payroll Output", "PayRun Output", "calculated payroll output", "payroll result", "calculated payroll result"),
+    "calculated_payroll_lines": ("calculated payroll lines", "payroll line", "output line", "line-level payroll outcome", "CalcInterpreterLine"),
+    "current_effective_output_truth": ("current-effective output", "current effective payroll output", "current-effective payroll output truth", "current truth", "superseded output"),
+    "run_output_vs_process_period_output": ("Run Output", "Process Period Output", "PayRun Output", "run output", "process-period output"),
+    "worker_level_output": ("worker-level output", "worker output", "worker payroll output", "Worker Story", "worker evidence"),
+    "payrun_totals_and_line_totals": ("PayRun totals", "line totals", "payroll totals", "output totals", "CalcInterpreterRun"),
+    "decision_story_and_rate_story_relationship": ("Decision Story", "Rate Story", "why line exists", "selected rate", "rate amount"),
+    "gross_to_net_relationship": ("Gross-to-Net", "gross to net", "gross earnings", "net pay", "payroll outcome"),
+    "payroll_bases_relationship": ("Payroll Bases & Totals", "Payroll Bases", "basis evidence", "bucket evidence", "basis totals"),
+    "finalisation_and_payment_execution_relationship": ("Finalisation Readiness", "Payment Execution", "finalised outcome truth", "payment execution boundary", "payment file"),
+    "outstanding_hardening": ("Payroll Output", "outstanding hardening", "current-effective output", "contract tests", "status honesty"),
+}
+
+PAYROLL_OUTPUT_GROUP_SIGNAL_TERMS = {
+    "payroll_output_purpose": ("Payroll Output", "calculated payroll output", "payroll result"),
+    "calculated_payroll_lines": ("payroll line", "output line", "CalcInterpreterLine"),
+    "current_effective_output_truth": ("current-effective output", "current truth", "superseded output"),
+    "run_output_vs_process_period_output": ("Run Output", "Process Period Output", "PayRun Output"),
+    "worker_level_output": ("worker-level output", "worker output", "Worker Story"),
+    "payrun_totals_and_line_totals": ("PayRun totals", "line totals", "CalcInterpreterRun"),
+    "decision_story_and_rate_story_relationship": ("Decision Story", "Rate Story", "selected rate"),
+    "gross_to_net_relationship": ("Gross-to-Net", "gross earnings", "net pay"),
+    "payroll_bases_relationship": ("Payroll Bases & Totals", "basis evidence", "basis totals"),
+    "finalisation_and_payment_execution_relationship": ("Finalisation Readiness", "Payment Execution", "finalised outcome truth"),
+    "outstanding_hardening": ("Payroll Output", "outstanding hardening", "status honesty"),
+}
+
 PAYRUN_ADMIN_QUEUE_GROUP_KEY_TERMS = {
     "purpose_and_operator_meaning": (
         "PayRun Admin Queue",
@@ -735,6 +991,1196 @@ RETRO_REPLAY_GROUP_SIGNAL_TERMS = {
     "outstanding_hardening": ("outstanding hardening", "future work", "full retro/replay implementation"),
 }
 
+PAYMENT_EXECUTION_REMITTANCE_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Payment Execution / Remittance",
+        "governed payment execution",
+        "remittance evidence",
+        "generic file export",
+    ),
+    "finalised_gross_to_net_source": (
+        "finalised gross-to-net",
+        "finalised payroll outcome",
+        "payment outcome",
+        "payroll calculation truth",
+    ),
+    "worker_net_pay_and_bank_allocation": (
+        "worker net pay",
+        "bank allocation",
+        "payment allocation",
+        "bank instruction readiness",
+    ),
+    "payment_destination_readiness": (
+        "payment destination",
+        "missing payment destination",
+        "partial payment destinations",
+        "payment execution readiness",
+    ),
+    "negative_net_pay_and_obligation_interaction": (
+        "negative net pay",
+        "obligations",
+        "carry-forward",
+        "recovery",
+        "write-off",
+        "out-of-pay treatment",
+    ),
+    "deduction_and_third_party_remittance": (
+        "deduction remittance",
+        "third-party remittance",
+        "third-party payments",
+        "remittance files",
+        "payment destinations",
+    ),
+    "payment_file_generation_and_period_close": (
+        "Generate Bank File",
+        "Bank File",
+        "payment file",
+        "Period Close",
+        "payment-file execution",
+    ),
+    "remittance_batching_and_reconciliation": (
+        "remittance batching",
+        "remittance reconciliation",
+        "reconciliation",
+        "batching",
+        "remittance batch",
+    ),
+    "worker_attention_and_admin_queue_connection": (
+        "Payment Execution / Remittance",
+        "Worker Attention",
+        "PayRun Admin Queue",
+        "blockers",
+        "warnings",
+        "actions",
+    ),
+    "worker_story_and_audit_evidence": (
+        "Payment Execution / Remittance",
+        "Worker Story",
+        "audit evidence",
+        "payment allocation",
+        "remittance",
+        "skipped",
+        "unpaid",
+        "unmet",
+    ),
+    "outstanding_hardening": (
+        "Payment Execution / Remittance",
+        "outstanding hardening",
+        "bank file generation",
+        "remittance execution",
+        "reconciliation",
+        "payment close",
+        "obligation write-off",
+        "financial consequences",
+        "UI surfaces",
+    ),
+}
+
+PAYMENT_EXECUTION_REMITTANCE_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Payment Execution / Remittance", "governed payment execution", "remittance evidence"),
+    "finalised_gross_to_net_source": ("finalised gross-to-net", "finalised payroll outcome", "payment outcome"),
+    "worker_net_pay_and_bank_allocation": ("worker net pay", "bank allocation", "payment allocation"),
+    "payment_destination_readiness": ("payment destination", "payment execution readiness"),
+    "negative_net_pay_and_obligation_interaction": ("negative net pay", "obligations", "write-off"),
+    "deduction_and_third_party_remittance": ("deduction remittance", "third-party remittance", "third-party payments"),
+    "payment_file_generation_and_period_close": ("Generate Bank File", "Bank File", "payment file", "Period Close"),
+    "remittance_batching_and_reconciliation": ("remittance batching", "remittance reconciliation", "reconciliation"),
+    "worker_attention_and_admin_queue_connection": ("Worker Attention", "PayRun Admin Queue", "blockers"),
+    "worker_story_and_audit_evidence": ("Worker Story", "audit evidence", "payment allocation"),
+    "outstanding_hardening": ("outstanding hardening", "bank file generation", "remittance execution"),
+}
+
+LEAVE_ACCRUAL_PROCESSING_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Leave Accrual",
+        "Leave Processing",
+        "deterministic platform outcomes",
+        "Minerva calculations",
+        "generic leave policy advice",
+    ),
+    "leave_source_truth_and_applicability": (
+        "leave source truth",
+        "applicability",
+        "LeaveTypeRule",
+        "Leave Source Model",
+        "source truth",
+    ),
+    "accrual_basis_and_quantity": ("accrual basis", "PER_HOUR", "minute", "hour", "accrual quantity"),
+    "payroll_output_and_calc_interpreter_source": (
+        "CalcInterpreterLine",
+        "current-effective payroll output",
+        "canonical processed payroll result truth",
+        "payroll result truth",
+    ),
+    "leave_type_and_rule_configuration": ("LeaveType", "LeaveTypeRule", "AwardRateType", "RateType", "accrualability"),
+    "leave_ledger_and_accrual_posting": (
+        "LeaveLedger",
+        "Leave Ledger",
+        "accrual",
+        "payment",
+        "balance movements",
+        "story evidence",
+    ),
+    "leave_valuation_basis": ("leave valuation basis", "TAKEN leave", "valuation", "mandatory", "hard failure", "silent fallback"),
+    "leave_request_payment_effects": (
+        "leave request",
+        "payment effects",
+        "before payroll interpretation",
+        "within payroll interpretation",
+        "after payroll interpretation",
+    ),
+    "payrun_processing_and_finalisation": (
+        "LeaveProcessRun",
+        "PayRun",
+        "finalisation readiness",
+        "missing leave output",
+        "leave readiness",
+    ),
+    "worker_story_connection": (
+        "Worker Story",
+        "Leave and Accrual Outcome",
+        "server-owned leave output",
+        "ledger",
+        "valuation evidence",
+    ),
+    "payroll_bases_connection": (
+        "Payroll Bases & Totals",
+        "worked hours",
+        "basis quantity",
+        "governed basis evidence",
+        "leave basis quantities",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "Leave Source Model",
+        "leave-processing UI",
+        "leave request ownership",
+        "contact-vs-appointment",
+        "leave story polish",
+        "finalisation warning acknowledgement",
+    ),
+}
+
+LEAVE_ACCRUAL_PROCESSING_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Leave Accrual", "Leave Processing", "deterministic platform outcomes"),
+    "leave_source_truth_and_applicability": ("leave source truth", "applicability", "LeaveTypeRule"),
+    "accrual_basis_and_quantity": ("accrual basis", "PER_HOUR", "accrual quantity"),
+    "payroll_output_and_calc_interpreter_source": ("CalcInterpreterLine", "current-effective payroll output", "canonical processed payroll result truth"),
+    "leave_type_and_rule_configuration": ("LeaveType", "LeaveTypeRule", "accrualability"),
+    "leave_ledger_and_accrual_posting": ("LeaveLedger", "accrual", "balance movements"),
+    "leave_valuation_basis": ("leave valuation basis", "TAKEN leave", "valuation"),
+    "leave_request_payment_effects": ("leave request", "payment effects", "payroll interpretation"),
+    "payrun_processing_and_finalisation": ("LeaveProcessRun", "PayRun", "finalisation readiness"),
+    "worker_story_connection": ("Worker Story", "Leave and Accrual Outcome", "server-owned leave output"),
+    "payroll_bases_connection": ("Payroll Bases & Totals", "worked hours", "basis quantity"),
+    "outstanding_hardening": ("outstanding hardening", "Leave Source Model", "leave-processing UI"),
+}
+
+FINALISATION_READINESS_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Finalisation Readiness",
+        "governed readiness gate",
+        "assurance gate",
+        "not payroll calculation truth",
+        "green means done",
+    ),
+    "blockers_warnings_and_green_state": (
+        "blockers",
+        "warnings",
+        "red blockers",
+        "amber warnings",
+        "green",
+        "ready",
+        "cleared",
+    ),
+    "current_effective_payroll_output": (
+        "current-effective payroll output",
+        "stale",
+        "superseded",
+        "current truth",
+        "finalised as current truth",
+    ),
+    "worker_attention_and_admin_queue": (
+        "Worker Attention",
+        "Admin Queue",
+        "worker-level blockers",
+        "worker-level warnings",
+        "ready actions",
+    ),
+    "payroll_bases_readiness": (
+        "Payroll Bases readiness",
+        "Payroll Bases & Totals",
+        "unresolved basis evidence",
+        "stale basis evidence",
+        "finalisation",
+    ),
+    "leave_readiness": (
+        "leave readiness",
+        "missing leave output",
+        "leave valuation basis",
+        "LeaveLedger",
+        "TAKEN leave",
+    ),
+    "tax_deduction_and_payment_readiness": (
+        "tax readiness",
+        "deduction readiness",
+        "negative net pay",
+        "payment destination readiness",
+        "gross-to-net",
+    ),
+    "payment_execution_and_bank_readiness": (
+        "payment execution readiness",
+        "payment readiness",
+        "bank readiness",
+        "gross-to-net readiness",
+        "payment destination",
+    ),
+    "finalised_outcome_truth": (
+        "finalised outcome truth",
+        "finalised outcome",
+        "finalised totals",
+        "durable payment outcome memory",
+        "finalised payroll truth",
+    ),
+    "warning_acknowledgement_and_audit": (
+        "warning acknowledgement",
+        "warning acknowledgment",
+        "finalisation audit",
+        "reviewed",
+        "accepted",
+        "unresolved",
+    ),
+    "worker_story_and_review_surfaces": (
+        "Worker Story",
+        "review surfaces",
+        "readiness evidence",
+        "worker-specific issues",
+        "Movement Review",
+        "Admin Queue",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "warning acknowledgement",
+        "WorkerAttention schemas",
+        "finalisation policy",
+        "server-owned operation",
+        "readiness evidence",
+        "payment execution readiness",
+        "contract tests",
+    ),
+}
+
+FINALISATION_READINESS_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Finalisation Readiness", "governed readiness gate", "assurance gate"),
+    "blockers_warnings_and_green_state": ("blockers", "warnings", "green"),
+    "current_effective_payroll_output": ("current-effective payroll output", "stale", "current truth"),
+    "worker_attention_and_admin_queue": ("Worker Attention", "Admin Queue", "ready actions"),
+    "payroll_bases_readiness": ("Payroll Bases readiness", "Payroll Bases & Totals", "stale basis evidence"),
+    "leave_readiness": ("leave readiness", "missing leave output", "leave valuation basis"),
+    "tax_deduction_and_payment_readiness": ("tax readiness", "deduction readiness", "negative net pay"),
+    "payment_execution_and_bank_readiness": ("payment execution readiness", "payment readiness", "bank readiness"),
+    "finalised_outcome_truth": ("finalised outcome", "finalised totals", "durable payment outcome memory"),
+    "warning_acknowledgement_and_audit": ("warning acknowledgement", "finalisation audit", "reviewed"),
+    "worker_story_and_review_surfaces": ("Worker Story", "review surfaces", "readiness evidence"),
+    "outstanding_hardening": ("outstanding hardening", "finalisation policy", "payment execution readiness"),
+}
+
+LEAVE_SOURCE_MODEL_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Leave Source Model",
+        "governed applicability",
+        "source-truth layer",
+        "leave applies",
+        "worker context",
+    ),
+    "applicability_vs_rule_content": (
+        "applicability",
+        "rule content",
+        "LeaveTypeRule",
+        "policy calculation content",
+        "source truth",
+    ),
+    "leave_type_rule_limitations": (
+        "LeaveTypeRule",
+        "final applicability truth",
+        "active LeaveTypeRule",
+        "every worker",
+        "leave output",
+    ),
+    "contact_vs_appointment_scope": (
+        "Contact scope",
+        "EmployeeAppointment scope",
+        "appointment-aware leave",
+        "contact-level",
+        "appointment-level",
+    ),
+    "source_dimensions_and_precedence": (
+        "Account",
+        "EmploymentType",
+        "WorksitePosition",
+        "Worksite",
+        "EmployeeAppointment",
+        "Contact",
+        "AwardPositionClass",
+        "AwardPosition",
+        "Position",
+        "Award",
+        "State",
+        "precedence",
+    ),
+    "leave_accrual_connection": (
+        "leave accrual",
+        "source applicability decisions",
+        "accrual",
+        "consume source",
+        "infer ad hoc",
+    ),
+    "leave_request_and_payment_effects_connection": (
+        "leave request",
+        "payment effects",
+        "source applicability decisions",
+        "leave ownership",
+        "request ownership",
+    ),
+    "worker_story_connection": (
+        "Worker Story",
+        "leave chapters",
+        "source applicability decisions",
+        "leave output",
+        "warnings",
+    ),
+    "command_centre_and_finalisation_connection": (
+        "Command Centre",
+        "Finalisation Readiness",
+        "PayRun finalisation warnings",
+        "leave readiness",
+        "honestly",
+    ),
+    "readiness_and_missing_output_detection": (
+        "leave readiness",
+        "missing leave output",
+        "leave does not apply",
+        "leave output is missing",
+        "source truth",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "planned model",
+        "required model",
+        "not complete",
+        "runtime capability",
+    ),
+}
+
+LEAVE_SOURCE_MODEL_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Leave Source Model", "governed applicability", "source-truth layer"),
+    "applicability_vs_rule_content": ("applicability", "LeaveTypeRule", "source truth"),
+    "leave_type_rule_limitations": ("LeaveTypeRule", "final applicability truth", "active LeaveTypeRule"),
+    "contact_vs_appointment_scope": ("Contact scope", "EmployeeAppointment scope", "appointment-aware leave"),
+    "source_dimensions_and_precedence": ("EmploymentType", "EmployeeAppointment", "State"),
+    "leave_accrual_connection": ("leave accrual", "source applicability decisions", "consume source"),
+    "leave_request_and_payment_effects_connection": ("leave request", "payment effects", "source applicability decisions"),
+    "worker_story_connection": ("Worker Story", "leave chapters", "source applicability decisions"),
+    "command_centre_and_finalisation_connection": ("Command Centre", "Finalisation Readiness", "leave readiness"),
+    "readiness_and_missing_output_detection": ("leave readiness", "missing leave output", "leave does not apply"),
+    "outstanding_hardening": ("outstanding hardening", "planned model", "not complete"),
+}
+
+ONCOSTS_EMPLOYER_LIABILITIES_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "On-costs",
+        "Employer Liabilities",
+        "governed employer liability evidence",
+        "operator meaning",
+        "not reporting add-on",
+    ),
+    "employer_liability_not_worker_pay": (
+        "employer liability",
+        "not worker pay",
+        "not worker net pay",
+        "not payroll calculation truth",
+        "Minerva does not calculate",
+    ),
+    "rate_source_and_date_effective_rates": (
+        "RateSource",
+        "date-effective rates",
+        "date-effective RateSource",
+        "rule-pack configuration",
+        "application code",
+    ),
+    "award_rate_type_and_rate_type_settings": (
+        "AwardRateType",
+        "RateType",
+        "SUPER_ONCOST",
+        "PAYROLLTAX_ONCOST",
+        "WORKCOVER_ONCOST",
+        "award defaults",
+    ),
+    "governed_basis_membership": (
+        "governed basis membership",
+        "bucket membership",
+        "basis membership",
+        "raw flags",
+        "runtime basis decisions",
+    ),
+    "super_payroll_tax_and_workcover_wic": (
+        "superannuation on-cost",
+        "payroll tax on-cost",
+        "WorkCover",
+        "WIC",
+        "jurisdiction",
+    ),
+    "state_worksite_and_runtime_location_resolution": (
+        "state",
+        "worksite",
+        "runtime location",
+        "state-scoped RateSource",
+        "state-scoped employer liabilities",
+    ),
+    "payrun_output_and_worker_story_connection": (
+        "PayRun output",
+        "Worker Story",
+        "worker-payable lines",
+        "employer liability lines",
+        "on-cost evidence",
+    ),
+    "payroll_bases_connection": (
+        "Payroll Bases & Totals",
+        "governed basis evidence",
+        "liability calculations",
+        "basis evidence",
+        "basis totals",
+    ),
+    "finalisation_and_readiness_connection": (
+        "Finalisation Readiness",
+        "unresolved basis",
+        "liability configuration",
+        "policy requires",
+        "readiness",
+    ),
+    "demo_fallback_vs_production_truth": (
+        "demo fallback",
+        "account-wide fallback",
+        "RateSource rows",
+        "production truth",
+        "unblock demos",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "runtime state",
+        "worksite resolution",
+        "award creation seeding",
+        "production replacement",
+    ),
+}
+
+ONCOSTS_EMPLOYER_LIABILITIES_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("On-costs", "Employer Liabilities", "governed employer liability evidence"),
+    "employer_liability_not_worker_pay": ("employer liability", "not worker pay", "Minerva does not calculate"),
+    "rate_source_and_date_effective_rates": ("RateSource", "date-effective rates", "rule-pack configuration"),
+    "award_rate_type_and_rate_type_settings": ("AwardRateType", "RateType", "SUPER_ONCOST"),
+    "governed_basis_membership": ("governed basis membership", "bucket membership", "runtime basis decisions"),
+    "super_payroll_tax_and_workcover_wic": ("superannuation on-cost", "payroll tax on-cost", "WorkCover"),
+    "state_worksite_and_runtime_location_resolution": ("state", "worksite", "runtime location"),
+    "payrun_output_and_worker_story_connection": ("PayRun output", "Worker Story", "worker-payable lines"),
+    "payroll_bases_connection": ("Payroll Bases & Totals", "governed basis evidence", "basis totals"),
+    "finalisation_and_readiness_connection": ("Finalisation Readiness", "unresolved basis", "liability configuration"),
+    "demo_fallback_vs_production_truth": ("demo fallback", "account-wide fallback", "production truth"),
+    "outstanding_hardening": ("outstanding hardening", "runtime state", "production replacement"),
+}
+
+AWARD_BUILD_EVIDENCE_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Award Build",
+        "Award Evidence",
+        "governed configuration",
+        "traceable evidence",
+        "not runtime payroll calculation",
+    ),
+    "award_document_and_pay_guide_sources": (
+        "award document",
+        "pay guide",
+        "pay guide evidence",
+        "source evidence",
+        "row column page evidence",
+    ),
+    "rate_type_and_award_rate_type_creation": (
+        "RateType",
+        "Rate Type",
+        "AwardRateType",
+        "Award Rate Type",
+        "stable conceptual pay type",
+        "award-scoped treatment",
+    ),
+    "rate_source_and_date_effective_rate_evidence": (
+        "RateSource",
+        "date-effective",
+        "rate amounts",
+        "rate evidence",
+        "hardcoded rates",
+    ),
+    "classification_position_and_class_evidence": (
+        "classification",
+        "position",
+        "class evidence",
+        "deterministically derived",
+        "reviewed",
+        "not guessed",
+    ),
+    "allowances_penalties_and_conditions": (
+        "allowances",
+        "penalties",
+        "conditions",
+        "shift",
+        "overtime",
+        "source evidence",
+    ),
+    "decision_evidence_index": (
+        "DecisionEvidenceIndex",
+        "Decision Evidence Index",
+        "why a treatment",
+        "why a line exists",
+        "decision evidence",
+    ),
+    "rate_source_evidence_index": (
+        "RateSourceEvidenceIndex",
+        "Rate Source Evidence Index",
+        "why a rate",
+        "why an amount",
+        "rate source evidence",
+    ),
+    "worker_story_decision_and_rate_story_connection": (
+        "Worker Story",
+        "Decision Story",
+        "Rate Story",
+        "award build",
+        "runtime artifacts",
+        "PayRun interpretation evidence",
+    ),
+    "needs_configuration_and_build_status": (
+        "NEEDS_CONFIGURATION",
+        "award build status",
+        "missing evidence",
+        "missing configuration",
+        "valid build outcome",
+    ),
+    "durable_award_evidence_set": (
+        "AwardEvidenceSet",
+        "Durable AwardEvidenceSet",
+        "durable evidence",
+        "artifact based",
+        "file based",
+        "future hardening",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "semantic table classification",
+        "durable evidence sets",
+        "parser routing",
+        "conditional award regimes",
+        "source evidence coverage",
+    ),
+}
+
+AWARD_BUILD_EVIDENCE_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Award Build", "Award Evidence", "governed configuration"),
+    "award_document_and_pay_guide_sources": ("award document", "pay guide", "source evidence"),
+    "rate_type_and_award_rate_type_creation": ("RateType", "AwardRateType", "stable conceptual pay type"),
+    "rate_source_and_date_effective_rate_evidence": ("RateSource", "date-effective", "rate evidence"),
+    "classification_position_and_class_evidence": ("classification", "position", "not guessed"),
+    "allowances_penalties_and_conditions": ("allowances", "penalties", "conditions"),
+    "decision_evidence_index": ("DecisionEvidenceIndex", "Decision Evidence Index", "why a treatment"),
+    "rate_source_evidence_index": ("RateSourceEvidenceIndex", "Rate Source Evidence Index", "why a rate"),
+    "worker_story_decision_and_rate_story_connection": ("Worker Story", "Decision Story", "Rate Story"),
+    "needs_configuration_and_build_status": ("NEEDS_CONFIGURATION", "missing configuration", "valid build outcome"),
+    "durable_award_evidence_set": ("AwardEvidenceSet", "Durable AwardEvidenceSet", "durable evidence"),
+    "outstanding_hardening": ("outstanding hardening", "semantic table classification", "parser routing"),
+}
+
+IMPORTS_ACTUALS_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Imports / Actuals",
+        "Imports and Actuals",
+        "governed imported evidence",
+        "external source evidence",
+        "not calculated interpreter truth",
+    ),
+    "imported_timesheet_source_truth": (
+        "imported timesheets",
+        "timesheet source truth",
+        "ObjectTime",
+        "work evidence",
+        "validation and mapping",
+    ),
+    "imported_payroll_actuals_lane": (
+        "imported payroll actuals",
+        "payroll actuals",
+        "actuals lane",
+        "external outcome lane",
+        "calculated interpreter output",
+    ),
+    "source_system_mapping_and_validation": (
+        "source-system mapping",
+        "source system mapping",
+        "validation",
+        "workers",
+        "dates",
+        "source rows",
+    ),
+    "pay_code_and_rate_type_mapping": (
+        "pay code mapping",
+        "source-system pay code",
+        "RateType mapping",
+        "platform concepts",
+        "unmapped actuals",
+    ),
+    "position_classification_mapping": (
+        "ImportedPositionClassificationMap",
+        "position mapping",
+        "classification mapping",
+        "source-system classification",
+        "source-system position",
+    ),
+    "objecttime_and_source_truth_connection": (
+        "ObjectTime source truth",
+        "ObjectTime",
+        "source truth",
+        "source row",
+        "import provenance",
+    ),
+    "comparison_and_remediation_connection": (
+        "Comparison / Remediation",
+        "primary calculated",
+        "comparator calculated",
+        "imported actual lanes",
+        "variance",
+    ),
+    "reconciliation_and_movement_review_connection": (
+        "reconciliation",
+        "Movement Review",
+        "imported actuals",
+        "source evidence",
+        "review outcomes",
+    ),
+    "worker_story_and_admin_queue_connection": (
+        "Worker Story",
+        "Admin Queue",
+        "import provenance",
+        "mapping issues",
+        "unmapped actuals",
+        "missing classifications",
+    ),
+    "evidence_provenance_and_audit": (
+        "evidence provenance",
+        "audit",
+        "source file",
+        "source row",
+        "import run",
+        "mapping decision",
+        "validation status",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "actuals lane model",
+        "import mapping UI",
+        "comparison-line models",
+        "source-system classification mapping",
+        "source-row evidence",
+        "validation workflows",
+    ),
+}
+
+IMPORTS_ACTUALS_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Imports / Actuals", "governed imported evidence", "external source evidence"),
+    "imported_timesheet_source_truth": ("imported timesheets", "ObjectTime", "validation and mapping"),
+    "imported_payroll_actuals_lane": ("imported payroll actuals", "actuals lane", "external outcome lane"),
+    "source_system_mapping_and_validation": ("source-system mapping", "validation", "source rows"),
+    "pay_code_and_rate_type_mapping": ("pay code mapping", "RateType mapping", "unmapped actuals"),
+    "position_classification_mapping": ("ImportedPositionClassificationMap", "position mapping", "classification mapping"),
+    "objecttime_and_source_truth_connection": ("ObjectTime source truth", "source row", "import provenance"),
+    "comparison_and_remediation_connection": ("Comparison / Remediation", "primary calculated", "imported actual lanes"),
+    "reconciliation_and_movement_review_connection": ("reconciliation", "Movement Review", "review outcomes"),
+    "worker_story_and_admin_queue_connection": ("Worker Story", "Admin Queue", "mapping issues"),
+    "evidence_provenance_and_audit": ("evidence provenance", "source file", "import run"),
+    "outstanding_hardening": ("outstanding hardening", "actuals lane model", "import mapping UI"),
+}
+
+OBJECTTIME_SOURCE_TRUTH_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "ObjectTime / Source Truth",
+        "ObjectTime",
+        "Source Truth",
+        "governed source evidence",
+        "not payroll calculation truth",
+    ),
+    "objecttime_as_source_evidence": (
+        "ObjectTime",
+        "source evidence",
+        "work time",
+        "source row",
+        "inclusion context",
+    ),
+    "payrun_inclusion_and_source_truth": (
+        "PayRun inclusion",
+        "SourceTruth",
+        "Source Truth",
+        "source inclusion",
+        "belongs in a PayRun",
+    ),
+    "imported_and_generated_source_rows": (
+        "imported source rows",
+        "generated source rows",
+        "source row",
+        "provenance",
+        "validation mapping status",
+    ),
+    "source_truth_vs_worked_hours": (
+        "SourceTruth",
+        "WorkedHours",
+        "worked hours",
+        "raw span hours",
+        "span hours",
+        "interpreted payable hours",
+    ),
+    "current_effective_output_connection": (
+        "current-effective output",
+        "current-effective payroll output",
+        "processed source truth",
+        "payroll outcome",
+        "current-effective truth",
+    ),
+    "worker_story_connection": (
+        "Worker Story",
+        "Source Truth",
+        "source inclusion",
+        "calculated payroll outcome",
+        "Decision Story",
+    ),
+    "payroll_bases_and_leave_accrual_connection": (
+        "Payroll Bases & Totals",
+        "leave accrual",
+        "processed payroll",
+        "bucket evidence",
+        "raw source span duration",
+    ),
+    "comparison_movement_and_replay_connection": (
+        "Comparison / Remediation",
+        "Movement Review",
+        "Retro / Replay",
+        "source truth",
+        "historical current-effective distinctions",
+    ),
+    "corrections_dirty_contacts_and_reprocessing": (
+        "correction audit",
+        "dirty contact",
+        "dirty PayRunContact",
+        "reprocessing",
+        "source truth correction",
+    ),
+    "evidence_provenance_and_audit": (
+        "evidence provenance",
+        "audit",
+        "source file",
+        "source row",
+        "ObjectTime",
+        "correction history",
+        "evidence story",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "command-centre source hours cleanup",
+        "schema contracts",
+        "dependency detection",
+        "source-truth provenance coverage",
+    ),
+}
+
+OBJECTTIME_SOURCE_TRUTH_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("ObjectTime / Source Truth", "governed source evidence", "not payroll calculation truth"),
+    "objecttime_as_source_evidence": ("ObjectTime", "source evidence", "source row"),
+    "payrun_inclusion_and_source_truth": ("PayRun inclusion", "SourceTruth", "source inclusion"),
+    "imported_and_generated_source_rows": ("imported source rows", "generated source rows", "provenance"),
+    "source_truth_vs_worked_hours": ("SourceTruth", "WorkedHours", "raw span hours"),
+    "current_effective_output_connection": ("current-effective output", "processed source truth", "payroll outcome"),
+    "worker_story_connection": ("Worker Story", "Source Truth", "calculated payroll outcome"),
+    "payroll_bases_and_leave_accrual_connection": ("Payroll Bases & Totals", "leave accrual", "bucket evidence"),
+    "comparison_movement_and_replay_connection": ("Comparison / Remediation", "Movement Review", "Retro / Replay"),
+    "corrections_dirty_contacts_and_reprocessing": ("correction audit", "dirty contact", "reprocessing"),
+    "evidence_provenance_and_audit": ("evidence provenance", "source file", "correction history"),
+    "outstanding_hardening": ("outstanding hardening", "schema contracts", "dependency detection"),
+}
+
+CONTACTS_EMPLOYEE_APPOINTMENTS_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Contacts / Employee Appointments",
+        "Contact",
+        "EmployeeAppointment",
+        "worker identity context",
+        "employment context",
+        "not payroll calculation truth",
+    ),
+    "contact_identity_and_worker_context": (
+        "Contact",
+        "worker identity",
+        "person payroll identity",
+        "worker context",
+        "payroll identity context",
+    ),
+    "employee_appointment_as_employment_assignment": (
+        "EmployeeAppointment",
+        "Employee Appointment",
+        "employment assignment",
+        "work assignment",
+        "position worksite classification award",
+    ),
+    "appointment_scope_and_payrun_admission": (
+        "appointment scope",
+        "PayRun admission",
+        "source truth",
+        "appointment context",
+        "worker inclusion",
+    ),
+    "award_classification_and_position_context": (
+        "award classification",
+        "AwardPositionClass",
+        "WorksitePosition",
+        "Position",
+        "classification evidence",
+        "appointment",
+    ),
+    "worksite_state_and_runtime_location": (
+        "worksite",
+        "state",
+        "runtime location",
+        "worksite state",
+        "state evidence",
+        "appointment",
+    ),
+    "objecttime_and_source_truth_connection": (
+        "ObjectTime",
+        "source truth",
+        "source rows",
+        "appointments",
+        "contacts",
+        "worker inclusion",
+    ),
+    "leave_source_and_accrual_connection": (
+        "leave source",
+        "leave applicability",
+        "leave accrual",
+        "contact scope",
+        "appointment scope",
+    ),
+    "worker_story_and_contact_history_connection": (
+        "Worker Story",
+        "Contact history",
+        "finalised payroll outcome memory",
+        "cumulative movement",
+        "source truth context",
+    ),
+    "worker_readiness_tax_bank_deduction_payment": (
+        "worker readiness",
+        "tax declarations",
+        "bank",
+        "payment allocation",
+        "deductions",
+        "obligations",
+    ),
+    "dirty_contact_and_reprocessing": (
+        "dirty contact",
+        "dirty contacts",
+        "reprocessing",
+        "PayRun output unsafe",
+        "payroll-affecting changes",
+    ),
+    "comparison_and_classification_lenses": (
+        "comparison",
+        "classification lens",
+        "classification lenses",
+        "appointment",
+        "duplicate full appointments",
+        "remediation",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "GUID boundary",
+        "schema contracts",
+        "contact-level history",
+        "WorkerAttention schemas",
+        "classification lenses",
+        "dirty-contact propagation",
+    ),
+}
+
+CONTACTS_EMPLOYEE_APPOINTMENTS_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Contacts / Employee Appointments", "Contact", "EmployeeAppointment"),
+    "contact_identity_and_worker_context": ("Contact", "worker identity", "payroll identity context"),
+    "employee_appointment_as_employment_assignment": ("EmployeeAppointment", "employment assignment", "work assignment"),
+    "appointment_scope_and_payrun_admission": ("appointment scope", "PayRun admission", "worker inclusion"),
+    "award_classification_and_position_context": ("AwardPositionClass", "WorksitePosition", "classification evidence"),
+    "worksite_state_and_runtime_location": ("worksite", "state", "runtime location"),
+    "objecttime_and_source_truth_connection": ("ObjectTime", "source truth", "worker inclusion"),
+    "leave_source_and_accrual_connection": ("leave source", "leave applicability", "appointment scope"),
+    "worker_story_and_contact_history_connection": ("Worker Story", "Contact history", "finalised payroll outcome memory"),
+    "worker_readiness_tax_bank_deduction_payment": ("worker readiness", "tax declarations", "payment allocation"),
+    "dirty_contact_and_reprocessing": ("dirty contact", "reprocessing", "PayRun output unsafe"),
+    "comparison_and_classification_lenses": ("comparison", "classification lens", "duplicate full appointments"),
+    "outstanding_hardening": ("outstanding hardening", "GUID boundary", "WorkerAttention schemas"),
+}
+
+PROCESS_PERIOD_PAYRUN_LIFECYCLE_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Process Periods / PayRun Lifecycle",
+        "ProcessPeriod",
+        "governed payroll-period context",
+        "payment-event lifecycle evidence",
+        "not payroll calculation truth",
+        "not a generic date range",
+    ),
+    "process_period_and_group_context": (
+        "ProcessPeriod",
+        "Process Period",
+        "ProcessPeriodGroup",
+        "Process Period Group",
+        "recurring calendar policy",
+        "payment policy context",
+    ),
+    "open_not_open_closed_lifecycle": (
+        "open",
+        "not-open",
+        "not open",
+        "closed",
+        "closed dominates open",
+        "period lifecycle",
+    ),
+    "close_rolls_forward": (
+        "close rolls forward",
+        "roll forward",
+        "close period",
+        "open next period",
+        "create next period",
+        "period close",
+        "implemented",
+    ),
+    "payment_date_and_calendar_policy": (
+        "PaymentDate",
+        "payment date",
+        "calendar policy",
+        "tax/PAYG",
+        "payment context",
+        "governed derived",
+        "not hardcoded",
+    ),
+    "payrun_creation_and_admission": (
+        "PayRun creation",
+        "PayRun admission",
+        "process-period context",
+        "worker inclusion",
+        "admission is not processing",
+        "payment event",
+    ),
+    "run_type_and_run_purpose": (
+        "RunType",
+        "RunPurpose",
+        "separate",
+        "run type",
+        "run purpose",
+        "payment/processing event",
+    ),
+    "regular_supplementary_retro_distinction": (
+        "regular PayRun",
+        "supplementary PayRun",
+        "retro PayRun",
+        "termination PayRun",
+        "reversal PayRun",
+        "adjustment PayRun",
+        "different lifecycle concepts",
+    ),
+    "payrun_contact_lifecycle": (
+        "PayRunContact",
+        "worker participation",
+        "admission",
+        "processing state",
+        "operational state layer",
+        "dirty PayRunContact",
+    ),
+    "current_effective_output_and_finalisation": (
+        "current-effective output",
+        "current-effective payroll output",
+        "stale",
+        "superseded",
+        "current truth",
+        "finalisation readiness",
+    ),
+    "payment_execution_and_period_close": (
+        "payment execution",
+        "period close",
+        "downstream governed outcome",
+        "payment outcome",
+        "not payroll calculation",
+        "closed period",
+    ),
+    "worker_story_admin_queue_and_movement_review_connection": (
+        "Worker Story",
+        "PayRun Admin Queue",
+        "Admin Queue",
+        "Movement Review",
+        "worker participation",
+        "readiness",
+        "review implications",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "operation trackers",
+        "lifecycle contracts",
+        "supplementary/retro policies",
+        "payment execution",
+        "finalisation warning acknowledgement",
+        "broader contract tests",
+    ),
+}
+
+PROCESS_PERIOD_PAYRUN_LIFECYCLE_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Process Periods / PayRun Lifecycle", "ProcessPeriod", "not payroll calculation truth"),
+    "process_period_and_group_context": ("ProcessPeriod", "ProcessPeriodGroup", "calendar policy"),
+    "open_not_open_closed_lifecycle": ("open", "not-open", "closed"),
+    "close_rolls_forward": ("close rolls forward", "roll forward", "open next period"),
+    "payment_date_and_calendar_policy": ("PaymentDate", "payment date", "governed derived"),
+    "payrun_creation_and_admission": ("PayRun creation", "PayRun admission", "admission is not processing"),
+    "run_type_and_run_purpose": ("RunType", "RunPurpose", "separate"),
+    "regular_supplementary_retro_distinction": ("regular PayRun", "supplementary PayRun", "retro PayRun"),
+    "payrun_contact_lifecycle": ("PayRunContact", "worker participation", "operational state layer"),
+    "current_effective_output_and_finalisation": ("current-effective output", "stale", "finalisation readiness"),
+    "payment_execution_and_period_close": ("payment execution", "period close", "downstream governed outcome"),
+    "worker_story_admin_queue_and_movement_review_connection": ("Worker Story", "PayRun Admin Queue", "Movement Review"),
+    "outstanding_hardening": ("outstanding hardening", "operation trackers", "lifecycle contracts"),
+}
+
+COSTING_GL_CONSEQUENCE_GROUP_KEY_TERMS = {
+    "purpose_and_operator_meaning": (
+        "Costing / GL Consequence Evidence",
+        "Costing",
+        "GL consequence",
+        "financial consequence evidence",
+        "downstream financial consequence evidence",
+        "not payroll calculation truth",
+    ),
+    "downstream_not_payroll_calculation_truth": (
+        "downstream financial consequence",
+        "not payroll calculation truth",
+        "not payment execution",
+        "Minerva does not post GL",
+        "does not calculate costing",
+    ),
+    "finalised_payroll_outcome_source": (
+        "finalised payroll outcome",
+        "finalised payroll outcomes",
+        "finalised gross-to-net",
+        "payment outcome",
+        "source outcome",
+        "finalised truth",
+    ),
+    "payment_execution_and_remittance_connection": (
+        "payment execution",
+        "remittance",
+        "payment outcome",
+        "downstream payment",
+        "payment execution performance",
+        "period close",
+    ),
+    "employer_liability_and_oncost_connection": (
+        "employer liabilities",
+        "employer liability",
+        "on-costs",
+        "on costs",
+        "super",
+        "payroll tax",
+        "WorkCover",
+        "WIC",
+    ),
+    "deduction_obligation_and_writeoff_consequences": (
+        "deductions",
+        "obligations",
+        "obligation write-off",
+        "obligation writeoff",
+        "forgiveness",
+        "balance reduction",
+        "material adjustment",
+        "GL/provision/costing treatment",
+    ),
+    "comparison_remediation_variance_connection": (
+        "Comparison / Remediation",
+        "remediation variance",
+        "variance line",
+        "remediation top-up",
+        "downstream tax",
+        "super",
+        "payroll tax",
+        "WIC",
+        "costing treatment",
+    ),
+    "leave_valuation_and_accrual_connection": (
+        "leave valuation",
+        "leave accrual",
+        "leave valuation basis",
+        "LeaveLedger",
+        "accrual evidence",
+        "costing flow",
+    ),
+    "negative_net_pay_and_out_of_pay_consequences": (
+        "negative net pay",
+        "recoveries",
+        "obligations",
+        "write-offs",
+        "out-of-pay",
+        "out of pay",
+        "financial consequences",
+    ),
+    "audit_story_and_financial_evidence": (
+        "audit story",
+        "financial evidence",
+        "source outcome",
+        "reason",
+        "treatment",
+        "amount",
+        "ledger status",
+        "costing status",
+        "deferred accounting design status",
+    ),
+    "deferred_costing_slice_boundary": (
+        "deferred costing slice",
+        "future costing slice",
+        "later/final slice",
+        "not completed costing engine",
+        "status-honest",
+        "deferred accounting",
+    ),
+    "outstanding_hardening": (
+        "outstanding hardening",
+        "costing engine",
+        "GL posting",
+        "remediation downstream treatment",
+        "negative net pay financial treatment",
+        "obligation write-off",
+        "contract tests",
+    ),
+}
+
+COSTING_GL_CONSEQUENCE_GROUP_SIGNAL_TERMS = {
+    "purpose_and_operator_meaning": ("Costing / GL Consequence Evidence", "GL consequence", "financial consequence evidence"),
+    "downstream_not_payroll_calculation_truth": ("downstream financial consequence", "not payroll calculation truth", "Minerva does not post GL"),
+    "finalised_payroll_outcome_source": ("finalised payroll outcome", "finalised gross-to-net", "source outcome"),
+    "payment_execution_and_remittance_connection": ("payment execution", "remittance", "payment outcome"),
+    "employer_liability_and_oncost_connection": ("employer liabilities", "on-costs", "payroll tax"),
+    "deduction_obligation_and_writeoff_consequences": ("obligation write-off", "obligations", "GL/provision/costing treatment"),
+    "comparison_remediation_variance_connection": ("remediation variance", "variance line", "costing treatment"),
+    "leave_valuation_and_accrual_connection": ("leave valuation", "leave accrual", "LeaveLedger"),
+    "negative_net_pay_and_out_of_pay_consequences": ("negative net pay", "out-of-pay", "financial consequences"),
+    "audit_story_and_financial_evidence": ("audit story", "financial evidence", "costing status"),
+    "deferred_costing_slice_boundary": ("deferred costing slice", "future costing slice", "not completed costing engine"),
+    "outstanding_hardening": ("outstanding hardening", "costing engine", "GL posting"),
+}
+
 
 def _evidence_text(results: list[RetrievalResult]) -> str:
     parts: list[str] = []
@@ -946,6 +2392,26 @@ def _is_payrun_admin_queue_group(group: EvidenceGroup) -> bool:
     }
 
 
+def _is_worker_attention_issue_resolution_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Worker Attention")
+
+
+def _is_gross_to_net_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Gross-to-Net")
+
+
+def _is_rate_source_rate_story_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("RateSource / Rate Story")
+
+
+def _is_decision_story_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Decision Story")
+
+
+def _is_payroll_output_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Payroll Output")
+
+
 def _is_movement_review_group(group: EvidenceGroup) -> bool:
     return group.label.startswith("Movement Review") or group.group_id in {
         "reasonableness_not_error",
@@ -1011,6 +2477,594 @@ def _is_retro_replay_group(group: EvidenceGroup) -> bool:
     }
 
 
+def _is_payment_execution_remittance_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Payment Execution / Remittance") or group.group_id in {
+        "finalised_gross_to_net_source",
+        "worker_net_pay_and_bank_allocation",
+        "payment_destination_readiness",
+        "negative_net_pay_and_obligation_interaction",
+        "deduction_and_third_party_remittance",
+        "payment_file_generation_and_period_close",
+        "remittance_batching_and_reconciliation",
+        "worker_attention_and_admin_queue_connection",
+        "worker_story_and_audit_evidence",
+    }
+
+
+def _is_leave_accrual_processing_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Leave Accrual / Processing")
+
+
+def _is_finalisation_readiness_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Finalisation Readiness")
+
+
+def _is_leave_source_model_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Leave Source Model")
+
+
+def _is_oncosts_employer_liabilities_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("On-costs / Employer Liabilities")
+
+
+def _is_award_build_evidence_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Award Build / Award Evidence")
+
+
+def _is_imports_actuals_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Imports / Actuals")
+
+
+def _is_objecttime_source_truth_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("ObjectTime / Source Truth")
+
+
+def _is_contacts_employee_appointments_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Contacts / Employee Appointments")
+
+
+def _is_process_period_payrun_lifecycle_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Process Periods / PayRun Lifecycle")
+
+
+def _is_costing_gl_consequence_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Costing / GL Consequence Evidence")
+
+
+def _costing_gl_consequence_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Costing / GL Consequence Evidence evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Costing / GL Consequence Evidence",
+            "Costing",
+            "GL consequence",
+            "financial consequence evidence",
+            "downstream financial consequence evidence",
+            "not payroll calculation truth",
+            "not payment execution",
+            "Minerva does not post GL",
+            "does not calculate costing",
+            "finalised payroll outcome",
+            "finalised payroll outcomes",
+            "finalised gross-to-net",
+            "payment outcome",
+            "source outcome",
+            "finalised truth",
+            "payment execution",
+            "remittance",
+            "downstream payment",
+            "payment execution performance",
+            "period close",
+            "employer liabilities",
+            "employer liability",
+            "on-costs",
+            "on costs",
+            "super",
+            "payroll tax",
+            "WorkCover",
+            "WIC",
+            "deductions",
+            "obligations",
+            "obligation write-off",
+            "obligation writeoff",
+            "forgiveness",
+            "balance reduction",
+            "material adjustment",
+            "GL/provision/costing treatment",
+            "Comparison / Remediation",
+            "remediation variance",
+            "variance line",
+            "remediation top-up",
+            "downstream tax",
+            "costing treatment",
+            "leave valuation",
+            "leave accrual",
+            "leave valuation basis",
+            "LeaveLedger",
+            "accrual evidence",
+            "costing flow",
+            "negative net pay",
+            "recoveries",
+            "write-offs",
+            "out-of-pay",
+            "out of pay",
+            "financial consequences",
+            "audit story",
+            "financial evidence",
+            "reason",
+            "treatment",
+            "amount",
+            "ledger status",
+            "costing status",
+            "deferred accounting design status",
+            "deferred costing slice",
+            "future costing slice",
+            "later/final slice",
+            "not completed costing engine",
+            "status-honest",
+            "deferred accounting",
+            "outstanding hardening",
+            "costing engine",
+            "GL posting",
+            "remediation downstream treatment",
+            "negative net pay financial treatment",
+            "contract tests",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _process_period_payrun_lifecycle_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Process Periods / PayRun Lifecycle evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Process Periods / PayRun Lifecycle",
+            "ProcessPeriod",
+            "Process Period",
+            "ProcessPeriodGroup",
+            "Process Period Group",
+            "governed payroll-period context",
+            "payment-event lifecycle evidence",
+            "not payroll calculation truth",
+            "not a generic date range",
+            "recurring calendar policy",
+            "payment policy context",
+            "open",
+            "not-open",
+            "not open",
+            "closed",
+            "closed dominates open",
+            "period lifecycle",
+            "close rolls forward",
+            "roll forward",
+            "open next period",
+            "create next period",
+            "implemented",
+            "PaymentDate",
+            "payment date",
+            "calendar policy",
+            "tax/PAYG",
+            "payment context",
+            "governed derived",
+            "not hardcoded",
+            "PayRun creation",
+            "PayRun admission",
+            "worker inclusion",
+            "admission is not processing",
+            "RunType",
+            "RunPurpose",
+            "run type",
+            "run purpose",
+            "regular PayRun",
+            "supplementary PayRun",
+            "retro PayRun",
+            "termination PayRun",
+            "reversal PayRun",
+            "adjustment PayRun",
+            "PayRunContact",
+            "worker participation",
+            "processing state",
+            "operational state layer",
+            "current-effective output",
+            "current-effective payroll output",
+            "stale",
+            "superseded",
+            "current truth",
+            "finalisation readiness",
+            "payment execution",
+            "period close",
+            "downstream governed outcome",
+            "payment outcome",
+            "Worker Story",
+            "PayRun Admin Queue",
+            "Admin Queue",
+            "Movement Review",
+            "readiness",
+            "review implications",
+            "outstanding hardening",
+            "operation trackers",
+            "lifecycle contracts",
+            "supplementary/retro policies",
+            "finalisation warning acknowledgement",
+            "broader contract tests",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _contacts_employee_appointments_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Contacts / Employee Appointments evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Contacts / Employee Appointments",
+            "Contact",
+            "EmployeeAppointment",
+            "Employee Appointment",
+            "worker identity context",
+            "employment context",
+            "not payroll calculation truth",
+            "worker identity",
+            "person payroll identity",
+            "worker context",
+            "payroll identity context",
+            "employment assignment",
+            "work assignment",
+            "position worksite classification award",
+            "appointment scope",
+            "PayRun admission",
+            "source truth",
+            "appointment context",
+            "worker inclusion",
+            "award classification",
+            "AwardPositionClass",
+            "WorksitePosition",
+            "Position",
+            "classification evidence",
+            "worksite",
+            "state",
+            "runtime location",
+            "worksite state",
+            "state evidence",
+            "ObjectTime",
+            "source rows",
+            "appointments",
+            "contacts",
+            "leave source",
+            "leave applicability",
+            "leave accrual",
+            "contact scope",
+            "Worker Story",
+            "Contact history",
+            "finalised payroll outcome memory",
+            "cumulative movement",
+            "source truth context",
+            "worker readiness",
+            "tax declarations",
+            "bank",
+            "payment allocation",
+            "deductions",
+            "obligations",
+            "dirty contact",
+            "dirty contacts",
+            "reprocessing",
+            "PayRun output unsafe",
+            "payroll-affecting changes",
+            "comparison",
+            "classification lens",
+            "classification lenses",
+            "duplicate full appointments",
+            "remediation",
+            "outstanding hardening",
+            "GUID boundary",
+            "schema contracts",
+            "contact-level history",
+            "WorkerAttention schemas",
+            "dirty-contact propagation",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _objecttime_source_truth_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved ObjectTime / Source Truth evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "ObjectTime / Source Truth",
+            "ObjectTime",
+            "SourceTruth",
+            "Source Truth",
+            "governed source evidence",
+            "not payroll calculation truth",
+            "source evidence",
+            "work time",
+            "source row",
+            "inclusion context",
+            "PayRun inclusion",
+            "source inclusion",
+            "belongs in a PayRun",
+            "imported source rows",
+            "generated source rows",
+            "provenance",
+            "validation mapping status",
+            "WorkedHours",
+            "worked hours",
+            "raw span hours",
+            "span hours",
+            "interpreted payable hours",
+            "current-effective output",
+            "current-effective payroll output",
+            "processed source truth",
+            "payroll outcome",
+            "current-effective truth",
+            "Worker Story",
+            "calculated payroll outcome",
+            "Decision Story",
+            "Payroll Bases & Totals",
+            "leave accrual",
+            "processed payroll",
+            "bucket evidence",
+            "raw source span duration",
+            "Comparison / Remediation",
+            "Movement Review",
+            "Retro / Replay",
+            "historical current-effective distinctions",
+            "correction audit",
+            "dirty contact",
+            "dirty PayRunContact",
+            "reprocessing",
+            "source truth correction",
+            "evidence provenance",
+            "audit",
+            "source file",
+            "correction history",
+            "evidence story",
+            "outstanding hardening",
+            "command-centre source hours cleanup",
+            "schema contracts",
+            "dependency detection",
+            "source-truth provenance coverage",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _imports_actuals_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Imports / Actuals evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Imports / Actuals",
+            "Imports and Actuals",
+            "governed imported evidence",
+            "external source evidence",
+            "not calculated interpreter truth",
+            "imported timesheets",
+            "timesheet source truth",
+            "ObjectTime",
+            "work evidence",
+            "validation and mapping",
+            "imported payroll actuals",
+            "payroll actuals",
+            "actuals lane",
+            "external outcome lane",
+            "calculated interpreter output",
+            "source-system mapping",
+            "source system mapping",
+            "validation",
+            "workers",
+            "dates",
+            "source rows",
+            "pay code mapping",
+            "source-system pay code",
+            "RateType mapping",
+            "platform concepts",
+            "unmapped actuals",
+            "ImportedPositionClassificationMap",
+            "position mapping",
+            "classification mapping",
+            "source-system classification",
+            "source-system position",
+            "ObjectTime source truth",
+            "source truth",
+            "source row",
+            "import provenance",
+            "Comparison / Remediation",
+            "primary calculated",
+            "comparator calculated",
+            "imported actual lanes",
+            "variance",
+            "reconciliation",
+            "Movement Review",
+            "source evidence",
+            "review outcomes",
+            "Worker Story",
+            "Admin Queue",
+            "mapping issues",
+            "missing classifications",
+            "evidence provenance",
+            "audit",
+            "source file",
+            "import run",
+            "mapping decision",
+            "validation status",
+            "outstanding hardening",
+            "actuals lane model",
+            "import mapping UI",
+            "comparison-line models",
+            "source-system classification mapping",
+            "source-row evidence",
+            "validation workflows",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _award_build_evidence_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Award Build / Award Evidence evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Award Build",
+            "Award Evidence",
+            "governed configuration",
+            "traceable evidence",
+            "not runtime payroll calculation",
+            "award document",
+            "pay guide",
+            "pay guide evidence",
+            "source evidence",
+            "row column page evidence",
+            "RateType",
+            "AwardRateType",
+            "stable conceptual pay type",
+            "award-scoped treatment",
+            "RateSource",
+            "date-effective",
+            "rate amounts",
+            "rate evidence",
+            "hardcoded rates",
+            "classification",
+            "position",
+            "class evidence",
+            "deterministically derived",
+            "reviewed",
+            "not guessed",
+            "allowances",
+            "penalties",
+            "conditions",
+            "shift",
+            "overtime",
+            "DecisionEvidenceIndex",
+            "Decision Evidence Index",
+            "why a treatment",
+            "why a line exists",
+            "RateSourceEvidenceIndex",
+            "Rate Source Evidence Index",
+            "why a rate",
+            "why an amount",
+            "Worker Story",
+            "Decision Story",
+            "Rate Story",
+            "runtime artifacts",
+            "PayRun interpretation evidence",
+            "NEEDS_CONFIGURATION",
+            "award build status",
+            "missing evidence",
+            "missing configuration",
+            "valid build outcome",
+            "AwardEvidenceSet",
+            "Durable AwardEvidenceSet",
+            "durable evidence",
+            "artifact based",
+            "file based",
+            "future hardening",
+            "outstanding hardening",
+            "semantic table classification",
+            "durable evidence sets",
+            "parser routing",
+            "conditional award regimes",
+            "source evidence coverage",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _oncosts_employer_liabilities_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved On-costs / Employer Liabilities evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "On-costs",
+            "Employer Liabilities",
+            "governed employer liability evidence",
+            "operator meaning",
+            "not reporting add-on",
+            "employer liability",
+            "not worker pay",
+            "not worker net pay",
+            "not payroll calculation truth",
+            "Minerva does not calculate",
+            "RateSource",
+            "date-effective rates",
+            "date-effective RateSource",
+            "rule-pack configuration",
+            "application code",
+            "AwardRateType",
+            "RateType",
+            "SUPER_ONCOST",
+            "PAYROLLTAX_ONCOST",
+            "WORKCOVER_ONCOST",
+            "award defaults",
+            "governed basis membership",
+            "bucket membership",
+            "basis membership",
+            "raw flags",
+            "runtime basis decisions",
+            "superannuation on-cost",
+            "payroll tax on-cost",
+            "WorkCover",
+            "WIC",
+            "jurisdiction",
+            "state",
+            "worksite",
+            "runtime location",
+            "state-scoped RateSource",
+            "state-scoped employer liabilities",
+            "PayRun output",
+            "Worker Story",
+            "worker-payable lines",
+            "employer liability lines",
+            "on-cost evidence",
+            "Payroll Bases & Totals",
+            "governed basis evidence",
+            "liability calculations",
+            "basis evidence",
+            "basis totals",
+            "Finalisation Readiness",
+            "unresolved basis",
+            "liability configuration",
+            "policy requires",
+            "readiness",
+            "demo fallback",
+            "account-wide fallback",
+            "RateSource rows",
+            "production truth",
+            "unblock demos",
+            "outstanding hardening",
+            "runtime state",
+            "worksite resolution",
+            "award creation seeding",
+            "production replacement",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
 def _payrun_admin_queue_domain_sentence(terms: list[str], label: str) -> str:
     clauses = [f"{label} is described in the retrieved PayRun Admin Queue evidence"]
     detail_terms = [
@@ -1046,6 +3100,187 @@ def _payrun_admin_queue_domain_sentence(terms: list[str], label: str) -> str:
     ]
     if detail_terms:
         clauses.append(f"covering {', '.join(detail_terms[:8])}")
+    return f"{', '.join(clauses)}."
+
+
+def _worker_attention_issue_resolution_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Worker Attention / Issue Resolution evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Worker Attention",
+            "WorkerAttention",
+            "Worker Attention Centre",
+            "Issue Resolution",
+            "worker-level issue surface",
+            "WorkerIssue",
+            "Worker issue",
+            "issue scope",
+            "issue class",
+            "issue type",
+            "issue severity",
+            "blockers",
+            "warnings",
+            "readiness gaps",
+            "deterministic fix links",
+            "resolution surfaces",
+            "dirty contact",
+            "PayRunContact dirty",
+            "reprocessing",
+            "payment allocation readiness",
+            "tax readiness",
+            "deduction readiness",
+            "leave readiness",
+            "negative net pay",
+            "obligations",
+            "Worker Story",
+            "PayRun Admin Queue",
+            "not the same surface",
+            "outstanding hardening",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _gross_to_net_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Gross-to-Net evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Gross-to-Net",
+            "Gross to Net",
+            "GrossToNet",
+            "payroll outcome calculation",
+            "payroll outcome explanation surface",
+            "gross earnings",
+            "payroll output",
+            "taxable basis",
+            "taxable earnings",
+            "PAYG",
+            "withholding",
+            "tax withholding",
+            "deductions",
+            "obligations",
+            "negative net pay",
+            "governed treatment",
+            "net pay",
+            "payment allocation",
+            "payment execution readiness",
+            "Worker Story",
+            "finalised outcome truth",
+            "current-effective payroll output",
+            "current truth",
+            "outstanding hardening",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _rate_source_rate_story_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved RateSource / Rate Story evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "RateSource",
+            "Rate Source",
+            "Rate Story",
+            "RateStory",
+            "selected rate",
+            "rate amount",
+            "date-effective rate",
+            "date-effective rates",
+            "award rate",
+            "account rate",
+            "class rate",
+            "pay guide rate evidence",
+            "RateSourceEvidenceIndex",
+            "Decision Story",
+            "Worker Story",
+            "payroll output",
+            "Gross-to-Net",
+            "outstanding hardening",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _decision_story_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Decision Story evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Decision Story",
+            "DecisionStory",
+            "treatment selection",
+            "entitlement decision",
+            "payroll decision",
+            "why a treatment",
+            "why a line exists",
+            "DecisionEvidenceIndex",
+            "Decision Evidence Index",
+            "award rule",
+            "configured rules",
+            "runtime facts",
+            "allowance",
+            "penalty",
+            "overtime",
+            "shift",
+            "break treatment",
+            "public holiday decision",
+            "minimum engagement",
+            "Rate Story",
+            "Worker Story",
+            "payroll output",
+            "Gross-to-Net",
+            "outstanding hardening",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _payroll_output_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Payroll Output evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Payroll Output",
+            "PayRun Output",
+            "Process Period Output",
+            "Run Output",
+            "calculated payroll output",
+            "payroll result",
+            "payroll line",
+            "output line",
+            "CalcInterpreterLine",
+            "current-effective output",
+            "current-effective payroll output truth",
+            "worker-level output",
+            "PayRun totals",
+            "CalcInterpreterRun",
+            "Decision Story",
+            "Rate Story",
+            "Gross-to-Net",
+            "Payroll Bases & Totals",
+            "Finalisation Readiness",
+            "Payment Execution",
+            "outstanding hardening",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
     return f"{', '.join(clauses)}."
 
 
@@ -1255,6 +3490,263 @@ def _retro_replay_domain_sentence(terms: list[str], label: str) -> str:
     return f"{', '.join(clauses)}."
 
 
+def _payment_execution_remittance_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Payment Execution / Remittance evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Payment Execution / Remittance",
+            "governed payment execution",
+            "remittance evidence",
+            "generic file export",
+            "finalised gross-to-net",
+            "finalised payroll outcome",
+            "payment outcome",
+            "payroll calculation truth",
+            "worker net pay",
+            "bank allocation",
+            "payment allocation",
+            "bank instruction readiness",
+            "payment destination",
+            "missing payment destination",
+            "partial payment destinations",
+            "payment execution readiness",
+            "negative net pay",
+            "obligations",
+            "carry-forward",
+            "recovery",
+            "write-off",
+            "out-of-pay treatment",
+            "deduction remittance",
+            "third-party remittance",
+            "third-party payments",
+            "remittance files",
+            "Generate Bank File",
+            "Bank File",
+            "payment file",
+            "Period Close",
+            "payment-file execution",
+            "remittance batching",
+            "remittance reconciliation",
+            "reconciliation",
+            "Worker Attention",
+            "PayRun Admin Queue",
+            "Worker Story",
+            "audit evidence",
+            "skipped",
+            "unpaid",
+            "unmet",
+            "outstanding hardening",
+            "bank file generation",
+            "remittance execution",
+            "payment close",
+            "financial consequences",
+            "UI surfaces",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:9])}")
+    return f"{', '.join(clauses)}."
+
+
+def _leave_accrual_processing_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Leave Accrual / Processing evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Leave Accrual",
+            "Leave Processing",
+            "deterministic platform outcomes",
+            "Minerva calculations",
+            "generic leave policy advice",
+            "leave source truth",
+            "applicability",
+            "LeaveTypeRule",
+            "Leave Source Model",
+            "source truth",
+            "accrual basis",
+            "PER_HOUR",
+            "minute",
+            "hour",
+            "accrual quantity",
+            "CalcInterpreterLine",
+            "current-effective payroll output",
+            "canonical processed payroll result truth",
+            "AwardRateType",
+            "RateType",
+            "accrualability",
+            "LeaveLedger",
+            "balance movements",
+            "story evidence",
+            "leave valuation basis",
+            "TAKEN leave",
+            "mandatory",
+            "hard failure",
+            "silent fallback",
+            "leave request",
+            "payment effects",
+            "before payroll interpretation",
+            "within payroll interpretation",
+            "after payroll interpretation",
+            "LeaveProcessRun",
+            "PayRun",
+            "finalisation readiness",
+            "missing leave output",
+            "Worker Story",
+            "Leave and Accrual Outcome",
+            "server-owned leave output",
+            "Payroll Bases & Totals",
+            "worked hours",
+            "basis quantity",
+            "outstanding hardening",
+            "leave-processing UI",
+            "contact-vs-appointment",
+            "leave story polish",
+            "finalisation warning acknowledgement",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:9])}")
+    return f"{', '.join(clauses)}."
+
+
+def _finalisation_readiness_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Finalisation Readiness evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Finalisation Readiness",
+            "governed readiness gate",
+            "assurance gate",
+            "not payroll calculation truth",
+            "green means done",
+            "blockers",
+            "warnings",
+            "red blockers",
+            "amber warnings",
+            "green",
+            "ready",
+            "cleared",
+            "current-effective payroll output",
+            "stale",
+            "superseded",
+            "current truth",
+            "Worker Attention",
+            "Admin Queue",
+            "worker-level blockers",
+            "ready actions",
+            "Payroll Bases readiness",
+            "Payroll Bases & Totals",
+            "stale basis evidence",
+            "leave readiness",
+            "missing leave output",
+            "leave valuation basis",
+            "tax readiness",
+            "deduction readiness",
+            "negative net pay",
+            "payment destination readiness",
+            "payment execution readiness",
+            "payment readiness",
+            "bank readiness",
+            "gross-to-net readiness",
+            "finalised outcome truth",
+            "finalised outcome",
+            "finalised totals",
+            "durable payment outcome memory",
+            "warning acknowledgement",
+            "warning acknowledgment",
+            "finalisation audit",
+            "reviewed",
+            "accepted",
+            "unresolved",
+            "Worker Story",
+            "review surfaces",
+            "readiness evidence",
+            "worker-specific issues",
+            "Movement Review",
+            "outstanding hardening",
+            "WorkerAttention schemas",
+            "finalisation policy",
+            "server-owned operation",
+            "contract tests",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:9])}")
+    return f"{', '.join(clauses)}."
+
+
+def _leave_source_model_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Leave Source Model evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Leave Source Model",
+            "governed applicability",
+            "source-truth layer",
+            "leave applies",
+            "worker context",
+            "applicability",
+            "rule content",
+            "LeaveTypeRule",
+            "policy calculation content",
+            "source truth",
+            "final applicability truth",
+            "active LeaveTypeRule",
+            "every worker",
+            "leave output",
+            "Contact scope",
+            "EmployeeAppointment scope",
+            "appointment-aware leave",
+            "contact-level",
+            "appointment-level",
+            "Account",
+            "EmploymentType",
+            "WorksitePosition",
+            "Worksite",
+            "EmployeeAppointment",
+            "Contact",
+            "AwardPositionClass",
+            "AwardPosition",
+            "Position",
+            "Award",
+            "State",
+            "precedence",
+            "leave accrual",
+            "source applicability decisions",
+            "consume source",
+            "infer ad hoc",
+            "leave request",
+            "payment effects",
+            "leave ownership",
+            "request ownership",
+            "Worker Story",
+            "leave chapters",
+            "warnings",
+            "Command Centre",
+            "Finalisation Readiness",
+            "PayRun finalisation warnings",
+            "leave readiness",
+            "honestly",
+            "missing leave output",
+            "leave does not apply",
+            "leave output is missing",
+            "outstanding hardening",
+            "planned model",
+            "required model",
+            "not complete",
+            "runtime capability",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:9])}")
+    return f"{', '.join(clauses)}."
+
+
 def _movement_review_domain_sentence(terms: list[str], label: str) -> str:
     clauses = [f"{label} is described in the retrieved Movement Review evidence"]
     detail_terms = [
@@ -1295,6 +3787,38 @@ def _movement_review_domain_sentence(terms: list[str], label: str) -> str:
 
 
 def _sentence_for_group(group: EvidenceGroup, terms: list[str]) -> str:
+    if _is_rate_source_rate_story_group(group):
+        return _rate_source_rate_story_domain_sentence(terms, group.label)
+    if _is_decision_story_group(group):
+        return _decision_story_domain_sentence(terms, group.label)
+    if _is_payroll_output_group(group):
+        return _payroll_output_domain_sentence(terms, group.label)
+    if _is_gross_to_net_group(group):
+        return _gross_to_net_domain_sentence(terms, group.label)
+    if _is_worker_attention_issue_resolution_group(group):
+        return _worker_attention_issue_resolution_domain_sentence(terms, group.label)
+    if _is_costing_gl_consequence_group(group):
+        return _costing_gl_consequence_domain_sentence(terms, group.label)
+    if _is_process_period_payrun_lifecycle_group(group):
+        return _process_period_payrun_lifecycle_domain_sentence(terms, group.label)
+    if _is_contacts_employee_appointments_group(group):
+        return _contacts_employee_appointments_domain_sentence(terms, group.label)
+    if _is_objecttime_source_truth_group(group):
+        return _objecttime_source_truth_domain_sentence(terms, group.label)
+    if _is_imports_actuals_group(group):
+        return _imports_actuals_domain_sentence(terms, group.label)
+    if _is_award_build_evidence_group(group):
+        return _award_build_evidence_domain_sentence(terms, group.label)
+    if _is_oncosts_employer_liabilities_group(group):
+        return _oncosts_employer_liabilities_domain_sentence(terms, group.label)
+    if _is_leave_source_model_group(group):
+        return _leave_source_model_domain_sentence(terms, group.label)
+    if _is_finalisation_readiness_group(group):
+        return _finalisation_readiness_domain_sentence(terms, group.label)
+    if _is_leave_accrual_processing_group(group):
+        return _leave_accrual_processing_domain_sentence(terms, group.label)
+    if _is_payment_execution_remittance_group(group):
+        return _payment_execution_remittance_domain_sentence(terms, group.label)
     if _is_retro_replay_group(group):
         return _retro_replay_domain_sentence(terms, group.label)
     if _is_deductions_obligations_group(group):
@@ -1356,6 +3880,54 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         return _weak_summary(group)
     evidence_text = _evidence_text(results)
     key_terms = (
+        RATE_SOURCE_RATE_STORY_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_rate_source_rate_story_group(group)
+        else
+        DECISION_STORY_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_decision_story_group(group)
+        else
+        PAYROLL_OUTPUT_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_payroll_output_group(group)
+        else
+        GROSS_TO_NET_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_gross_to_net_group(group)
+        else
+        WORKER_ATTENTION_ISSUE_RESOLUTION_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_worker_attention_issue_resolution_group(group)
+        else
+        COSTING_GL_CONSEQUENCE_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_costing_gl_consequence_group(group)
+        else
+        PROCESS_PERIOD_PAYRUN_LIFECYCLE_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_process_period_payrun_lifecycle_group(group)
+        else
+        CONTACTS_EMPLOYEE_APPOINTMENTS_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_contacts_employee_appointments_group(group)
+        else
+        OBJECTTIME_SOURCE_TRUTH_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_objecttime_source_truth_group(group)
+        else
+        IMPORTS_ACTUALS_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_imports_actuals_group(group)
+        else
+        AWARD_BUILD_EVIDENCE_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_award_build_evidence_group(group)
+        else
+        ONCOSTS_EMPLOYER_LIABILITIES_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_oncosts_employer_liabilities_group(group)
+        else
+        LEAVE_SOURCE_MODEL_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_leave_source_model_group(group)
+        else
+        FINALISATION_READINESS_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_finalisation_readiness_group(group)
+        else
+        LEAVE_ACCRUAL_PROCESSING_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_leave_accrual_processing_group(group)
+        else
+        PAYMENT_EXECUTION_REMITTANCE_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_payment_execution_remittance_group(group)
+        else
         RETRO_REPLAY_GROUP_KEY_TERMS.get(group.group_id)
         if _is_retro_replay_group(group)
         else
@@ -1376,6 +3948,54 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         else GROUP_KEY_TERMS.get(group.group_id)
     )
     signal_key_terms = (
+        RATE_SOURCE_RATE_STORY_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_rate_source_rate_story_group(group)
+        else
+        DECISION_STORY_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_decision_story_group(group)
+        else
+        PAYROLL_OUTPUT_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_payroll_output_group(group)
+        else
+        GROSS_TO_NET_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_gross_to_net_group(group)
+        else
+        WORKER_ATTENTION_ISSUE_RESOLUTION_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_worker_attention_issue_resolution_group(group)
+        else
+        COSTING_GL_CONSEQUENCE_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_costing_gl_consequence_group(group)
+        else
+        PROCESS_PERIOD_PAYRUN_LIFECYCLE_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_process_period_payrun_lifecycle_group(group)
+        else
+        CONTACTS_EMPLOYEE_APPOINTMENTS_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_contacts_employee_appointments_group(group)
+        else
+        OBJECTTIME_SOURCE_TRUTH_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_objecttime_source_truth_group(group)
+        else
+        IMPORTS_ACTUALS_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_imports_actuals_group(group)
+        else
+        AWARD_BUILD_EVIDENCE_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_award_build_evidence_group(group)
+        else
+        ONCOSTS_EMPLOYER_LIABILITIES_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_oncosts_employer_liabilities_group(group)
+        else
+        LEAVE_SOURCE_MODEL_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_leave_source_model_group(group)
+        else
+        FINALISATION_READINESS_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_finalisation_readiness_group(group)
+        else
+        LEAVE_ACCRUAL_PROCESSING_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_leave_accrual_processing_group(group)
+        else
+        PAYMENT_EXECUTION_REMITTANCE_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_payment_execution_remittance_group(group)
+        else
         RETRO_REPLAY_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_retro_replay_group(group)
         else

@@ -1,13 +1,29 @@
 from app.services.answer_generation_service import generate_grounded_answer
 from app.services.domain_retrieval_plan_service import (
     ANNUAL_LEAVE_MANAGEMENT_PLAN,
+    AWARD_BUILD_EVIDENCE_PLAN,
     COMPARISON_REMEDIATION_PLAN,
+    CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN,
+    COSTING_GL_CONSEQUENCE_PLAN,
+    DECISION_STORY_PLAN,
     DEDUCTIONS_OBLIGATIONS_PLAN,
+    FINALISATION_READINESS_PLAN,
+    GROSS_TO_NET_PLAN,
+    IMPORTS_ACTUALS_PLAN,
+    LEAVE_ACCRUAL_PROCESSING_PLAN,
+    LEAVE_SOURCE_MODEL_PLAN,
     MOVEMENT_REVIEW_PLAN,
+    OBJECTTIME_SOURCE_TRUTH_PLAN,
+    ONCOSTS_EMPLOYER_LIABILITIES_PLAN,
+    PAYROLL_OUTPUT_PLAN,
     PAYROLL_BASES_AND_TOTALS_PLAN,
     PAYRUN_ADMIN_QUEUE_PLAN,
+    PAYMENT_EXECUTION_REMITTANCE_PLAN,
+    PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN,
+    RATE_SOURCE_RATE_STORY_PLAN,
     RETRO_REPLAY_PLAN,
     TAX_PAYG_PLAN,
+    WORKER_ATTENTION_ISSUE_RESOLUTION_PLAN,
     WORKER_STORY_PLAN,
     detect_domain_retrieval_plan,
     retrieve_chunks_for_question,
@@ -125,6 +141,211 @@ def test_payrun_admin_queue_plan_contains_expected_evidence_groups():
         "movement_review_connection",
         "outstanding_hardening",
     }
+
+
+def test_worker_attention_issue_resolution_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is Worker Attention / Issue Resolution in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "WORKER_ATTENTION_ISSUE_RESOLUTION"
+
+
+def test_worker_attention_issue_resolution_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in WORKER_ATTENTION_ISSUE_RESOLUTION_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "worker_attention_purpose",
+        "worker_issue_model",
+        "blockers_warnings_and_readiness",
+        "deterministic_fix_links",
+        "dirty_contact_and_reprocessing",
+        "payment_allocation_readiness",
+        "tax_deduction_leave_readiness",
+        "negative_net_pay_and_obligations",
+        "worker_story_relationship",
+        "admin_queue_relationship",
+        "outstanding_hardening",
+    }
+
+
+def test_worker_attention_issue_resolution_focused_questions_detect_domain_plan():
+    questions = [
+        "How does Worker Attention model worker issues?",
+        "How should Worker Attention guide users to fix an issue?",
+        "How does dirty contact state relate to Worker Attention?",
+        "How does Worker Attention handle payment allocation and negative net pay issues?",
+        "How do Worker Attention, Admin Queue and Worker Story relate?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "WORKER_ATTENTION_ISSUE_RESOLUTION"
+
+
+def test_gross_to_net_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is Gross-to-Net in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "GROSS_TO_NET"
+
+
+def test_gross_to_net_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in GROSS_TO_NET_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "gross_to_net_purpose",
+        "gross_earnings_and_payroll_output",
+        "taxable_basis_and_payg",
+        "deductions_and_obligations",
+        "negative_net_pay",
+        "net_pay_and_payment_allocation",
+        "worker_story_relationship",
+        "finalisation_and_payment_execution",
+        "current_effective_output_truth",
+        "outstanding_hardening",
+    }
+
+
+def test_rate_source_rate_story_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is RateSource / Rate Story in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "RATE_SOURCE_RATE_STORY"
+
+
+def test_rate_source_rate_story_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in RATE_SOURCE_RATE_STORY_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "rate_story_purpose",
+        "rate_source_selection",
+        "rate_amount_evidence",
+        "date_effective_rates",
+        "award_account_class_scope",
+        "pay_guide_rate_evidence",
+        "rate_source_evidence_index",
+        "rate_story_vs_decision_story",
+        "worker_story_relationship",
+        "payroll_output_and_gross_to_net_relationship",
+        "outstanding_hardening",
+    }
+
+
+def test_rate_source_rate_story_focused_questions_detect_domain_plan():
+    questions = [
+        "How does Rate Story explain RateSource selection?",
+        "How does Rate Story use pay guide evidence?",
+        "What is the difference between RateSource / Rate Story and Decision Story?",
+        "How do date-effective and scoped rates affect Rate Story?",
+        "How does Rate Story relate to Worker Story and Gross-to-Net?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "RATE_SOURCE_RATE_STORY"
+
+
+def test_decision_story_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is Decision Story in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "DECISION_STORY"
+
+
+def test_decision_story_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in DECISION_STORY_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "decision_story_purpose",
+        "treatment_and_entitlement_selection",
+        "decision_evidence_index",
+        "award_rule_and_runtime_fact_evidence",
+        "allowance_penalty_overtime_shift_evidence",
+        "break_public_holiday_and_special_condition_evidence",
+        "decision_story_vs_rate_story",
+        "worker_story_relationship",
+        "payroll_output_and_gross_to_net_relationship",
+        "outstanding_hardening",
+    }
+
+
+def test_decision_story_focused_questions_detect_domain_plan():
+    questions = [
+        "How does Decision Story explain why a payroll line exists?",
+        "What is DecisionEvidenceIndex used for?",
+        "What is the difference between Decision Story and Rate Story for treatment and rate evidence?",
+        "How does Decision Story explain allowances, penalties, overtime and shift decisions?",
+        "How does Decision Story handle breaks, public holidays and special conditions?",
+        "How does Decision Story relate to Worker Story and Gross-to-Net?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "DECISION_STORY"
+
+
+def test_payroll_output_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is Payroll Output in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "PAYROLL_OUTPUT"
+
+
+def test_payroll_output_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in PAYROLL_OUTPUT_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "payroll_output_purpose",
+        "calculated_payroll_lines",
+        "current_effective_output_truth",
+        "run_output_vs_process_period_output",
+        "worker_level_output",
+        "payrun_totals_and_line_totals",
+        "decision_story_and_rate_story_relationship",
+        "gross_to_net_relationship",
+        "payroll_bases_relationship",
+        "finalisation_and_payment_execution_relationship",
+        "outstanding_hardening",
+    }
+
+
+def test_payroll_output_focused_questions_detect_domain_plan():
+    questions = [
+        "What does current-effective payroll output mean?",
+        "What is the difference between Run Output and Process Period Output?",
+        "How should Payroll Output explain payroll lines?",
+        "How does Payroll Output relate to Gross-to-Net?",
+        "How does Payroll Output relate to Payroll Bases & Totals?",
+        "How does Payroll Output relate to finalisation and payment execution?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "PAYROLL_OUTPUT"
+
+
+def test_gross_to_net_focused_questions_detect_domain_plan():
+    questions = [
+        "How does Gross-to-Net move from gross earnings to net pay?",
+        "How does Gross-to-Net relate to taxable basis and PAYG?",
+        "How do deductions and obligations affect Gross-to-Net?",
+        "How should Gross-to-Net explain negative net pay?",
+        "How does Gross-to-Net relate to current-effective payroll output and Worker Story?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "GROSS_TO_NET"
 
 
 def test_movement_review_question_detects_domain_plan():
@@ -252,6 +473,292 @@ def test_retro_replay_plan_contains_expected_evidence_groups():
         "worker_story_connection",
         "admin_queue_and_movement_review_connection",
         "audit_replay_and_non_destructive_history",
+        "outstanding_hardening",
+    }
+
+
+def test_payment_execution_remittance_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How should Payment Execution and Remittance work in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "PAYMENT_EXECUTION_REMITTANCE"
+
+
+def test_payment_execution_remittance_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in PAYMENT_EXECUTION_REMITTANCE_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "finalised_gross_to_net_source",
+        "worker_net_pay_and_bank_allocation",
+        "payment_destination_readiness",
+        "negative_net_pay_and_obligation_interaction",
+        "deduction_and_third_party_remittance",
+        "payment_file_generation_and_period_close",
+        "remittance_batching_and_reconciliation",
+        "worker_attention_and_admin_queue_connection",
+        "worker_story_and_audit_evidence",
+        "outstanding_hardening",
+    }
+
+
+def test_leave_accrual_processing_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How does leave accrue and get processed in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "LEAVE_ACCRUAL_PROCESSING"
+
+
+def test_leave_accrual_processing_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in LEAVE_ACCRUAL_PROCESSING_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "leave_source_truth_and_applicability",
+        "accrual_basis_and_quantity",
+        "payroll_output_and_calc_interpreter_source",
+        "leave_type_and_rule_configuration",
+        "leave_ledger_and_accrual_posting",
+        "leave_valuation_basis",
+        "leave_request_payment_effects",
+        "payrun_processing_and_finalisation",
+        "worker_story_connection",
+        "payroll_bases_connection",
+        "outstanding_hardening",
+    }
+
+
+def test_finalisation_readiness_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How should Finalisation Readiness work in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "FINALISATION_READINESS"
+
+
+def test_finalisation_readiness_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in FINALISATION_READINESS_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "blockers_warnings_and_green_state",
+        "current_effective_payroll_output",
+        "worker_attention_and_admin_queue",
+        "payroll_bases_readiness",
+        "leave_readiness",
+        "tax_deduction_and_payment_readiness",
+        "payment_execution_and_bank_readiness",
+        "finalised_outcome_truth",
+        "warning_acknowledgement_and_audit",
+        "worker_story_and_review_surfaces",
+        "outstanding_hardening",
+    }
+
+
+def test_leave_source_model_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is the Leave Source Model and why does it matter?")
+
+    assert plan is not None
+    assert plan.plan_id == "LEAVE_SOURCE_MODEL"
+
+
+def test_leave_source_model_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in LEAVE_SOURCE_MODEL_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "applicability_vs_rule_content",
+        "leave_type_rule_limitations",
+        "contact_vs_appointment_scope",
+        "source_dimensions_and_precedence",
+        "leave_accrual_connection",
+        "leave_request_and_payment_effects_connection",
+        "worker_story_connection",
+        "command_centre_and_finalisation_connection",
+        "readiness_and_missing_output_detection",
+        "outstanding_hardening",
+    }
+
+
+def test_oncosts_employer_liabilities_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How should On-costs and Employer Liabilities work in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "ONCOSTS_EMPLOYER_LIABILITIES"
+
+
+def test_oncosts_employer_liabilities_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in ONCOSTS_EMPLOYER_LIABILITIES_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "employer_liability_not_worker_pay",
+        "rate_source_and_date_effective_rates",
+        "award_rate_type_and_rate_type_settings",
+        "governed_basis_membership",
+        "super_payroll_tax_and_workcover_wic",
+        "state_worksite_and_runtime_location_resolution",
+        "payrun_output_and_worker_story_connection",
+        "payroll_bases_connection",
+        "finalisation_and_readiness_connection",
+        "demo_fallback_vs_production_truth",
+        "outstanding_hardening",
+    }
+
+
+def test_award_build_evidence_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How should Award Build and Award Evidence work in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "AWARD_BUILD_EVIDENCE"
+
+
+def test_award_build_evidence_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in AWARD_BUILD_EVIDENCE_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "award_document_and_pay_guide_sources",
+        "rate_type_and_award_rate_type_creation",
+        "rate_source_and_date_effective_rate_evidence",
+        "classification_position_and_class_evidence",
+        "allowances_penalties_and_conditions",
+        "decision_evidence_index",
+        "rate_source_evidence_index",
+        "worker_story_decision_and_rate_story_connection",
+        "needs_configuration_and_build_status",
+        "durable_award_evidence_set",
+        "outstanding_hardening",
+    }
+
+
+def test_imports_actuals_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How should Imports and Actuals work in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "IMPORTS_ACTUALS"
+
+
+def test_imports_actuals_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in IMPORTS_ACTUALS_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "imported_timesheet_source_truth",
+        "imported_payroll_actuals_lane",
+        "source_system_mapping_and_validation",
+        "pay_code_and_rate_type_mapping",
+        "position_classification_mapping",
+        "objecttime_and_source_truth_connection",
+        "comparison_and_remediation_connection",
+        "reconciliation_and_movement_review_connection",
+        "worker_story_and_admin_queue_connection",
+        "evidence_provenance_and_audit",
+        "outstanding_hardening",
+    }
+
+
+def test_objecttime_source_truth_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("What is ObjectTime / Source Truth and why does it matter?")
+
+    assert plan is not None
+    assert plan.plan_id == "OBJECTTIME_SOURCE_TRUTH"
+
+
+def test_objecttime_source_truth_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in OBJECTTIME_SOURCE_TRUTH_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "objecttime_as_source_evidence",
+        "payrun_inclusion_and_source_truth",
+        "imported_and_generated_source_rows",
+        "source_truth_vs_worked_hours",
+        "current_effective_output_connection",
+        "worker_story_connection",
+        "payroll_bases_and_leave_accrual_connection",
+        "comparison_movement_and_replay_connection",
+        "corrections_dirty_contacts_and_reprocessing",
+        "evidence_provenance_and_audit",
+        "outstanding_hardening",
+    }
+
+
+def test_contacts_employee_appointments_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How should Contacts and Employee Appointments work in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "CONTACTS_EMPLOYEE_APPOINTMENTS"
+
+
+def test_contacts_employee_appointments_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "contact_identity_and_worker_context",
+        "employee_appointment_as_employment_assignment",
+        "appointment_scope_and_payrun_admission",
+        "award_classification_and_position_context",
+        "worksite_state_and_runtime_location",
+        "objecttime_and_source_truth_connection",
+        "leave_source_and_accrual_connection",
+        "worker_story_and_contact_history_connection",
+        "worker_readiness_tax_bank_deduction_payment",
+        "dirty_contact_and_reprocessing",
+        "comparison_and_classification_lenses",
+        "outstanding_hardening",
+    }
+
+
+def test_process_period_payrun_lifecycle_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How should Process Periods and PayRun Lifecycle work in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "PROCESS_PERIOD_PAYRUN_LIFECYCLE"
+
+
+def test_process_period_payrun_lifecycle_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "process_period_and_group_context",
+        "open_not_open_closed_lifecycle",
+        "close_rolls_forward",
+        "payment_date_and_calendar_policy",
+        "payrun_creation_and_admission",
+        "run_type_and_run_purpose",
+        "regular_supplementary_retro_distinction",
+        "payrun_contact_lifecycle",
+        "current_effective_output_and_finalisation",
+        "payment_execution_and_period_close",
+        "worker_story_admin_queue_and_movement_review_connection",
+        "outstanding_hardening",
+    }
+
+
+def test_costing_gl_consequence_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How should Costing and GL Consequence Evidence work in Ezeas?")
+
+    assert plan is not None
+    assert plan.plan_id == "COSTING_GL_CONSEQUENCE"
+
+
+def test_costing_gl_consequence_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in COSTING_GL_CONSEQUENCE_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "purpose_and_operator_meaning",
+        "downstream_not_payroll_calculation_truth",
+        "finalised_payroll_outcome_source",
+        "payment_execution_and_remittance_connection",
+        "employer_liability_and_oncost_connection",
+        "deduction_obligation_and_writeoff_consequences",
+        "comparison_remediation_variance_connection",
+        "leave_valuation_and_accrual_connection",
+        "negative_net_pay_and_out_of_pay_consequences",
+        "audit_story_and_financial_evidence",
+        "deferred_costing_slice_boundary",
         "outstanding_hardening",
     }
 
@@ -549,3 +1056,483 @@ def test_retro_replay_domain_retrieval_uses_group_specific_evidence(db_session):
         "finalised_outcome_memory",
     }
     assert all(result.domain_plan_id == "RETRO_REPLAY" for result in results)
+
+
+def test_payment_execution_remittance_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Payment Execution / Remittance is governed payment execution and remittance evidence, not a generic file export.",
+        title="Developer Log - Payment Execution Purpose",
+    )
+    _ingest(
+        db_session,
+        "Payment execution consumes finalised gross-to-net, finalised payroll outcome and payment outcome evidence, "
+        "not payroll calculation truth.",
+        title="Developer Log - Payment Execution Finalised Source",
+    )
+    _ingest(
+        db_session,
+        "Worker net pay requires payment allocation, bank allocation and bank instruction readiness.",
+        title="Developer Log - Payment Execution Allocation",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How should Payment Execution and Remittance work in Ezeas?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "finalised_gross_to_net_source",
+        "worker_net_pay_and_bank_allocation",
+    }
+    assert all(result.domain_plan_id == "PAYMENT_EXECUTION_REMITTANCE" for result in results)
+
+
+def test_leave_accrual_processing_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Leave Accrual / Processing uses Leave Accrual and Leave Processing as deterministic platform outcomes, "
+        "not Minerva calculations or generic leave policy advice.",
+        title="Developer Log - Leave Accrual Processing Purpose",
+    )
+    _ingest(
+        db_session,
+        "Leave source truth and applicability govern accrual; LeaveTypeRule alone is not final applicability truth "
+        "while Leave Source Model remains hardening.",
+        title="Developer Log - Leave Source Applicability",
+    )
+    _ingest(
+        db_session,
+        "CalcInterpreterLine and current-effective payroll output provide canonical processed payroll result truth "
+        "for leave output quantity.",
+        title="Developer Log - Leave Payroll Output Source",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How does leave accrue and get processed in Ezeas?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "leave_source_truth_and_applicability",
+        "payroll_output_and_calc_interpreter_source",
+    }
+    assert all(result.domain_plan_id == "LEAVE_ACCRUAL_PROCESSING" for result in results)
+
+
+def test_finalisation_readiness_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Finalisation Readiness is a governed readiness gate and assurance gate, not payroll calculation truth.",
+        title="Developer Log - Finalisation Readiness Purpose",
+    )
+    _ingest(
+        db_session,
+        "Finalisation Readiness uses blockers, warnings, red blockers, amber warnings and green ready state.",
+        title="Developer Log - Finalisation Readiness Status",
+    )
+    _ingest(
+        db_session,
+        "Current-effective payroll output matters because stale or superseded runs must not be finalised as current truth.",
+        title="Developer Log - Finalisation Current Output",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How should Finalisation Readiness work in Ezeas?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "blockers_warnings_and_green_state",
+        "current_effective_payroll_output",
+    }
+    assert all(result.domain_plan_id == "FINALISATION_READINESS" for result in results)
+
+
+def test_leave_source_model_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Leave Source Model is the governed applicability source-truth layer for whether leave applies in worker context.",
+        title="Developer Log - Leave Source Model Purpose",
+    )
+    _ingest(
+        db_session,
+        "LeaveTypeRule is policy calculation content and must not be final applicability truth.",
+        title="Developer Log - Leave Source Rule Limitation",
+    )
+    _ingest(
+        db_session,
+        "Leave readiness should distinguish leave does not apply from leave output is missing.",
+        title="Developer Log - Leave Source Missing Output",
+    )
+    _ingest(
+        db_session,
+        "Contact scope and EmployeeAppointment scope require appointment-aware leave handling.",
+        title="Developer Log - Leave Source Scope",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "What is the Leave Source Model and why does it matter?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "applicability_vs_rule_content",
+        "contact_vs_appointment_scope",
+    }
+    assert all(result.domain_plan_id == "LEAVE_SOURCE_MODEL" for result in results)
+
+
+def test_oncosts_employer_liabilities_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "On-costs and Employer Liabilities are governed employer liability evidence with operator meaning, "
+        "not a reporting add-on.",
+        title="Developer Log - On-costs Employer Liabilities Purpose",
+    )
+    _ingest(
+        db_session,
+        "Employer liability evidence is not worker pay, not worker net pay and not payroll calculation truth; "
+        "Minerva does not calculate on-costs.",
+        title="Developer Log - On-costs Worker Pay Boundary",
+    )
+    _ingest(
+        db_session,
+        "RateSource and date-effective rates should use date-effective RateSource rule-pack configuration, not "
+        "application code.",
+        title="Developer Log - On-costs RateSource",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How should On-costs and Employer Liabilities work in Ezeas?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "employer_liability_not_worker_pay",
+        "rate_source_and_date_effective_rates",
+    }
+    assert all(result.domain_plan_id == "ONCOSTS_EMPLOYER_LIABILITIES" for result in results)
+
+
+def test_award_build_evidence_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Award Build and Award Evidence are governed configuration and traceable evidence, not runtime payroll "
+        "calculation.",
+        title="Developer Log - Award Build Purpose",
+    )
+    _ingest(
+        db_session,
+        "Award document and pay guide evidence provide source evidence with row column page evidence.",
+        title="Developer Log - Award Pay Guide Sources",
+    )
+    _ingest(
+        db_session,
+        "RateType is the stable conceptual pay type and AwardRateType is award-scoped treatment.",
+        title="Developer Log - Award Rate Types",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How should Award Build and Award Evidence work in Ezeas?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "award_document_and_pay_guide_sources",
+        "rate_type_and_award_rate_type_creation",
+    }
+    assert all(result.domain_plan_id == "AWARD_BUILD_EVIDENCE" for result in results)
+
+
+def test_imports_actuals_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Imports / Actuals and Imports and Actuals are governed imported evidence and external source evidence, "
+        "not calculated interpreter truth.",
+        title="Developer Log - Imports Actuals Purpose",
+    )
+    _ingest(
+        db_session,
+        "Imported timesheets can become ObjectTime work evidence and timesheet source truth only after validation "
+        "and mapping.",
+        title="Developer Log - Imported Timesheets",
+    )
+    _ingest(
+        db_session,
+        "Imported payroll actuals and payroll actuals live in an actuals lane and external outcome lane, separate "
+        "from calculated interpreter output.",
+        title="Developer Log - Imported Payroll Actuals",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How should Imports and Actuals work in Ezeas?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "imported_timesheet_source_truth",
+        "imported_payroll_actuals_lane",
+    }
+    assert all(result.domain_plan_id == "IMPORTS_ACTUALS" for result in results)
+
+
+def test_imports_actuals_detection_does_not_steal_comparison_remediation_imported_actuals_question():
+    plan = detect_domain_retrieval_plan("Why are imported actuals treated as external outcome truth?")
+
+    assert plan is not None
+    assert plan.plan_id == "COMPARISON_REMEDIATION"
+
+
+def test_imports_actuals_interpreter_truth_question_routes_to_imports_actuals():
+    plan = detect_domain_retrieval_plan(
+        "Why are imported actuals external outcome truth rather than calculated interpreter truth?"
+    )
+
+    assert plan is not None
+    assert plan.plan_id == "IMPORTS_ACTUALS"
+
+
+def test_objecttime_source_truth_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "ObjectTime / Source Truth and ObjectTime Source Truth are governed source evidence, not payroll "
+        "calculation truth.",
+        title="Developer Log - ObjectTime Source Truth Purpose",
+    )
+    _ingest(
+        db_session,
+        "ObjectTime source evidence preserves source row and inclusion context for work time.",
+        title="Developer Log - ObjectTime Source Evidence",
+    )
+    _ingest(
+        db_session,
+        "PayRun inclusion uses SourceTruth and Source Truth source inclusion to explain why a source row belongs "
+        "in a PayRun.",
+        title="Developer Log - ObjectTime PayRun Inclusion",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "What is ObjectTime / Source Truth and why does it matter?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "objecttime_as_source_evidence",
+        "payrun_inclusion_and_source_truth",
+    }
+    assert all(result.domain_plan_id == "OBJECTTIME_SOURCE_TRUTH" for result in results)
+
+
+def test_objecttime_source_truth_detection_does_not_steal_imports_actuals_objecttime_question():
+    plan = detect_domain_retrieval_plan("How do Imports / Actuals connect to ObjectTime and source truth?")
+
+    assert plan is not None
+    assert plan.plan_id == "IMPORTS_ACTUALS"
+
+
+def test_objecttime_source_truth_detection_does_not_steal_leave_source_truth_question():
+    plan = detect_domain_retrieval_plan("What source truth should leave accrual use?")
+
+    assert plan is not None
+    assert plan.plan_id == "LEAVE_ACCRUAL_PROCESSING"
+
+
+def test_contacts_employee_appointments_detection_does_not_steal_admin_queue_dirty_contact_question():
+    plan = detect_domain_retrieval_plan("How do Worker Attention and dirty contacts relate to the PayRun Admin Queue?")
+
+    assert plan is not None
+    assert plan.plan_id == "PAYRUN_ADMIN_QUEUE"
+
+
+def test_worker_attention_issue_resolution_detection_keeps_overlapping_domain_ownership():
+    admin_plan = detect_domain_retrieval_plan("How do Worker Attention and dirty contacts relate to the PayRun Admin Queue?")
+    contacts_plan = detect_domain_retrieval_plan("How should Worker Attention use Contact and EmployeeAppointment readiness?")
+
+    assert admin_plan is not None
+    assert admin_plan.plan_id == "PAYRUN_ADMIN_QUEUE"
+    assert contacts_plan is not None
+    assert contacts_plan.plan_id == "CONTACTS_EMPLOYEE_APPOINTMENTS"
+
+
+def test_gross_to_net_detection_keeps_overlapping_domain_ownership():
+    tax_plan = detect_domain_retrieval_plan("How should Tax / PAYG handle taxable basis and gross-to-net withholding?")
+    deduction_plan = detect_domain_retrieval_plan("How do Deductions / Obligations affect gross-to-net deductions?")
+    payment_plan = detect_domain_retrieval_plan("How does Payment Execution / Remittance use gross-to-net net pay?")
+    worker_attention_plan = detect_domain_retrieval_plan("How does Worker Attention handle gross-to-net negative net pay issues?")
+    payroll_bases_plan = detect_domain_retrieval_plan("How do Payroll Bases & Totals provide gross basis evidence?")
+
+    assert tax_plan is not None
+    assert tax_plan.plan_id == "TAX_PAYG"
+    assert deduction_plan is not None
+    assert deduction_plan.plan_id == "DEDUCTIONS_OBLIGATIONS"
+    assert payment_plan is not None
+    assert payment_plan.plan_id == "PAYMENT_EXECUTION_REMITTANCE"
+    assert worker_attention_plan is not None
+    assert worker_attention_plan.plan_id == "WORKER_ATTENTION_ISSUE_RESOLUTION"
+    assert payroll_bases_plan is not None
+    assert payroll_bases_plan.plan_id == "PAYROLL_BASES_AND_TOTALS"
+
+
+def test_rate_source_rate_story_detection_keeps_overlapping_domain_ownership():
+    decision_plan = detect_domain_retrieval_plan("How does Decision Story explain entitlement and treatment selection?")
+    award_plan = detect_domain_retrieval_plan("How should Award Build / Award Evidence handle RateSourceEvidenceIndex?")
+    gross_to_net_plan = detect_domain_retrieval_plan("How does Gross-to-Net use rate amount in payroll output?")
+    payroll_bases_plan = detect_domain_retrieval_plan("How do Payroll Bases & Totals use RateType basis evidence?")
+    worker_story_plan = detect_domain_retrieval_plan("What is Worker Story and how does it show Rate Story?")
+    tax_plan = detect_domain_retrieval_plan("How should Tax / PAYG handle RateSource withholding context?")
+    oncost_plan = detect_domain_retrieval_plan("How should On-costs use RateSource and date-effective rates?")
+
+    assert decision_plan is not None
+    assert decision_plan.plan_id == "DECISION_STORY"
+    assert award_plan is not None
+    assert award_plan.plan_id == "AWARD_BUILD_EVIDENCE"
+    assert gross_to_net_plan is not None
+    assert gross_to_net_plan.plan_id == "GROSS_TO_NET"
+    assert payroll_bases_plan is not None
+    assert payroll_bases_plan.plan_id == "PAYROLL_BASES_AND_TOTALS"
+    assert worker_story_plan is not None
+    assert worker_story_plan.plan_id == "WORKER_STORY"
+    assert tax_plan is not None
+    assert tax_plan.plan_id == "TAX_PAYG"
+    assert oncost_plan is not None
+    assert oncost_plan.plan_id == "ONCOSTS_EMPLOYER_LIABILITIES"
+
+
+def test_decision_story_detection_keeps_overlapping_domain_ownership():
+    rate_plan = detect_domain_retrieval_plan("How does RateSource / Rate Story explain selected rate amount?")
+    worker_story_plan = detect_domain_retrieval_plan("What is Worker Story and how does it show Decision Story?")
+    award_plan = detect_domain_retrieval_plan("How should Award Build / Award Evidence handle DecisionEvidenceIndex?")
+    gross_to_net_plan = detect_domain_retrieval_plan("How does Gross-to-Net use calculated payroll outcome lines?")
+    payroll_bases_plan = detect_domain_retrieval_plan("How do Payroll Bases & Totals provide basis evidence?")
+    leave_plan = detect_domain_retrieval_plan("How does Leave Accrual / Processing calculate leave processing evidence?")
+    finalisation_plan = detect_domain_retrieval_plan("How should Finalisation Readiness handle readiness gates?")
+
+    assert rate_plan is not None
+    assert rate_plan.plan_id == "RATE_SOURCE_RATE_STORY"
+    assert worker_story_plan is not None
+    assert worker_story_plan.plan_id == "WORKER_STORY"
+    assert award_plan is not None
+    assert award_plan.plan_id == "AWARD_BUILD_EVIDENCE"
+    assert gross_to_net_plan is not None
+    assert gross_to_net_plan.plan_id == "GROSS_TO_NET"
+    assert payroll_bases_plan is not None
+    assert payroll_bases_plan.plan_id == "PAYROLL_BASES_AND_TOTALS"
+    assert leave_plan is not None
+    assert leave_plan.plan_id == "LEAVE_ACCRUAL_PROCESSING"
+    assert finalisation_plan is not None
+    assert finalisation_plan.plan_id == "FINALISATION_READINESS"
+
+
+def test_payroll_output_detection_keeps_overlapping_domain_ownership():
+    gross_to_net_plan = detect_domain_retrieval_plan("How does Gross-to-Net explain net pay from payroll output?")
+    worker_story_plan = detect_domain_retrieval_plan("What is Worker Story and how does it show payroll output?")
+    decision_plan = detect_domain_retrieval_plan("How does Decision Story explain why a payroll line exists?")
+    rate_plan = detect_domain_retrieval_plan("How does RateSource / Rate Story explain selected rate amount?")
+    payroll_bases_plan = detect_domain_retrieval_plan("How do Payroll Bases & Totals provide basis evidence?")
+    finalisation_plan = detect_domain_retrieval_plan("How should Finalisation Readiness handle readiness gates?")
+    payment_plan = detect_domain_retrieval_plan("How does Payment Execution / Remittance generate payment files?")
+    admin_queue_plan = detect_domain_retrieval_plan("How does the PayRun Admin Queue show actions for payroll output issues?")
+
+    assert gross_to_net_plan is not None
+    assert gross_to_net_plan.plan_id == "GROSS_TO_NET"
+    assert worker_story_plan is not None
+    assert worker_story_plan.plan_id == "WORKER_STORY"
+    assert decision_plan is not None
+    assert decision_plan.plan_id == "DECISION_STORY"
+    assert rate_plan is not None
+    assert rate_plan.plan_id == "RATE_SOURCE_RATE_STORY"
+    assert payroll_bases_plan is not None
+    assert payroll_bases_plan.plan_id == "PAYROLL_BASES_AND_TOTALS"
+    assert finalisation_plan is not None
+    assert finalisation_plan.plan_id == "FINALISATION_READINESS"
+    assert payment_plan is not None
+    assert payment_plan.plan_id == "PAYMENT_EXECUTION_REMITTANCE"
+    assert admin_queue_plan is not None
+    assert admin_queue_plan.plan_id == "PAYRUN_ADMIN_QUEUE"
+
+
+def test_contacts_employee_appointments_objecttime_question_routes_to_contacts_when_contacts_framed():
+    plan = detect_domain_retrieval_plan("How do Contacts and Employee Appointments relate to ObjectTime / Source Truth?")
+
+    assert plan is not None
+    assert plan.plan_id == "CONTACTS_EMPLOYEE_APPOINTMENTS"
+
+
+def test_contacts_employee_appointments_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Contacts / Employee Appointments use Contact and EmployeeAppointment as governed worker identity context "
+        "and employment context, not payroll calculation truth.",
+        title="Developer Log - Contacts Appointments Purpose",
+    )
+    _ingest(
+        db_session,
+        "Contact is worker identity, person payroll identity, worker context and payroll identity context.",
+        title="Developer Log - Contacts Identity",
+    )
+    _ingest(
+        db_session,
+        "EmployeeAppointment and Employee Appointment are the employment assignment and work assignment, carrying "
+        "position worksite classification award context.",
+        title="Developer Log - Employee Appointment Assignment",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How should Contacts and Employee Appointments work in Ezeas?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "contact_identity_and_worker_context",
+        "employee_appointment_as_employment_assignment",
+    }
+    assert all(result.domain_plan_id == "CONTACTS_EMPLOYEE_APPOINTMENTS" for result in results)
+
+
+def test_process_period_payrun_lifecycle_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Process Periods / PayRun Lifecycle uses ProcessPeriod as governed payroll-period context and "
+        "payment-event lifecycle evidence, not payroll calculation truth or a generic date range.",
+        title="Developer Log - Process Period Lifecycle Purpose",
+    )
+    _ingest(
+        db_session,
+        "ProcessPeriod and Process Period use ProcessPeriodGroup and Process Period Group for recurring calendar "
+        "policy and payment policy context.",
+        title="Developer Log - Process Period Group Context",
+    )
+    _ingest(
+        db_session,
+        "PayRun creation and PayRun admission happen inside process-period context, but admission is not processing.",
+        title="Developer Log - PayRun Creation Admission",
+    )
+
+    results = retrieve_chunks_for_question(
+        db_session,
+        "How should Process Periods and PayRun Lifecycle work in Ezeas?",
+    )
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "process_period_and_group_context",
+        "payrun_creation_and_admission",
+    }
+    assert all(result.domain_plan_id == "PROCESS_PERIOD_PAYRUN_LIFECYCLE" for result in results)
+
+
+def test_process_period_payrun_lifecycle_detection_does_not_steal_tax_paymentdate_question():
+    plan = detect_domain_retrieval_plan("Why does ProcessPeriod PaymentDate matter for Tax / PAYG?")
+
+    assert plan is not None
+    assert plan.plan_id == "TAX_PAYG"
+
+
+def test_costing_gl_consequence_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Costing / GL Consequence Evidence is downstream financial consequence evidence, not payroll calculation truth.",
+        title="Developer Log - Costing Purpose",
+    )
+    _ingest(
+        db_session,
+        "Finalised payroll outcome and finalised gross-to-net are source outcome evidence for costing status.",
+        title="Developer Log - Costing Finalised Outcome",
+    )
+    _ingest(
+        db_session,
+        "Obligation write-off and obligation writeoff events may need GL/provision/costing treatment.",
+        title="Developer Log - Costing Obligation Writeoff",
+    )
+
+    results = retrieve_chunks_for_question(db_session, "How should Costing and GL Consequence Evidence work in Ezeas?")
+
+    assert {result.evidence_group_id for result in results} >= {
+        "purpose_and_operator_meaning",
+        "finalised_payroll_outcome_source",
+        "deduction_obligation_and_writeoff_consequences",
+    }
+    assert all(result.domain_plan_id == "COSTING_GL_CONSEQUENCE" for result in results)
