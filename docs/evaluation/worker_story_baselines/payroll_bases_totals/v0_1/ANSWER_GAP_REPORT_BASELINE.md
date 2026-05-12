@@ -1,8 +1,8 @@
 # Payroll Bases & Totals Answer Gap Report Baseline
 
-This file records the Payroll Bases & Totals answer gap report baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the Payroll Bases & Totals answer gap report baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Commands Identified
+## Commands Executed
 
 Human-readable mode:
 
@@ -20,24 +20,45 @@ Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
 ## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED`
 
-Overall status: not captured
+Report type: `PAYROLL_BASES_ANSWER_GAP_REPORT`
+
+Source coverage plan: `PAYROLL_BASES_AND_TOTALS`
+
+Overall status: `NEEDS_REFINEMENT`
 
 Recommended action counts:
 
-- `KEEP`: not captured
-- `IMPROVE_RETRIEVAL_TERMS`: not captured
-- `IMPROVE_SYNTHESIS`: not captured
-- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: not captured
+- `KEEP`: 8
+- `IMPROVE_RETRIEVAL_TERMS`: 1
+- `IMPROVE_SYNTHESIS`: 0
+- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: 0
 
-The answer gap report was not run because the coverage report could not be generated after DB readiness failed.
+The following eight evidence groups were reported as `STRONG` -> `KEEP`:
 
-Generated artefact committed: no.
+- `purpose_and_operator_meaning`
+- `bucket_definition_and_membership`
+- `worked_hours_and_quantity`
+- `gross_ordinary_superable_taxable_bases`
+- `current_effective_truth`
+- `readiness_and_rebuild`
+- `worker_story_connection`
+- `movement_review_connection`
+
+The following weak/refinement group was reported as `WEAK` -> `IMPROVE_RETRIEVAL_TERMS`:
+
+- `outstanding_hardening`
+
+Recommended next action: Refine Payroll Bases & Totals retrieval terms for weak supporting groups before adding new corpus.
+
+Generated artefact committed: no. `.\artifacts\eval\payroll_bases_answer_gap_report.json` was generated locally and summarized in this curated markdown baseline.
 
 Live LLM calls: no.
 
 Corpus mutation: no.
+
+Operational JSON ingestion: no.
 
 ## Status Interpretation
 
@@ -47,9 +68,18 @@ Corpus mutation: no.
 
 Answer gap status is an evaluation signal. It is not operational truth and does not prove runtime implementation.
 
+## Recommended Actions
+
+The Payroll Bases & Totals answer gap report can recommend:
+
+- `KEEP`: leave the current retrieval and synthesis behavior unchanged for the group.
+- `IMPROVE_RETRIEVAL_TERMS`: refine deterministic search terms or group targeting so existing corpus evidence is found more reliably.
+- `IMPROVE_SYNTHESIS`: adjust answer synthesis so retrieved evidence is explained more clearly and completely.
+- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: defer code changes and add or author formal source evidence in a later corpus slice.
+
 ## Diagnostic Interpretation
 
-No answer gap interpretation is made for Payroll Bases & Totals in this slice because the DB readiness gate failed.
+The answer gap report says `KEEP` for eight groups and `IMPROVE_RETRIEVAL_TERMS` for `outstanding_hardening`. This is a retrieval-term refinement target, not authorization to ingest operational JSON, connect Code Evidence to answers, call a live LLM or mutate corpus.
 
 ## Diagnostic-Only Guardrails
 

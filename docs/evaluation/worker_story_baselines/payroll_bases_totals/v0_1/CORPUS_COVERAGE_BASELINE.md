@@ -1,8 +1,8 @@
 # Payroll Bases & Totals Corpus Coverage Baseline
 
-This file records the Payroll Bases & Totals corpus coverage baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the Payroll Bases & Totals corpus coverage baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Commands Identified
+## Commands Executed
 
 Human-readable mode:
 
@@ -22,31 +22,35 @@ Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
 Domain: Payroll Bases & Totals
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED`
+
+Indexed corpus: 5 active documents, 4583 chunks
 
 | Evidence Group | Captured Coverage Status |
 |---|---|
-| `purpose_and_operator_meaning` | not captured |
-| `bucket_definition_and_membership` | not captured |
-| `worked_hours_and_quantity` | not captured |
-| `gross_ordinary_superable_taxable_bases` | not captured |
-| `current_effective_truth` | not captured |
-| `readiness_and_rebuild` | not captured |
-| `worker_story_connection` | not captured |
-| `movement_review_connection` | not captured |
-| `outstanding_hardening` | not captured |
+| `purpose_and_operator_meaning` | STRONG |
+| `bucket_definition_and_membership` | STRONG |
+| `worked_hours_and_quantity` | STRONG |
+| `gross_ordinary_superable_taxable_bases` | STRONG |
+| `current_effective_truth` | STRONG |
+| `readiness_and_rebuild` | STRONG |
+| `worker_story_connection` | STRONG |
+| `movement_review_connection` | STRONG |
+| `outstanding_hardening` | WEAK |
 
 ## Coverage Counts
 
-- `STRONG`: not captured
-- `WEAK`: not captured
-- `MISSING`: not captured
+- `STRONG`: 8
+- `WEAK`: 1
+- `MISSING`: 0
 
-Generated artefact committed: no. The JSON output command was not run and `.\artifacts\eval\payroll_bases_corpus_coverage.json` was not created by this slice.
+Generated artefact committed: no. `.\artifacts\eval\payroll_bases_corpus_coverage.json` was generated locally and summarized in this curated markdown baseline.
 
 Live LLM calls: no.
 
 Corpus mutation: no.
+
+Operational JSON ingestion: no.
 
 ## Status Interpretation
 
@@ -58,7 +62,7 @@ Coverage status is about available indexed formal corpus evidence. It is not ope
 
 ## Diagnostic Interpretation
 
-No coverage interpretation is made for Payroll Bases & Totals in this slice because the DB readiness gate failed.
+Payroll Bases & Totals has strong indexed corpus support for eight of nine planned evidence groups. `outstanding_hardening` has weak support and should be refined through retrieval terms before adding new corpus.
 
 ## Diagnostic-Only Guardrails
 

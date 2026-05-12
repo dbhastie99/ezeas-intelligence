@@ -1,8 +1,8 @@
 # Payroll Bases & Totals Benchmark Baseline
 
-This file records the Payroll Bases & Totals benchmark baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the Payroll Bases & Totals benchmark baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Command Identified
+## Command Executed
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payroll_bases_and_totals.json
@@ -22,18 +22,22 @@ The benchmark checks deterministic retrieval and answer-contract behavior for Pa
 
 ## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED`
 
 Pass/fail summary:
 
-- Total: not captured
-- Passed: not captured
-- Failed: not captured
-- Audit/chat rows created: not available because the benchmark was not run
-
-The read-only DB readiness gate failed before this command was run. No benchmark result is inferred from this blocked state.
+- Total: 6
+- Passed: 6
+- Failed: 0
+- Audit/chat rows created: false
 
 Generated artefact committed: no.
+
+Live LLM calls: no.
+
+Corpus mutation: no.
+
+Operational JSON ingestion: no.
 
 ## Source References
 
