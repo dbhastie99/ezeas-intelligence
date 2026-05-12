@@ -108,13 +108,13 @@ def test_completed_domain_baseline_decision_ledger_summary_and_counts_are_docume
 
     assert "## Summary" in ledger
     assert "Total domains inventoried: 31" in ledger
-    assert "`BASELINE_REQUIRED`: 27" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 3" in ledger
+    assert "`BASELINE_REQUIRED`: 26" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 4" in ledger
     assert "`NO_BASELINE_NEEDED`: 0" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 1" in ledger
     assert "`NEEDS_REVIEW`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue" in ledger
-    assert "Recommended next slice: keep Payroll Bases & Totals and PayRun Admin Queue as captured comparison controls" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review" in ledger
+    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue and Movement Review as captured comparison controls" in ledger
     assert "Domains with runbook outstanding: Annual Leave / Leave Management" in ledger
 
 
@@ -123,7 +123,9 @@ def test_completed_domain_baseline_decision_ledger_records_captured_baselines_an
 
     assert "This summary is not authorization to run benchmarks" in ledger
     assert "For every other completed v0.4 domain, this ledger does not claim baseline capture has already happened" in ledger
-    assert "Movement Review and Gross-to-Net have blocked v0.1 capture packs" in ledger
+    assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "benchmark 8 total, 8 passed, 0 failed" in ledger
+    assert "Gross-to-Net has a blocked v0.1 capture pack" in ledger
     assert "| Worker Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "docs/evaluation/worker_story_baselines/worker_story/v0_1/BASELINE_SUMMARY.md" in ledger
     assert "BASELINE_ALREADY_EXISTS | Worker Story now has a checked-in baseline artefact pack" in ledger
@@ -135,6 +137,8 @@ def test_completed_domain_baseline_decision_ledger_records_captured_baselines_an
     assert "BASELINE_ALREADY_EXISTS | PayRun Admin Queue now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "benchmark 8 total, 6 passed, 2 failed" in ledger
     assert "Failures are benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in ledger
-    assert "| Movement Review | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "| Movement Review | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "docs/evaluation/worker_story_baselines/movement_review/v0_1/BASELINE_SUMMARY.md" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "| Gross-to-Net | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
     assert "| Payroll Tax / WorkCover / WIC Liability Detail | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger

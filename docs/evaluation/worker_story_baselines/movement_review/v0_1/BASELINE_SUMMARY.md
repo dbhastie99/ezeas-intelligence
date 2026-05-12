@@ -1,6 +1,6 @@
 # Movement Review Baseline Summary
 
-Slice name: Minerva Domain Baseline Capture Batch v0.1 - Blocked Database Capture
+Slice name: Movement Review Baseline Capture v0.1 - Record READY Baseline Results
 
 Domain: Movement Review
 
@@ -10,44 +10,49 @@ Source decision ledger: `docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN
 
 Baseline policy: `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`
 
-This baseline pack is diagnostic-only and not operational truth. It is a checked-in capture record for a controlled baseline attempt, not proof of runtime implementation, payroll correctness, corpus completeness or live platform state.
+This baseline pack is diagnostic-only and not operational truth. It is a checked-in comparison control for future Movement Review evaluation changes. It does not prove runtime implementation, payroll correctness, corpus completeness or live platform state.
 
 ## Execution Context
 
 Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
-The read-only DB readiness gate returned `DATABASE_CONNECTION_FAILED` before the domain baseline commands were run.
+DB readiness returned `READY` before the Movement Review baseline commands were run.
 
-- Readiness command: `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py`
 - Required tables checked: `KnowledgeDocument`, `KnowledgeChunk`
 - Missing tables: none
-- Blocker: SQL Server connection could not be established from this environment.
 
-Because DB readiness did not pass, the benchmark, corpus coverage diagnostic and answer gap report commands were not executed in this slice.
+Generated JSON reports were local/generated under `.\artifacts\eval\` and were not committed. This baseline summarizes those generated outputs into curated markdown only.
 
-## Commands Identified
+## Commands Executed
 
 | Area | Command | Completed In v0.1 | Captured Result Summary |
 |---|---|---:|---|
-| Movement Review benchmark | `.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.movement_review.json` | no | `BLOCKED_DATABASE_CONNECTION`; no pass/fail counts captured. |
-| Corpus coverage diagnostic | `.\.venv\Scripts\python.exe scripts\scan_movement_review_corpus_coverage.py` | no | `BLOCKED_DATABASE_CONNECTION`; no `STRONG` / `WEAK` / `MISSING` counts captured. |
-| Corpus coverage diagnostic JSON | `.\.venv\Scripts\python.exe scripts\scan_movement_review_corpus_coverage.py --json --output .\artifacts\eval\movement_review_corpus_coverage.json` | no | `BLOCKED_DATABASE_CONNECTION`; generated JSON was not created. |
-| Answer gap report | `.\.venv\Scripts\python.exe scripts\build_movement_review_answer_gap_report.py --coverage-report .\artifacts\eval\movement_review_corpus_coverage.json` | no | `BLOCKED_DATABASE_CONNECTION`; no overall status or action counts captured. |
-| Answer gap report JSON | `.\.venv\Scripts\python.exe scripts\build_movement_review_answer_gap_report.py --coverage-report .\artifacts\eval\movement_review_corpus_coverage.json --json --output .\artifacts\eval\movement_review_answer_gap_report.json` | no | `BLOCKED_DATABASE_CONNECTION`; generated JSON was not created. |
+| Movement Review benchmark | `.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.movement_review.json` | yes | 8 total, 8 passed, 0 failed; audit/chat rows created: false. |
+| Corpus coverage diagnostic | `.\.venv\Scripts\python.exe scripts\scan_movement_review_corpus_coverage.py` | yes | Movement Review coverage reported 11 STRONG, 0 WEAK, 0 MISSING. |
+| Corpus coverage diagnostic JSON | `.\.venv\Scripts\python.exe scripts\scan_movement_review_corpus_coverage.py --json --output .\artifacts\eval\movement_review_corpus_coverage.json` | yes | Local generated JSON report created and summarized, not committed. |
+| Answer gap report | `.\.venv\Scripts\python.exe scripts\build_movement_review_answer_gap_report.py --coverage-report .\artifacts\eval\movement_review_corpus_coverage.json` | yes | Overall status GOOD; 11 KEEP actions. |
+| Answer gap report JSON | `.\.venv\Scripts\python.exe scripts\build_movement_review_answer_gap_report.py --coverage-report .\artifacts\eval\movement_review_corpus_coverage.json --json --output .\artifacts\eval\movement_review_answer_gap_report.json` | yes | Local generated JSON report created and summarized, not committed. |
 
 ## Captured High-Level Findings
 
-- DB readiness result: `DATABASE_CONNECTION_FAILED`.
-- Benchmark result: `BLOCKED_DATABASE_CONNECTION`; counts not captured.
-- Corpus coverage result: `BLOCKED_DATABASE_CONNECTION`; counts not captured.
-- Answer gap report: `BLOCKED_DATABASE_CONNECTION`; actions not captured.
-- Audit/chat rows created: not available because the benchmark was not run.
-- Command availability: canonical runbook commands and scripts exist.
+- DB readiness result: `READY`.
+- Benchmark result: 8 total, 8 passed, 0 failed.
+- Audit/chat rows created: false.
+- Corpus coverage result: `STRONG` = 11, `WEAK` = 0, `MISSING` = 0.
+- Indexed corpus: 5 active documents, 4583 chunks.
+- Answer gap report: `GOOD`.
+- Report type: `MOVEMENT_REVIEW_ANSWER_GAP_REPORT`.
+- Source coverage plan: `MOVEMENT_REVIEW`.
+- Recommended actions: 11 `KEEP`.
+- Recommended next action: Keep current Movement Review retrieval terms and answer synthesis under benchmark watch.
+- Live LLM calls: no.
+- Corpus mutation: no.
+- Operational JSON ingestion: no.
 - Generated artefacts committed: no.
 
-## Evidence Groups In Scope
+## Evidence Groups Covered By The Baseline Shape
 
-The canonical coverage plan exists, but group statuses were not captured:
+The following Movement Review evidence groups were reported as `STRONG`:
 
 - `purpose_and_operator_meaning`
 - `reasonableness_not_error`
@@ -61,12 +66,13 @@ The canonical coverage plan exists, but group statuses were not captured:
 - `filters_and_return_context`
 - `outstanding_hardening`
 
+No evidence groups were reported as `WEAK` or `MISSING`.
+
 ## Known Gaps
 
-- This pack records a blocked baseline capture attempt, not an executed comparison baseline.
-- No benchmark pass/fail counts are available for this slice.
-- No corpus coverage counts are available for this slice.
-- No answer gap status or recommended action counts are available for this slice.
+- This is a captured baseline with a full benchmark pass, not a blocked database capture.
+- Generated output files under `.\artifacts\eval\` were created locally and were not committed.
+- Gross-to-Net remains a blocked v0.1 capture pack.
 - Annual Leave / Leave Management remains `RUNBOOK_OUTSTANDING` in the completed-domain ledger.
 
 ## Guardrails
@@ -89,4 +95,4 @@ This baseline pack:
 
 ## Recommended Next Slice
 
-Restore database connectivity and rerun the Movement Review benchmark, corpus coverage diagnostic and answer gap report commands before treating this domain as `BASELINE_ALREADY_EXISTS`.
+Keep current Movement Review retrieval terms and answer synthesis under benchmark watch. Do not update Gross-to-Net to captured state until its own DB-backed commands are captured.

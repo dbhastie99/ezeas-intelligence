@@ -1,6 +1,6 @@
 # Movement Review Baseline Review Notes
 
-These notes define the manual review checklist for the Movement Review baseline capture attempt. They are diagnostic-only and not operational truth.
+These notes define the manual review checklist for the Movement Review captured baseline. They are diagnostic-only and not operational truth.
 
 This review file does not mutate corpus, does not change routing, does not change answer generation, does not call live LLM, does not ingest operational JSON, and does not connect Code Evidence.
 
@@ -10,16 +10,19 @@ This review file does not mutate corpus, does not change routing, does not chang
 - Confirm the baseline pack references `docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md`.
 - Confirm all required files exist: `BASELINE_SUMMARY.md`, `BENCHMARK_BASELINE.md`, `CORPUS_COVERAGE_BASELINE.md`, `ANSWER_GAP_REPORT_BASELINE.md` and `REVIEW_NOTES.md`.
 - Confirm command completion status is explicit.
-- Confirm blocked execution is labelled `BLOCKED_DATABASE_CONNECTION`.
-- Confirm generated output is either intentionally absent or clearly labelled.
+- Confirm this pack is labelled as captured, not as a blocked database capture.
+- Confirm benchmark result is 8 total, 8 passed, 0 failed.
+- Confirm corpus coverage is 11 `STRONG`, 0 `WEAK`, 0 `MISSING`.
+- Confirm answer gap report status is `GOOD` with 11 `KEEP` actions.
+- Confirm generated output is summarized into curated markdown and not required as a committed artefact.
 - Confirm every file keeps diagnostic-only guardrails.
 - Confirm no operational JSON, secrets, tenant data, source-code evidence content or runtime payroll truth is included.
 
 ## Reviewer Questions
 
-- Does this blocked capture pack help the next reviewer rerun the canonical commands?
-- Is the database blocker clearly separated from product-domain evidence quality?
-- Is the decision ledger clear that Movement Review is not yet treated as `BASELINE_ALREADY_EXISTS`?
+- Is the decision ledger clear that Movement Review is now `BASELINE_ALREADY_EXISTS` while Gross-to-Net remains `BASELINE_REQUIRED`?
+- Is the recommended next action limited to benchmark watch rather than corpus mutation?
+- Are generated JSON outputs treated as local evaluation artefacts rather than required committed baseline files?
 
 ## What Must Not Be Inferred
 
@@ -38,4 +41,4 @@ This baseline must not be read as proof that:
 
 ## Expansion Notes
 
-Do not expand this blocked capture to all remaining domains. Restore DB connectivity and capture actual command results for this domain before moving it to `BASELINE_ALREADY_EXISTS`.
+Do not update Gross-to-Net to captured state in this slice. It remains a blocked v0.1 capture pack until its own DB-backed commands are captured.

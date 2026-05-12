@@ -1,8 +1,8 @@
 # Movement Review Corpus Coverage Baseline
 
-This file records the Movement Review corpus coverage baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the Movement Review corpus coverage baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Commands Identified
+## Commands Executed
 
 Human-readable mode:
 
@@ -22,33 +22,37 @@ Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
 Domain: Movement Review
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED`
+
+Indexed corpus: 5 active documents, 4583 chunks.
 
 | Evidence Group | Captured Coverage Status |
 |---|---|
-| `purpose_and_operator_meaning` | not captured |
-| `reasonableness_not_error` | not captured |
-| `worker_and_organisation_lenses` | not captured |
-| `variance_and_comparable_periods` | not captured |
-| `payroll_bases_connection` | not captured |
-| `worker_story_connection` | not captured |
-| `admin_queue_connection` | not captured |
-| `current_effective_truth` | not captured |
-| `trend_only_and_threshold_treatment` | not captured |
-| `filters_and_return_context` | not captured |
-| `outstanding_hardening` | not captured |
+| `purpose_and_operator_meaning` | `STRONG` |
+| `reasonableness_not_error` | `STRONG` |
+| `worker_and_organisation_lenses` | `STRONG` |
+| `variance_and_comparable_periods` | `STRONG` |
+| `payroll_bases_connection` | `STRONG` |
+| `worker_story_connection` | `STRONG` |
+| `admin_queue_connection` | `STRONG` |
+| `current_effective_truth` | `STRONG` |
+| `trend_only_and_threshold_treatment` | `STRONG` |
+| `filters_and_return_context` | `STRONG` |
+| `outstanding_hardening` | `STRONG` |
 
 ## Coverage Counts
 
-- `STRONG`: not captured
-- `WEAK`: not captured
-- `MISSING`: not captured
+- `STRONG`: 11
+- `WEAK`: 0
+- `MISSING`: 0
 
-Generated artefact committed: no. The JSON output command was not run and `.\artifacts\eval\movement_review_corpus_coverage.json` was not created by this slice.
+Generated artefact committed: no. The JSON output command created `.\artifacts\eval\movement_review_corpus_coverage.json` locally for summarization, but the file is not a required committed artefact.
 
 Live LLM calls: no.
 
 Corpus mutation: no.
+
+Operational JSON ingestion: no.
 
 ## Status Interpretation
 
@@ -60,7 +64,7 @@ Coverage status is about available indexed formal corpus evidence. It is not ope
 
 ## Diagnostic Interpretation
 
-No coverage interpretation is made for Movement Review in this slice because the DB readiness gate failed.
+All 11 Movement Review evidence groups were reported as `STRONG`.
 
 ## Diagnostic-Only Guardrails
 
