@@ -2106,8 +2106,8 @@ AWARD_POSITIONS_CLASSIFICATIONS_PLAN = DomainRetrievalPlan(
         EvidenceGroup(
             group_id="payroll_interpretation_rate_and_decision_story",
             label="Award Positions / Classifications payroll interpretation rate and Decision Story",
-            query_terms=("classification context", "payroll interpretation", "RateSource", "Rate Story", "Decision Story", "Payroll Output", "calculated line evidence", "rate selection"),
-            required_terms_any=("classification context", "payroll interpretation", "RateSource", "Rate Story", "Decision Story", "Payroll Output"),
+            query_terms=("classification context", "payroll interpretation", "RateSource", "Rate Story", "Decision Story", "Payroll Output", "calculated line evidence", "rate selection", "classification facts", "treatment", "entitlement", "classification evidence", "not Decision Story itself"),
+            required_terms_any=("classification context", "payroll interpretation", "RateSource", "Rate Story", "Decision Story", "Payroll Output", "classification facts", "classification evidence"),
             preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
         ),
         EvidenceGroup(
@@ -2122,6 +2122,55 @@ AWARD_POSITIONS_CLASSIFICATIONS_PLAN = DomainRetrievalPlan(
             label="Award Positions / Classifications Worker Story Admin Queue and readiness relationship",
             query_terms=("Worker Story", "PayRun Admin Queue", "Admin Queue", "Worker Attention", "Finalisation Readiness", "readiness", "configuration gaps", "NEEDS_CONFIGURATION", "evidence visibility"),
             required_terms_any=("Worker Story", "Admin Queue", "Worker Attention", "Finalisation Readiness", "configuration gaps", "NEEDS_CONFIGURATION", "evidence visibility"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_PLAN = DomainRetrievalPlan(
+    plan_id="PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL",
+    domain="Payroll Tax / WorkCover / WIC Liability Detail",
+    trigger_phrases=(
+        "how do payroll tax workcover and wic liabilities work",
+        "how do payroll tax, workcover and wic liabilities work",
+        "payroll tax workcover wic liability detail",
+        "payroll tax workcover wic liabilities",
+        "workcover wic liability detail",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="liability_scope_and_employer_side_boundary",
+            label="Payroll Tax / WorkCover / WIC liability scope and employer-side boundary",
+            query_terms=("Payroll Tax", "PayrollTax", "WorkCover", "Work Cover", "WIC", "Workers Insurance", "Workers Compensation", "employer-side liabilities", "employer-side liability evidence", "not worker net pay", "PAYG withholding", "payment execution"),
+            required_terms_any=("Payroll Tax", "PayrollTax", "WorkCover", "WIC", "employer-side liabilities", "employer-side liability evidence", "not worker net pay", "PAYG withholding"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="jurisdiction_worksite_and_state_context",
+            label="Payroll Tax / WorkCover / WIC jurisdiction worksite and state context",
+            query_terms=("state", "jurisdiction", "Worksite.StateId", "WorksiteState", "Worksite State", "WorksitePosition", "EmployeeAppointment", "ObjectTime location", "runtime location", "public holiday worksite context", "state/worksite context"),
+            required_terms_any=("state", "jurisdiction", "Worksite.StateId", "WorksitePosition", "EmployeeAppointment", "ObjectTime location", "runtime location"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="governed_basis_membership_and_payroll_bases",
+            label="Payroll Tax / WorkCover / WIC governed basis membership and Payroll Bases",
+            query_terms=("governed basis membership", "payroll bucket", "payroll basis evidence", "Payroll Bases & Totals", "taxable wages", "liability wages", "included RateTypes", "excluded RateTypes", "AwardRateTypes", "basis totals"),
+            required_terms_any=("governed basis membership", "payroll basis evidence", "Payroll Bases & Totals", "taxable wages", "liability wages", "RateTypes", "AwardRateTypes"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="rates_sources_and_liability_evidence",
+            label="Payroll Tax / WorkCover / WIC rates sources and liability evidence",
+            query_terms=("RateSource", "liability RateSource", "date-effective rates", "date-effective liability rates", "liability rate evidence", "account scoping", "state scoping", "award scoping", "demo fallback", "production truth", "configuration evidence"),
+            required_terms_any=("RateSource", "date-effective rates", "liability rate evidence", "demo fallback", "production truth", "configuration evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_output_and_finalisation_relationship",
+            label="Payroll Tax / WorkCover / WIC Worker Story output and finalisation relationship",
+            query_terms=("Worker Story", "Payroll Output", "Gross-to-Net", "employer liability lines", "worker net pay boundary", "Finalisation Readiness", "PayRun Admin Queue", "Admin Queue", "Worker Attention", "missing liability configuration", "audit evidence", "explanation relationship"),
+            required_terms_any=("Worker Story", "Payroll Output", "Gross-to-Net", "Finalisation Readiness", "Admin Queue", "Worker Attention", "employer liability lines"),
             preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
         ),
     ),
@@ -3015,6 +3064,7 @@ DOMAIN_RETRIEVAL_PLANS = (
     PUBLIC_HOLIDAYS_PLAN,
     ROSTERS_PATTERNS_SCHEDULING_PLAN,
     AWARD_POSITIONS_CLASSIFICATIONS_PLAN,
+    PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_PLAN,
     ONCOSTS_EMPLOYER_LIABILITIES_PLAN,
     AWARD_BUILD_EVIDENCE_PLAN,
     IMPORTS_ACTUALS_PLAN,
@@ -3157,8 +3207,16 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "position class" in normalized
         or ("classification" in normalized and ("award position" in normalized or "award class" in normalized or "employee appointment" in normalized or "worksiteposition" in normalized or "worksite position" in normalized))
         or ("classification" in normalized and "pay guide" in normalized and ("payroll interpretation" in normalized or "class evidence" in normalized))
+        or ("classification" in normalized and ("ratesource" in normalized or "rate story" in normalized or "payroll output" in normalized))
+        or ("classifications" in normalized and ("ratesource" in normalized or "rate story" in normalized or "payroll output" in normalized))
+        or ("classification" in normalized and "decision story" in normalized and ("relate" in normalized or "support" in normalized))
+        or ("classifications" in normalized and "decision story" in normalized and ("relate" in normalized or "support" in normalized))
+        or ("classification evidence" in normalized and ("missing" in normalized or "unresolved" in normalized or "readiness" in normalized))
         or ("classifications" in normalized and ("award position" in normalized or "award class" in normalized or "employee appointment" in normalized or "worksiteposition" in normalized or "worksite position" in normalized))
+        or ("classifications" in normalized and ("comparison" in normalized or "remediation" in normalized))
         or ("class" in normalized and ("award position" in normalized or "worksite position" in normalized or "employee appointment" in normalized))
+        or ("classification lenses" in normalized and ("comparison remediation" in normalized or "comparison / remediation" in normalized))
+        or ("classification lens" in normalized and ("comparison remediation" in normalized or "comparison / remediation" in normalized))
     )
     if award_positions_classifications_framed and not (
         normalized.startswith("how should award build")
@@ -3183,6 +3241,7 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or normalized.startswith("what is finalisation readiness")
         or normalized.startswith("how does worker attention")
         or normalized.startswith("how should imports / actuals")
+        or ("depend on employeeappointment" in normalized and "awardpositionclass" not in normalized and "award position class" not in normalized)
     ) and (
         "what" in normalized
         or "how" in normalized
@@ -3194,6 +3253,75 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "platform" in normalized
     ):
         return AWARD_POSITIONS_CLASSIFICATIONS_PLAN
+    payroll_tax_workcover_wic_liability_detail_framed = (
+        "payroll tax / workcover / wic liability detail" in normalized
+        or "payroll tax workcover wic liability detail" in normalized
+        or "payroll tax workcover wic liabilities" in normalized
+        or "payroll tax, workcover and wic liabilities" in normalized
+        or "payroll tax workcover and wic liabilities" in normalized
+        or "payrolltax" in normalized
+        or "payroll tax" in normalized and ("workcover" in normalized or "wic" in normalized or "liability" in normalized)
+        or "workcover" in normalized and ("wic" in normalized or "liability" in normalized or "payroll tax" in normalized or "ratesource" in normalized)
+        or "work cover" in normalized and ("wic" in normalized or "liability" in normalized or "payroll tax" in normalized or "rate source" in normalized)
+        or "wic" in normalized and ("workcover" in normalized or "work cover" in normalized or "payroll tax" in normalized or "liability" in normalized or "rate" in normalized)
+        or "workers insurance" in normalized and ("liability" in normalized or "workcover" in normalized or "payroll tax" in normalized)
+        or "workers compensation" in normalized and ("liability" in normalized or "workcover" in normalized or "payroll tax" in normalized)
+        or "liability wages" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized)
+        or "taxable wages" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized)
+        or "objecttime location" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liability" in normalized)
+        or "worksite.stateid" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liability" in normalized)
+        or "worksite state" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liability" in normalized)
+        or "liability ratesource" in normalized
+        or "liability rate source" in normalized
+        or "date effective liability rate" in normalized
+        or "date effective liability rates" in normalized
+    )
+    if payroll_tax_workcover_wic_liability_detail_framed and not (
+        normalized.startswith("what are on costs")
+        or normalized.startswith("what are oncosts")
+        or normalized.startswith("how should on costs")
+        or normalized.startswith("how should oncosts")
+        or normalized.startswith("what are employer liabilities")
+        or normalized.startswith("how should employer liability work")
+        or normalized.startswith("how should employer liabilities work")
+        or "superannuation" in normalized
+        or "super" in normalized
+        or "super oncost" in normalized
+        or "super on cost" in normalized
+        or normalized.startswith("how should tax / payg")
+        or normalized.startswith("how should tax payg")
+        or normalized.startswith("what is tax / payg")
+        or normalized.startswith("what is tax payg")
+        or ("payg" in normalized and "payroll tax" not in normalized and "payrolltax" not in normalized)
+        or ("withholding" in normalized and "payroll tax" not in normalized and "payrolltax" not in normalized)
+        or normalized.startswith("how do payroll bases")
+        or normalized.startswith("what is payroll bases")
+        or normalized.startswith("how does payment execution")
+        or normalized.startswith("what is payment execution")
+        or normalized.startswith("what is gross to net")
+        or normalized.startswith("how does gross to net")
+        or normalized.startswith("what is payroll output")
+        or normalized.startswith("what is worker story")
+        or normalized.startswith("what is finalisation readiness")
+        or normalized.startswith("how are public holidays")
+        or normalized.startswith("how do public holidays")
+        or (normalized.startswith("how does objecttime") and "payroll tax" not in normalized and "workcover" not in normalized and "wic" not in normalized and "liability" not in normalized)
+        or (normalized.startswith("what is objecttime") and "payroll tax" not in normalized and "workcover" not in normalized and "wic" not in normalized and "liability" not in normalized)
+        or normalized.startswith("how should contacts")
+        or normalized.startswith("how should employee appointments")
+        or normalized.startswith("how does ratesource / rate story")
+        or normalized.startswith("how does rate source / rate story")
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_PLAN
     if (
         "ratesource / rate story" in normalized
         or "ratesource rate story" in normalized

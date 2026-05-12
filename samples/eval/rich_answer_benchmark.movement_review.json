@@ -1,0 +1,133 @@
+{
+  "name": "Movement Review rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for Movement Review reasonableness and review evidence.",
+  "questions": [
+    {
+      "id": "movement-review-rich-answer",
+      "question": "What is Movement Review and what does it show?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "Movement Review",
+        "reasonableness",
+        "review surface",
+        "variance",
+        "review-worthy",
+        "organisation",
+        "worker",
+        "comparable baseline evidence",
+        "Payroll Bases & Totals",
+        "Worker Story",
+        "PayRun Admin Queue",
+        "current-effective payroll",
+        "bucket source truth",
+        "trend-only",
+        "outstanding hardening"
+      ],
+      "expected_answer_terms_any": [
+        "rolling/YTD",
+        "rolling average",
+        "Movement Review Policy",
+        "historical bucket rebuild governance"
+      ],
+      "expected_source_terms_all": [
+        "Movement Review",
+        "Payroll Bases & Totals",
+        "Worker Story"
+      ],
+      "expected_source_terms_any": [
+        "reasonableness",
+        "comparable period",
+        "PayRun Admin Queue",
+        "trend-only",
+        "Movement Review Policy"
+      ],
+      "forbidden_answer_patterns_any": [
+        "calculates\\s+payroll",
+        "variance\\s+means\\s+payroll\\s+is\\s+wrong",
+        "every\\s+movement\\s+creates\\s+a\\s+fix\\s+action",
+        "safe\\s+current\\s+truth",
+        "Code Evidence",
+        "runtime truth from diagnostics"
+      ]
+    },
+    {
+      "id": "movement-review-review-worthy-not-error",
+      "question": "Why does Movement Review show review-worthy movement instead of proving payroll is wrong?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Movement Review", "review-worthy movement", "reasonableness", "not automatic proof", "variance", "fix action", "payroll is wrong"],
+      "expected_source_terms_any": ["review-worthy", "reasonableness", "not automatic proof"],
+      "forbidden_answer_patterns_any": ["variance\\s+means\\s+payroll\\s+is\\s+wrong", "every\\s+variance\\s+creates\\s+a\\s+fix\\s+action", "Code Evidence"]
+    },
+    {
+      "id": "movement-review-organisation-worker-lenses",
+      "question": "How does Movement Review use organisation and worker lenses?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Movement Review", "organisation", "worker", "lenses", "review-worthy", "all-worker", "audit"],
+      "expected_source_terms_any": ["worker lens", "organisation lens", "all-worker views"],
+      "forbidden_answer_patterns_any": ["calculates\\s+payroll", "Code Evidence"]
+    },
+    {
+      "id": "movement-review-comparable-periods-variance",
+      "question": "How do comparable periods and variance work in Movement Review?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Movement Review", "comparable-period", "baseline evidence", "variance", "thresholds", "status-honest"],
+      "expected_source_terms_any": ["comparable period", "baseline evidence", "variance", "thresholds"],
+      "forbidden_answer_patterns_any": ["thresholds\\s+are\\s+fully\\s+governed", "variance\\s+means\\s+payroll\\s+is\\s+wrong", "Code Evidence"]
+    },
+    {
+      "id": "movement-review-payroll-bases",
+      "question": "How does Movement Review relate to Payroll Bases & Totals?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Movement Review", "Payroll Bases & Totals", "governed basis evidence", "bucket source truth", "movement explanations", "not safe current truth"],
+      "expected_source_terms_any": ["Payroll Bases & Totals", "basis evidence", "bucket source truth"],
+      "forbidden_answer_patterns_any": ["stale\\s+historical\\s+bucket\\s+evidence\\s+is\\s+safe", "Code Evidence"]
+    },
+    {
+      "id": "movement-review-worker-story",
+      "question": "How does Movement Review connect to Worker Story?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Movement Review", "Worker Story", "worker-level drill-through", "explanation", "worker evidence", "review-worthy movement"],
+      "expected_source_terms_any": ["Worker Story", "worker-level drill-through", "worker evidence"],
+      "forbidden_answer_patterns_any": ["calculates\\s+payroll", "Code Evidence"]
+    },
+    {
+      "id": "movement-review-admin-queue-assurance",
+      "question": "How does Movement Review relate to PayRun Admin Queue and Assurance Snapshot?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Movement Review", "PayRun Admin Queue", "Assurance Snapshot", "review actions", "reasonableness", "review signals", "empty queue", "does not prove assurance"],
+      "expected_source_terms_any": ["PayRun Admin Queue", "Admin Queue", "Assurance Snapshot", "review actions"],
+      "forbidden_answer_patterns_any": ["empty\\s+queue\\s+proves\\s+assurance", "Code Evidence"]
+    },
+    {
+      "id": "movement-review-trend-only-rolling-ytd",
+      "question": "Why are rolling, YTD and trend-only metrics treated differently from current-period blockers?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["rolling", "YTD", "trend-only", "review context", "current-period blockers", "Movement Review Policy"],
+      "expected_answer_terms_any": ["governed policy", "governed Movement Review Policy"],
+      "expected_source_terms_any": ["trend-only", "rolling average", "YTD", "current-period blockers"],
+      "forbidden_answer_patterns_any": ["treated\\s+as\\s+ordinary\\s+current-period\\s+blockers\\s+without\\s+policy", "Code Evidence"]
+    }
+  ]
+}

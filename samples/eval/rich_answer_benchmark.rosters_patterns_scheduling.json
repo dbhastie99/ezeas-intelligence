@@ -1,0 +1,83 @@
+{
+  "name": "Rosters / Patterns / Scheduling rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed Rosters / Patterns / Scheduling expected-time, appointment, leave, public holiday, payroll and readiness evidence.",
+  "questions": [
+    {
+      "id": "rosters-patterns-scheduling-rich-answer",
+      "question": "How do Rosters, Patterns and Scheduling work in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Rosters / Patterns / Scheduling", "governed expected-time configuration", "work-pattern evidence", "ordinary hours", "leave basis", "public holiday treatment", "PayRun processing context", "Worker Story", "readiness evidence", "Pattern", "PatternDay", "EmployeeAppointmentPattern", "roster schedule configuration", "expected work context", "governed configuration evidence", "EmployeeAppointment", "WorksitePosition", "Worksite", "state", "public holiday context", "assignment context", "ordinary-hours", "leave basis minutes", "leave interaction", "deferred roster-based basis", "ObjectTime", "source truth", "expected schedule", "actual worked time", "payroll interpretation", "Decision Story", "Payroll Output", "Admin Queue", "Worker Attention", "Finalisation Readiness", "missing schedule", "configuration gaps", "Minerva", "does not create rosters", "change worker schedules", "mutate Pattern", "PatternDay", "EmployeeAppointmentPattern truth", "mutates ObjectTime", "calculates payroll", "decides entitlements", "calculates leave", "approves leave", "determines finalisation readiness", "finalises PayRuns", "mutates operational workforce/payroll/leave truth"],
+      "expected_source_terms_all": ["Pattern", "PatternDay", "EmployeeAppointmentPattern", "ObjectTime"],
+      "expected_source_terms_any": ["ordinary hours", "leave basis minutes", "Worker Story", "Finalisation Readiness"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+creates\\s+rosters\\.", "Minerva\\s+changes\\s+worker\\s+schedules\\.", "Minerva\\s+mutates\\s+Pattern", "Minerva\\s+mutates\\s+ObjectTime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rosters-patterns-scheduling-expected-work-context",
+      "question": "How does the platform use roster or pattern configuration for expected work context?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Rosters / Patterns / Scheduling", "Pattern", "PatternDay", "EmployeeAppointmentPattern", "roster schedule configuration", "expected work context", "governed configuration evidence"],
+      "expected_source_terms_all": ["Pattern", "PatternDay", "EmployeeAppointmentPattern", "expected work context"],
+      "expected_source_terms_any": ["roster schedule configuration", "governed configuration evidence"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+creates\\s+rosters\\.", "Minerva\\s+changes\\s+worker\\s+schedules\\.", "Minerva\\s+mutates\\s+Pattern", "Minerva\\s+mutates\\s+ObjectTime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rosters-patterns-scheduling-appointments-worksites",
+      "question": "How do rosters and patterns relate to Employee Appointments and Worksites?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Rosters / Patterns / Scheduling", "EmployeeAppointment", "WorksitePosition", "Worksite", "assignment context", "state", "public holiday context", "scheduling context"],
+      "expected_source_terms_all": ["EmployeeAppointment", "WorksitePosition", "Worksite", "assignment context"],
+      "expected_source_terms_any": ["state", "public holiday context", "applicability context"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+creates\\s+rosters\\.", "Minerva\\s+changes\\s+worker\\s+schedules\\.", "Minerva\\s+mutates\\s+Pattern", "Minerva\\s+mutates\\s+ObjectTime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rosters-patterns-scheduling-ordinary-hours-leave-basis",
+      "question": "How do rosters or patterns affect ordinary hours and leave basis?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Rosters / Patterns / Scheduling", "ordinary hours", "ordinary-hours", "leave basis minutes", "schedule pattern relationship", "public holiday context", "leave interaction", "deferred roster-based basis", "status honesty"],
+      "expected_source_terms_all": ["ordinary hours", "leave basis minutes", "public holiday context", "leave interaction"],
+      "expected_source_terms_any": ["deferred roster-based basis", "hardening", "status-honest"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+creates\\s+rosters\\.", "Minerva\\s+changes\\s+worker\\s+schedules\\.", "Minerva\\s+mutates\\s+Pattern", "Minerva\\s+mutates\\s+ObjectTime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rosters-patterns-scheduling-objecttime-boundary",
+      "question": "How are rosters or patterns different from ObjectTime source truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Rosters / Patterns / Scheduling", "ObjectTime", "source truth", "actual/source time rows", "ObjectTime as actual source evidence", "expected schedule", "actual worked time", "must not be collapsed into actual worked time", "does not mutate ObjectTime"],
+      "expected_source_terms_all": ["ObjectTime", "source truth", "actual/source time rows", "expected schedule", "actual worked time"],
+      "expected_source_terms_any": ["ObjectTime as actual source evidence", "payroll interpretation"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+creates\\s+rosters\\.", "Minerva\\s+changes\\s+worker\\s+schedules\\.", "Minerva\\s+mutates\\s+Pattern", "Minerva\\s+mutates\\s+ObjectTime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rosters-patterns-scheduling-worker-story-payroll-evidence",
+      "question": "How do rosters and scheduling appear in Worker Story or payroll evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Rosters / Patterns / Scheduling", "scheduling context", "payroll interpretation", "Worker Story", "Decision Story", "Payroll Output", "does not calculate payroll", "decide entitlements"],
+      "expected_source_terms_all": ["payroll interpretation", "Worker Story", "Decision Story", "Payroll Output"],
+      "expected_source_terms_any": ["scheduling context", "payroll calculation authority"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+creates\\s+rosters\\.", "Minerva\\s+changes\\s+worker\\s+schedules\\.", "Minerva\\s+mutates\\s+Pattern", "Minerva\\s+mutates\\s+ObjectTime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rosters-patterns-scheduling-missing-configuration",
+      "question": "What happens if roster or pattern configuration is missing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Rosters / Patterns / Scheduling", "missing schedule", "missing pattern", "configuration gaps", "Worker Attention", "PayRun Admin Queue", "Finalisation Readiness", "NEEDS_CONFIGURATION", "NEEDS_CONFIGURATION-style concepts", "status honesty", "missing schedule context"],
+      "expected_source_terms_all": ["missing schedule", "missing pattern", "configuration gaps", "Worker Attention", "Finalisation Readiness"],
+      "expected_source_terms_any": ["NEEDS_CONFIGURATION", "status honesty", "missing schedule context"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+creates\\s+rosters\\.", "Minerva\\s+changes\\s+worker\\s+schedules\\.", "Minerva\\s+mutates\\s+Pattern", "Minerva\\s+mutates\\s+ObjectTime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

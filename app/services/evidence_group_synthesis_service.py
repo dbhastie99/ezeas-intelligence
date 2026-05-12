@@ -1432,6 +1432,81 @@ AWARD_POSITIONS_CLASSIFICATIONS_GROUP_SIGNAL_TERMS = {
     "worker_story_admin_queue_and_readiness_relationship": ("Worker Story", "Worker Attention", "Finalisation Readiness", "NEEDS_CONFIGURATION"),
 }
 
+PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_GROUP_KEY_TERMS = {
+    "liability_scope_and_employer_side_boundary": (
+        "Payroll Tax",
+        "PayrollTax",
+        "WorkCover",
+        "Work Cover",
+        "WIC",
+        "Workers Insurance",
+        "Workers Compensation",
+        "employer-side liabilities",
+        "employer-side liability evidence",
+        "not worker net pay",
+        "PAYG withholding",
+        "payment execution",
+    ),
+    "jurisdiction_worksite_and_state_context": (
+        "state",
+        "jurisdiction",
+        "Worksite.StateId",
+        "WorksiteState",
+        "Worksite State",
+        "WorksitePosition",
+        "EmployeeAppointment",
+        "ObjectTime location",
+        "runtime location",
+        "public holiday worksite context",
+    ),
+    "governed_basis_membership_and_payroll_bases": (
+        "governed basis membership",
+        "payroll bucket",
+        "payroll basis evidence",
+        "Payroll Bases & Totals",
+        "taxable wages",
+        "liability wages",
+        "included RateTypes",
+        "excluded RateTypes",
+        "AwardRateTypes",
+        "basis totals",
+    ),
+    "rates_sources_and_liability_evidence": (
+        "RateSource",
+        "liability RateSource",
+        "date-effective rates",
+        "date-effective liability rates",
+        "liability rate evidence",
+        "account scoping",
+        "state scoping",
+        "award scoping",
+        "demo fallback",
+        "production truth",
+        "configuration evidence",
+    ),
+    "worker_story_output_and_finalisation_relationship": (
+        "Worker Story",
+        "Payroll Output",
+        "Gross-to-Net",
+        "employer liability lines",
+        "worker net pay boundary",
+        "Finalisation Readiness",
+        "PayRun Admin Queue",
+        "Admin Queue",
+        "Worker Attention",
+        "missing liability configuration",
+        "audit evidence",
+    ),
+}
+
+PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_GROUP_SIGNAL_TERMS = {
+    "liability_scope_and_employer_side_boundary": ("Payroll Tax", "WorkCover", "WIC", "employer-side liability evidence"),
+    "jurisdiction_worksite_and_state_context": ("Worksite.StateId", "WorksitePosition", "EmployeeAppointment", "jurisdiction"),
+    "governed_basis_membership_and_payroll_bases": ("governed basis membership", "Payroll Bases & Totals", "taxable wages", "liability wages"),
+    "rates_sources_and_liability_evidence": ("RateSource", "date-effective rates", "liability rate evidence", "production truth"),
+    "worker_story_output_and_finalisation_relationship": ("Worker Story", "Payroll Output", "Finalisation Readiness", "Worker Attention"),
+}
+
 FINALISATION_READINESS_GROUP_KEY_TERMS = {
     "purpose_and_operator_meaning": (
         "Finalisation Readiness",
@@ -2769,6 +2844,10 @@ def _is_rosters_patterns_scheduling_group(group: EvidenceGroup) -> bool:
 
 def _is_award_positions_classifications_group(group: EvidenceGroup) -> bool:
     return group.label.startswith("Award Positions / Classifications")
+
+
+def _is_payroll_tax_workcover_wic_liability_detail_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Payroll Tax / WorkCover / WIC")
 
 
 def _is_finalisation_readiness_group(group: EvidenceGroup) -> bool:
@@ -4142,6 +4221,55 @@ def _award_positions_classifications_domain_sentence(terms: list[str], label: st
     return f"{', '.join(clauses)}."
 
 
+def _payroll_tax_workcover_wic_liability_detail_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Payroll Tax / WorkCover / WIC Liability Detail evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Payroll Tax",
+            "PayrollTax",
+            "WorkCover",
+            "WIC",
+            "Workers Insurance",
+            "Workers Compensation",
+            "employer-side liabilities",
+            "employer-side liability evidence",
+            "not worker net pay",
+            "PAYG withholding",
+            "payment execution",
+            "state",
+            "jurisdiction",
+            "Worksite.StateId",
+            "WorksitePosition",
+            "EmployeeAppointment",
+            "ObjectTime location",
+            "runtime location",
+            "public holiday",
+            "governed basis membership",
+            "Payroll Bases & Totals",
+            "taxable wages",
+            "liability wages",
+            "RateTypes",
+            "AwardRateTypes",
+            "RateSource",
+            "date-effective rates",
+            "liability rate evidence",
+            "demo fallback",
+            "production truth",
+            "Worker Story",
+            "Payroll Output",
+            "Gross-to-Net",
+            "Finalisation Readiness",
+            "Admin Queue",
+            "Worker Attention",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
 def _leave_source_model_domain_sentence(terms: list[str], label: str) -> str:
     clauses = [f"{label} is described in the retrieved Leave Source Model evidence"]
     detail_terms = [
@@ -4290,6 +4418,8 @@ def _sentence_for_group(group: EvidenceGroup, terms: list[str]) -> str:
         return _rosters_patterns_scheduling_domain_sentence(terms, group.label)
     if _is_award_positions_classifications_group(group):
         return _award_positions_classifications_domain_sentence(terms, group.label)
+    if _is_payroll_tax_workcover_wic_liability_detail_group(group):
+        return _payroll_tax_workcover_wic_liability_detail_domain_sentence(terms, group.label)
     if _is_payment_execution_remittance_group(group):
         return _payment_execution_remittance_domain_sentence(terms, group.label)
     if _is_retro_replay_group(group):
@@ -4413,6 +4543,9 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         AWARD_POSITIONS_CLASSIFICATIONS_GROUP_KEY_TERMS.get(group.group_id)
         if _is_award_positions_classifications_group(group)
         else
+        PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_payroll_tax_workcover_wic_liability_detail_group(group)
+        else
         PAYMENT_EXECUTION_REMITTANCE_GROUP_KEY_TERMS.get(group.group_id)
         if _is_payment_execution_remittance_group(group)
         else
@@ -4495,6 +4628,9 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         else
         AWARD_POSITIONS_CLASSIFICATIONS_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_award_positions_classifications_group(group)
+        else
+        PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_payroll_tax_workcover_wic_liability_detail_group(group)
         else
         PAYMENT_EXECUTION_REMITTANCE_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_payment_execution_remittance_group(group)

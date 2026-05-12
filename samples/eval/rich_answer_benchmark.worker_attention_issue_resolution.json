@@ -1,0 +1,72 @@
+{
+  "name": "Worker Attention / Issue Resolution rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for worker-level issue and remediation surface evidence.",
+  "questions": [
+    {
+      "id": "worker-attention-issue-resolution-rich-answer",
+      "question": "What is Worker Attention / Issue Resolution in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Attention / Issue Resolution", "Worker Attention", "worker-level issue surface", "payroll-affecting blockers", "warnings", "readiness gaps", "deterministic fix links", "WorkerIssue", "Worker issue", "issue scope", "issue class", "issue type", "issue severity", "resolution surfaces", "dirty contact", "PayRunContact dirty", "reprocessing", "payment allocation readiness", "tax readiness", "deduction readiness", "leave readiness", "negative net pay", "obligations", "Worker Story", "PayRun Admin Queue", "not the same surface", "status honesty", "outstanding hardening", "Minerva", "does not resolve issues", "clear blockers", "mutate PayRunContact state", "calculate payroll", "approve", "suppress", "finalise", "repair payroll truth"],
+      "expected_source_terms_all": ["Worker Attention", "WorkerIssue", "deterministic fix links"],
+      "expected_source_terms_any": ["payment allocation readiness", "tax readiness", "negative net pay", "PayRun Admin Queue"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+resolves\\s+issues\\.", "Minerva\\s+clears\\s+blockers\\.", "Minerva\\s+mutates\\s+PayRunContact", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+approves", "Minerva\\s+suppresses", "Minerva\\s+finalises", "Worker\\s+Attention\\s+is\\s+proof\\s+that\\s+payroll\\s+is\\s+correct", "Admin\\s+Queue\\s+and\\s+Worker\\s+Attention\\s+are\\s+the\\s+same\\s+surface", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "worker-attention-worker-issue-model",
+      "question": "How does Worker Attention model worker issues?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Attention", "worker-level issue surface", "WorkerIssue", "Worker issue", "IssueScope", "issue scope", "IssueClass", "issue class", "IssueType", "issue type", "IssueSeverity", "severity", "blocker", "warning", "readiness", "recommended action", "resolution surface", "evidence/story", "not payroll calculation truth"],
+      "expected_source_terms_all": ["WorkerIssue", "IssueScope", "IssueClass", "IssueSeverity"],
+      "expected_source_terms_any": ["recommended action", "resolution surface", "not payroll calculation truth"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\.", "Worker\\s+Attention\\s+is\\s+proof\\s+that\\s+payroll\\s+is\\s+correct", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "worker-attention-deterministic-fix-links",
+      "question": "How should Worker Attention guide users to fix an issue?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["deterministic fix link", "deterministic fix links", "resolution surface", "in-context remediation", "no dead-end issue", "server-owned", "backend-owned truth", "guided action", "not Minerva mutation", "governed user action", "audit/evidence"],
+      "expected_source_terms_all": ["deterministic fix links", "resolution surfaces", "in-context remediation"],
+      "expected_source_terms_any": ["no dead-end issue", "backend-owned truth", "governed user action"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+resolves\\s+issues\\.", "Minerva\\s+clears\\s+blockers\\.", "Minerva\\s+mutates", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "worker-attention-dirty-contact-reprocessing",
+      "question": "How does dirty contact state relate to Worker Attention?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["dirty contact", "payroll-affecting source/configuration change", "PayRunContact dirty", "PENDING", "current PayRun output no longer safe", "reprocessing required", "full contact-level reprocessing default", "platform safety signal", "Minerva explains", "does not mark dirty", "does not reprocess"],
+      "expected_source_terms_all": ["dirty contact", "PayRunContact dirty", "PENDING"],
+      "expected_source_terms_any": ["current PayRun output no longer safe", "full contact-level reprocessing default"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+marks\\s+PayRunContact\\s+dirty", "Minerva\\s+reprocesses\\s+workers", "Minerva\\s+clears\\s+blockers\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "worker-attention-payment-allocation-negative-net-pay",
+      "question": "How does Worker Attention handle payment allocation and negative net pay issues?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["payment allocation readiness", "payment execution readiness", "negative net pay", "governed treatment", "obligation", "carry-forward", "recovery", "write-off", "not silently converted to zero", "gross-to-net context", "blocker", "review-worthy issue", "policy/evidence"],
+      "expected_source_terms_all": ["payment allocation readiness", "negative net pay", "gross-to-net context"],
+      "expected_source_terms_any": ["carry-forward", "write-off", "not silently converted to zero"],
+      "forbidden_answer_patterns_any": ["negative\\s+net\\s+pay\\s+is\\s+silently\\s+converted\\s+to\\s+zero", "Minerva\\s+calculates\\s+payroll\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "worker-attention-admin-queue-worker-story-relationship",
+      "question": "How do Worker Attention, Admin Queue and Worker Story relate?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Admin Queue", "operator workbench", "what needs action now", "Worker Attention", "worker-level issue", "resolution surface", "Worker Story", "explains evidence and context", "related but not identical", "same resolution path", "worker has an issue", "Minerva explains relationships", "not runtime state"],
+      "expected_source_terms_all": ["Admin Queue", "Worker Attention", "Worker Story"],
+      "expected_source_terms_any": ["related but not identical", "same resolution path"],
+      "forbidden_answer_patterns_any": ["Admin\\s+Queue\\s+and\\s+Worker\\s+Attention\\s+are\\s+the\\s+same\\s+surface", "Minerva\\s+resolves\\s+issues\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

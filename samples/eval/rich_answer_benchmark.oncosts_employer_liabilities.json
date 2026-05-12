@@ -1,0 +1,127 @@
+{
+  "name": "On-costs / Employer Liabilities rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed employer liability evidence, including broad and focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "oncosts-employer-liabilities-rich-answer",
+      "question": "How should On-costs and Employer Liabilities work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["On-costs", "Employer Liabilities", "governed employer liability evidence", "not worker pay", "not worker net pay", "Minerva does not calculate", "RateSource", "date-effective rates", "AwardRateType", "RateType", "governed basis membership", "superannuation", "payroll tax", "WorkCover", "WIC", "state", "worksite", "runtime location", "PayRun output", "Worker Story", "Payroll Bases & Totals", "Finalisation Readiness", "demo fallback", "account-wide fallback", "production truth", "outstanding hardening"],
+      "expected_source_terms_all": ["On-costs", "Employer Liabilities", "RateSource"],
+      "expected_source_terms_any": ["AwardRateType", "governed basis membership", "WorkCover", "runtime location"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+on-costs\\.", "on-costs\\s+are\\s+worker\\s+net\\s+pay\\.", "demo\\s+account-wide\\s+fallback\\s+RateSource\\s+rows\\s+are\\s+production\\s+truth\\.", "runtime\\s+state/worksite\\s+resolution\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "oncosts-not-worker-pay",
+      "question": "Why are on-costs and employer liabilities not worker pay?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["On-costs", "Employer Liabilities", "employer-side liability evidence", "not ordinary worker pay", "worker net pay", "not payroll calculation truth"],
+      "expected_source_terms_any": ["not worker pay", "not worker net pay", "employer liability"],
+      "forbidden_answer_patterns_any": ["on-costs\\s+are\\s+worker\\s+net\\s+pay\\.", "Code Evidence"]
+    },
+    {
+      "id": "oncosts-minerva-not-calculate",
+      "question": "Why must Minerva not calculate on-costs?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Minerva", "must not calculate", "on-costs", "explains governed evidence", "deterministic", "governed configuration", "liability outcomes"],
+      "expected_source_terms_any": ["Minerva does not calculate", "not payroll calculation truth", "deterministic"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+on-costs\\.", "Code Evidence"]
+    },
+    {
+      "id": "oncosts-ratesource-date-effective",
+      "question": "How should RateSource and date-effective rates support employer liabilities?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["RateSource", "date-effective rates", "governed", "rate truth", "liabilities", "rule-pack configuration", "application code"],
+      "expected_source_terms_any": ["RateSource", "date-effective rates", "rule-pack configuration"],
+      "forbidden_answer_patterns_any": ["application\\s+code\\s+is\\s+the\\s+production\\s+rate\\s+source\\.", "Code Evidence"]
+    },
+    {
+      "id": "oncosts-award-rate-type-settings",
+      "question": "How do AwardRateType and RateType settings relate to on-costs?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["AwardRateType", "RateType", "superannuation", "inherit", "defaults", "diverge", "award", "status honest"],
+      "expected_source_terms_any": ["AwardRateType", "RateType", "SUPER_ONCOST"],
+      "forbidden_answer_patterns_any": ["all\\s+on-cost\\s+AwardRateTypes\\s+or\\s+RateSources\\s+are\\s+automatically\\s+seeded\\.", "Code Evidence"]
+    },
+    {
+      "id": "oncosts-governed-basis-membership",
+      "question": "Why does governed basis membership matter for employer liabilities?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["governed basis membership", "raw flags", "seed defaults", "runtime basis decisions", "bucket", "basis membership"],
+      "expected_source_terms_any": ["governed basis membership", "bucket membership", "runtime basis decisions"],
+      "forbidden_answer_patterns_any": ["raw\\s+RateType/AwardRateType\\s+flags\\s+are\\s+final\\s+runtime\\s+basis\\s+truth\\.", "Code Evidence"]
+    },
+    {
+      "id": "oncosts-liability-types-jurisdiction",
+      "question": "How should super, payroll tax and WorkCover / WIC liabilities differ?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["superannuation", "payroll tax", "WorkCover", "WIC", "different", "basis", "jurisdiction"],
+      "expected_source_terms_any": ["superannuation on-cost", "payroll tax on-cost", "WorkCover", "WIC"],
+      "forbidden_answer_patterns_any": ["one\\s+generic\\s+on-cost\\s+total\\s+solves\\s+all\\s+liabilities\\.", "Code Evidence"]
+    },
+    {
+      "id": "oncosts-state-worksite-location",
+      "question": "Why does state, worksite and runtime location resolution matter for on-costs?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["state", "worksite", "runtime location", "state-scoped RateSource", "state-scoped employer liabilities", "outstanding"],
+      "expected_source_terms_any": ["runtime location", "state-scoped RateSource", "state-scoped employer liabilities"],
+      "forbidden_answer_patterns_any": ["runtime\\s+state/worksite\\s+resolution\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "oncosts-payrun-output-worker-story",
+      "question": "How should PayRun Output and Worker Story show employer liability evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PayRun output", "Worker Story", "worker-payable lines", "employer liability lines", "on-cost evidence"],
+      "expected_source_terms_any": ["PayRun output", "Worker Story", "worker-payable lines"],
+      "forbidden_answer_patterns_any": ["on-costs\\s+are\\s+worker\\s+net\\s+pay\\.", "Code Evidence"]
+    },
+    {
+      "id": "oncosts-payroll-bases-connection",
+      "question": "How do Payroll Bases & Totals connect to on-costs and employer liabilities?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Bases & Totals", "on-costs", "employer liabilities", "governed basis evidence", "basis evidence", "basis totals", "liability calculations"],
+      "expected_source_terms_any": ["Payroll Bases & Totals", "governed basis evidence", "basis totals"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "oncosts-demo-fallback-not-production",
+      "question": "Why is account-wide fallback a demo fallback rather than production truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["account-wide fallback", "demo fallback", "RateSource rows", "unblock demos", "not production truth", "production replacement"],
+      "expected_source_terms_any": ["account-wide fallback", "demo fallback", "production truth"],
+      "forbidden_answer_patterns_any": ["demo\\s+account-wide\\s+fallback\\s+RateSource\\s+rows\\s+are\\s+production\\s+truth\\.", "Code Evidence"]
+    },
+    {
+      "id": "oncosts-finalisation-readiness",
+      "question": "How should finalisation readiness treat unresolved on-cost or employer liability evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Finalisation Readiness", "unresolved basis", "liability configuration", "policy requires", "readiness", "employer liability evidence"],
+      "expected_source_terms_any": ["Finalisation Readiness", "unresolved basis", "liability configuration"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "name": "Award Positions / Classifications rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed Award Positions / Classifications employment classification evidence.",
+  "questions": [
+    {
+      "id": "award-positions-classifications-rich-answer",
+      "question": "How do Award Positions and Classifications work in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Positions / Classifications", "governed employment classification evidence", "award build", "pay guide", "class evidence", "EmployeeAppointment", "WorksitePosition", "Position", "Worksite", "payroll interpretation", "RateSource", "Rate Story", "Decision Story", "Worker Story", "comparison/remediation", "readiness evidence", "AwardPosition", "AwardPositionClass", "classification levels", "position groups", "deterministic extraction", "classification context", "Payroll Output", "calculated line evidence", "comparator classification", "imported classification mapping", "classification lenses", "primary appointment class", "Admin Queue", "Worker Attention", "Finalisation Readiness", "NEEDS_CONFIGURATION", "Minerva", "does not classify workers", "change appointments", "select award classes at runtime", "interpret awards at runtime", "calculate payroll", "decide entitlements", "mutate payroll output", "determine finalisation readiness", "finalise PayRuns", "mutate operational workforce/payroll/award truth"],
+      "expected_source_terms_all": ["AwardPosition", "AwardPositionClass", "EmployeeAppointment", "WorksitePosition", "RateSource", "classification lenses"],
+      "expected_source_terms_any": ["pay guide", "Decision Story", "Worker Story", "Finalisation Readiness", "NEEDS_CONFIGURATION"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+classifies\\s+workers\\.", "Minerva\\s+changes\\s+EmployeeAppointment", "Minerva\\s+selects\\s+award\\s+classes\\s+at\\s+runtime\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-positions-classifications-source-build",
+      "question": "How are Award Positions and Award Position Classes created from award evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Positions / Classifications", "AwardPosition", "AwardPositionClass", "PositionClass", "classification levels", "position groups", "pay guide evidence", "class evidence", "award build extraction/configuration", "deterministic extraction hardening", "status-honest"],
+      "expected_source_terms_all": ["AwardPosition", "AwardPositionClass", "classification levels", "pay guide", "class evidence"],
+      "expected_source_terms_any": ["deterministic extraction hardening", "status honesty", "award build extraction"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+classifies\\s+workers\\.", "Minerva\\s+changes\\s+EmployeeAppointment", "Minerva\\s+selects\\s+award\\s+classes\\s+at\\s+runtime\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-positions-classifications-appointment-connection",
+      "question": "How does an Employee Appointment connect to an Award Position Class?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Positions / Classifications", "EmployeeAppointment", "WorksitePosition", "Position", "Worksite", "worker assignment", "assignment context", "award classification", "classification evidence", "without Minerva changing those records"],
+      "expected_source_terms_all": ["EmployeeAppointment", "WorksitePosition", "Position", "Worksite", "assignment context"],
+      "expected_source_terms_any": ["worker assignment", "employment classification", "award classification"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+classifies\\s+workers\\.", "Minerva\\s+changes\\s+EmployeeAppointment", "Minerva\\s+selects\\s+award\\s+classes\\s+at\\s+runtime\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-positions-classifications-rate-story-payroll-output",
+      "question": "How do classifications affect RateSource, Rate Story and payroll output?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Positions / Classifications", "classification context", "payroll interpretation", "RateSource", "RateSource selection", "Rate Story", "Payroll Output", "calculated line evidence", "deterministic platform services", "does not calculate payroll"],
+      "expected_source_terms_all": ["classification context", "RateSource", "Rate Story", "Payroll Output", "calculated line evidence"],
+      "expected_source_terms_any": ["payroll interpretation", "deterministic payroll services", "runtime outcomes"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+classifies\\s+workers\\.", "Minerva\\s+changes\\s+EmployeeAppointment", "Minerva\\s+selects\\s+award\\s+classes\\s+at\\s+runtime\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-positions-classifications-decision-story",
+      "question": "How do classifications relate to Decision Story?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Positions / Classifications", "classification facts", "classification context", "Decision Story", "treatment", "entitlement", "classification evidence", "distinction", "does not decide entitlements"],
+      "expected_source_terms_all": ["classification facts", "Decision Story", "treatment", "entitlement", "classification evidence"],
+      "expected_source_terms_any": ["distinction", "support explanation", "not Decision Story itself"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+classifies\\s+workers\\.", "Minerva\\s+changes\\s+EmployeeAppointment", "Minerva\\s+selects\\s+award\\s+classes\\s+at\\s+runtime\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-positions-classifications-comparison-remediation",
+      "question": "How do classifications work in comparison or remediation scenarios?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Positions / Classifications", "comparator classification", "award comparison/remediation", "imported classification mapping", "classification lenses", "comparison classes", "primary appointment class", "do not automatically replace the primary appointment class"],
+      "expected_source_terms_all": ["comparator classification", "imported classification mapping", "classification lenses", "primary appointment class"],
+      "expected_source_terms_any": ["award comparison", "comparison remediation", "comparison classes"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+classifies\\s+workers\\.", "Minerva\\s+changes\\s+EmployeeAppointment", "Minerva\\s+selects\\s+award\\s+classes\\s+at\\s+runtime\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-positions-classifications-missing-unresolved",
+      "question": "What happens if classification evidence is missing or unresolved?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Positions / Classifications", "classification evidence", "configuration gaps", "NEEDS_CONFIGURATION", "NEEDS_CONFIGURATION-style concepts", "Worker Story", "PayRun Admin Queue", "Admin Queue", "Worker Attention", "Finalisation Readiness", "status honesty", "evidence visibility"],
+      "expected_source_terms_all": ["classification evidence", "configuration gaps", "NEEDS_CONFIGURATION", "Worker Story", "Finalisation Readiness"],
+      "expected_source_terms_any": ["Worker Attention", "Admin Queue", "status honesty", "evidence visibility"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+classifies\\s+workers\\.", "Minerva\\s+changes\\s+EmployeeAppointment", "Minerva\\s+selects\\s+award\\s+classes\\s+at\\s+runtime\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

@@ -1018,3 +1018,83 @@ def test_rosters_patterns_scheduling_evaluation_runbook_exists_and_lists_require
     assert "Add formal source evidence later when the group is genuinely `MISSING`" in runbook
     assert "Keep existing behavior where coverage and answer quality are acceptable" in runbook
     assert "Do not use operational JSON or Code Evidence as a shortcut" in runbook
+
+
+def test_award_positions_classifications_evaluation_runbook_exists_and_lists_required_guidance():
+    runbook_path = Path("docs/AWARD_POSITIONS_CLASSIFICATIONS_EVALUATION_RUNBOOK.md")
+
+    assert runbook_path.exists()
+
+    runbook = runbook_path.read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
+
+    assert "docs/AWARD_POSITIONS_CLASSIFICATIONS_EVALUATION_RUNBOOK.md" in readme
+    assert ".\\.venv\\Scripts\\python.exe -m pytest --basetemp .\\.pytest_tmp" in runbook
+    assert "samples\\eval\\rich_answer_benchmark.award_positions_classifications.json" in runbook
+    assert "scan_award_positions_classifications_corpus_coverage.py" in runbook
+    assert "build_award_positions_classifications_answer_gap_report.py" in runbook
+    assert "tests\\test_award_positions_classifications_corpus_coverage.py" in runbook
+    assert "tests\\test_award_positions_classifications_answer_gap_report.py" in runbook
+    assert "tests\\test_domain_retrieval_plans.py" in runbook
+    assert "tests\\test_rich_answer_contract.py" in runbook
+    assert "diagnostic-only" in runbook
+    assert "no corpus mutation" in runbook
+    assert "no live LLM" in runbook
+    assert "no database schema change" in runbook
+    assert "no operational JSON ingestion" in runbook
+    assert "no Code Evidence answer integration" in runbook
+    assert "no Code Evidence Index answer integration" in runbook
+    assert "not proof of runtime operational truth" in runbook
+    assert "STRONG" in runbook
+    assert "WEAK" in runbook
+    assert "MISSING" in runbook
+    assert "GOOD" in runbook
+    assert "NEEDS_REFINEMENT" in runbook
+    assert "INSUFFICIENT_CORPUS" in runbook
+    assert "KEEP" in runbook
+    assert "IMPROVE_RETRIEVAL_TERMS" in runbook
+    assert "IMPROVE_SYNTHESIS" in runbook
+    assert "ADD_FORMAL_SOURCE_EVIDENCE_LATER" in runbook
+    assert "award_position_classification_source_and_build" in runbook
+    assert "appointment_position_and_worksite_assignment" in runbook
+    assert "payroll_interpretation_rate_and_decision_story" in runbook
+    assert "comparison_remediation_and_classification_lenses" in runbook
+    assert "worker_story_admin_queue_and_readiness_relationship" in runbook
+    assert "minerva_boundaries_and_non_mutation_guardrails" in runbook
+    assert "Award Positions / Classifications is the Minerva product-domain explaining governed award position/classification evidence" in runbook
+    assert "AwardPosition and AwardPositionClass source/build evidence" in runbook
+    assert "EmployeeAppointment / WorksitePosition / Position assignment context" in runbook
+    assert "classification relationship to RateSource, Rate Story, Decision Story and Payroll Output" in runbook
+    assert "comparison/remediation classification lenses" in runbook
+    assert "Worker Story / Admin Queue / Worker Attention / Finalisation Readiness" in runbook
+    assert "Minerva explains Award Positions / Classifications" in runbook
+    assert "Minerva does not classify workers" in runbook
+    assert "Minerva does not change EmployeeAppointment, WorksitePosition, Position or AwardPositionClass records" in runbook
+    assert "Minerva does not select award classes at runtime" in runbook
+    assert "Minerva does not interpret awards at runtime" in runbook
+    assert "Minerva does not calculate payroll" in runbook
+    assert "Minerva does not decide entitlements" in runbook
+    assert "Minerva does not mutate payroll output" in runbook
+    assert "Minerva does not determine finalisation readiness" in runbook
+    assert "Minerva does not finalise PayRuns" in runbook
+    assert "Minerva does not mutate operational workforce/payroll/award truth" in runbook
+    assert "diagnostics do not mutate corpus" in runbook
+    assert "diagnostics do not call a live LLM" in runbook
+    assert "diagnostics do not ingest operational JSON" in runbook
+    assert "diagnostics do not connect Code Evidence to answer generation" in runbook
+    assert "diagnostics do not prove runtime operational truth" in runbook
+    assert "diagnostics do not classify workers" in runbook
+    assert "diagnostics do not change EmployeeAppointment, WorksitePosition, Position or AwardPositionClass records" in runbook
+    assert "diagnostics do not select award classes at runtime" in runbook
+    assert "diagnostics do not interpret awards at runtime" in runbook
+    assert "diagnostics do not calculate payroll" in runbook
+    assert "diagnostics do not decide entitlements" in runbook
+    assert "diagnostics do not mutate payroll output" in runbook
+    assert "diagnostics do not determine or finalise readiness" in runbook
+    assert "diagnostics do not mutate operational workforce/payroll/award truth" in runbook
+    assert "When To Improve What" in runbook
+    assert "Improve retrieval terms when formal evidence exists but diagnostic coverage is `WEAK`" in runbook
+    assert "Improve synthesis when coverage is `STRONG` but benchmark or human review shows the answer is incomplete" in runbook
+    assert "Add formal source evidence later when the group is genuinely `MISSING`" in runbook
+    assert "Keep existing behavior where coverage and answer quality are acceptable" in runbook
+    assert "Do not use operational JSON or Code Evidence as a shortcut" in runbook

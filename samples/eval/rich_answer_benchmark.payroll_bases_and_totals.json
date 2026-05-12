@@ -1,0 +1,178 @@
+{
+  "name": "Payroll Bases & Totals rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for Payroll Bases & Totals governed payroll basis evidence.",
+  "questions": [
+    {
+      "id": "payroll-bases-and-totals-rich-answer",
+      "question": "What are Payroll Bases & Totals and why do they matter?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "Payroll Bases & Totals",
+        "governed payroll basis evidence",
+        "bucket definitions",
+        "worked quantities",
+        "current-effective source truth",
+        "readiness",
+        "rebuild",
+        "Worker Story",
+        "Movement Review",
+        "outstanding hardening"
+      ],
+      "expected_answer_terms_any": [
+        "PayrollBucketResult",
+        "PayrollBucketDefinition",
+        "taxable basis",
+        "PAYG"
+      ],
+      "expected_source_terms_all": [
+        "Payroll Bases & Totals",
+        "PayrollBucketResult",
+        "PayrollBucketDefinition"
+      ],
+      "expected_source_terms_any": [
+        "current-effective truth",
+        "stale rows",
+        "Worker Story",
+        "Movement Review"
+      ],
+      "forbidden_answer_patterns_any": [
+        "are\\s+analytics\\s+cubes",
+        "are\\s+reporting\\s+cubes",
+        "Source\\s+1:",
+        "Source\\s+2:",
+        "closest sources say",
+        "using the strongest matches",
+        "Code Evidence"
+      ]
+    },
+    {
+      "id": "payroll-bases-current-effective-truth",
+      "question": "How do Payroll Bases & Totals use current-effective payroll truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "Payroll Bases & Totals",
+        "current-effective truth",
+        "current-effective payroll output",
+        "source truth",
+        "PayrollBucketResult",
+        "stale",
+        "safe current truth"
+      ],
+      "expected_answer_terms_any": ["deterministic Ezeas services", "payroll truth"],
+      "expected_source_terms_any": ["current-effective truth", "current-effective payroll output", "stale"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "Minerva calculates payroll"]
+    },
+    {
+      "id": "payroll-bases-vs-reporting-totals",
+      "question": "What is the difference between Payroll Bases & Totals and ordinary reporting totals?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "Payroll Bases & Totals",
+        "governed payroll basis evidence",
+        "reporting totals",
+        "bucket definitions",
+        "current-effective source truth",
+        "readiness"
+      ],
+      "expected_answer_terms_any": ["analytics", "ordinary reporting"],
+      "expected_source_terms_any": ["governed payroll basis evidence", "not reporting totals", "bucket definition"],
+      "forbidden_answer_patterns_any": ["are\\s+analytics\\s+cubes", "are\\s+reporting\\s+cubes", "Code Evidence"]
+    },
+    {
+      "id": "payroll-bases-bucket-definition-membership",
+      "question": "How do bucket definitions and membership affect Payroll Bases & Totals?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "PayrollBucketDefinition",
+        "bucket definitions",
+        "membership",
+        "period definition",
+        "calendar policy",
+        "period/window rules",
+        "readiness"
+      ],
+      "expected_answer_terms_any": ["bucket lifecycle", "versioning", "outstanding hardening"],
+      "expected_source_terms_any": ["PayrollBucketDefinition", "membership", "period definition", "calendar policy"],
+      "forbidden_answer_patterns_any": ["fully production-complete bucket lifecycle", "Code Evidence"]
+    },
+    {
+      "id": "payroll-bases-stale-bucket-results",
+      "question": "Why do stale PayrollBucketResult rows matter?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "PayrollBucketResult",
+        "stale rows",
+        "rebuild",
+        "readiness",
+        "not safe current truth",
+        "current-effective truth"
+      ],
+      "expected_source_terms_any": ["PayrollBucketResult", "stale rows", "rebuild", "readiness"],
+      "forbidden_answer_patterns_any": ["safe current truth until", "Code Evidence"]
+    },
+    {
+      "id": "payroll-bases-worker-story-movement-review",
+      "question": "How do Payroll Bases & Totals relate to Worker Story and Movement Review?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "Payroll Bases & Totals",
+        "Worker Story",
+        "Movement Review",
+        "worker evidence",
+        "operator review",
+        "evidence"
+      ],
+      "expected_answer_terms_any": ["PayRun Admin Queue", "platform evidence surface"],
+      "expected_source_terms_any": ["Worker Story", "Movement Review", "PayRun Admin Queue"],
+      "forbidden_answer_patterns_any": ["Code Evidence"]
+    }
+  ]
+}

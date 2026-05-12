@@ -1243,20 +1243,74 @@ def _award_positions_classifications_focus_points(question: str) -> list[str]:
             "platform services remain the runtime calculation and award interpretation path."
         )
         points.append(
+            "Focused Decision Story answer: classification facts and classification evidence can support treatment "
+            "and entitlement explanation in Decision Story, while preserving the distinction that classification "
+            "evidence is not Decision Story itself and does not decide entitlements."
+        )
+        points.append(
             "Focused comparison answer: comparator classification, imported classification mapping, classification "
             "lenses and award comparison/remediation evidence can support review, but comparison classes do not "
             "automatically replace the primary appointment class."
         )
         points.append(
             "Focused readiness answer: Worker Story, PayRun Admin Queue, Worker Attention and Finalisation Readiness "
-            "can surface classification evidence, configuration gaps, NEEDS_CONFIGURATION-style concepts and evidence "
-            "visibility where formal evidence supports that relationship."
+            "can surface classification evidence, configuration gaps, NEEDS_CONFIGURATION, NEEDS_CONFIGURATION-style "
+            "concepts, status honesty and evidence visibility where formal evidence supports that relationship."
         )
         points.append(
             "Focused boundary answer: Minerva explains Award Positions / Classifications but does not classify "
-            "workers, select award classes at runtime, interpret awards at runtime, calculate payroll, decide "
+            "workers, change appointments, select award classes at runtime, interpret awards at runtime, calculate payroll, decide "
             "entitlements, mutate payroll output, determine finalisation readiness, finalise PayRuns or mutate "
-            "operational workforce/payroll/award truth."
+            "operational workforce/payroll/award truth. Minerva does not calculate payroll."
+        )
+    return points
+
+
+def _payroll_tax_workcover_wic_liability_detail_focus_points(question: str) -> list[str]:
+    normalized = question.lower().replace("-", " ")
+    points: list[str] = []
+    if "worker net pay" in normalized or "payg" in normalized or "payment execution" in normalized or "boundary" in normalized:
+        points.append(
+            "Focused boundary answer: Payroll Tax / WorkCover / WIC Liability Detail is employer-side statutory and "
+            "liability evidence, not worker net pay, not PAYG withholding and not payment execution."
+        )
+    if "state" in normalized or "worksite" in normalized or "jurisdiction" in normalized or "location" in normalized:
+        points.append(
+            "Focused jurisdiction answer: liability detail depends on state, jurisdiction, Worksite.StateId, "
+            "WorksitePosition, EmployeeAppointment and ObjectTime location or runtime location where formal evidence "
+            "supports those context paths."
+        )
+    if "basis" in normalized or "bucket" in normalized or "taxable wages" in normalized or "liability wages" in normalized:
+        points.append(
+            "Focused basis answer: Payroll Bases & Totals and governed basis membership provide the basis evidence "
+            "for taxable wages or liability wages, including included or excluded RateTypes and AwardRateTypes where "
+            "that evidence exists."
+        )
+    if "ratesource" in normalized or "rate source" in normalized or "rate" in normalized or "configuration" in normalized:
+        points.append(
+            "Focused rate evidence answer: liability rates should be explained through governed RateSource or "
+            "date-effective liability-rate configuration, including account, state or award scoping where supported, "
+            "while separating demo fallback rows from production truth."
+        )
+    if "worker story" in normalized or "payroll output" in normalized or "gross to net" in normalized or "finalisation" in normalized or "readiness" in normalized:
+        points.append(
+            "Focused evidence-surface answer: Payroll Output and Worker Story can surface employer liability evidence "
+            "and keep the Gross-to-Net worker-pay boundary clear; Finalisation Readiness, Admin Queue and Worker "
+            "Attention may surface missing liability configuration where formal evidence supports that."
+        )
+    if "payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liabilit" in normalized:
+        points.append(
+            "Focused Payroll Tax / WorkCover / WIC answer: this domain is the detailed employer-liability lane for "
+            "payroll tax, WorkCover and WIC, narrower than broad On-costs / Employer Liabilities and grounded in "
+            "jurisdiction, basis membership, rate evidence and explanation surfaces."
+        )
+        points.append(
+            "Focused guardrail answer: Minerva explains the evidence but does not calculate payroll tax, calculate "
+            "WorkCover or WIC liability, and does not calculate WorkCover or WIC liability. Minerva does not lodge "
+            "or remit statutory returns, does not decide statutory liability, does not change employer-liability "
+            "configuration, does not change Worksite/State/jurisdiction truth, does not calculate payroll, does not "
+            "mutate payroll output, does not determine finalisation readiness, does not finalise PayRuns and does not "
+            "mutate operational workforce/payroll/liability truth."
         )
     return points
 
@@ -2072,6 +2126,8 @@ class StubLLMClient(BaseLLMClient):
                     operation_points = _rosters_patterns_scheduling_focus_points(question) + operation_points
                 if domain_plan.plan_id == "AWARD_POSITIONS_CLASSIFICATIONS":
                     operation_points = _award_positions_classifications_focus_points(question) + operation_points
+                if domain_plan.plan_id == "PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL":
+                    operation_points = _payroll_tax_workcover_wic_liability_detail_focus_points(question) + operation_points
                 if domain_plan.plan_id == "FINALISATION_READINESS":
                     operation_points = _finalisation_readiness_focus_points(question) + operation_points
                 if domain_plan.plan_id == "LEAVE_SOURCE_MODEL":
@@ -2442,6 +2498,26 @@ class StubLLMClient(BaseLLMClient):
                             "selects award classes at runtime, interprets awards at runtime, calculates payroll, decides "
                             "entitlements, mutates payroll output, determines finalisation readiness, finalises PayRuns or "
                             "mutates operational workforce/payroll/award truth unless formal evidence explicitly says so."
+                        )
+                    elif domain_plan.plan_id == "PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL":
+                        direct_summary = (
+                            "Payroll Tax / WorkCover / WIC Liability Detail is governed employer-side statutory and "
+                            "liability evidence, narrower than broad On-costs / Employer Liabilities and separate from "
+                            "worker net pay, PAYG withholding and payment execution. It explains payroll tax, WorkCover "
+                            "and WIC through state, jurisdiction, Worksite.StateId, WorksitePosition, EmployeeAppointment "
+                            "and ObjectTime location context, public holiday worksite context, governed basis membership and Payroll Bases & Totals, "
+                            "taxable wages and liability wages, RateSource and date-effective liability-rate evidence, "
+                            "Payroll Output, Worker Story, Gross-to-Net boundaries, Finalisation Readiness, Admin Queue "
+                            "and Worker Attention surfaces."
+                        )
+                        status_text = (
+                            "The retrieved corpus describes Payroll Tax / WorkCover / WIC Liability Detail as governed "
+                            "employer-liability evidence with important status and limitation caveats. It should not "
+                            "imply Minerva calculates payroll tax, calculates WorkCover or WIC liability, lodges or "
+                            "remits statutory returns, decides statutory liability, changes employer-liability "
+                            "configuration, changes Worksite, State or jurisdiction truth, calculates payroll, mutates "
+                            "payroll output, determines finalisation readiness, finalises PayRuns or mutates operational "
+                            "workforce/payroll/liability truth unless formal evidence explicitly says so."
                         )
                     elif domain_plan.plan_id == "FINALISATION_READINESS":
                         direct_summary = (

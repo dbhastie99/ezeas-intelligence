@@ -1190,9 +1190,16 @@ def _ingest_award_positions_classifications_benchmark_evidence(db_session):
             "Developer Log - Award Positions Classifications Assignment",
         ),
         (
-            "Classification context supports payroll interpretation, RateSource selection, Rate Story, Decision Story, "
-            "Payroll Output and calculated line evidence, while deterministic payroll services decide runtime outcomes.",
+            "Classification context supports RateSource, Rate Story, Payroll Output and calculated line evidence. "
+            "Classification facts and classification evidence preserve the distinction that classification evidence is "
+            "not Decision Story itself, while supporting treatment and entitlement explanation and payroll interpretation.",
             "Developer Log - Award Positions Classifications Payroll Story",
+        ),
+        (
+            "Classification facts and classification evidence can support treatment and entitlement explanation in "
+            "Decision Story while preserving the distinction that classification evidence is not Decision Story itself "
+            "and does not decide entitlements.",
+            "Developer Log - Award Positions Classifications Decision Story",
         ),
         (
             "Comparator classification, award comparison, comparison remediation, imported classification mapping, "
@@ -1202,7 +1209,8 @@ def _ingest_award_positions_classifications_benchmark_evidence(db_session):
         ),
         (
             "Worker Story, PayRun Admin Queue, Admin Queue, Worker Attention and Finalisation Readiness can surface "
-            "classification evidence, configuration gaps, NEEDS_CONFIGURATION and evidence visibility.",
+            "classification evidence, configuration gaps, NEEDS_CONFIGURATION, NEEDS_CONFIGURATION-style concepts, "
+            "status honesty and evidence visibility.",
             "Developer Log - Award Positions Classifications Readiness",
         ),
         (
@@ -1211,6 +1219,51 @@ def _ingest_award_positions_classifications_benchmark_evidence(db_session):
             "at runtime, interpret awards at runtime, calculate payroll, decide entitlements, mutate payroll output, "
             "determine finalisation readiness, finalise PayRuns or mutate operational workforce/payroll/award truth.",
             "Platform Doctrine - Award Positions Classifications Minerva Boundary",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_payroll_tax_workcover_wic_liability_detail_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Payroll Tax / WorkCover / WIC Liability Detail is employer-side liability evidence for payroll tax, "
+            "WorkCover and WIC. It is not worker net pay, not PAYG withholding and not payment execution.",
+            "Developer Log - Payroll Tax WorkCover WIC Liability Scope",
+        ),
+        (
+            "Payroll Tax, WorkCover and WIC liability detail depends on state, jurisdiction, Worksite.StateId, "
+            "WorksitePosition, EmployeeAppointment, ObjectTime location, runtime location and public holiday worksite "
+            "context where formal evidence supports those paths.",
+            "Developer Log - Payroll Tax WorkCover WIC Jurisdiction",
+        ),
+        (
+            "Governed basis membership, payroll bucket evidence, payroll basis evidence and Payroll Bases & Totals "
+            "support taxable wages, liability wages, included RateTypes, excluded RateTypes, AwardRateTypes and basis "
+            "totals for Payroll Tax WorkCover WIC liability detail.",
+            "Developer Log - Payroll Tax WorkCover WIC Payroll Bases",
+        ),
+        (
+            "Liability RateSource, RateSource, date-effective rates, date-effective liability-rate evidence, "
+            "liability-rate evidence, account scoping, state scoping, award scoping and configuration evidence explain "
+            "liability rates while separating demo fallback from production truth.",
+            "Developer Log - Payroll Tax WorkCover WIC Rate Evidence",
+        ),
+        (
+            "Worker Story, Payroll Output, Gross-to-Net, employer liability lines, worker net pay boundary, "
+            "Finalisation Readiness, PayRun Admin Queue, Admin Queue, Worker Attention, missing liability "
+            "configuration, audit evidence and explanation relationships can surface Payroll Tax WorkCover WIC evidence.",
+            "Developer Log - Payroll Tax WorkCover WIC Evidence Surfaces",
+        ),
+        (
+            "Minerva explains Payroll Tax / WorkCover / WIC liability evidence but does not calculate payroll tax, "
+            "does not calculate WorkCover or WIC liability, does not lodge or remit statutory returns, does not decide "
+            "statutory liability, does not change employer-liability configuration, does not change Worksite, State or "
+            "jurisdiction truth, does not calculate payroll, does not mutate payroll output, does not determine "
+            "finalisation readiness, does not finalise PayRuns and does not mutate operational workforce/payroll/"
+            "liability truth.",
+            "Platform Doctrine - Payroll Tax WorkCover WIC Minerva Boundary",
         ),
     ]
     for text, title in evidence:
@@ -2247,8 +2300,29 @@ def test_award_positions_classifications_rich_answer_benchmark_manifest_loads(db
     assert manifest["name"] == "Award Positions / Classifications rich-answer benchmark"
     assert {question["id"] for question in manifest["questions"]} == {
         "award-positions-classifications-rich-answer",
+        "award-positions-classifications-source-build",
+        "award-positions-classifications-appointment-connection",
+        "award-positions-classifications-rate-story-payroll-output",
+        "award-positions-classifications-decision-story",
+        "award-positions-classifications-comparison-remediation",
+        "award-positions-classifications-missing-unresolved",
     }
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.award_positions_classifications.json")
+    assert result["total"] == 7
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_payroll_tax_workcover_wic_liability_detail_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.payroll_tax_workcover_wic_liability_detail.json")
+
+    assert manifest["name"] == "Payroll Tax / WorkCover / WIC Liability Detail rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "payroll-tax-workcover-wic-liability-detail-rich-answer",
+    }
+    result = run_golden_questions(
+        db_session,
+        "samples/eval/rich_answer_benchmark.payroll_tax_workcover_wic_liability_detail.json",
+    )
     assert result["total"] == 1
     assert all(item["checks"]["answer_mode"] is True for item in result["results"])
 
@@ -2908,7 +2982,7 @@ def test_award_positions_classifications_benchmark_runner_returns_pass_status_wi
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.award_positions_classifications.json")
 
     assert result["name"] == "Award Positions / Classifications rich-answer benchmark"
-    assert result["total"] == 1
+    assert result["total"] == 7
     failures = [
         {
             "id": item["id"],
@@ -2921,6 +2995,38 @@ def test_award_positions_classifications_benchmark_runner_returns_pass_status_wi
     assert result["all_passed"] is True, json.dumps(failures, indent=2)
     assert {item["id"] for item in result["results"]} == {
         "award-positions-classifications-rich-answer",
+        "award-positions-classifications-source-build",
+        "award-positions-classifications-appointment-connection",
+        "award-positions-classifications-rate-story-payroll-output",
+        "award-positions-classifications-decision-story",
+        "award-positions-classifications-comparison-remediation",
+        "award-positions-classifications-missing-unresolved",
+    }
+
+
+def test_payroll_tax_workcover_wic_liability_detail_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_payroll_tax_workcover_wic_liability_detail_benchmark_evidence(db_session)
+
+    result = run_golden_questions(
+        db_session,
+        "samples/eval/rich_answer_benchmark.payroll_tax_workcover_wic_liability_detail.json",
+    )
+
+    assert result["name"] == "Payroll Tax / WorkCover / WIC Liability Detail rich-answer benchmark"
+    assert result["total"] == 1
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert all(item["checks"]["forbidden_answer_patterns_any"] is True for item in result["results"])
+    assert {item["id"] for item in result["results"]} == {
+        "payroll-tax-workcover-wic-liability-detail-rich-answer",
     }
 
 

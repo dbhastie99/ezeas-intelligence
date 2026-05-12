@@ -1,0 +1,77 @@
+{
+  "name": "Leave Requests / Leave Workflow rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed employee leave request workflow evidence, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "leave-requests-workflow-rich-answer",
+      "question": "What is Leave Requests / Leave Workflow in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Requests / Leave Workflow", "governed leave request workflow", "creating", "drafting", "submitting", "reviewing", "approving", "rejecting", "reopening", "valuing", "posting", "explaining employee leave requests", "status transitions", "idempotency", "overlap", "shortfall", "TAKEN leave valuation", "LeaveLedger posting", "Leave Source Model", "applicability", "Worker Story", "PayRun", "finalisation readiness", "status honesty", "outstanding hardening", "Minerva", "does not approve leave", "calculate leave", "post LeaveLedger rows", "change leave balances", "reopen leave requests", "resolve shortfalls", "finalise PayRuns", "mutate operational leave or payroll truth", "Leave Requests alone", "LeaveTypeRule alone"],
+      "expected_source_terms_all": ["Leave Requests / Leave Workflow", "Leave Request", "LeaveLedger"],
+      "expected_source_terms_any": ["TAKEN leave", "IdempotencyKey", "Worker Story", "Leave Source Model"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+approves\\s+leave\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+leave\\s+balances\\.", "Minerva\\s+reopens\\s+leave\\s+requests\\.", "Minerva\\s+resolves\\s+shortfalls\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Minerva\\s+mutates\\s+operational\\s+leave\\s+or\\s+payroll\\s+truth\\.", "Leave\\s+Requests\\s+alone\\s+proves\\s+payroll\\s+correctness", "LeaveTypeRule\\s+alone\\s+proves\\s+final\\s+leave\\s+applicability", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-requests-workflow-lifecycle-status",
+      "question": "How does the Leave Request workflow move from draft to approval?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Requests / Leave Workflow", "create", "draft", "submit", "review", "approve", "reject", "reopen", "status transitions", "idempotency", "IdempotencyKey", "governed leave status transitions", "operator/user action", "Minerva does not approve leave", "reopen leave requests"],
+      "expected_source_terms_any": ["draft editing", "status transitions", "IdempotencyKey", "approve leave", "reopen leave"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+approves\\s+leave\\.", "Minerva\\s+reopens\\s+leave\\s+requests\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-requests-workflow-preview-overlap-shortfall",
+      "question": "How does Leave Request preview handle overlaps and shortfalls?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Requests / Leave Workflow", "leave request preview", "leave overlap", "shortfall substitution", "same-type overlap", "cross-type overlap", "read-only", "apply-plan", "child request linkage", "Minerva does not resolve shortfalls"],
+      "expected_source_terms_any": ["leave request preview", "same-type overlap", "cross-type overlap", "apply-plan", "child request linkage"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+resolves\\s+shortfalls\\.", "Minerva\\s+mutates\\s+operational\\s+leave\\s+or\\s+payroll\\s+truth\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-requests-workflow-taken-valuation",
+      "question": "How does the Leave Request workflow handle TAKEN leave valuation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Requests / Leave Workflow", "TAKEN leave", "leave valuation", "leave valuation basis", "ordinary rate", "hard fail", "no silent minutes-only fallback", "structured processing error", "needs configuration", "Minerva does not value leave", "calculate leave"],
+      "expected_source_terms_any": ["TAKEN leave", "ordinary rate", "hard fail", "structured processing error", "needs configuration"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+values\\s+leave\\.", "can\\s+use\\s+a\\s+silent\\s+minutes-only\\s+fallback", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-requests-workflow-ledger-balances",
+      "question": "How do Leave Requests relate to LeaveLedger posting and leave balances?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Requests / Leave Workflow", "LeaveLedger posting", "leave balance", "accrual", "taken", "balance movement", "parent/child request lineage", "posting evidence", "audit/story", "deterministic platform", "Minerva does not post LeaveLedger rows", "change leave balances"],
+      "expected_source_terms_any": ["LeaveLedger posting", "balance movement", "parent/child request lineage", "posting evidence", "audit/story"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+leave\\s+balances\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-requests-workflow-source-applicability",
+      "question": "How does the Leave Request workflow relate to Leave Source and applicability?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Requests / Leave Workflow", "Leave Source Model", "applicability", "LeaveTypeRule", "policy and calculation content", "not final applicability truth", "Contact", "EmployeeAppointment", "employment/worksite/state dimensions", "no entitlement", "missing output", "Minerva does not determine entitlement", "LeaveTypeRule alone"],
+      "expected_source_terms_any": ["Leave Source Model", "LeaveTypeRule", "Contact", "EmployeeAppointment", "employment/worksite/state dimensions"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+determines\\s+entitlement\\.", "LeaveTypeRule\\s+alone\\s+proves\\s+final\\s+leave\\s+applicability", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-requests-workflow-worker-story-payrun-finalisation",
+      "question": "How do Leave Requests connect to Worker Story, PayRun and finalisation readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Requests / Leave Workflow", "Worker Story", "Leave and Accrual Outcome", "PayRun processing", "leave payment effects", "finalisation readiness", "warnings", "blockers", "leave output", "valuation", "ledger evidence", "finalisation boundary", "Minerva does not finalise PayRuns", "calculate payroll"],
+      "expected_source_terms_any": ["Worker Story", "PayRun processing", "leave payment effects", "finalisation readiness", "ledger evidence"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+finalises\\s+PayRuns\\.", "Minerva\\s+calculates\\s+payroll\\.", "Leave\\s+Requests\\s+alone\\s+proves\\s+payroll\\s+correctness", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

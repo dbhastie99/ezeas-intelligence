@@ -1,0 +1,83 @@
+{
+  "name": "Public Holidays rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed Public Holidays source, context, payroll, leave and operator evidence.",
+  "questions": [
+    {
+      "id": "public-holidays-rich-answer",
+      "question": "How are Public Holidays handled in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Public Holidays", "governed date", "calendar", "location", "context evidence", "payroll treatment", "leave treatment", "Worker Story", "finalisation readiness", "employer liabilities", "PublicHoliday", "PublicHolidayGroup", "observed days", "governed reference configuration", "Worksite", "WorksitePosition", "EmployeeAppointment", "state", "jurisdiction", "location context", "deterministic payroll services", "Decision Story", "Payroll Output", "DeductsOnPublicHoliday", "Leave Requests", "LeaveLedger", "PayRun Admin Queue", "Worker Attention", "Finalisation Readiness", "Minerva", "does not calculate public holiday entitlements", "decide payroll treatment", "post payroll output", "approve leave", "calculate leave", "post LeaveLedger rows", "change PublicHolidayGroup configuration", "mutate Worksite", "EmployeeAppointment", "PayRun", "LeaveRequest truth", "determine finalisation readiness", "finalise PayRuns"],
+      "expected_source_terms_all": ["PublicHoliday", "PublicHolidayGroup", "DeductsOnPublicHoliday"],
+      "expected_source_terms_any": ["Worksite", "WorksitePosition", "EmployeeAppointment", "Decision Story", "Worker Story"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+public\\s+holiday\\s+entitlements\\.", "Minerva\\s+decides\\s+payroll\\s+treatment\\.", "Minerva\\s+posts\\s+payroll\\s+output\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+PublicHolidayGroup\\s+configuration\\.", "Minerva\\s+mutates\\s+Worksite", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "public-holidays-worker-applicability",
+      "question": "How does the platform know which Public Holiday applies to a worker?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Public Holidays", "PublicHolidayGroup", "applies to a worker", "Worksite", "WorksitePosition", "EmployeeAppointment", "state", "location context", "governed context"],
+      "expected_source_terms_all": ["PublicHolidayGroup", "Worksite", "WorksitePosition", "EmployeeAppointment"],
+      "expected_source_terms_any": ["state", "jurisdiction", "location context"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+public\\s+holiday\\s+entitlements\\.", "Minerva\\s+decides\\s+payroll\\s+treatment\\.", "Minerva\\s+posts\\s+payroll\\s+output\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+PublicHolidayGroup\\s+configuration\\.", "Minerva\\s+mutates\\s+Worksite", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "public-holidays-payroll-treatment",
+      "question": "How do Public Holidays affect payroll treatment?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Public Holidays", "deterministic payroll interpretation", "public holiday treatment decisions", "Decision Story", "Payroll Output", "does not calculate public holiday entitlements", "decide payroll treatment"],
+      "expected_source_terms_all": ["public holiday payroll treatment", "Decision Story", "Payroll Output"],
+      "expected_source_terms_any": ["deterministic payroll interpretation", "deterministic payroll services"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+public\\s+holiday\\s+entitlements\\.", "Minerva\\s+decides\\s+payroll\\s+treatment\\.", "Minerva\\s+posts\\s+payroll\\s+output\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+PublicHolidayGroup\\s+configuration\\.", "Minerva\\s+mutates\\s+Worksite", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "public-holidays-leave-requests-ledger",
+      "question": "How do Public Holidays affect leave requests and LeaveLedger posting?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Public Holidays", "DeductsOnPublicHoliday", "Leave Requests", "leave preview", "LeaveLedger", "leave posting", "leave balances", "does not approve leave", "calculate leave", "post LeaveLedger rows"],
+      "expected_source_terms_all": ["DeductsOnPublicHoliday", "Leave Requests", "LeaveLedger"],
+      "expected_source_terms_any": ["leave preview", "leave posting", "leave balances"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+public\\s+holiday\\s+entitlements\\.", "Minerva\\s+decides\\s+payroll\\s+treatment\\.", "Minerva\\s+posts\\s+payroll\\s+output\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+PublicHolidayGroup\\s+configuration\\.", "Minerva\\s+mutates\\s+Worksite", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "public-holidays-worker-story-payroll-evidence",
+      "question": "How do Public Holidays appear in Worker Story and payroll evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Public Holidays", "Worker Story", "Decision Story", "Payroll Output", "payroll evidence", "source/context visibility", "evidence explanation"],
+      "expected_source_terms_all": ["Worker Story", "Decision Story", "Payroll Output"],
+      "expected_source_terms_any": ["payroll evidence", "source/context visibility", "operator evidence"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+public\\s+holiday\\s+entitlements\\.", "Minerva\\s+decides\\s+payroll\\s+treatment\\.", "Minerva\\s+posts\\s+payroll\\s+output\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+PublicHolidayGroup\\s+configuration\\.", "Minerva\\s+mutates\\s+Worksite", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "public-holidays-missing-configuration-context",
+      "question": "What happens if Public Holiday configuration or location context is missing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Public Holidays", "PayRun Admin Queue", "Worker Attention", "Finalisation Readiness", "NEEDS_CONFIGURATION", "missing configuration", "source context", "status honesty"],
+      "expected_source_terms_all": ["public holiday"],
+      "expected_source_terms_any": ["NEEDS_CONFIGURATION", "warnings", "blockers"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+public\\s+holiday\\s+entitlements\\.", "Minerva\\s+decides\\s+payroll\\s+treatment\\.", "Minerva\\s+posts\\s+payroll\\s+output\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+PublicHolidayGroup\\s+configuration\\.", "Minerva\\s+mutates\\s+Worksite", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "public-holidays-employer-liabilities-oncosts",
+      "question": "How do Public Holidays relate to employer liabilities or on-costs?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Public Holidays", "employer liabilities", "on-costs", "state", "location context", "broad on-costs domain", "formal evidence"],
+      "expected_source_terms_all": ["public holiday"],
+      "expected_source_terms_any": ["Public Holidays", "state", "location context", "formal evidence"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+public\\s+holiday\\s+entitlements\\.", "Minerva\\s+decides\\s+payroll\\s+treatment\\.", "Minerva\\s+posts\\s+payroll\\s+output\\.", "Minerva\\s+approves\\s+leave\\.", "Minerva\\s+calculates\\s+leave\\.", "Minerva\\s+posts\\s+LeaveLedger\\s+rows\\.", "Minerva\\s+changes\\s+PublicHolidayGroup\\s+configuration\\.", "Minerva\\s+mutates\\s+Worksite", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

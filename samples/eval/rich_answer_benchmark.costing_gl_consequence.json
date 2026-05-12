@@ -1,0 +1,127 @@
+{
+  "name": "Costing / GL Consequence Evidence rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for downstream costing and GL consequence evidence.",
+  "questions": [
+    {
+      "id": "costing-gl-consequence-rich-answer",
+      "question": "How should Costing and GL Consequence Evidence work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Costing / GL Consequence Evidence", "Costing", "GL consequence", "downstream financial consequence evidence", "not payroll calculation truth", "not payment execution", "not a completed costing engine", "finalised payroll outcome", "finalised gross-to-net", "payment outcome", "liability truth", "payment execution", "remittance", "employer liabilities", "on-costs", "deductions", "obligations", "obligation write-off", "forgiveness", "balance reduction", "material adjustment", "GL/provision/costing treatment", "Comparison / Remediation", "remediation variance", "variance line", "downstream tax", "super", "payroll tax", "WIC", "leave valuation", "leave accrual", "negative net pay", "recoveries", "write-offs", "out-of-pay", "financial consequences", "audit story", "financial evidence", "source outcome", "reason", "treatment", "amount", "ledger status", "costing status", "deferred accounting design status", "deferred costing slice", "later/final slice", "status-honest", "Minerva", "does not post GL", "does not calculate costing", "outstanding hardening"],
+      "expected_source_terms_all": ["Costing / GL Consequence Evidence", "finalised payroll outcome", "obligation write-off"],
+      "expected_source_terms_any": ["remediation variance", "leave valuation", "negative net pay", "deferred costing slice"],
+      "forbidden_answer_patterns_any": ["costing\\s+is\\s+implemented\\.", "Minerva\\s+posts\\s+GL\\s+entries\\.", "Minerva\\s+calculates\\s+costing\\.", "costing\\s+should\\s+block\\s+payroll\\s+payment", "obligation\\s+write-offs\\s+have\\s+no\\s+financial\\s+consequence\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-downstream-of-payroll-calculation",
+      "question": "Why is Costing / GL Consequence Evidence downstream of payroll calculation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Costing / GL Consequence Evidence", "downstream financial consequence evidence", "not payroll calculation truth", "not payment execution", "not a completed costing engine", "Minerva", "does not post GL", "does not calculate costing"],
+      "expected_source_terms_all": ["Costing / GL Consequence Evidence", "downstream financial consequence evidence", "not payroll calculation truth"],
+      "expected_source_terms_any": ["not payment execution", "not a completed costing engine", "Minerva"],
+      "forbidden_answer_patterns_any": ["costing\\s+is\\s+implemented\\.", "Minerva\\s+posts\\s+GL\\s+entries\\.", "Minerva\\s+calculates\\s+costing\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-finalised-payroll-outcome-truth",
+      "question": "Why should costing consume finalised payroll outcome truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["costing", "consume", "finalised payroll outcome truth", "finalised payroll outcome", "finalised gross-to-net", "payment outcome", "liability truth", "rather than block payroll close", "payment execution performance"],
+      "expected_source_terms_all": ["finalised payroll outcome truth", "finalised gross-to-net", "liability truth"],
+      "expected_source_terms_any": ["payment outcome", "payment execution performance"],
+      "forbidden_answer_patterns_any": ["costing\\s+should\\s+block\\s+payroll", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-payment-execution-remittance",
+      "question": "How does Payment Execution / Remittance connect to costing evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payment Execution / Remittance", "payment execution", "remittance", "payment outcome", "downstream payment", "financial consequence evidence", "not payment execution", "costing"],
+      "expected_source_terms_all": ["Payment Execution / Remittance", "payment execution", "remittance"],
+      "expected_source_terms_any": ["downstream payment", "financial consequence evidence"],
+      "forbidden_answer_patterns_any": ["costing\\s+is\\s+payment\\s+execution", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-employer-liabilities-oncosts",
+      "question": "How do employer liabilities and on-costs create costing or GL consequences?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["employer liabilities", "on-costs", "super", "payroll tax", "WorkCover", "WIC", "costing or GL consequences"],
+      "expected_source_terms_all": ["employer liabilities", "on-costs", "costing or GL consequences"],
+      "expected_source_terms_any": ["super", "payroll tax", "WorkCover", "WIC"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-deduction-obligation-writeoffs",
+      "question": "Why can deduction obligations and write-offs have financial consequences?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["deduction obligations", "obligation write-off", "write-offs", "forgiveness", "balance reduction", "material adjustment", "financial consequences", "GL/provision/costing treatment"],
+      "expected_source_terms_all": ["deduction obligations", "obligation write-off", "financial consequences"],
+      "expected_source_terms_any": ["forgiveness", "balance reduction", "material adjustment"],
+      "forbidden_answer_patterns_any": ["obligation\\s+write-offs\\s+have\\s+no\\s+financial\\s+consequence\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-comparison-remediation-variance",
+      "question": "How do Comparison / Remediation variance lines affect costing and downstream treatment?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Comparison / Remediation", "remediation variance", "variance line", "downstream treatment", "downstream tax", "super", "payroll tax", "WIC", "leave", "deduction", "costing treatment"],
+      "expected_source_terms_all": ["Comparison / Remediation", "remediation variance", "variance line"],
+      "expected_source_terms_any": ["downstream treatment", "downstream tax", "costing treatment"],
+      "forbidden_answer_patterns_any": ["^remediation\\s+variance\\s+downstream\\s+treatment\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-leave-valuation-accrual",
+      "question": "How can leave valuation and accrual evidence affect costing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["leave valuation", "leave accrual", "leave valuation basis", "LeaveLedger", "accrual evidence", "costing"],
+      "expected_source_terms_all": ["leave valuation", "leave accrual", "accrual evidence"],
+      "expected_source_terms_any": ["leave valuation basis", "LeaveLedger"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-negative-net-pay-out-of-pay",
+      "question": "Why can negative net pay and out-of-pay treatment have financial consequences?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["negative net pay", "out-of-pay", "recoveries", "obligations", "write-offs", "financial consequences"],
+      "expected_source_terms_all": ["negative net pay", "out-of-pay", "financial consequences"],
+      "expected_source_terms_any": ["recoveries", "obligations", "write-offs"],
+      "forbidden_answer_patterns_any": ["^negative\\s+net\\s+pay\\s+financial\\s+treatment\\s+is\\s+solved\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-audit-story-financial-evidence",
+      "question": "What should audit story and financial evidence preserve for costing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["audit story", "financial evidence", "source outcome", "reason", "treatment", "amount", "ledger status", "costing status", "deferred accounting design status"],
+      "expected_source_terms_all": ["audit story", "financial evidence", "source outcome"],
+      "expected_source_terms_any": ["ledger status", "costing status", "deferred accounting design status"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "costing-deferred-final-slice",
+      "question": "Why is costing a deferred/final slice rather than a payroll-processing blocker?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["deferred/final slice", "deferred costing slice", "later/final slice", "payroll-processing blocker", "status-honest", "not completed costing engine", "does not post GL", "does not calculate costing"],
+      "expected_source_terms_all": ["deferred/final slice", "deferred costing slice", "payroll-processing blocker"],
+      "expected_source_terms_any": ["not completed costing engine", "status-honest"],
+      "forbidden_answer_patterns_any": ["costing\\s+should\\s+block\\s+payroll", "Minerva\\s+posts\\s+GL\\s+entries\\.", "Minerva\\s+calculates\\s+costing\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

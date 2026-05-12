@@ -1,0 +1,77 @@
+{
+  "name": "Contact Payroll History rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for Contact Payroll History contact/worker historical payroll evidence.",
+  "questions": [
+    {
+      "id": "contact-payroll-history-rich-answer",
+      "question": "What is Contact Payroll History in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact Payroll History", "contact/worker-level historical payroll evidence surface", "payroll outcomes", "PayRun participation", "current and historical payroll output", "Gross-to-Net history", "deductions", "obligations", "tax", "payment readiness", "leave/accrual evidence", "Worker Story", "Movement Review", "Admin Queue", "retro/replay/correction implications", "status honesty", "outstanding hardening", "Minerva", "does not calculate payroll history", "change historical payroll records", "correct payroll outcomes", "perform retro/replay", "approve payroll changes", "finalise PayRuns", "mutate operational payroll truth", "Contact Payroll History alone", "historical evidence overwrite finalised truth"],
+      "expected_source_terms_all": ["Contact Payroll History", "PayRun participation", "historical payroll output"],
+      "expected_source_terms_any": ["Gross-to-Net history", "Worker Story", "retro/replay/correction context"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+history\\.", "Minerva\\s+changes\\s+historical\\s+payroll\\s+records\\.", "Minerva\\s+corrects\\s+payroll\\s+outcomes\\.", "Minerva\\s+performs\\s+retro/replay\\.", "Minerva\\s+approves\\s+payroll\\s+changes\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Minerva\\s+mutates\\s+payroll\\s+truth\\.", "Contact\\s+Payroll\\s+History\\s+alone\\s+proves\\s+payroll\\s+correctness", "historical\\s+evidence\\s+should\\s+overwrite\\s+finalised\\s+truth", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "contact-payroll-history-payrun-participation",
+      "question": "How does Contact Payroll History show PayRun participation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact Payroll History", "contact/worker-level payroll history", "PayRun participation", "process periods", "PayRuns", "worker-level output/history", "current and historical payroll evidence", "not proof of payroll correctness by itself", "Minerva does not calculate payroll history", "change historical payroll records"],
+      "expected_source_terms_any": ["PayRun participation", "process periods", "worker-level output/history"],
+      "forbidden_answer_patterns_any": ["Contact\\s+Payroll\\s+History\\s+alone\\s+proves\\s+payroll\\s+correctness", "Minerva\\s+calculates\\s+payroll\\s+history\\.", "Minerva\\s+changes\\s+historical\\s+payroll\\s+records\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "contact-payroll-history-current-historical-output",
+      "question": "How should Contact Payroll History distinguish current and historical payroll output?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact Payroll History", "current-effective payroll output", "historical/finalised output evidence", "Run Output", "Process Period Output", "superseded/stale outputs", "current truth", "finalised truth should not be overwritten silently", "status honesty"],
+      "expected_source_terms_any": ["current-effective payroll output", "historical/finalised output evidence", "Run Output", "Process Period Output"],
+      "forbidden_answer_patterns_any": ["superseded/stale\\s+outputs\\s+should\\s+be\\s+described\\s+as\\s+current\\s+truth", "historical\\s+evidence\\s+should\\s+overwrite\\s+finalised\\s+truth", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "contact-payroll-history-deductions-obligations-negative-net-pay",
+      "question": "How does Contact Payroll History relate to deductions, obligations and negative net pay?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact Payroll History", "contact-level deduction history", "obligations", "reducing balance", "recovery context", "negative net pay", "governed treatment", "carry-forward", "write-off", "recovery implications", "Gross-to-Net", "Worker Attention", "not automatic net-pay subtraction", "Minerva resolution"],
+      "expected_source_terms_any": ["contact-level deduction history", "reducing balance", "negative net pay", "Gross-to-Net", "Worker Attention"],
+      "forbidden_answer_patterns_any": ["Contact\\s+Payroll\\s+History\\s+is\\s+automatic\\s+net-pay\\s+subtraction", "Minerva\\s+resolves\\s+negative\\s+net\\s+pay", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "contact-payroll-history-tax-payment-readiness",
+      "question": "How does Contact Payroll History relate to tax, payment and readiness history?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact Payroll History", "tax/PAYG history", "tax readiness evidence", "payment allocation", "payment readiness history", "bank/payment destination context", "finalisation/payment execution boundary", "readiness is not payment file generation", "Minerva does not withhold tax", "generate payment files"],
+      "expected_source_terms_any": ["tax/PAYG history", "payment readiness history", "bank/payment destination context"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+withholds\\s+tax\\.", "Minerva\\s+generates\\s+payment\\s+files\\.", "readiness\\s+is\\s+payment\\s+file\\s+generation", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "contact-payroll-history-leave-accrual-worker-story",
+      "question": "How does Contact Payroll History relate to leave, accrual and Worker Story?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact Payroll History", "leave/accrual evidence over time", "LeaveLedger", "leave output", "valuation basis", "Worker Story", "worker-level evidence explanation", "historical/contact lens", "evidence links rather than recalculation"],
+      "expected_source_terms_any": ["leave/accrual evidence over time", "LeaveLedger", "Worker Story", "evidence links rather than recalculation"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+recalculates\\s+leave", "Minerva\\s+calculates\\s+payroll\\s+history\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "contact-payroll-history-retro-replay-correction",
+      "question": "How does Contact Payroll History support retro, replay and correction context?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact Payroll History", "historical payroll evidence", "finalised truth preservation", "correction", "retro", "replay pathways", "attributed-period", "paid-period", "does not silently mutate history", "Minerva does not perform retro/replay", "corrections"],
+      "expected_source_terms_any": ["historical payroll evidence", "finalised truth preservation", "attributed-period", "paid-period"],
+      "forbidden_answer_patterns_any": ["Contact\\s+Payroll\\s+History\\s+can\\s+silently\\s+mutate\\s+history", "Minerva\\s+performs\\s+retro/replay\\.", "Minerva\\s+corrects\\s+payroll\\s+outcomes\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

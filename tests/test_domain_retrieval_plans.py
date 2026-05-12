@@ -18,6 +18,7 @@ from app.services.domain_retrieval_plan_service import (
     MOVEMENT_REVIEW_PLAN,
     OBJECTTIME_SOURCE_TRUTH_PLAN,
     ONCOSTS_EMPLOYER_LIABILITIES_PLAN,
+    PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_PLAN,
     PAYROLL_OUTPUT_PLAN,
     PAYROLL_BASES_AND_TOTALS_PLAN,
     PAYRUN_ADMIN_QUEUE_PLAN,
@@ -436,6 +437,12 @@ def test_award_positions_classifications_plan_contains_expected_evidence_groups(
 def test_award_positions_classifications_framed_questions_detect_domain_plan():
     questions = [
         "How do Award Positions and Classifications work in the platform?",
+        "How are Award Positions and Award Position Classes created from award evidence?",
+        "How does an Employee Appointment connect to an Award Position Class?",
+        "How do classifications affect RateSource, Rate Story and payroll output?",
+        "How do classifications relate to Decision Story?",
+        "How do classifications work in comparison or remediation scenarios?",
+        "What happens if classification evidence is missing or unresolved?",
         "How does AwardPositionClass connect to EmployeeAppointment classification?",
         "How does Award Position Class evidence relate to Worksite Position assignment?",
         "How do classification levels and pay guide class evidence support payroll interpretation?",
@@ -454,17 +461,26 @@ def test_award_positions_classifications_framed_questions_detect_domain_plan():
 def test_award_positions_classifications_routing_overlaps_keep_existing_domain_owners():
     cases = {
         "How should Award Build / Award Evidence handle RateSourceEvidenceIndex?": "AWARD_BUILD_EVIDENCE",
+        "How should award documents and pay guides act as source evidence?": "AWARD_BUILD_EVIDENCE",
         "How should Contacts / Employee Appointments work?": "CONTACTS_EMPLOYEE_APPOINTMENTS",
+        "How does an Employee Appointment carry work assignment context?": "CONTACTS_EMPLOYEE_APPOINTMENTS",
         "How do Rosters, Patterns and Scheduling work in the platform?": "ROSTERS_PATTERNS_SCHEDULING",
+        "How does PatternDay define expected work context?": "ROSTERS_PATTERNS_SCHEDULING",
         "How does ObjectTime / Source Truth work?": "OBJECTTIME_SOURCE_TRUTH",
+        "How does ObjectTime / Source Truth preserve source rows?": "OBJECTTIME_SOURCE_TRUTH",
         "How does RateSource / Rate Story explain selected rate amount?": "RATE_SOURCE_RATE_STORY",
         "How does Decision Story explain treatment decisions?": "DECISION_STORY",
+        "How does Decision Story explain entitlement and treatment selection?": "DECISION_STORY",
         "What is Payroll Output in the platform?": "PAYROLL_OUTPUT",
+        "What does current-effective payroll output mean?": "PAYROLL_OUTPUT",
         "How does Comparison / Remediation compare primary and comparator lanes?": "COMPARISON_REMEDIATION",
+        "How should Comparison / Remediation handle comparator assessment?": "COMPARISON_REMEDIATION",
         "What is Worker Story and what evidence does it show?": "WORKER_STORY",
         "What is Finalisation Readiness in the platform?": "FINALISATION_READINESS",
+        "How should Finalisation Readiness handle readiness gates?": "FINALISATION_READINESS",
         "How does Worker Attention handle blockers, warnings and fix links?": "WORKER_ATTENTION_ISSUE_RESOLUTION",
         "How should Imports / Actuals map imported payroll evidence?": "IMPORTS_ACTUALS",
+        "How should Imports / Actuals handle imported actuals and external payroll evidence?": "IMPORTS_ACTUALS",
     }
 
     for question, expected_plan_id in cases.items():
@@ -505,6 +521,114 @@ def test_award_positions_classifications_domain_retrieval_uses_group_specific_ev
         "payroll_interpretation_rate_and_decision_story",
     }
     assert all(result.domain_plan_id == "AWARD_POSITIONS_CLASSIFICATIONS" for result in results)
+
+
+def test_payroll_tax_workcover_wic_liability_detail_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How do Payroll Tax, WorkCover and WIC liabilities work in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL"
+
+
+def test_payroll_tax_workcover_wic_liability_detail_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "liability_scope_and_employer_side_boundary",
+        "jurisdiction_worksite_and_state_context",
+        "governed_basis_membership_and_payroll_bases",
+        "rates_sources_and_liability_evidence",
+        "worker_story_output_and_finalisation_relationship",
+    }
+    groups = {group.group_id: group for group in PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_PLAN.evidence_groups}
+    assert "Payroll Tax" in groups["liability_scope_and_employer_side_boundary"].query_terms
+    assert "WorkCover" in groups["liability_scope_and_employer_side_boundary"].query_terms
+    assert "WIC" in groups["liability_scope_and_employer_side_boundary"].query_terms
+    assert "Worksite.StateId" in groups["jurisdiction_worksite_and_state_context"].query_terms
+    assert "WorksitePosition" in groups["jurisdiction_worksite_and_state_context"].query_terms
+    assert "EmployeeAppointment" in groups["jurisdiction_worksite_and_state_context"].query_terms
+    assert "Payroll Bases & Totals" in groups["governed_basis_membership_and_payroll_bases"].query_terms
+    assert "taxable wages" in groups["governed_basis_membership_and_payroll_bases"].query_terms
+    assert "liability wages" in groups["governed_basis_membership_and_payroll_bases"].query_terms
+    assert "RateSource" in groups["rates_sources_and_liability_evidence"].query_terms
+    assert "demo fallback" in groups["rates_sources_and_liability_evidence"].query_terms
+    assert "Worker Story" in groups["worker_story_output_and_finalisation_relationship"].query_terms
+    assert "Finalisation Readiness" in groups["worker_story_output_and_finalisation_relationship"].query_terms
+
+
+def test_payroll_tax_workcover_wic_liability_detail_framed_questions_detect_domain_plan():
+    questions = [
+        "How do Payroll Tax, WorkCover and WIC liabilities work in the platform?",
+        "How does PayrollTax liability use Worksite.StateId jurisdiction context?",
+        "How do WorkCover and WIC liabilities relate to governed payroll bases?",
+        "How do liability RateSource and date-effective rates support payroll tax?",
+        "How should Worker Story show Payroll Tax WorkCover WIC liability evidence?",
+        "How do taxable wages and liability wages affect WorkCover liability evidence?",
+        "How does ObjectTime location support Payroll Tax WorkCover WIC jurisdiction evidence?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL"
+
+
+def test_payroll_tax_workcover_wic_liability_detail_routing_overlaps_keep_existing_domain_owners():
+    cases = {
+        "How should On-costs / Employer Liabilities work?": "ONCOSTS_EMPLOYER_LIABILITIES",
+        "What are employer liabilities in the platform?": "ONCOSTS_EMPLOYER_LIABILITIES",
+        "How should Tax / PAYG handle taxable basis and gross-to-net withholding?": "TAX_PAYG",
+        "How do Payroll Bases & Totals provide basis evidence?": "PAYROLL_BASES_AND_TOTALS",
+        "How does Payment Execution / Remittance generate payment files?": "PAYMENT_EXECUTION_REMITTANCE",
+        "How does Gross-to-Net explain net pay from payroll output?": "GROSS_TO_NET",
+        "What is Payroll Output in the platform?": "PAYROLL_OUTPUT",
+        "What is Worker Story and what evidence does it show?": "WORKER_STORY",
+        "What is Finalisation Readiness in the platform?": "FINALISATION_READINESS",
+        "How are Public Holidays handled in the platform?": "PUBLIC_HOLIDAYS",
+        "How does ObjectTime / Source Truth work?": "OBJECTTIME_SOURCE_TRUTH",
+        "How should Contacts / Employee Appointments work?": "CONTACTS_EMPLOYEE_APPOINTMENTS",
+        "How does RateSource / Rate Story explain selected rate amount?": "RATE_SOURCE_RATE_STORY",
+    }
+
+    for question, expected_plan_id in cases.items():
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == expected_plan_id
+
+
+def test_payroll_tax_workcover_wic_liability_detail_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Payroll Tax, WorkCover and WIC are employer-side liabilities and employer-side liability evidence, not "
+        "worker net pay, not PAYG withholding and not payment execution.",
+        title="Developer Log - Payroll Tax WorkCover WIC Liability Scope",
+    )
+    _ingest(
+        db_session,
+        "Jurisdiction depends on state, Worksite.StateId, WorksitePosition, EmployeeAppointment, ObjectTime location "
+        "and runtime location for Payroll Tax WorkCover WIC liability detail.",
+        title="Developer Log - Payroll Tax WorkCover WIC Jurisdiction",
+    )
+    _ingest(
+        db_session,
+        "Governed basis membership, payroll basis evidence, Payroll Bases & Totals, taxable wages, liability wages, "
+        "included RateTypes, excluded RateTypes and AwardRateTypes support Payroll Tax WorkCover WIC liability detail.",
+        title="Developer Log - Payroll Tax WorkCover WIC Payroll Bases",
+    )
+
+    results = retrieve_chunks_for_question(
+        db_session,
+        "How do Payroll Tax, WorkCover and WIC liabilities work in the platform?",
+    )
+
+    assert {result.evidence_group_id for result in results} >= {
+        "liability_scope_and_employer_side_boundary",
+        "jurisdiction_worksite_and_state_context",
+        "governed_basis_membership_and_payroll_bases",
+    }
+    assert all(result.domain_plan_id == "PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL" for result in results)
 
 
 def test_gross_to_net_question_detects_domain_plan():

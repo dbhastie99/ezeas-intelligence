@@ -1,0 +1,127 @@
+{
+  "name": "ObjectTime / Source Truth rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed ObjectTime source evidence, SourceTruth and PayRun inclusion context, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "objecttime-source-truth-rich-answer",
+      "question": "What is ObjectTime / Source Truth and why does it matter?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["ObjectTime / Source Truth", "governed source evidence", "PayRun inclusion", "not payroll calculation truth", "not user-facing worked hours", "ObjectTime", "source row", "SourceTruth", "WorkedHours", "raw span hours", "worked hours", "current-effective payroll output", "processed source truth", "Worker Story", "Source Truth", "Payroll Bases & Totals", "leave accrual", "Comparison / Remediation", "Movement Review", "Retro / Replay", "dirty", "reprocessing", "source file", "correction history", "evidence story", "outstanding hardening"],
+      "expected_source_terms_all": ["ObjectTime", "Source Truth", "PayRun inclusion"],
+      "expected_source_terms_any": ["SourceTruth", "WorkedHours", "raw span hours", "current-effective payroll output", "dirty contact"],
+      "forbidden_answer_patterns_any": ["ObjectTime\\s+alone\\s+is\\s+final\\s+payroll\\s+calculation\\s+truth\\.", "Raw\\s+span\\s+hours\\s+are\\s+worked\\s+hours\\.", "SourceTruth\\s+and\\s+WorkedHours\\s+are\\s+the\\s+same\\.", "Minerva\\s+mutates\\s+source\\s+truth\\.", "Minerva\\s+reprocesses\\s+workers\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "objecttime-source-evidence-not-calculation",
+      "question": "Why is ObjectTime source evidence rather than payroll calculation truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["ObjectTime", "source evidence", "governed source evidence", "not payroll calculation truth", "PayRun inclusion"],
+      "expected_source_terms_any": ["ObjectTime", "source evidence", "not payroll calculation truth"],
+      "forbidden_answer_patterns_any": ["ObjectTime\\s+alone\\s+is\\s+final\\s+payroll\\s+calculation\\s+truth\\.", "Code Evidence"]
+    },
+    {
+      "id": "objecttime-payrun-inclusion",
+      "question": "How does ObjectTime explain PayRun inclusion?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["ObjectTime", "PayRun inclusion", "source row", "belongs in a PayRun", "source inclusion", "SourceTruth"],
+      "expected_source_terms_any": ["PayRun inclusion", "belongs in a PayRun", "SourceTruth"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "objecttime-sourcetruth-vs-workedhours",
+      "question": "What is the difference between SourceTruth and WorkedHours?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["SourceTruth", "WorkedHours", "separate concepts", "source inclusion", "worked hours", "raw span hours"],
+      "expected_source_terms_any": ["SourceTruth", "WorkedHours", "raw span hours"],
+      "forbidden_answer_patterns_any": ["SourceTruth\\s+and\\s+WorkedHours\\s+are\\s+the\\s+same\\.", "Code Evidence"]
+    },
+    {
+      "id": "objecttime-raw-span-not-user-worked-hours",
+      "question": "Why should raw ObjectTime span hours not be treated as user-facing worked hours?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["raw ObjectTime span hours", "raw span hours", "span hours", "user-facing payroll worked hours", "interpreted payable", "worked hours"],
+      "expected_source_terms_any": ["raw span hours", "span hours", "worked hours"],
+      "forbidden_answer_patterns_any": ["Raw\\s+span\\s+hours\\s+are\\s+worked\\s+hours\\.", "Code Evidence"]
+    },
+    {
+      "id": "objecttime-imported-generated-source-rows",
+      "question": "How do imported and generated source rows relate to ObjectTime?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["imported", "generated", "source rows", "ObjectTime", "provenance", "validation", "mapping status"],
+      "expected_source_terms_any": ["imported source rows", "generated source rows", "validation mapping status"],
+      "forbidden_answer_patterns_any": ["Imported\\s+source\\s+data\\s+is\\s+automatically\\s+valid\\.", "Code Evidence"]
+    },
+    {
+      "id": "objecttime-current-effective-output",
+      "question": "How does ObjectTime / Source Truth connect to current-effective payroll output?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["ObjectTime / Source Truth", "current-effective payroll output", "processed source truth", "payroll outcome", "current-effective truth"],
+      "expected_source_terms_any": ["current-effective payroll output", "processed source truth", "payroll outcome"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "objecttime-worker-story-source-truth",
+      "question": "How should Worker Story use Source Truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "Source Truth", "source inclusion", "calculated payroll outcome", "before", "Decision Story"],
+      "expected_source_terms_any": ["Worker Story", "Source Truth", "calculated payroll outcome"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "objecttime-payroll-bases-leave-accrual",
+      "question": "How do Payroll Bases and Leave Accrual use ObjectTime / Source Truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Bases", "Leave Accrual", "ObjectTime / Source Truth", "governed processed", "bucket evidence", "raw source span duration"],
+      "expected_source_terms_any": ["Payroll Bases & Totals", "leave accrual", "bucket evidence"],
+      "forbidden_answer_patterns_any": ["Raw\\s+span\\s+hours\\s+are\\s+worked\\s+hours\\.", "Code Evidence"]
+    },
+    {
+      "id": "objecttime-comparison-movement-replay",
+      "question": "How do Comparison, Movement Review and Retro / Replay depend on source truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Comparison / Remediation", "Movement Review", "Retro / Replay", "source truth", "provenance", "historical", "current-effective"],
+      "expected_source_terms_any": ["Comparison / Remediation", "Movement Review", "Retro / Replay"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "objecttime-corrections-dirty-reprocessing",
+      "question": "How should corrections, dirty contacts and reprocessing relate to ObjectTime / Source Truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["correction", "dirty", "PayRunContacts", "reprocessing", "source truth", "governed", "Minerva"],
+      "expected_source_terms_any": ["correction audit", "dirty contact", "reprocessing"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+mutates\\s+source\\s+truth\\.", "Minerva\\s+reprocesses\\s+workers\\.", "Code Evidence"]
+    },
+    {
+      "id": "objecttime-provenance-audit",
+      "question": "What provenance and audit evidence should ObjectTime / Source Truth preserve?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["provenance", "audit", "source file", "source row", "ObjectTime", "import", "generation", "correction history", "evidence story"],
+      "expected_source_terms_any": ["evidence provenance", "source file", "correction history"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

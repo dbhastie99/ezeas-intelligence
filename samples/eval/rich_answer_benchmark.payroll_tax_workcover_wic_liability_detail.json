@@ -1,0 +1,17 @@
+{
+  "name": "Payroll Tax / WorkCover / WIC Liability Detail rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed Payroll Tax / WorkCover / WIC employer-side liability detail evidence.",
+  "questions": [
+    {
+      "id": "payroll-tax-workcover-wic-liability-detail-rich-answer",
+      "question": "How do Payroll Tax, WorkCover and WIC liabilities work in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Tax / WorkCover / WIC Liability Detail", "employer-side liability evidence", "payroll tax", "WorkCover", "WIC", "not worker net pay", "PAYG withholding", "payment execution", "state", "jurisdiction", "Worksite.StateId", "WorksitePosition", "EmployeeAppointment", "ObjectTime location", "public holiday", "governed basis membership", "Payroll Bases & Totals", "taxable wages", "liability wages", "RateSource", "date-effective", "liability-rate evidence", "demo fallback", "production truth", "Payroll Output", "Worker Story", "Gross-to-Net", "Finalisation Readiness", "Admin Queue", "Worker Attention", "Minerva", "does not calculate payroll tax", "does not calculate WorkCover or WIC liability", "does not lodge or remit statutory returns", "does not decide statutory liability", "does not change employer-liability configuration", "does not change Worksite", "does not calculate payroll", "does not mutate payroll output", "does not determine finalisation readiness", "does not finalise PayRuns", "does not mutate operational workforce/payroll/liability truth"],
+      "expected_source_terms_all": ["Payroll Tax", "WorkCover", "WIC", "Worksite.StateId", "Payroll Bases & Totals", "RateSource"],
+      "expected_source_terms_any": ["taxable wages", "liability wages", "Finalisation Readiness", "Worker Story", "demo fallback"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+tax\\.", "Minerva\\s+calculates\\s+WorkCover", "Minerva\\s+lodges", "Minerva\\s+decides\\s+statutory\\s+liability\\.", "Minerva\\s+changes\\s+employer-liability\\s+configuration\\.", "Minerva\\s+changes\\s+Worksite", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

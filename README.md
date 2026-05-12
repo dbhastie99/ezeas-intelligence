@@ -572,6 +572,28 @@ Run the Award Positions / Classifications rich-answer benchmark after corpus cha
 .\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.award_positions_classifications.json
 ```
 
+Run the Payroll Tax / WorkCover / WIC Liability Detail rich-answer benchmark after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payroll_tax_workcover_wic_liability_detail.json
+```
+
+Run the diagnostic-only Award Positions / Classifications corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_award_positions_classifications_corpus_coverage.py --json --output .\artifacts\eval\award_positions_classifications_corpus_coverage.json
+```
+
+Build the diagnostic-only Award Positions / Classifications answer gap report from coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_award_positions_classifications_answer_gap_report.py --coverage-report .\artifacts\eval\award_positions_classifications_corpus_coverage.json --output .\artifacts\eval\award_positions_classifications_answer_gap_report.json
+```
+
+These Award Positions / Classifications diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, read source code as Minerva evidence, connect Code Evidence Index to answer generation, and do not prove runtime operational truth. They do not classify workers, do not change EmployeeAppointment, WorksitePosition, Position or AwardPositionClass records, do not select award classes at runtime, do not interpret awards at runtime, do not calculate payroll, do not decide entitlements, do not mutate payroll output, do not determine or finalise readiness, and do not mutate operational workforce/payroll/award truth.
+
+For the repeatable Award Positions / Classifications evaluation workflow and interpretation guidance, see [docs/AWARD_POSITIONS_CLASSIFICATIONS_EVALUATION_RUNBOOK.md](docs/AWARD_POSITIONS_CLASSIFICATIONS_EVALUATION_RUNBOOK.md).
+
 Run the diagnostic-only Rosters / Patterns / Scheduling corpus coverage scan:
 
 ```powershell

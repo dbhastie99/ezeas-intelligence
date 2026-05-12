@@ -1,0 +1,150 @@
+{
+  "name": "Tax / PAYG rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed Tax / PAYG withholding evidence.",
+  "questions": [
+    {
+      "id": "tax-payg-rich-answer",
+      "question": "How should Tax / PAYG work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "Tax / PAYG",
+        "governed withholding calculation evidence",
+        "deterministic services",
+        "tax providers",
+        "TaxStory",
+        "source truth",
+        "worker tax profile",
+        "rule pack selection",
+        "frequency conversion",
+        "band/formula calculation",
+        "rounding",
+        "net-pay effect",
+        "taxable basis",
+        "taxable earnings",
+        "Payroll Bases & Totals",
+        "governed basis membership",
+        "worker tax declaration",
+        "withholding instruction",
+        "ProcessPeriod PaymentDate",
+        "payment date",
+        "pay frequency",
+        "unsupported",
+        "gross-to-net",
+        "finalised totals",
+        "supplementary incremental PAYG",
+        "same-period taxable earnings",
+        "prior PAYG withheld",
+        "Worker Story",
+        "PayRun Admin Queue",
+        "outstanding hardening"
+      ],
+      "expected_source_terms_all": [
+        "Tax / PAYG",
+        "TaxStory",
+        "ProcessPeriod PaymentDate"
+      ],
+      "expected_source_terms_any": [
+        "supplementary incremental PAYG",
+        "worker tax declaration",
+        "gross-to-net",
+        "unsupported tax scenarios"
+      ],
+      "forbidden_answer_patterns_any": [
+        "Minerva\\s+calculates\\s+tax",
+        "PAYG\\s+is\\s+fully\\s+implemented\\s+for\\s+all\\s+frequencies",
+        "unsupported\\s+frequencies\\s+are\\s+calculated\\s+values\\.",
+        "supplementary\\s+incremental\\s+PAYG\\s+is\\s+complete\\.",
+        "Code Evidence",
+        "runtime truth from diagnostics"
+      ]
+    },
+    {
+      "id": "tax-payg-minerva-not-calculate",
+      "question": "Why must Minerva not calculate PAYG withholding?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PAYG withholding", "governed withholding calculation evidence", "deterministic services", "tax providers", "Minerva explains", "not an LLM tax calculation"],
+      "expected_source_terms_any": ["PAYG withholding", "deterministic services", "tax providers"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+tax", "Code Evidence"]
+    },
+    {
+      "id": "tax-payg-taxstory-explainability",
+      "question": "What should a TaxStory explain?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["TaxStory", "source truth", "worker tax profile", "payroll context", "rule pack selection", "component selection", "frequency conversion", "band/formula calculation", "rounding", "net-pay effect", "unsupported", "audit provenance"],
+      "expected_source_terms_any": ["TaxStory", "Tax Story", "rule pack selection"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+tax", "Code Evidence"]
+    },
+    {
+      "id": "tax-payg-taxable-basis-payroll-bases",
+      "question": "How does taxable basis relate to Payroll Bases & Totals?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["taxable basis", "taxable earnings", "Payroll Bases & Totals", "governed basis membership", "raw flags", "not be casually inferred", "taxable basis governance"],
+      "expected_source_terms_any": ["taxable basis", "taxable earnings", "Payroll Bases & Totals"],
+      "forbidden_answer_patterns_any": ["taxable\\s+basis\\s+governance\\s+is\\s+complete\\.", "Code Evidence"]
+    },
+    {
+      "id": "tax-payg-payment-date-context",
+      "question": "Why does ProcessPeriod PaymentDate matter for Tax / PAYG?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["ProcessPeriod PaymentDate", "payment date", "process period", "tax context", "governed", "derived", "not hardcoded"],
+      "expected_source_terms_any": ["ProcessPeriod PaymentDate", "payment date", "process period"],
+      "forbidden_answer_patterns_any": ["hardcoded\\s+payment\\s+date", "Code Evidence"]
+    },
+    {
+      "id": "tax-payg-pay-frequency-support",
+      "question": "How should pay frequency support be handled in Tax / PAYG?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["pay frequency", "provider support", "daily", "weekly", "fortnightly", "monthly", "quarterly", "unsupported", "configuration status", "status-honest"],
+      "expected_source_terms_any": ["pay frequency", "provider support", "unsupported frequency"],
+      "forbidden_answer_patterns_any": ["PAYG\\s+is\\s+fully\\s+implemented\\s+for\\s+all\\s+frequencies", "unsupported\\s+frequencies\\s+are\\s+calculated\\s+values\\.", "Code Evidence"]
+    },
+    {
+      "id": "tax-payg-worker-tax-readiness",
+      "question": "How should worker tax declarations and withholding inputs affect tax readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["worker tax declaration", "withholding instruction", "withholding inputs", "tax profile", "calculation readiness", "tax readiness"],
+      "expected_source_terms_any": ["worker tax declaration", "withholding instruction", "withholding inputs"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+tax", "Code Evidence"]
+    },
+    {
+      "id": "tax-payg-supplementary-incremental",
+      "question": "How should supplementary incremental PAYG work?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["supplementary incremental PAYG", "same-period taxable earnings", "prior PAYG withheld", "incremental", "supplementary tax", "outstanding"],
+      "expected_source_terms_any": ["supplementary incremental PAYG", "supplementary PAYG", "prior PAYG withheld"],
+      "forbidden_answer_patterns_any": ["supplementary\\s+incremental\\s+PAYG\\s+is\\s+complete\\.", "Code Evidence"]
+    },
+    {
+      "id": "tax-payg-worker-story-admin-queue",
+      "question": "How do Tax / PAYG issues connect to Worker Story and PayRun Admin Queue?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Tax / PAYG", "Worker Story", "PayRun Admin Queue", "tax readiness", "unsupported states", "correction", "reprocessing consequences"],
+      "expected_source_terms_any": ["Worker Story", "PayRun Admin Queue", "tax readiness"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+tax", "Code Evidence"]
+    }
+  ]
+}

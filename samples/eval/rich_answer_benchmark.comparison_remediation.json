@@ -1,0 +1,146 @@
+{
+  "name": "Comparison / Remediation rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed comparison and remediation evidence.",
+  "questions": [
+    {
+      "id": "comparison-remediation-rich-answer",
+      "question": "What is Comparison / Remediation and how should it work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "Comparison / Remediation",
+        "governed comparison",
+        "primary calculated",
+        "comparator calculated",
+        "imported actual",
+        "ObjectTime",
+        "EmployeeAppointment",
+        "AwardPositionClass",
+        "operational payroll truth",
+        "AwardComparisonPolicy",
+        "comparison evidence",
+        "variance",
+        "remediation top-up",
+        "typed",
+        "explainable",
+        "comparator classification",
+        "Worker Story",
+        "PayRun Admin Queue",
+        "Movement Review",
+        "design doctrine"
+      ],
+      "expected_answer_terms_any": [
+        "PayRunComparisonRun",
+        "PayRunComparisonLine",
+        "PayRunVarianceLine",
+        "AwardPositionClassComparisonMap"
+      ],
+      "expected_source_terms_all": [
+        "Comparison / Remediation",
+        "AwardComparisonPolicy",
+        "PayRunComparisonRun"
+      ],
+      "expected_source_terms_any": [
+        "PayRunVarianceLine",
+        "AwardPositionClassComparisonMap",
+        "imported actuals",
+        "Movement Review"
+      ],
+      "forbidden_answer_patterns_any": [
+        "is\\s+fully\\s+implemented",
+        "comparator\\s+classification\\s+can\\s+reuse",
+        "actuals\\s+are\\s+calculated\\s+interpreter\\s+truth",
+        "ordinary\\s+manual\\s+adjustments",
+        "Code Evidence",
+        "runtime truth from diagnostics"
+      ]
+    },
+    {
+      "id": "comparison-remediation-three-lanes",
+      "question": "What are the three comparison lanes in Comparison / Remediation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["primary calculated", "comparator calculated", "actual imported", "external outcome truth", "separate lanes", "manual adjustment"],
+      "expected_source_terms_any": ["primary calculated", "comparator calculated", "actual imported", "actuals lane"],
+      "forbidden_answer_patterns_any": ["ordinary\\s+manual\\s+adjustments", "Code Evidence"]
+    },
+    {
+      "id": "comparison-remediation-primary-award-path",
+      "question": "Why is the primary award path preserved during comparator assessment?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["ObjectTime", "EmployeeAppointment", "AwardPositionClass", "operational payroll truth", "comparator award", "assessment lens", "replacement operational award"],
+      "expected_source_terms_any": ["ObjectTime", "EmployeeAppointment", "AwardPositionClass", "primary award path"],
+      "forbidden_answer_patterns_any": ["is\\s+a\\s+replacement\\s+operational\\s+award", "Code Evidence"]
+    },
+    {
+      "id": "comparison-remediation-imported-actuals",
+      "question": "Why are imported actuals treated as external outcome truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["imported actuals", "external payroll outcome truth", "actuals lane", "calculated interpreter truth", "interpreter lines"],
+      "expected_source_terms_any": ["imported actuals", "actuals lane", "external outcome truth"],
+      "forbidden_answer_patterns_any": ["actuals\\s+are\\s+calculated\\s+interpreter\\s+truth", "Code Evidence"]
+    },
+    {
+      "id": "comparison-remediation-policy",
+      "question": "What should AwardComparisonPolicy govern?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["AwardComparisonPolicy", "comparator selection", "active lanes", "grain", "offset policy", "output mode", "review requirements", "variance treatment"],
+      "expected_source_terms_any": ["AwardComparisonPolicy", "Award Comparison Policy", "comparator selection"],
+      "forbidden_answer_patterns_any": ["is\\s+fully\\s+implemented", "Code Evidence"]
+    },
+    {
+      "id": "comparison-remediation-evidence-before-variance",
+      "question": "Why must comparison evidence exist before variance generation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["comparison evidence", "variance generation", "traceable", "comparison run", "comparison lines", "policy basis"],
+      "expected_source_terms_any": ["PayRunComparisonRun", "PayRunComparisonLine", "comparison evidence"],
+      "forbidden_answer_patterns_any": ["generated\\s+variance\\s+exists\\s+in\\s+production", "Code Evidence"]
+    },
+    {
+      "id": "comparison-remediation-variance-lines-not-manual",
+      "question": "Why are remediation or top-up variance lines not ordinary manual adjustments?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["remediation", "top-up variance lines", "typed", "explainable", "evidence-linked", "not ordinary manual adjustments"],
+      "expected_source_terms_any": ["PayRunVarianceLine", "remediation top-up", "typed"],
+      "forbidden_answer_patterns_any": ["are\\s+ordinary\\s+manual\\s+adjustments", "Code Evidence"]
+    },
+    {
+      "id": "comparison-remediation-classification-mapping",
+      "question": "Why does comparator classification require governed mapping?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["comparator classification", "must not be guessed", "reused automatically", "primary class", "AwardPositionClass", "classification-lens evidence"],
+      "expected_source_terms_any": ["AwardPositionClassComparisonMap", "EmployeeAppointmentAwardClassAssignment", "ObjectTimeClassificationResolution"],
+      "forbidden_answer_patterns_any": ["comparator\\s+classification\\s+can\\s+reuse", "Code Evidence"]
+    },
+    {
+      "id": "comparison-remediation-surface-connections",
+      "question": "How should Comparison / Remediation connect to Worker Story, Admin Queue and Movement Review?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "comparison", "remediation evidence", "PayRun Admin Queue", "missing policy", "unmapped actuals", "variance review actions", "Movement Review", "automatic proof of error"],
+      "expected_source_terms_any": ["Worker Story", "PayRun Admin Queue", "Movement Review"],
+      "forbidden_answer_patterns_any": ["variance\\s+is\\s+automatic\\s+proof\\s+of\\s+error", "Code Evidence"]
+    }
+  ]
+}

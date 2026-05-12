@@ -1,0 +1,107 @@
+{
+  "name": "Deductions / Obligations rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed deduction and obligation evidence.",
+  "questions": [
+    {
+      "id": "deductions-obligations-rich-answer",
+      "question": "How should Deductions and Obligations work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Deductions / Obligations", "governed payroll outcome", "net-pay subtraction", "LibraryDeductionTemplate", "AccountDeductionTemplate", "ContactPayrollDeduction", "PayRunDeductionApplication", "advisory accelerators", "operative configuration", "worker-specific deduction instruction", "requested", "taken", "skipped", "unmet", "supplementary", "same-period application memory", "recurring deductions", "applicability", "affordability", "priority", "partial", "full-only", "carry-forward", "visible", "ContactPayrollObligation", "ContactPayrollObligationLedger", "durable obligations", "balance-bearing recovery", "reducing-balance recovery", "outstanding balance", "ledger evidence", "negative net pay", "policy treatment", "gross-to-net", "payment execution", "remittance", "Worker Story", "PayRun Admin Queue", "Worker Attention", "outstanding hardening"],
+      "expected_source_terms_all": ["Deductions / Obligations", "LibraryDeductionTemplate", "PayRunDeductionApplication"],
+      "expected_source_terms_any": ["ContactPayrollObligation", "ContactPayrollObligationLedger", "negative net pay", "supplementary deduction memory"],
+      "forbidden_answer_patterns_any": ["the\\s+full\\s+deduction/obligation\\s+engine\\s+is\\s+complete\\.", "pre-tax\\s+deductions\\s+are\\s+fully\\s+migrated\\.", "negative\\s+net\\s+pay\\s+has\\s+been\\s+solved", "payment\\s+execution\\s+and\\s+remittance\\s+are\\s+implemented\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-template-chain",
+      "question": "What is the deduction template chain in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["LibraryDeductionTemplate", "AccountDeductionTemplate", "ContactPayrollDeduction", "PayRunDeductionApplication", "advisory accelerators", "operative configuration"],
+      "expected_source_terms_any": ["LibraryDeductionTemplate", "AccountDeductionTemplate", "ContactPayrollDeduction"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-application-memory",
+      "question": "Why is PayRunDeductionApplication important?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PayRunDeductionApplication", "PayRun", "event", "outcome memory", "requested", "taken", "skipped", "unmet", "net-pay subtraction"],
+      "expected_source_terms_any": ["PayRunDeductionApplication", "requested", "unmet"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-supplementary-memory",
+      "question": "Why must supplementary PayRuns use deduction memory?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["supplementary", "same-period application memory", "recurring deductions", "blindly repeat", "earlier deduction outcomes"],
+      "expected_source_terms_any": ["supplementary deduction memory", "same-period application memory", "recurring deductions"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-applicability-affordability",
+      "question": "What does \"applicability before affordability\" mean for deductions?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["applicability", "before affordability", "affordability", "priority", "partial", "full-only", "carry-forward", "governed", "explainable"],
+      "expected_source_terms_any": ["applicability", "affordability", "priority"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-skipped-partial-unmet",
+      "question": "How should skipped, partial, unmet and carry-forward deductions be handled?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["skipped", "partial", "unmet", "carry-forward", "visible", "must not silently disappear"],
+      "expected_source_terms_any": ["skipped", "partial", "unmet", "carry-forward"],
+      "forbidden_answer_patterns_any": ["may\\s+silently\\s+disappear", "carry-forward\\s+review\\s+automatically\\s+creates\\s+an\\s+obligation\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-deduction-vs-obligation",
+      "question": "What is the difference between a deduction and an obligation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["deduction", "governed PayRun application outcome", "worker instruction", "obligation", "durable", "balance-bearing recovery record", "ledger evidence"],
+      "expected_source_terms_any": ["ContactPayrollDeduction", "ContactPayrollObligation", "ContactPayrollObligationLedger"],
+      "forbidden_answer_patterns_any": ["obligations\\s+are\\s+just\\s+deduction\\s+rows", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-reducing-balance",
+      "question": "How should reducing-balance recovery work?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["reducing-balance recovery", "outstanding balance", "ledger evidence", "ContactPayrollObligation", "ContactPayrollObligationLedger", "cap recovery"],
+      "expected_source_terms_any": ["reducing-balance recovery", "outstanding balance", "ledger evidence"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-negative-net-pay",
+      "question": "Why is negative net pay a governed outcome?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["negative net pay", "governed outcome", "policy treatment", "silent arithmetic side effect", "not", "solved"],
+      "expected_source_terms_any": ["negative net pay", "policy treatment"],
+      "forbidden_answer_patterns_any": ["negative\\s+net\\s+pay\\s+has\\s+been\\s+solved", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "deductions-obligations-worker-story-admin-queue",
+      "question": "How do deductions and obligations connect to Worker Story and PayRun Admin Queue?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Deductions / Obligations", "Worker Story", "PayRun Admin Queue", "Worker Attention", "readiness", "issues", "gross-to-net"],
+      "expected_source_terms_any": ["Worker Story", "PayRun Admin Queue", "Worker Attention"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

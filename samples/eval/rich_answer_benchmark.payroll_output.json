@@ -1,0 +1,77 @@
+{
+  "name": "Payroll Output rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for Payroll Output calculated output evidence.",
+  "questions": [
+    {
+      "id": "payroll-output-rich-answer",
+      "question": "What is Payroll Output in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Output", "evidence surface", "calculated payroll results", "current-effective worker and PayRun output", "line-level payroll outcome", "payroll lines", "output lines", "worker-level output", "PayRun totals", "Run Output", "Process Period Output", "different lenses", "Worker Story", "Gross-to-Net", "Decision Story", "Rate Story", "Payroll Bases & Totals", "Finalisation Readiness", "Payment Execution", "status honesty", "outstanding hardening", "Minerva", "does not calculate payroll output", "change payroll output lines", "finalise PayRuns", "approve payroll output", "select treatments", "select rates", "generate payment files", "mutate operational payroll truth"],
+      "expected_source_terms_all": ["Payroll Output", "current-effective payroll output truth", "Run Output", "Process Period Output"],
+      "expected_source_terms_any": ["payroll line", "output line", "Worker Story", "Gross-to-Net"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+output\\.", "Minerva\\s+changes\\s+payroll\\s+output\\s+lines\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Minerva\\s+approves\\s+payroll\\s+output\\.", "Minerva\\s+selects\\s+treatments\\.", "Minerva\\s+selects\\s+rates\\.", "Minerva\\s+generates\\s+payment\\s+files\\.", "Payroll\\s+Output\\s+alone\\s+proves\\s+payroll\\s+correctness", "Run\\s+Output\\s+and\\s+Process\\s+Period\\s+Output\\s+are\\s+the\\s+same", "Minerva\\s+mutates\\s+payroll\\s+truth\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-output-current-effective-output",
+      "question": "What does current-effective payroll output mean?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["current-effective payroll output truth", "latest/current worker outcome", "process period", "Targeted reprocessing versus full run", "superseded", "stale run rows", "current truth", "Process Period Output", "current-effective whole-period worker truth", "Run Output", "selected run/subrun lens", "Minerva does not calculate payroll output"],
+      "expected_source_terms_any": ["current-effective payroll output truth", "latest/current worker outcome", "superseded", "stale"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+output\\.", "Minerva\\s+selects\\s+output\\.", "superseded\\s+run\\s+rows\\s+are\\s+current\\s+truth", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-output-run-vs-process-period-output",
+      "question": "What is the difference between Run Output and Process Period Output?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Run Output", "selected run/subrun lens", "Process Period Output", "current-effective whole-period worker truth", "targeted reprocess should not hide non-target workers", "different lenses", "current-effective truth", "should not be collapsed without explanation"],
+      "expected_source_terms_any": ["Run Output", "Process Period Output", "selected run/subrun lens", "targeted reprocess"],
+      "forbidden_answer_patterns_any": ["Run\\s+Output\\s+and\\s+Process\\s+Period\\s+Output\\s+are\\s+the\\s+same\\s+lens", "targeted\\s+reprocess\\s+hides\\s+non-target\\s+workers", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-output-payroll-lines",
+      "question": "How should Payroll Output explain payroll lines?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["calculated payroll lines", "output lines", "amount", "quantity", "treatment", "Decision Story", "why a payroll line or treatment exists", "Rate Story", "selected rate", "rate amount", "Worker Story", "worker-level output evidence", "calculated result evidence", "not Minerva calculation"],
+      "expected_source_terms_any": ["calculated payroll lines", "output line", "amount", "quantity", "Decision Story"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+output\\.", "Minerva\\s+selects\\s+treatments\\.", "Minerva\\s+selects\\s+rates\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-output-gross-to-net",
+      "question": "How does Payroll Output relate to Gross-to-Net?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Output", "Gross-to-Net", "payroll output amounts and lines", "gross earnings", "taxable basis", "deductions", "obligations", "net pay", "payment execution", "current-effective payroll output truth", "Minerva does not calculate gross-to-net"],
+      "expected_source_terms_any": ["Gross-to-Net", "payroll output amounts", "net pay", "current-effective"],
+      "forbidden_answer_patterns_any": ["Payroll\\s+Output\\s+is\\s+payment\\s+execution", "Minerva\\s+calculates\\s+gross-to-net\\.", "Minerva\\s+generates\\s+payment\\s+files\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-output-payroll-bases-totals",
+      "question": "How does Payroll Output relate to Payroll Bases & Totals?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Output", "calculated pay/result evidence", "Payroll Bases & Totals", "governed basis evidence", "current-effective payroll source truth", "taxable", "superable", "payroll tax", "WIC", "ordinary", "worked-hours evidence", "Output totals and basis evidence are related but distinct"],
+      "expected_source_terms_any": ["Payroll Bases & Totals", "basis evidence", "current-effective payroll source truth", "taxable"],
+      "forbidden_answer_patterns_any": ["Payroll\\s+Bases\\s+&\\s+Totals\\s+replace\\s+Payroll\\s+Output", "output\\s+totals\\s+and\\s+basis\\s+evidence\\s+are\\s+the\\s+same", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-output-finalisation-payment-execution",
+      "question": "How does Payroll Output relate to finalisation and payment execution?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Finalisation Readiness", "current-effective output", "blockers/warnings", "finalised outcome truth", "Payment Execution", "finalised", "gross-to-net", "payment-ready outcome", "downstream", "Payroll Output is not finalisation", "payment-file generation", "Payroll Output alone does not prove payroll correctness"],
+      "expected_source_terms_any": ["Finalisation Readiness", "Payment Execution", "finalised outcome truth", "payment-ready outcome"],
+      "forbidden_answer_patterns_any": ["Payroll\\s+Output\\s+finalises\\s+PayRuns", "Minerva\\s+finalises\\s+PayRuns\\.", "Minerva\\s+generates\\s+payment\\s+files\\.", "Payroll\\s+Output\\s+alone\\s+proves\\s+payroll\\s+correctness", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

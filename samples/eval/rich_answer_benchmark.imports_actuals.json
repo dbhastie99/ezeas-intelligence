@@ -1,0 +1,117 @@
+{
+  "name": "Imports / Actuals rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed imported evidence and external actuals outcome truth, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "imports-actuals-rich-answer",
+      "question": "How should Imports and Actuals work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Imports / Actuals", "governed imported evidence", "external source", "outcome truth", "not calculated interpreter truth", "imported timesheets", "ObjectTime", "validation", "mapping", "imported payroll actuals", "actuals lane", "calculated interpreter output", "pay codes", "RateTypes", "positions", "classifications", "source rows", "unmapped actuals", "Comparison / Remediation", "primary calculated", "comparator calculated", "reconciliation", "Movement Review", "Worker Story", "Admin Queue", "source file", "import run", "mapping decision", "validation status", "outstanding hardening"],
+      "expected_source_terms_all": ["Imports / Actuals", "imported payroll actuals", "actuals lane"],
+      "expected_source_terms_any": ["imported timesheets", "ObjectTime source truth", "source-system mapping", "unmapped actuals", "import provenance"],
+      "forbidden_answer_patterns_any": ["Imported\\s+actuals\\s+are\\s+calculated\\s+interpreter\\s+truth\\.", "Imported\\s+source\\s+data\\s+is\\s+automatically\\s+correct\\.", "Unmapped\\s+actuals\\s+should\\s+be\\s+silently\\s+ignored\\.", "Minerva\\s+validates\\s+imports\\.", "Minerva\\s+mutates\\s+mappings\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "imports-actuals-external-not-interpreter",
+      "question": "Why are imported actuals external outcome truth rather than calculated interpreter truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["imported actuals", "external outcome truth", "actuals lane", "calculated interpreter truth", "calculated interpreter output"],
+      "expected_source_terms_any": ["imported payroll actuals", "actuals lane", "external outcome lane"],
+      "forbidden_answer_patterns_any": ["Imported\\s+actuals\\s+are\\s+calculated\\s+interpreter\\s+truth\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "imports-actuals-imported-timesheet-source-truth",
+      "question": "How should imported timesheets become source truth in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["imported timesheets", "source truth", "ObjectTime", "work evidence", "validation", "mapping", "provenance"],
+      "expected_source_terms_any": ["imported timesheets", "ObjectTime", "validation and mapping"],
+      "forbidden_answer_patterns_any": ["Imported\\s+source\\s+data\\s+is\\s+automatically\\s+correct\\.", "Code Evidence"]
+    },
+    {
+      "id": "imports-actuals-source-system-mappings",
+      "question": "Why do source-system mappings matter for Imports / Actuals?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["source-system mapping", "workers", "dates", "source rows", "pay codes", "RateTypes", "positions", "classifications", "validation"],
+      "expected_source_terms_any": ["source-system mapping", "source system mapping", "source rows"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+mutates\\s+mappings\\.", "Code Evidence"]
+    },
+    {
+      "id": "imports-actuals-pay-code-ratetype-mapping",
+      "question": "How should pay code and RateType mapping work for imported actuals?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["pay code mapping", "RateType mapping", "platform concepts", "unmapped actuals", "deterministic", "review", "configuration issues"],
+      "expected_source_terms_any": ["pay code mapping", "RateType mapping", "unmapped actuals"],
+      "forbidden_answer_patterns_any": ["Unmapped\\s+actuals\\s+should\\s+be\\s+silently\\s+ignored\\.", "Code Evidence"]
+    },
+    {
+      "id": "imports-actuals-position-classification-mapping",
+      "question": "Why does position/classification mapping matter for imported timesheets and actuals?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["position", "classification", "mapping", "imported timesheets", "actuals", "source-system", "platform positions", "classifications"],
+      "expected_source_terms_any": ["ImportedPositionClassificationMap", "position mapping", "classification mapping"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "imports-actuals-objecttime-source-truth",
+      "question": "How do Imports / Actuals connect to ObjectTime and source truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Imports / Actuals", "ObjectTime", "source truth", "source row", "import provenance", "imported timesheets"],
+      "expected_source_terms_any": ["ObjectTime source truth", "source row", "import provenance"],
+      "forbidden_answer_patterns_any": ["Imported\\s+source\\s+data\\s+is\\s+automatically\\s+correct\\.", "Code Evidence"]
+    },
+    {
+      "id": "imports-actuals-comparison-remediation-connection",
+      "question": "How do Imports / Actuals connect to Comparison / Remediation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Imports / Actuals", "Comparison / Remediation", "primary calculated", "comparator calculated", "imported actual lanes", "actuals lane", "variance"],
+      "expected_source_terms_any": ["Comparison / Remediation", "primary calculated", "imported actual lanes"],
+      "forbidden_answer_patterns_any": ["actuals\\s+lane,\\s+comparison-line\\s+or\\s+import\\s+mapping\\s+models\\s+are\\s+fully\\s+implemented", "Code Evidence"]
+    },
+    {
+      "id": "imports-actuals-reconciliation-movement-review",
+      "question": "How do Imports / Actuals support reconciliation and Movement Review?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["reconciliation", "Movement Review", "imported actuals", "source evidence", "variance", "review outcomes"],
+      "expected_source_terms_any": ["reconciliation", "Movement Review", "review outcomes"],
+      "forbidden_answer_patterns_any": ["Imported\\s+source\\s+data\\s+is\\s+automatically\\s+correct\\.", "Code Evidence"]
+    },
+    {
+      "id": "imports-actuals-worker-story-admin-queue",
+      "question": "How should Worker Story and Admin Queue surface import and actuals issues?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "Admin Queue", "import provenance", "mapping issues", "unmapped actuals", "missing classifications", "review actions"],
+      "expected_source_terms_any": ["Worker Story", "Admin Queue", "mapping issues"],
+      "forbidden_answer_patterns_any": ["Unmapped\\s+actuals\\s+should\\s+be\\s+silently\\s+ignored\\.", "Code Evidence"]
+    },
+    {
+      "id": "imports-actuals-provenance-audit",
+      "question": "What provenance and audit evidence should Imports / Actuals preserve?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["provenance", "audit", "source file", "source row", "import run", "validation status", "mapping decision", "story evidence"],
+      "expected_source_terms_any": ["evidence provenance", "source file", "import run"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+validates\\s+imports\\.", "Minerva\\s+mutates\\s+mappings\\.", "Code Evidence"]
+    }
+  ]
+}

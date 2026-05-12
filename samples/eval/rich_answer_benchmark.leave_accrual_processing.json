@@ -1,0 +1,117 @@
+{
+  "name": "Leave Accrual / Processing rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for detailed leave accrual and leave processing evidence, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "leave-accrual-processing-rich-answer",
+      "question": "How does leave accrue and get processed in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Accrual / Processing", "deterministic platform outcomes", "Minerva calculations", "generic leave policy advice", "source truth", "applicability", "LeaveTypeRule", "canonical processed payroll result truth", "CalcInterpreterLine", "current-effective payroll output", "AwardRateType", "RateType", "accrualability", "PER_HOUR", "minute", "hour", "LeaveLedger", "leave valuation basis", "TAKEN leave", "hard failure", "leave request payment effects", "after payroll interpretation", "finalisation readiness", "Worker Story", "Leave and Accrual Outcome", "Payroll Bases & Totals", "Leave Source Model", "outstanding hardening"],
+      "expected_source_terms_all": ["Leave Accrual", "LeaveLedger", "CalcInterpreterLine"],
+      "expected_source_terms_any": ["Leave Source Model", "PER_HOUR", "LeaveProcessRun", "Worker Story"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+leave\\.", "Leave\\s+Source\\s+Model\\s+is\\s+complete\\.", "all\\s+leave\\s+types\\s+are\\s+fully\\s+implemented\\.", "LeaveTypeRule\\s+alone\\s+is\\s+final\\s+applicability\\s+truth\\.", "TAKEN\\s+leave\\s+can\\s+post\\s+without\\s+valuation\\.", "leave\\s+processing\\s*/\\s*finalisation\\s+UI\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-minerva-not-calculate",
+      "question": "Why must Minerva not calculate leave accrual?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Minerva", "must not calculate leave accrual", "deterministic platform outcomes", "formal evidence"],
+      "expected_source_terms_any": ["Minerva calculations", "deterministic platform outcomes", "Leave Accrual"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+leave\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-source-truth",
+      "question": "What source truth should leave accrual use?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["source truth", "applicability", "canonical processed payroll result truth", "Leave Source Model"],
+      "expected_source_terms_any": ["leave source truth", "source truth", "Leave Source Model"],
+      "forbidden_answer_patterns_any": ["Leave\\s+Source\\s+Model\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-calc-interpreter-output",
+      "question": "How do CalcInterpreterLine and current-effective payroll output relate to leave accrual?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["CalcInterpreterLine", "current-effective payroll output", "processed payroll-result evidence", "leave basis quantities"],
+      "expected_source_terms_any": ["CalcInterpreterLine", "current-effective payroll output", "canonical processed payroll result truth"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+leave\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-leavetype-rule-role",
+      "question": "What is the role of LeaveType and LeaveTypeRule in leave processing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["LeaveType", "LeaveTypeRule", "policy", "calculation content", "applicability model"],
+      "expected_source_terms_any": ["LeaveType", "LeaveTypeRule", "accrualability"],
+      "forbidden_answer_patterns_any": ["LeaveTypeRule\\s+alone\\s+is\\s+final\\s+applicability\\s+truth\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-leavetyperule-not-final-applicability",
+      "question": "Why is LeaveTypeRule not final leave applicability truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["LeaveTypeRule", "source truth", "applicability", "Leave Source Model", "outstanding"],
+      "expected_source_terms_any": ["LeaveTypeRule", "applicability", "Leave Source Model"],
+      "forbidden_answer_patterns_any": ["LeaveTypeRule\\s+alone\\s+is\\s+final\\s+applicability\\s+truth\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-leaveledger-explanation",
+      "question": "What should LeaveLedger explain?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["LeaveLedger", "evidence-bearing movement records", "accrual", "payment", "balance outcomes", "Worker Story"],
+      "expected_source_terms_any": ["LeaveLedger", "Leave Ledger", "balance movements"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-taken-valuation-hard-fail",
+      "question": "Why does TAKEN leave valuation need hard-fail behaviour when rates are missing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["TAKEN leave", "valuation", "hard-fail", "missing", "silent", "fallback", "mandatory"],
+      "expected_source_terms_any": ["TAKEN leave", "leave valuation basis", "hard failure"],
+      "forbidden_answer_patterns_any": ["TAKEN\\s+leave\\s+can\\s+post\\s+without\\s+valuation\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-request-payment-sequencing",
+      "question": "How do leave request payment effects and leave accrual sequencing work?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["leave request payment effects", "before", "within payroll interpretation", "after payroll interpretation", "processed payroll output"],
+      "expected_source_terms_any": ["leave request", "payment effects", "after payroll interpretation"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-worker-story-payroll-bases",
+      "question": "How do Worker Story and Payroll Bases & Totals connect to leave accrual and processing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "Leave and Accrual Outcome", "Payroll Bases & Totals", "worked hours", "leave basis quantities"],
+      "expected_source_terms_any": ["Worker Story", "Payroll Bases & Totals", "Leave and Accrual Outcome"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-accrual-processing-payrun-finalisation-readiness",
+      "question": "How should PayRun processing and finalisation surface leave readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PayRun processing", "finalisation", "leave readiness", "missing leave output", "warning acknowledgement", "honestly"],
+      "expected_source_terms_any": ["PayRun processing", "finalisation readiness", "missing leave output"],
+      "forbidden_answer_patterns_any": ["leave\\s+processing\\s*/\\s*finalisation\\s+UI\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

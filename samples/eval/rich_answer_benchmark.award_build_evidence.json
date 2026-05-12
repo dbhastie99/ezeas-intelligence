@@ -1,0 +1,127 @@
+{
+  "name": "Award Build / Award Evidence rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed award build configuration and traceable award evidence, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "award-build-evidence-rich-answer",
+      "question": "How should Award Build and Award Evidence work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Build", "Award Evidence", "governed", "configuration", "traceable evidence", "award documents", "pay guide", "source evidence", "RateType", "AwardRateType", "RateSource", "date-effective", "classification", "position", "class evidence", "allowances", "penalties", "conditions", "DecisionEvidenceIndex", "RateSourceEvidenceIndex", "Worker Story", "Decision Story", "Rate Story", "NEEDS_CONFIGURATION", "AwardEvidenceSet", "outstanding hardening"],
+      "expected_source_terms_all": ["Award Build", "Award Evidence", "RateSource"],
+      "expected_source_terms_any": ["AwardRateType", "DecisionEvidenceIndex", "RateSourceEvidenceIndex", "NEEDS_CONFIGURATION", "AwardEvidenceSet"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+should\\s+calculate\\s+payroll\\.", "Minerva\\s+should\\s+interpret\\s+awards\\s+at\\s+runtime\\.", "hardcoded\\s+rates\\s+are\\s+production\\s+truth\\.", "award\\s+build\\s+is\\s+fully\\s+implemented\\s+for\\s+all\\s+awards", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-build-not-runtime-payroll-calculation",
+      "question": "Why is Award Build / Award Evidence not runtime payroll calculation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Award Build", "Award Evidence", "governed configuration", "evidence creation", "not runtime payroll calculation", "Minerva", "interpreting awards at runtime"],
+      "expected_source_terms_any": ["not runtime payroll calculation", "governed configuration", "Award Evidence"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+should\\s+calculate\\s+payroll\\.", "Minerva\\s+should\\s+interpret\\s+awards\\s+at\\s+runtime\\.", "Code Evidence"]
+    },
+    {
+      "id": "award-build-source-documents-pay-guides",
+      "question": "How should award documents and pay guides act as source evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["award documents", "pay guides", "formal source evidence", "source evidence", "row", "column", "page", "rules", "rates"],
+      "expected_source_terms_any": ["award document", "pay guide evidence", "row column page evidence"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-build-ratetype-vs-awardratetype",
+      "question": "What is the difference between RateType and AwardRateType in award build evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["RateType", "stable conceptual pay type", "AwardRateType", "award-scoped treatment", "configuration"],
+      "expected_source_terms_any": ["RateType", "AwardRateType", "stable conceptual pay type"],
+      "forbidden_answer_patterns_any": ["Code Evidence"]
+    },
+    {
+      "id": "award-build-ratesource-date-effective",
+      "question": "How should RateSource preserve date-effective rate evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["RateSource", "date-effective", "rate amounts", "rate evidence", "hardcoded rate truth"],
+      "expected_source_terms_any": ["RateSource", "date-effective", "rate evidence"],
+      "forbidden_answer_patterns_any": ["hardcoded\\s+rates\\s+are\\s+production\\s+truth\\.", "Code Evidence"]
+    },
+    {
+      "id": "award-build-classification-position-class",
+      "question": "Why do classification, position and class evidence matter during award build?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["classification", "position", "class evidence", "deterministically", "review", "not guessed", "source truth"],
+      "expected_source_terms_any": ["classification", "position", "not guessed"],
+      "forbidden_answer_patterns_any": ["classification\\s+extraction\\s+is\\s+fully\\s+deterministic\\.", "Code Evidence"]
+    },
+    {
+      "id": "award-build-allowances-penalties-conditions",
+      "question": "How should allowances, penalties and conditional rules be handled in award evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["allowances", "penalties", "conditions", "conditional", "rule families", "source evidence", "status-honest"],
+      "expected_source_terms_any": ["allowances", "penalties", "conditions"],
+      "forbidden_answer_patterns_any": ["all\\s+awards/regimes\\s+are\\s+fully\\s+supported\\.", "Code Evidence"]
+    },
+    {
+      "id": "award-build-decision-evidence-index",
+      "question": "What is DecisionEvidenceIndex and why does it matter?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["DecisionEvidenceIndex", "why a treatment", "line exists", "decision evidence", "decision families"],
+      "expected_source_terms_any": ["DecisionEvidenceIndex", "Decision Evidence Index", "why a treatment"],
+      "forbidden_answer_patterns_any": ["all\\s+DecisionEvidenceIndex\\s+decision\\s+families\\s+are\\s+complete\\.", "Code Evidence"]
+    },
+    {
+      "id": "award-build-rate-source-evidence-index",
+      "question": "What is RateSourceEvidenceIndex and why does it matter?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["RateSourceEvidenceIndex", "why a rate", "why an amount", "RateSource", "source evidence"],
+      "expected_source_terms_any": ["RateSourceEvidenceIndex", "Rate Source Evidence Index", "why a rate"],
+      "forbidden_answer_patterns_any": ["Code Evidence"]
+    },
+    {
+      "id": "award-build-worker-story-decision-rate-story",
+      "question": "How should Award Build evidence connect to Worker Story Decision Story and Rate Story?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "Decision Story", "Rate Story", "why a treatment", "why a rate amount", "award build", "runtime artifacts"],
+      "expected_source_terms_any": ["Worker Story", "Decision Story", "Rate Story"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "award-build-needs-configuration-status",
+      "question": "Why is NEEDS_CONFIGURATION a valid award build status?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["NEEDS_CONFIGURATION", "valid", "award build status", "missing evidence", "missing configuration", "fabricate"],
+      "expected_source_terms_any": ["NEEDS_CONFIGURATION", "missing evidence", "missing configuration"],
+      "forbidden_answer_patterns_any": ["missing\\s+configuration\\s+should\\s+be\\s+fabricated\\.", "Code Evidence"]
+    },
+    {
+      "id": "award-build-durable-award-evidence-set",
+      "question": "Why does Durable AwardEvidenceSet remain important hardening?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Durable AwardEvidenceSet", "AwardEvidenceSet", "important hardening", "artifact-based", "file-based", "durable database evidence"],
+      "expected_source_terms_any": ["AwardEvidenceSet", "Durable AwardEvidenceSet", "artifact based"],
+      "forbidden_answer_patterns_any": ["Durable\\s+AwardEvidenceSet\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

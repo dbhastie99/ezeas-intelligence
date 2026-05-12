@@ -1,0 +1,127 @@
+{
+  "name": "Finalisation Readiness rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed PayRun finalisation readiness and assurance evidence, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "finalisation-readiness-rich-answer",
+      "question": "How should Finalisation Readiness work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Finalisation Readiness", "governed readiness", "assurance gate", "not payroll calculation truth", "green means done", "deterministic evidence", "red blockers", "amber warnings", "warning acknowledgement", "green means ready", "current-effective payroll output", "stale", "superseded", "Worker Attention", "Admin Queue", "Payroll Bases & Totals", "Payroll Bases readiness", "leave readiness", "tax readiness", "deduction readiness", "negative net pay", "payment destination readiness", "payment execution readiness", "gross-to-net readiness", "finalised outcome truth", "durable payment outcome memory", "finalisation audit", "Worker Story", "review surfaces", "worker-specific issues", "outstanding hardening"],
+      "expected_source_terms_all": ["Finalisation Readiness", "current-effective payroll output", "warning acknowledgement"],
+      "expected_source_terms_any": ["Payroll Bases readiness", "leave readiness", "payment execution readiness", "finalisation audit"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "finalisation\\s+readiness\\s+calculates\\s+payroll\\.", "amber\\s+warnings\\s+can\\s+be\\s+ignored\\.", "green\\s+readiness\\s+means\\s+no\\s+review-worthy\\s+business\\s+movement\\s+exists\\.", "payment\\s+execution\\s+readiness\\s+and\\s+gross-to-net\\s+readiness\\s+are\\s+the\\s+same\\.", "warning\\s+acknowledgement\\s*/\\s*finalisation\\s+policy\\s+is\\s+complete\\.", "all\\s+readiness\\s+categories\\s+are\\s+fully\\s+implemented\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-minerva-not-determine",
+      "question": "Why must Minerva not determine Finalisation Readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Minerva", "must not determine", "runtime finalisation readiness", "explain", "deterministic evidence"],
+      "expected_source_terms_any": ["Finalisation Readiness", "not payroll calculation truth", "assurance gate"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-blockers-warnings-green",
+      "question": "What is the difference between blockers, warnings and green readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["red blockers", "prevent", "amber warnings", "governed review", "warning acknowledgement", "green means ready", "evidence dimension"],
+      "expected_source_terms_any": ["blockers", "warnings", "amber warnings", "green"],
+      "forbidden_answer_patterns_any": ["amber\\s+warnings\\s+can\\s+be\\s+ignored\\.", "green\\s+readiness\\s+means\\s+no\\s+review-worthy\\s+business\\s+movement\\s+exists\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-current-effective-output",
+      "question": "Why does current-effective payroll output matter for finalisation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["current-effective payroll output", "stale", "superseded", "must not be finalised as current truth"],
+      "expected_source_terms_any": ["current-effective payroll output", "stale", "superseded"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-worker-attention-admin-queue",
+      "question": "How do Worker Attention and PayRun Admin Queue support Finalisation Readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Attention", "Admin Queue", "worker-level blockers", "warnings", "ready actions", "Finalisation Readiness"],
+      "expected_source_terms_any": ["Worker Attention", "Admin Queue", "ready actions"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-payroll-bases",
+      "question": "How does Payroll Bases & Totals readiness affect finalisation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Bases & Totals", "Payroll Bases readiness", "unresolved basis evidence", "stale basis evidence", "finalisation"],
+      "expected_source_terms_any": ["Payroll Bases readiness", "Payroll Bases & Totals", "stale basis evidence"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-leave-readiness",
+      "question": "How should leave readiness affect finalisation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["leave readiness", "missing leave output", "leave valuation basis", "honestly", "Finalisation Readiness"],
+      "expected_source_terms_any": ["leave readiness", "missing leave output", "leave valuation basis"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-tax-deduction-payment",
+      "question": "How do tax, deduction and payment readiness relate to finalisation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["tax readiness", "deduction readiness", "negative net pay", "payment destination readiness", "depending on policy"],
+      "expected_source_terms_any": ["tax readiness", "deduction readiness", "negative net pay", "payment destination readiness"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-payment-vs-gross-to-net",
+      "question": "Why is payment execution readiness different from gross-to-net readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["payment execution readiness", "distinct from gross-to-net", "gross-to-net calculation readiness", "payment destination"],
+      "expected_source_terms_any": ["payment execution readiness", "gross-to-net readiness", "payment destination readiness"],
+      "forbidden_answer_patterns_any": ["payment\\s+execution\\s+readiness\\s+and\\s+gross-to-net\\s+readiness\\s+are\\s+the\\s+same\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-finalised-outcome-truth",
+      "question": "What should finalised outcome truth preserve?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["finalised outcome truth", "durable payment outcome memory", "finalised", "finalised payroll truth"],
+      "expected_source_terms_any": ["finalised outcome truth", "durable payment outcome memory", "finalised totals"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-warning-acknowledgement-audit",
+      "question": "Why do warning acknowledgement and finalisation audit evidence matter?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["warning acknowledgement", "finalisation audit", "reviewed", "accepted", "unresolved", "status-honest"],
+      "expected_source_terms_any": ["warning acknowledgement", "finalisation audit", "reviewed"],
+      "forbidden_answer_patterns_any": ["warning\\s+acknowledgement\\s*/\\s*finalisation\\s+policy\\s+is\\s+complete\\.", "amber\\s+warnings\\s+can\\s+be\\s+ignored\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "finalisation-readiness-worker-story-review-surfaces",
+      "question": "How should Worker Story and review surfaces explain finalisation issues?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "review surfaces", "readiness evidence", "worker-specific issues", "finalisation"],
+      "expected_source_terms_any": ["Worker Story", "review surfaces", "worker-specific issues"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

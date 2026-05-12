@@ -1,0 +1,67 @@
+{
+  "name": "RateSource / Rate Story rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for RateSource / Rate Story rate evidence explanation.",
+  "questions": [
+    {
+      "id": "rate-source-rate-story-rich-answer",
+      "question": "What is RateSource / Rate Story in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["RateSource / Rate Story", "Rate Story", "selected rate", "rate amount", "where the amount came from", "RateSource", "date-effective rates", "award rate", "account rate", "class rate", "RateType", "AwardRateType", "pay guide rate evidence", "RateSourceEvidenceIndex", "Decision Story", "not the same as Decision Story", "Worker Story", "payroll output", "Gross-to-Net", "status-honest", "outstanding hardening", "Minerva", "does not select rates", "calculate pay", "interpret awards at runtime", "change RateSource records", "validate payroll correctness", "mutate operational payroll truth"],
+      "expected_source_terms_all": ["RateSource", "Rate Story", "rate amount"],
+      "expected_source_terms_any": ["date-effective rates", "RateSourceEvidenceIndex", "pay guide rate evidence"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+selects\\s+rates\\.", "Minerva\\s+calculates\\s+pay\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+changes\\s+RateSource\\s+records\\.", "Minerva\\s+validates\\s+payroll\\s+correctness\\.", "Rate\\s+Story\\s+is\\s+the\\s+same\\s+as\\s+Decision\\s+Story", "RateSource\\s+evidence\\s+alone\\s+proves\\s+entitlement", "pay\\s+guide\\s+evidence\\s+alone\\s+proves\\s+treatment\\s+entitlement", "Minerva\\s+mutates\\s+payroll\\s+truth\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rate-source-rate-story-selection",
+      "question": "How does Rate Story explain RateSource selection?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["selected RateSource", "award rate", "account rate", "class rate", "effective date", "date-effective rate", "rate amount", "runtime context", "evidence basis", "not entitlement/treatment selection", "Minerva does not select rates"],
+      "expected_source_terms_any": ["selected RateSource", "date-effective rate", "runtime context", "rate amount"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+selects\\s+rates\\.", "RateSource\\s+evidence\\s+alone\\s+proves\\s+entitlement", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rate-source-rate-story-pay-guide-evidence",
+      "question": "How does Rate Story use pay guide evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["pay guide rate evidence", "rate amount support", "pay guide row", "column", "page", "source text", "RateSourceEvidenceIndex", "rate amount evidence is not the same as treatment entitlement", "evidence limitation"],
+      "expected_source_terms_any": ["pay guide rate evidence", "RateSourceEvidenceIndex", "pay guide row"],
+      "forbidden_answer_patterns_any": ["pay\\s+guide\\s+evidence\\s+alone\\s+proves\\s+treatment\\s+entitlement", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rate-source-rate-story-vs-decision-story",
+      "question": "What is the difference between RateSource / Rate Story and Decision Story?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Decision Story explains why a treatment or line exists", "Rate Story explains why a rate/amount was used", "entitlement/treatment logic", "selected RateSource", "rate amount evidence", "Worker Story", "payroll line explanation", "RateSource evidence alone does not prove entitlement"],
+      "expected_source_terms_any": ["Decision Story", "Rate Story", "entitlement", "selected RateSource"],
+      "forbidden_answer_patterns_any": ["Rate\\s+Story\\s+is\\s+the\\s+same\\s+as\\s+Decision\\s+Story", "RateSource\\s+evidence\\s+alone\\s+proves\\s+entitlement", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rate-source-rate-story-date-effective-scoped-rates",
+      "question": "How do date-effective and scoped rates affect Rate Story?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["effective date", "date-effective rates", "award rate", "account rate", "class rate", "scope resolution", "selected rate", "runtime/class/context", "superseded", "historical rates", "audit context", "Minerva explains but does not select rate"],
+      "expected_source_terms_any": ["date-effective rates", "scope resolution", "superseded", "historical rates"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+selects\\s+rates\\.", "superseded\\s+rates\\s+are\\s+current", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "rate-source-rate-story-worker-story-gross-to-net",
+      "question": "How does Rate Story relate to Worker Story and Gross-to-Net?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "payroll line explanation", "selected rate", "rate amount", "formula", "calculated payroll outcome", "Gross-to-Net", "output lines and amounts", "not Rate Story as calculation authority", "explanation/audit", "Minerva does not calculate payroll"],
+      "expected_source_terms_any": ["Worker Story", "Gross-to-Net", "payroll line explanation", "calculated payroll outcome"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\.", "Rate\\s+Story\\s+is\\s+the\\s+calculation\\s+authority", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

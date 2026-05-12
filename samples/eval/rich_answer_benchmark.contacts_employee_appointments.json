@@ -1,0 +1,117 @@
+{
+  "name": "Contacts / Employee Appointments rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed contact identity, EmployeeAppointment employment context and appointment-scoped payroll evidence, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "contacts-employee-appointments-rich-answer",
+      "question": "How should Contacts and Employee Appointments work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contacts / Employee Appointments", "Contact", "EmployeeAppointment", "worker identity context", "employment context", "not payroll calculation truth", "worker context", "employment assignment", "work assignment", "PayRun admission", "ObjectTime", "source truth", "AwardPositionClass", "WorksitePosition", "Position", "worksite", "state", "runtime location", "leave source", "leave applicability", "leave accrual", "Worker Story", "Contact history", "finalised payroll outcome memory", "worker readiness", "tax declarations", "bank", "payment allocation", "deductions", "obligations", "dirty contact", "reprocessing", "classification lens", "outstanding hardening"],
+      "expected_source_terms_all": ["Contact", "EmployeeAppointment", "PayRun admission"],
+      "expected_source_terms_any": ["AwardPositionClass", "WorksitePosition", "Contact history", "dirty contact", "classification lens"],
+      "forbidden_answer_patterns_any": ["Contacts\\s+/\\s+Employee\\s+Appointments\\s+calculate\\s+payroll\\.", "Contact\\s+alone\\s+is\\s+always\\s+enough\\.", "EmployeeAppointment\\s+duplication\\s+is\\s+the\\s+correct\\s+comparator-classification\\s+model\\.", "dirty-contact\\s+propagation\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "contacts-vs-employeeappointment",
+      "question": "What is the difference between Contact and EmployeeAppointment in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact", "worker identity context", "person", "payroll identity", "EmployeeAppointment", "employment", "work-assignment context", "not payroll calculation truth"],
+      "expected_source_terms_any": ["Contact", "EmployeeAppointment", "worker identity"],
+      "forbidden_answer_patterns_any": ["Contacts\\s+/\\s+Employee\\s+Appointments\\s+calculate\\s+payroll\\.", "Code Evidence"]
+    },
+    {
+      "id": "contacts-payrun-admission",
+      "question": "Why does EmployeeAppointment matter for PayRun admission?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["EmployeeAppointment", "PayRun admission", "source truth", "appointment context", "worker inclusion", "Contact alone"],
+      "expected_source_terms_any": ["PayRun admission", "appointment context", "worker inclusion"],
+      "forbidden_answer_patterns_any": ["Contact\\s+alone\\s+is\\s+always\\s+enough\\.", "Code Evidence"]
+    },
+    {
+      "id": "contacts-objecttime-source-truth",
+      "question": "How do Contacts and Employee Appointments relate to ObjectTime / Source Truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contacts / Employee Appointments", "ObjectTime", "source truth", "source rows", "appointments", "contacts", "worker inclusion"],
+      "expected_source_terms_any": ["ObjectTime", "source truth", "source rows"],
+      "forbidden_answer_patterns_any": ["runtime truth from diagnostics", "Code Evidence"]
+    },
+    {
+      "id": "contacts-award-classification-position-worksite",
+      "question": "How do award classification, position and worksite context depend on EmployeeAppointment?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["award classification", "EmployeeAppointment", "AwardPositionClass", "WorksitePosition", "Position", "classification evidence", "appointment-specific truth"],
+      "expected_source_terms_any": ["AwardPositionClass", "WorksitePosition", "classification evidence"],
+      "forbidden_answer_patterns_any": ["Contact\\s+alone\\s+is\\s+always\\s+enough\\.", "Code Evidence"]
+    },
+    {
+      "id": "contacts-worksite-state-runtime-location",
+      "question": "Why does worksite/state/runtime location matter for Contacts and Employee Appointments?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["worksite", "state", "runtime location", "state evidence", "appointment", "payroll", "award", "employer-liability"],
+      "expected_source_terms_any": ["runtime location", "worksite state", "state evidence"],
+      "forbidden_answer_patterns_any": ["runtime truth from diagnostics", "Code Evidence"]
+    },
+    {
+      "id": "contacts-leave-source-accrual",
+      "question": "How do Contacts and Employee Appointments affect leave source and accrual?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["leave source", "leave applicability", "leave accrual", "contact scope", "appointment scope", "scope"],
+      "expected_source_terms_any": ["leave source", "leave applicability", "appointment scope"],
+      "forbidden_answer_patterns_any": ["Contact\\s+alone\\s+is\\s+always\\s+enough\\.", "Code Evidence"]
+    },
+    {
+      "id": "contacts-worker-story-history",
+      "question": "How should Worker Story and Contact history use Contact and EmployeeAppointment evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "Contact history", "Contact", "EmployeeAppointment", "source truth context", "finalised payroll outcome memory", "cumulative movement", "outstanding"],
+      "expected_source_terms_any": ["Worker Story", "Contact history", "finalised payroll outcome memory"],
+      "forbidden_answer_patterns_any": ["contact\\s+history\\s+is\\s+complete\\.", "Code Evidence"]
+    },
+    {
+      "id": "contacts-readiness-tax-bank-deduction-payment",
+      "question": "How do tax, bank, deduction and payment readiness relate to Contact?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Contact", "worker readiness", "tax declarations", "bank", "payment allocation", "deductions", "obligations", "worker attention"],
+      "expected_source_terms_any": ["worker readiness", "tax declarations", "payment allocation"],
+      "forbidden_answer_patterns_any": ["readiness\\s+surfaces\\s+are\\s+complete\\.", "Code Evidence"]
+    },
+    {
+      "id": "contacts-dirty-contact-reprocessing",
+      "question": "Why does dirty contact/reprocessing matter for Contacts and Employee Appointments?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["dirty contact", "reprocessing", "payroll-affecting changes", "current PayRun output unsafe", "governed", "dirty-contact propagation"],
+      "expected_source_terms_any": ["dirty contact", "reprocessing", "PayRun output unsafe"],
+      "forbidden_answer_patterns_any": ["dirty-contact\\s+propagation\\s+is\\s+complete\\.", "Code Evidence"]
+    },
+    {
+      "id": "contacts-classification-lenses-not-duplicate-appointments",
+      "question": "Why are classification lenses preferred over duplicate appointments for comparator classification?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["classification lens", "classification lenses", "comparison", "remediation", "appointment", "duplicate full appointments", "comparator classification"],
+      "expected_source_terms_any": ["classification lens", "duplicate full appointments", "remediation"],
+      "forbidden_answer_patterns_any": ["EmployeeAppointment\\s+duplication\\s+is\\s+the\\s+correct\\s+comparator-classification\\s+model\\.", "Code Evidence"]
+    }
+  ]
+}

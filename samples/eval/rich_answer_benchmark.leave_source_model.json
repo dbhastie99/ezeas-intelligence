@@ -1,0 +1,107 @@
+{
+  "name": "Leave Source Model rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed leave applicability and source-truth evidence, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "leave-source-model-rich-answer",
+      "question": "What is the Leave Source Model and why does it matter?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Leave Source Model", "governed applicability", "source-truth layer", "not leave calculation", "LeaveTypeRule", "final applicability truth", "leave readiness", "leave does not apply", "leave output is missing", "Contact scope", "EmployeeAppointment scope", "appointment-aware leave", "Account", "EmploymentType", "WorksitePosition", "Worksite", "EmployeeAppointment", "Contact", "AwardPositionClass", "AwardPosition", "Position", "Award", "State", "leave accrual", "leave request", "payment effects", "Worker Story", "Command Centre", "Finalisation Readiness", "missing leave output", "outstanding hardening"],
+      "expected_source_terms_all": ["Leave Source Model", "LeaveTypeRule", "missing leave output"],
+      "expected_source_terms_any": ["EmployeeAppointment scope", "Contact scope", "Command Centre", "Finalisation Readiness"],
+      "forbidden_answer_patterns_any": ["Leave\\s+Source\\s+Model\\s+is\\s+fully\\s+implemented\\.", "LeaveTypeRule\\s+alone\\s+determines\\s+applicability\\.", "every\\s+active\\s+LeaveTypeRule\\s+means\\s+every\\s+worker\\s+should\\s+have\\s+leave\\s+output\\.", "missing\\s+leave\\s+output\\s+is\\s+always\\s+wrong\\.", "Minerva\\s+calculates\\s+leave\\s+applicability\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-leavetyperule-not-final",
+      "question": "Why is LeaveTypeRule not final leave applicability truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["LeaveTypeRule", "policy/calculation content", "final leave applicability truth", "every active LeaveTypeRule", "every worker should have leave output"],
+      "expected_source_terms_any": ["LeaveTypeRule", "final applicability truth", "active LeaveTypeRule"],
+      "forbidden_answer_patterns_any": ["LeaveTypeRule\\s+alone\\s+determines\\s+applicability\\.", "every\\s+active\\s+LeaveTypeRule\\s+means\\s+every\\s+worker\\s+should\\s+have\\s+leave\\s+output\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-applicability-vs-rule-content",
+      "question": "What is the difference between leave applicability and leave rule content?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["leave applicability", "worker/context", "leave rule content", "policy", "calculation", "source truth"],
+      "expected_source_terms_any": ["applicability", "rule content", "LeaveTypeRule", "source truth"],
+      "forbidden_answer_patterns_any": ["LeaveTypeRule\\s+alone\\s+determines\\s+applicability\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-no-entitlement-vs-missing-output",
+      "question": "How should Leave Source Model distinguish no leave entitlement from missing leave output?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["no leave entitlement", "leave does not apply", "leave output is missing", "missing leave output", "not always wrong", "source truth"],
+      "expected_source_terms_any": ["leave does not apply", "leave output is missing", "missing leave output"],
+      "forbidden_answer_patterns_any": ["missing\\s+leave\\s+output\\s+is\\s+always\\s+wrong\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-contact-vs-appointment",
+      "question": "Why does contact versus appointment scope matter for leave?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["contact-level", "appointment-level", "Contact", "EmployeeAppointment", "appointment-aware leave", "ownership", "scope"],
+      "expected_source_terms_any": ["Contact scope", "EmployeeAppointment scope", "appointment-aware leave"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-source-dimensions",
+      "question": "What source dimensions may affect leave applicability?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Account", "EmploymentType", "WorksitePosition", "Worksite", "EmployeeAppointment", "Contact", "AwardPositionClass", "AwardPosition", "Position", "Award", "State", "precedence"],
+      "expected_source_terms_any": ["EmploymentType", "EmployeeAppointment", "AwardPositionClass", "State"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-accrual-connection",
+      "question": "How should Leave Source Model relate to leave accrual?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["leave accrual", "consume", "source applicability decisions", "source truth", "infer ad hoc"],
+      "expected_source_terms_any": ["leave accrual", "source applicability decisions", "infer ad hoc"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+leave\\s+applicability\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-request-payment-effects",
+      "question": "How should Leave Source Model relate to leave request payment effects?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["leave request", "payment effects", "consume", "source applicability decisions", "leave ownership", "request ownership"],
+      "expected_source_terms_any": ["leave request", "payment effects", "request ownership"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-worker-story",
+      "question": "How should Worker Story explain leave source and applicability?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "leave source", "applicability decisions", "leave output", "warnings", "leave chapters"],
+      "expected_source_terms_any": ["Worker Story", "leave chapters", "warnings"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "leave-source-model-command-centre-finalisation",
+      "question": "How should Command Centre and Finalisation Readiness use Leave Source Model evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Command Centre", "Finalisation Readiness", "Leave Source Model", "leave readiness", "missing output", "PayRun finalisation warnings", "honestly"],
+      "expected_source_terms_any": ["Command Centre", "Finalisation Readiness", "PayRun finalisation warnings"],
+      "forbidden_answer_patterns_any": ["missing\\s+leave\\s+output\\s+is\\s+always\\s+wrong\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

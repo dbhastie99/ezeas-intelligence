@@ -1,0 +1,107 @@
+{
+  "name": "Retro / Replay rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed retro and replay evidence.",
+  "questions": [
+    {
+      "id": "retro-replay-rich-answer",
+      "question": "How should Retro / Replay work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Retro / Replay", "governed historical correction", "evidence replay", "ordinary reprocessing", "attributed-period truth", "paid-period truth", "current-effective payroll truth", "historical", "finalised truth", "finalised outcome memory", "historical payment truth", "silently overwritten", "bucket", "basis snapshots", "calculation evidence", "source hashes", "dependency detection", "dirty/replay candidates", "hidden recalculation", "retro PayRuns", "supplementary PayRuns", "Comparison / Remediation", "Worker Story", "PayRun Admin Queue", "Movement Review", "variance", "audit replay", "non-destructive history", "outstanding hardening"],
+      "expected_source_terms_all": ["Retro / Replay", "attributed-period truth", "finalised outcome memory"],
+      "expected_source_terms_any": ["dependency detection", "retro PayRuns", "non-destructive history", "Worker Story"],
+      "forbidden_answer_patterns_any": ["Retro\\s*/\\s*Replay\\s+is\\s+fully\\s+implemented\\.", "finalised\\s+payroll\\s+truth\\s+can\\s+be\\s+silently\\s+overwritten\\.", "supplementary\\s+PayRuns\\s+and\\s+retro\\s+PayRuns\\s+are\\s+the\\s+same\\.", "bucket\\s+rebuilds\\s+over\\s+finalised\\s+history\\s+can\\s+be\\s+silent\\.", "dependency\\s+detection\\s+is\\s+complete\\s+and\\s+available", "Movement\\s+Review\\s+variance\\s+automatically\\s+proves\\s+retro\\s+error\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-attributed-vs-paid-period",
+      "question": "What is the difference between attributed-period truth and paid-period truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["attributed-period truth", "paid-period truth", "period", "correction", "actually paid", "separate"],
+      "expected_source_terms_any": ["attributed-period truth", "paid-period truth", "distinct"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-finalised-not-overwritten",
+      "question": "Why must finalised payroll truth not be silently overwritten?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["finalised outcomes", "historical payment truth", "silently overwritten", "correction/replay", "auditable evidence", "mutating history"],
+      "expected_source_terms_any": ["finalised outcome memory", "historical payment truth", "silently overwritten"],
+      "forbidden_answer_patterns_any": ["finalised\\s+payroll\\s+truth\\s+can\\s+be\\s+silently\\s+overwritten\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-current-effective-vs-historical",
+      "question": "What is the difference between current-effective truth and historical truth?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["current-effective truth", "historical truth", "finalised truth", "calculate now", "actually finalised", "paid before correction"],
+      "expected_source_terms_any": ["current-effective payroll truth", "historical truth", "finalised truth"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-buckets-basis-snapshots",
+      "question": "Why do buckets and basis snapshots matter for Retro / Replay?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["bucket evidence", "basis snapshots", "calculation evidence", "source hashes", "historical bucket evidence", "silently rebuilding finalised history"],
+      "expected_source_terms_any": ["bucket snapshot", "basis snapshots", "source hashes", "historical bucket evidence"],
+      "forbidden_answer_patterns_any": ["bucket\\s+rebuilds\\s+over\\s+finalised\\s+history\\s+can\\s+be\\s+silent\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-source-dependency-detection",
+      "question": "How should source changes and dependency detection work for Retro / Replay?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["source", "configuration", "dependency detection", "dirty/replay candidates", "review", "hidden recalculation"],
+      "expected_source_terms_any": ["source change", "configuration change", "dependency detection", "dirty/replay candidates"],
+      "forbidden_answer_patterns_any": ["dependency\\s+detection\\s+is\\s+complete\\s+and\\s+available", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-retro-vs-supplementary-payrun",
+      "question": "What is the difference between a retro PayRun and a supplementary PayRun?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["retro PayRuns", "supplementary PayRuns", "historical attributed-period evidence", "additional paid-period processing", "not the same concept"],
+      "expected_source_terms_any": ["retro PayRuns", "supplementary PayRuns", "same concept"],
+      "forbidden_answer_patterns_any": ["supplementary\\s+PayRuns\\s+and\\s+retro\\s+PayRuns\\s+are\\s+the\\s+same\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-comparison-remediation",
+      "question": "How does Retro / Replay connect to Comparison / Remediation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Comparison / Remediation", "retro/replay evidence", "variance", "not the same concept", "governed historical replay"],
+      "expected_source_terms_any": ["Comparison / Remediation", "variance", "retro/replay evidence"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-worker-story",
+      "question": "How should Worker Story explain Retro / Replay impacts?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "retro/replay impacts", "worker level", "attributed", "paid periods", "finalised outcome memory", "replay evidence"],
+      "expected_source_terms_any": ["Worker Story", "retro impacts", "replay impacts"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "retro-replay-admin-queue-movement-review",
+      "question": "How should Admin Queue and Movement Review surface Retro / Replay issues?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PayRun Admin Queue", "retro/replay candidates", "blockers", "review actions", "dependency issues", "Movement Review", "variance", "does not prove retro error"],
+      "expected_source_terms_any": ["PayRun Admin Queue", "Movement Review", "dependency issues"],
+      "forbidden_answer_patterns_any": ["Movement\\s+Review\\s+variance\\s+automatically\\s+proves\\s+retro\\s+error\\.", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

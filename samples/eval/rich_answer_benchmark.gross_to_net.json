@@ -1,0 +1,67 @@
+{
+  "name": "Gross-to-Net rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for Gross-to-Net payroll outcome evidence.",
+  "questions": [
+    {
+      "id": "gross-to-net-rich-answer",
+      "question": "What is Gross-to-Net in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Gross-to-Net", "payroll outcome calculation", "payroll outcome explanation surface", "gross earnings", "payroll output", "taxable basis", "taxable earnings", "PAYG", "tax withholding", "deductions", "obligations", "net pay", "worker net pay", "negative net pay", "governed treatment", "carry-forward", "recovery", "write-off", "not be silently converted to zero", "payment allocation", "payment execution readiness", "Worker Story", "current-effective payroll output", "finalisation", "finalised outcome truth", "status-honest", "outstanding hardening", "Minerva", "does not calculate gross-to-net", "withhold tax", "apply deductions", "change net pay", "generate payment files", "finalise PayRuns", "mutate operational payroll truth"],
+      "expected_source_terms_all": ["Gross-to-Net", "gross earnings", "net pay"],
+      "expected_source_terms_any": ["taxable basis", "negative net pay", "payment allocation", "current-effective payroll output"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+gross-to-net\\.", "Minerva\\s+withholds\\s+tax\\.", "Minerva\\s+applies\\s+deductions\\.", "Minerva\\s+approves\\s+negative\\s+net\\s+pay", "Minerva\\s+generates\\s+payment\\s+files\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Minerva\\s+mutates\\s+payroll\\s+truth\\.", "Gross-to-Net\\s+alone\\s+proves\\s+payroll\\s+correctness", "Gross-to-Net\\s+and\\s+Payment\\s+Execution\\s+are\\s+the\\s+same\\s+surface", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "gross-to-net-gross-earnings-to-net-pay",
+      "question": "How does Gross-to-Net move from gross earnings to net pay?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["gross earnings", "payroll output", "taxable basis", "taxable earnings", "tax/PAYG withholding", "deductions", "obligations", "net pay", "payment allocation", "payment readiness", "calculation/output evidence", "not payment execution itself"],
+      "expected_source_terms_any": ["gross earnings", "payroll output", "taxable basis", "net pay"],
+      "forbidden_answer_patterns_any": ["Gross-to-Net\\s+and\\s+Payment\\s+Execution\\s+are\\s+the\\s+same\\s+surface", "Minerva\\s+calculates\\s+gross-to-net\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "gross-to-net-taxable-basis-payg",
+      "question": "How does Gross-to-Net relate to taxable basis and PAYG?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["taxable basis", "taxable earnings", "PAYG", "withholding", "TaxStory", "tax evidence", "PaymentDate", "Payroll Bases", "deterministic tax provider/service boundary", "Minerva does not calculate withholding"],
+      "expected_source_terms_any": ["taxable basis", "PAYG", "TaxStory", "PaymentDate"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+withholds\\s+tax\\.", "Minerva\\s+calculates\\s+withholding\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "gross-to-net-deductions-obligations",
+      "question": "How do deductions and obligations affect Gross-to-Net?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["deductions reduce net pay", "obligations", "reducing-balance recovery", "affordability", "priority", "partial deductions", "skipped deductions", "carry-forward", "unmet deduction story", "linked obligation recovery", "automatic blind subtraction", "Worker Attention", "Admin Queue"],
+      "expected_source_terms_any": ["deductions", "obligations", "reducing-balance recovery", "affordability"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+applies\\s+deductions\\.", "automatic\\s+blind\\s+subtraction\\s+is\\s+complete", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "gross-to-net-negative-net-pay",
+      "question": "How should Gross-to-Net explain negative net pay?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["negative net pay", "governed treatment", "silently converted to zero", "allow", "block", "carry-forward", "recovery", "convert to obligation", "write-off", "out-of-pay record", "payment execution readiness", "Worker Attention", "issue resolution", "financial consequence", "obligation evidence"],
+      "expected_source_terms_any": ["negative net pay", "out-of-pay", "write-off", "obligation"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+approves\\s+negative\\s+net\\s+pay", "negative\\s+net\\s+pay\\s+is\\s+solved\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "gross-to-net-current-effective-worker-story",
+      "question": "How does Gross-to-Net relate to current-effective payroll output and Worker Story?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["current-effective payroll output truth", "full run", "targeted reprocess", "Worker Story", "calculated payroll outcome", "line proof", "amounts", "deductions", "net pay", "superseded output", "current truth", "audit story"],
+      "expected_source_terms_any": ["current-effective payroll output", "Worker Story", "targeted reprocess", "superseded output"],
+      "forbidden_answer_patterns_any": ["superseded\\s+output\\s+should\\s+appear\\s+as\\s+current\\s+truth", "Gross-to-Net\\s+alone\\s+proves\\s+payroll\\s+correctness", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

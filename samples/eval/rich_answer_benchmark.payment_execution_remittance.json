@@ -1,0 +1,107 @@
+{
+  "name": "Payment Execution / Remittance rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed payment execution and remittance evidence.",
+  "questions": [
+    {
+      "id": "payment-execution-remittance-rich-answer",
+      "question": "How should Payment Execution and Remittance work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payment Execution / Remittance", "governed payment execution", "remittance evidence", "finalised gross-to-net", "payment outcome", "not payroll calculation truth", "generic file export", "worker net pay", "payment allocation", "bank allocation", "payment destination readiness", "negative net pay", "obligations", "carry-forward", "recovery", "write-off", "deduction", "third-party payments", "remittance files", "Generate Bank File", "payment files", "Period Close", "remittance batching", "reconciliation", "Worker Attention", "PayRun Admin Queue", "Worker Story", "audit evidence", "outstanding hardening"],
+      "expected_source_terms_all": ["Payment Execution / Remittance", "finalised gross-to-net", "worker net pay"],
+      "expected_source_terms_any": ["Generate Bank File", "third-party remittance", "remittance reconciliation", "Worker Attention"],
+      "forbidden_answer_patterns_any": ["payment\\s+execution\\s*/\\s*remittance\\s+is\\s+fully\\s+implemented\\.", "gross-to-net\\s+calculation\\s+readiness\\s+equals\\s+payment\\s+execution\\s+readiness\\.", "missing\\s+bank\\s+details\\s+invalidate\\s+gross-to-net\\s+calculation\\.", "negative\\s+net\\s+pay\\s+is\\s+solved\\.", "deduction\\s+remittance\\s+and\\s+payment\\s+files\\s+are\\s+complete\\.", "obligation\\s+write-off\\s+financial\\s+coding\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-not-payroll-calculation",
+      "question": "Why is payment execution not the same as payroll calculation?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payment Execution / Remittance", "governed payment execution", "downstream payment/remittance action", "not payroll calculation truth", "generic file export", "finalised payroll outcome"],
+      "expected_source_terms_any": ["governed payment execution", "remittance evidence", "payroll calculation truth"],
+      "forbidden_answer_patterns_any": ["payment\\s+execution\\s*/\\s*remittance\\s+is\\s+fully\\s+implemented\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-finalised-gross-to-net",
+      "question": "How does finalised gross-to-net outcome feed Payment Execution / Remittance?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["finalised gross-to-net", "payment outcome", "consumes", "Payment readiness is separate from gross-to-net readiness", "payment execution readiness"],
+      "expected_source_terms_any": ["finalised gross-to-net", "finalised payroll outcome", "payment outcome"],
+      "forbidden_answer_patterns_any": ["gross-to-net\\s+calculation\\s+readiness\\s+equals\\s+payment\\s+execution\\s+readiness\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-worker-net-pay-bank-allocation",
+      "question": "How do worker net pay and bank allocation affect payment readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["worker net pay", "payment allocation", "bank allocation", "bank instruction readiness", "partial/missing payment allocation", "payment execution"],
+      "expected_source_terms_any": ["worker net pay", "bank allocation", "payment allocation"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-missing-destinations",
+      "question": "Why can missing payment destinations block payment execution without invalidating gross-to-net?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["missing", "partial payment destinations", "may not invalidate gross-to-net calculation", "block complete payment execution", "readiness"],
+      "expected_source_terms_any": ["payment destination", "missing payment destination", "partial payment destinations"],
+      "forbidden_answer_patterns_any": ["missing\\s+bank\\s+details\\s+invalidate\\s+gross-to-net\\s+calculation\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-negative-net-pay-obligations",
+      "question": "How should negative net pay interact with obligations and payment execution?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["negative net pay", "governed policy outcome", "obligations", "carry-forward", "recovery", "write-off", "out-of-pay treatment", "payment execution"],
+      "expected_source_terms_any": ["negative net pay", "obligations", "write-off"],
+      "forbidden_answer_patterns_any": ["negative\\s+net\\s+pay\\s+is\\s+solved\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-deduction-third-party",
+      "question": "How should deduction and third-party remittance work?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["deductions", "obligations", "third-party remittance", "batching", "payment destinations", "remittance files", "reconciliation", "net-pay subtractions"],
+      "expected_source_terms_any": ["deduction remittance", "third-party remittance", "third-party payments"],
+      "forbidden_answer_patterns_any": ["deduction\\s+remittance\\s+and\\s+payment\\s+files\\s+are\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-generate-bank-file-period-close",
+      "question": "What does Generate Bank File / Period Close need to govern?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Generate Bank File", "payment-file execution", "Period Close", "governed execution steps", "generic export", "status-honest outstanding areas"],
+      "expected_source_terms_any": ["Generate Bank File", "Bank File", "payment file", "Period Close"],
+      "forbidden_answer_patterns_any": ["bank\\s+file\\s+generation\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-batching-reconciliation",
+      "question": "How should remittance batching and reconciliation be handled?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["remittance batching", "remittance reconciliation", "reconciliation", "remittance evidence", "third-party payments", "remittance files"],
+      "expected_source_terms_any": ["remittance batching", "remittance reconciliation", "reconciliation"],
+      "forbidden_answer_patterns_any": ["remittance\\s+reconciliation\\s+is\\s+complete\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payment-execution-remittance-worker-attention-admin-queue-worker-story",
+      "question": "How do Worker Attention, Admin Queue and Worker Story connect to Payment Execution / Remittance?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Attention", "PayRun Admin Queue", "blockers", "warnings", "actions", "Worker Story", "audit evidence", "payment allocation", "remittance", "skipped", "unpaid", "unmet"],
+      "expected_source_terms_any": ["Worker Attention", "PayRun Admin Queue", "Worker Story", "audit evidence"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

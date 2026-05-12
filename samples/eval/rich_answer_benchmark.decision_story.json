@@ -1,0 +1,77 @@
+{
+  "name": "Decision Story rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for Decision Story decision evidence explanation.",
+  "questions": [
+    {
+      "id": "decision-story-rich-answer",
+      "question": "What is Decision Story in the platform?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Decision Story", "evidence layer", "why a payroll treatment", "entitlement", "line", "rule outcome", "allowance", "penalty", "overtime", "shift", "public holiday", "break treatment", "calculated payroll decision", "why the treatment or line exists", "Rate Story", "why a rate or amount was used", "runtime facts", "configured rules", "DecisionEvidenceIndex", "award", "source evidence", "Worker Story", "payroll output", "Gross-to-Net", "evidence limitation", "status honesty", "outstanding hardening", "Minerva", "does not select treatments", "decide entitlements", "interpret awards at runtime", "calculate payroll", "change decision evidence", "validate payroll correctness", "mutate operational payroll truth"],
+      "expected_source_terms_all": ["Decision Story", "DecisionEvidenceIndex", "why a treatment"],
+      "expected_source_terms_any": ["runtime facts", "configured rules", "Rate Story", "Worker Story"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+selects\\s+treatments\\.", "Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+changes\\s+decision\\s+evidence\\.", "Minerva\\s+validates\\s+payroll\\s+correctness\\.", "Decision\\s+Story\\s+is\\s+the\\s+same\\s+as\\s+Rate\\s+Story", "DecisionEvidenceIndex\\s+alone\\s+proves\\s+the\\s+full\\s+award-source\\s+chain", "Minerva\\s+mutates\\s+payroll\\s+truth\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "decision-story-why-line-exists",
+      "question": "How does Decision Story explain why a payroll line exists?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["treatment or entitlement selection", "why the line exists", "configured rule", "runtime facts", "award/source evidence", "DecisionEvidenceIndex", "not rate amount selection", "Minerva does not decide entitlements"],
+      "expected_source_terms_any": ["why the line exists", "configured rule", "runtime facts", "DecisionEvidenceIndex"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+decides\\s+entitlements\\.", "Minerva\\s+selects\\s+treatments\\.", "rate\\s+amount\\s+selection\\s+is\\s+Decision\\s+Story", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "decision-story-decision-evidence-index",
+      "question": "What is DecisionEvidenceIndex used for?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["DecisionEvidenceIndex", "compact decision evidence index", "links emitted payroll lines to decision evidence", "explanation and audit", "award/source evidence", "does not by itself prove the full award-source chain", "evidence limitation honesty"],
+      "expected_source_terms_any": ["DecisionEvidenceIndex", "compact decision evidence index", "emitted payroll lines", "decision evidence"],
+      "forbidden_answer_patterns_any": ["DecisionEvidenceIndex\\s+alone\\s+proves\\s+the\\s+full\\s+award-source\\s+chain", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "decision-story-vs-rate-story",
+      "question": "What is the difference between Decision Story and Rate Story for treatment and rate evidence?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Decision Story explains why a treatment/line exists", "Rate Story explains why a rate/amount was used", "entitlement/treatment logic", "selected RateSource", "rate amount evidence", "Worker Story", "RateSource evidence alone does not prove entitlement"],
+      "expected_source_terms_any": ["Decision Story", "Rate Story", "entitlement/treatment logic", "selected RateSource"],
+      "forbidden_answer_patterns_any": ["Decision\\s+Story\\s+is\\s+the\\s+same\\s+as\\s+Rate\\s+Story", "RateSource\\s+evidence\\s+alone\\s+proves\\s+entitlement", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "decision-story-allowance-penalty-overtime-shift",
+      "question": "How does Decision Story explain allowances, penalties, overtime and shift decisions?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["allowance", "penalty", "overtime", "shift treatment", "runtime facts", "configured rules", "decision evidence", "exact clause/source evidence", "generic limitation", "Minerva does not calculate or select treatments"],
+      "expected_source_terms_any": ["allowance decision", "penalty decision", "overtime decision", "shift decision"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+selects\\s+treatments\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "decision-story-break-public-holiday-special-conditions",
+      "question": "How does Decision Story handle breaks, public holidays and special conditions?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["break treatment", "missed break", "unpaid break evidence", "public holiday treatment", "special conditions", "minimum engagement", "configured rules", "runtime facts", "Worker Story", "payroll line explanation", "outstanding hardening"],
+      "expected_source_terms_any": ["break treatment", "missed break", "unpaid break", "public holiday decision", "minimum engagement"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+interprets\\s+awards\\s+at\\s+runtime\\.", "Minerva\\s+selects\\s+treatments\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "decision-story-worker-story-gross-to-net",
+      "question": "How does Decision Story relate to Worker Story and Gross-to-Net?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "payroll line explanation", "why line/treatment exists", "Gross-to-Net", "payroll output amounts/outcomes", "audit/explanation", "not net-pay calculation authority", "Rate Story"],
+      "expected_source_terms_any": ["Worker Story", "Gross-to-Net", "payroll line explanation", "calculated payroll outcome"],
+      "forbidden_answer_patterns_any": ["Decision\\s+Story\\s+is\\s+net-pay\\s+calculation\\s+authority", "Decision\\s+Story\\s+is\\s+the\\s+same\\s+as\\s+Rate\\s+Story", "Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

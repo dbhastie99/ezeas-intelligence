@@ -110,6 +110,33 @@ def classify_answer_mode(question: str) -> str:
         or "position class" in normalized
         or ("classification" in normalized and ("award position" in normalized or "award class" in normalized or "employee appointment" in normalized or "worksiteposition" in normalized or "worksite position" in normalized))
         or ("classification" in normalized and "pay guide" in normalized and ("payroll interpretation" in normalized or "class evidence" in normalized))
+        or ("classification" in normalized and ("ratesource" in normalized or "rate story" in normalized or "payroll output" in normalized))
+        or ("classifications" in normalized and ("ratesource" in normalized or "rate story" in normalized or "payroll output" in normalized))
+        or ("classification" in normalized and "decision story" in normalized and ("relate" in normalized or "support" in normalized))
+        or ("classifications" in normalized and "decision story" in normalized and ("relate" in normalized or "support" in normalized))
+        or ("classification evidence" in normalized and ("missing" in normalized or "unresolved" in normalized or "readiness" in normalized))
+        or ("classifications" in normalized and ("comparison" in normalized or "remediation" in normalized))
+        or ("classification lenses" in normalized and ("comparison remediation" in normalized or "comparison / remediation" in normalized))
+    ):
+        return AnswerMode.PRODUCT_DOMAIN.value
+    if (
+        "payroll tax / workcover / wic liability detail" in normalized
+        or "payroll tax workcover wic liability detail" in normalized
+        or "payroll tax workcover wic liabilities" in normalized
+        or "payroll tax, workcover and wic liabilities" in normalized
+        or "payroll tax workcover and wic liabilities" in normalized
+        or "payrolltax" in normalized
+        or ("payroll tax" in normalized and ("workcover" in normalized or "wic" in normalized or "liability" in normalized))
+        or ("workcover" in normalized and ("wic" in normalized or "liability" in normalized or "payroll tax" in normalized or "ratesource" in normalized))
+        or ("work cover" in normalized and ("wic" in normalized or "liability" in normalized or "payroll tax" in normalized or "rate source" in normalized))
+        or ("wic" in normalized and ("workcover" in normalized or "work cover" in normalized or "payroll tax" in normalized or "liability" in normalized or "rate" in normalized))
+        or ("workers insurance" in normalized and ("liability" in normalized or "workcover" in normalized or "payroll tax" in normalized))
+        or ("workers compensation" in normalized and ("liability" in normalized or "workcover" in normalized or "payroll tax" in normalized))
+        or ("liability wages" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized))
+        or ("taxable wages" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized))
+        or ("worksite.stateid" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liability" in normalized))
+        or "liability ratesource" in normalized
+        or "liability rate source" in normalized
     ):
         return AnswerMode.PRODUCT_DOMAIN.value
     if (

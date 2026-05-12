@@ -1,0 +1,135 @@
+{
+  "name": "PayRun Admin Queue rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for PayRun Admin Queue operator action surface evidence.",
+  "questions": [
+    {
+      "id": "payrun-admin-queue-rich-answer",
+      "question": "What is the PayRun Admin Queue and what does it show?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": [
+        "Direct summary",
+        "How the system works",
+        "Current implementation status",
+        "What remains outstanding",
+        "Evidence basis"
+      ],
+      "expected_answer_terms_all": [
+        "PayRun Admin Queue",
+        "operator workbench",
+        "what needs action now",
+        "Command Centre",
+        "blockers",
+        "warnings",
+        "ready actions",
+        "Worker Attention",
+        "dirty contacts",
+        "finalisation readiness",
+        "Assurance Snapshot",
+        "Worker Story",
+        "Payroll Bases & Totals",
+        "Movement Review",
+        "outstanding hardening"
+      ],
+      "expected_answer_terms_any": [
+        "PayRun Output",
+        "processing actions",
+        "reprocessing actions",
+        "server-owned operation tracker",
+        "global queue resolver",
+        "warning acknowledgement"
+      ],
+      "expected_source_terms_all": [
+        "PayRun Admin Queue",
+        "Assurance Snapshot",
+        "Worker Attention"
+      ],
+      "expected_source_terms_any": [
+        "Command Centre",
+        "dirty contacts",
+        "finalisation readiness",
+        "Movement Review",
+        "Payroll Bases & Totals"
+      ],
+      "forbidden_answer_patterns_any": [
+        "calculates\\s+payroll",
+        "empty\\s+queue\\s+proves",
+        "warnings\\s+can\\s+be\\s+ignored",
+        "Code Evidence",
+        "runtime truth from diagnostics"
+      ]
+    },
+    {
+      "id": "payrun-admin-queue-vs-command-centre",
+      "question": "What is the difference between PayRun Admin Queue and Command Centre?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PayRun Admin Queue", "operator action surface", "what needs action now", "Command Centre", "control-room surface"],
+      "expected_source_terms_any": ["Command Centre", "operator workbench", "what needs action now"],
+      "forbidden_answer_patterns_any": ["calculates\\s+payroll", "Code Evidence"]
+    },
+    {
+      "id": "payrun-admin-queue-cleanliness-assurance",
+      "question": "Why does queue cleanliness not prove PayRun assurance?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["queue cleanliness", "not assurance", "PayRun", "representative", "Assurance Snapshot", "review evidence"],
+      "expected_answer_terms_any": ["reasonableness", "review signals"],
+      "expected_source_terms_any": ["queue cleanliness", "Assurance Snapshot", "reasonableness"],
+      "forbidden_answer_patterns_any": ["empty\\s+queue\\s+proves", "calculates\\s+payroll", "Code Evidence"]
+    },
+    {
+      "id": "payrun-admin-queue-blockers-warnings-ready",
+      "question": "How does the PayRun Admin Queue handle blockers, warnings and ready actions?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["blockers", "warnings", "ready actions", "distinct operational meanings", "operator"],
+      "expected_answer_terms_any": ["acknowledgement", "review"],
+      "expected_source_terms_any": ["blockers", "warnings", "ready actions"],
+      "forbidden_answer_patterns_any": ["warnings\\s+can\\s+be\\s+ignored", "Code Evidence"]
+    },
+    {
+      "id": "payrun-admin-queue-worker-attention-dirty-contacts",
+      "question": "How do Worker Attention and dirty contacts relate to the PayRun Admin Queue?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Attention", "dirty contacts", "Admin Queue", "action workflow", "reprocessing contexts"],
+      "expected_source_terms_any": ["Worker Attention", "dirty contacts", "contact changes"],
+      "forbidden_answer_patterns_any": ["calculates\\s+payroll", "Code Evidence"]
+    },
+    {
+      "id": "payrun-admin-queue-finalisation-readiness",
+      "question": "How does the PayRun Admin Queue relate to finalisation readiness?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["finalisation readiness", "blockers", "amber warnings", "warnings", "ignored"],
+      "expected_source_terms_any": ["finalisation readiness", "amber warnings", "blockers"],
+      "forbidden_answer_patterns_any": ["amber\\s+warnings\\s+are\\s+safe\\s+to\\s+ignore", "Code Evidence"]
+    },
+    {
+      "id": "payrun-admin-queue-assurance-snapshot",
+      "question": "How does Assurance Snapshot support the PayRun Admin Queue?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Assurance Snapshot", "reasonableness", "assurance", "review signals", "calculation truth", "governed assurance thresholds"],
+      "expected_source_terms_any": ["Assurance Snapshot", "reasonableness", "review signals", "thresholds"],
+      "forbidden_answer_patterns_any": ["is\\s+hidden\\s+calculation\\s+truth", "Code Evidence"]
+    },
+    {
+      "id": "payrun-admin-queue-review-surface-connections",
+      "question": "How does PayRun Admin Queue connect to Worker Story, Payroll Bases & Totals and Movement Review?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PayRun Admin Queue", "Worker Story", "Payroll Bases & Totals", "Movement Review", "worker evidence", "basis evidence", "operator review"],
+      "expected_source_terms_any": ["Worker Story", "Payroll Bases & Totals", "Movement Review"],
+      "forbidden_answer_patterns_any": ["Code Evidence", "runtime truth from diagnostics"]
+    }
+  ]
+}

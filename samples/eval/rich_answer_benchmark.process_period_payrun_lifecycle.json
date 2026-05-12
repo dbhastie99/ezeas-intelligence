@@ -1,0 +1,137 @@
+{
+  "name": "Process Periods / PayRun Lifecycle rich-answer benchmark",
+  "description": "Desired rich-answer benchmark for governed payroll-period and PayRun payment-event lifecycle evidence, including focused follow-up coverage.",
+  "questions": [
+    {
+      "id": "process-period-payrun-lifecycle-rich-answer",
+      "question": "How should Process Periods and PayRun Lifecycle work in Ezeas?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Process Periods / PayRun Lifecycle", "ProcessPeriod", "ProcessPeriodGroup", "governed payroll-period", "payment-event lifecycle evidence", "not payroll calculation truth", "not a generic date range", "open", "not-open", "closed", "closed dominates open", "close rolls forward", "PaymentDate", "payment date", "tax/PAYG", "governed", "not hardcoded", "PayRun creation", "PayRun admission", "admission is not processing", "RunType", "RunPurpose", "regular PayRun", "supplementary PayRun", "retro PayRun", "termination PayRun", "reversal PayRun", "adjustment PayRun", "PayRunContact", "worker participation", "operational state layer", "current-effective output", "current-effective payroll output", "stale", "superseded", "current truth", "finalisation readiness", "payment execution", "period close", "downstream governed outcomes", "Worker Story", "PayRun Admin Queue", "Movement Review", "readiness", "review implications", "outstanding hardening"],
+      "expected_source_terms_all": ["ProcessPeriod", "ProcessPeriodGroup", "PayRunContact"],
+      "expected_source_terms_any": ["PaymentDate", "RunType", "RunPurpose", "close rolls forward", "current-effective output", "period close"],
+      "forbidden_answer_patterns_any": ["ProcessPeriod\\s+calculates\\s+payroll\\.", "PayRun\\s+lifecycle\\s+calculates\\s+payroll\\.", "open\\s+means\\s+safe\\s+to\\s+finalise\\.", "regular,\\s*supplementary\\s+and\\s+retro\\s+are\\s+interchangeable\\.", "PaymentDate\\s+derivation\\s+is\\s+hardcoded\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "process-period-vs-processperiodgroup",
+      "question": "What is the difference between ProcessPeriod and ProcessPeriodGroup?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["ProcessPeriod", "governed payroll-period", "processing context", "not just a date range", "ProcessPeriodGroup", "recurring calendar", "payment policy context"],
+      "expected_source_terms_any": ["ProcessPeriodGroup", "recurring calendar policy", "payment policy context"],
+      "forbidden_answer_patterns_any": ["ProcessPeriod\\s+calculates\\s+payroll\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-open-not-open-closed",
+      "question": "What do open, not-open and closed ProcessPeriod states mean?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["open", "not-open", "closed", "distinct", "period lifecycle", "ProcessPeriod"],
+      "expected_source_terms_any": ["open", "not-open", "closed"],
+      "forbidden_answer_patterns_any": ["open\\s+means\\s+safe\\s+to\\s+finalise\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-closed-dominates-open",
+      "question": "Why does closed dominate open in ProcessPeriod governance?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["closed", "dominates open", "closed dominates open", "ProcessPeriod", "period lifecycle", "closed-period truth"],
+      "expected_source_terms_any": ["closed dominates open", "closed"],
+      "forbidden_answer_patterns_any": ["closed-period\\s+truth\\s+can\\s+be\\s+silently\\s+changed\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-close-rolls-forward",
+      "question": "What does close rolls forward mean?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["close rolls forward", "roll forward", "period close", "open next period", "create next period", "implemented"],
+      "expected_source_terms_any": ["close rolls forward", "open next period", "create next period"],
+      "forbidden_answer_patterns_any": ["always\\s+rolls\\s+forward\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-paymentdate",
+      "question": "Why does PaymentDate matter in Process Periods and PayRun Lifecycle?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PaymentDate", "payment date", "tax/PAYG", "payment context", "calendar policy", "governed", "derived", "not hardcoded"],
+      "expected_source_terms_any": ["PaymentDate", "payment date", "calendar policy"],
+      "forbidden_answer_patterns_any": ["PaymentDate\\s+derivation\\s+is\\s+hardcoded\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-payrun-creation-admission",
+      "question": "How do PayRun creation and worker admission work inside a ProcessPeriod?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PayRun creation", "PayRun admission", "ProcessPeriod", "process-period context", "worker inclusion", "payment event", "admission is not processing"],
+      "expected_source_terms_any": ["PayRun creation", "PayRun admission", "admission is not processing"],
+      "forbidden_answer_patterns_any": ["admission\\s+means\\s+processing\\s+has\\s+happened\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-runtype-runpurpose",
+      "question": "What is the difference between RunType and RunPurpose?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["RunType", "RunPurpose", "separate", "run type", "run purpose", "payment/processing event"],
+      "expected_source_terms_any": ["RunType", "RunPurpose"],
+      "forbidden_answer_patterns_any": ["RunType\\s+and\\s+RunPurpose\\s+are\\s+the\\s+same\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-regular-supplementary-retro",
+      "question": "How are regular, supplementary and retro PayRuns different?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["regular PayRun", "supplementary PayRun", "retro PayRun", "different lifecycle concepts", "not interchangeable"],
+      "expected_source_terms_any": ["regular PayRun", "supplementary PayRun", "retro PayRun"],
+      "forbidden_answer_patterns_any": ["regular,\\s*supplementary\\s+and\\s+retro\\s+are\\s+interchangeable\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-payruncontact-lifecycle",
+      "question": "What is the role of PayRunContact in the PayRun lifecycle?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["PayRunContact", "operational state layer", "worker participation", "admission", "processing state", "PayRun lifecycle"],
+      "expected_source_terms_any": ["PayRunContact", "worker participation", "processing state"],
+      "forbidden_answer_patterns_any": ["PayRunContact\\s+calculates\\s+payroll\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-admission-not-processing",
+      "question": "Why is admission not the same as processing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["admission", "processing", "admission is not processing", "worker inclusion", "PayRunContact", "processing state"],
+      "expected_source_terms_any": ["admission is not processing", "worker inclusion", "PayRunContact"],
+      "forbidden_answer_patterns_any": ["admission\\s+means\\s+processing\\s+has\\s+happened\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-current-effective-output",
+      "question": "Why does current-effective output matter for PayRun lifecycle?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["current-effective output", "current-effective payroll output", "stale", "superseded", "current truth", "finalisation readiness"],
+      "expected_source_terms_any": ["current-effective output", "stale", "superseded"],
+      "forbidden_answer_patterns_any": ["stale\\s+runs\\s+are\\s+current\\s+truth\\.", "Code Evidence"]
+    },
+    {
+      "id": "process-period-lifecycle-cross-domain-connections",
+      "question": "How do Finalisation Readiness, Payment Execution, Worker Story, Admin Queue and Movement Review connect to PayRun lifecycle?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_answer_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["finalisation readiness", "payment execution", "period close", "Worker Story", "PayRun Admin Queue", "Admin Queue", "Movement Review", "worker participation", "readiness", "review implications", "downstream governed outcomes"],
+      "expected_source_terms_any": ["Finalisation readiness", "payment execution", "Worker Story", "Movement Review"],
+      "forbidden_answer_patterns_any": ["payment\\s+execution\\s+is\\s+payroll\\s+calculation\\.", "Code Evidence"]
+    }
+  ]
+}

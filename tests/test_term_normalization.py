@@ -93,6 +93,19 @@ def test_project_term_normalization_matches_oncosts_employer_liabilities_variant
     assert contains_normalized_term("governedbasismembership matters", "governed basis membership")
 
 
+def test_project_term_normalization_matches_payroll_tax_workcover_wic_liability_detail_variants():
+    assert contains_normalized_term("Payroll Tax is state scoped", "PayrollTax")
+    assert contains_normalized_term("payrolltax is state scoped", "PayrollTax")
+    assert contains_normalized_term("Work Cover is jurisdictional", "WorkCover")
+    assert contains_normalized_term("Workers Insurance applies", "WIC")
+    assert contains_normalized_term("Workers Compensation evidence applies", "WIC")
+    assert contains_normalized_term("Employer Liability evidence is separate", "EmployerLiability")
+    assert contains_normalized_term("Worksite State context exists", "WorksiteState")
+    assert contains_normalized_term("Worksite.StateId context exists", "WorksiteState")
+    assert contains_normalized_term("liabilitywages are basis evidence", "liability wages")
+    assert contains_normalized_term("taxablewages are basis evidence", "taxable wages")
+
+
 def test_project_term_normalization_matches_award_build_evidence_variants():
     assert contains_normalized_term("AwardBuild creates configuration", "Award Build")
     assert contains_normalized_term("award evidence is traceable", "Award Evidence")
