@@ -1980,6 +1980,153 @@ LEAVE_REQUESTS_WORKFLOW_PLAN = DomainRetrievalPlan(
     ),
 )
 
+PUBLIC_HOLIDAYS_PLAN = DomainRetrievalPlan(
+    plan_id="PUBLIC_HOLIDAYS",
+    domain="Public Holidays",
+    trigger_phrases=(
+        "how are public holidays handled",
+        "how are public holidays handled in the platform",
+        "what is public holidays in the platform",
+        "how should public holiday handling work",
+        "public holiday handling",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="public_holiday_source_and_calendar",
+            label="Public Holidays source and calendar",
+            query_terms=("PublicHoliday", "Public Holiday", "PublicHolidayGroup", "Public Holiday Group", "public holiday calendar", "observed day", "public holiday override", "governed reference configuration"),
+            required_terms_any=("PublicHoliday", "Public Holiday", "PublicHolidayGroup", "Public Holiday Group", "public holiday calendar", "observed day"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worksite_state_and_applicability_context",
+            label="Public Holidays worksite state and applicability context",
+            query_terms=("public holiday", "PublicHolidayGroup", "Worksite", "WorksitePosition", "EmployeeAppointment", "worker", "applies to a worker", "state", "jurisdiction", "location context", "applicability context", "employer liabilities", "on-costs"),
+            required_terms_any=("public holiday", "Worksite", "WorksitePosition", "EmployeeAppointment", "state", "jurisdiction", "location context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_treatment_and_decision_story",
+            label="Public Holidays payroll treatment and Decision Story",
+            query_terms=("public holiday payroll treatment", "deterministic payroll interpretation", "public holiday treatment decisions", "public holiday decision", "entitlement decision", "treatment decision", "Decision Story", "Payroll Output", "deterministic payroll services"),
+            required_terms_any=("public holiday payroll treatment", "public holiday decision", "Decision Story", "Payroll Output", "deterministic payroll services"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="leave_interaction_and_deducts_on_public_holiday",
+            label="Public Holidays leave interaction and DeductsOnPublicHoliday",
+            query_terms=("DeductsOnPublicHoliday", "Deducts On Public Holiday", "public holiday leave treatment", "leave request", "leave preview", "LeaveLedger", "leave posting"),
+            required_terms_any=("DeductsOnPublicHoliday", "Deducts On Public Holiday", "public holiday leave treatment", "leave request", "LeaveLedger"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_admin_queue_and_finalisation",
+            label="Public Holidays Worker Story Admin Queue and finalisation",
+            query_terms=("public holiday", "Worker Story", "Decision Story", "Payroll Output", "payroll evidence", "source/context visibility", "PayRun Admin Queue", "Worker Attention", "Finalisation Readiness", "public holiday configuration", "NEEDS_CONFIGURATION", "source context missing", "operator evidence"),
+            required_terms_any=("public holiday", "Worker Story", "Admin Queue", "Worker Attention", "Finalisation Readiness", "operator evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+ROSTERS_PATTERNS_SCHEDULING_PLAN = DomainRetrievalPlan(
+    plan_id="ROSTERS_PATTERNS_SCHEDULING",
+    domain="Rosters / Patterns / Scheduling",
+    trigger_phrases=(
+        "how do rosters patterns and scheduling work",
+        "how do rosters, patterns and scheduling work",
+        "what are rosters patterns and scheduling",
+        "rosters patterns scheduling",
+        "roster pattern scheduling",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="roster_pattern_source_and_configuration",
+            label="Rosters / Patterns / Scheduling source and configuration",
+            query_terms=("Roster", "Rosters", "Pattern", "PatternDay", "Pattern Day", "EmployeeAppointmentPattern", "Employee Appointment Pattern", "roster schedule configuration", "expected work context", "governed configuration evidence"),
+            required_terms_any=("Roster", "Pattern", "PatternDay", "EmployeeAppointmentPattern", "roster schedule configuration", "expected work context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="appointment_worksite_and_applicability_context",
+            label="Rosters / Patterns / Scheduling appointment worksite and applicability context",
+            query_terms=("Roster", "Pattern", "EmployeeAppointment", "WorksitePosition", "Worksite", "state", "public holiday context", "assignment context", "applicability context"),
+            required_terms_any=("Roster", "Pattern", "EmployeeAppointment", "WorksitePosition", "Worksite", "assignment context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="ordinary_hours_leave_basis_and_public_holiday_context",
+            label="Rosters / Patterns / Scheduling ordinary hours leave basis and public holiday context",
+            query_terms=("ordinary hours", "ordinary-hours", "leave basis minutes", "schedule pattern relationship", "public holiday", "leave interaction", "roster-based basis", "deferred roster-based basis hardening"),
+            required_terms_any=("ordinary hours", "leave basis minutes", "public holiday", "leave interaction", "roster-based basis"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_interpretation_and_worker_story_relationship",
+            label="Rosters / Patterns / Scheduling payroll interpretation and Worker Story relationship",
+            query_terms=("scheduling context", "payroll interpretation", "ObjectTime comparison", "expected schedule", "actual worked time", "Worker Story", "Decision Story", "Payroll Output", "source truth"),
+            required_terms_any=("scheduling context", "payroll interpretation", "ObjectTime", "Worker Story", "Decision Story", "Payroll Output"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="admin_queue_finalisation_and_readiness_relationship",
+            label="Rosters / Patterns / Scheduling Admin Queue finalisation and readiness relationship",
+            query_terms=("missing schedule", "missing pattern", "configuration gaps", "Worker Attention", "PayRun Admin Queue", "Admin Queue", "Finalisation Readiness", "readiness evidence", "NEEDS_CONFIGURATION"),
+            required_terms_any=("missing schedule", "missing pattern", "configuration gaps", "Worker Attention", "Admin Queue", "Finalisation Readiness"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
+AWARD_POSITIONS_CLASSIFICATIONS_PLAN = DomainRetrievalPlan(
+    plan_id="AWARD_POSITIONS_CLASSIFICATIONS",
+    domain="Award Positions / Classifications",
+    trigger_phrases=(
+        "how do award positions and classifications work",
+        "how do award positions classifications work",
+        "what are award positions and classifications",
+        "award positions classifications",
+        "award position classification",
+    ),
+    evidence_groups=(
+        EvidenceGroup(
+            group_id="award_position_classification_source_and_build",
+            label="Award Positions / Classifications source and build",
+            query_terms=("AwardPosition", "Award Position", "AwardPositionClass", "Award Position Class", "PositionClass", "Position Class", "classification levels", "position groups", "pay guide", "class evidence", "award build extraction", "deterministic extraction hardening"),
+            required_terms_any=("AwardPosition", "Award Position", "AwardPositionClass", "Award Position Class", "PositionClass", "classification", "pay guide", "class evidence"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="appointment_position_and_worksite_assignment",
+            label="Award Positions / Classifications appointment position and worksite assignment",
+            query_terms=("EmployeeAppointment", "Employee Appointment", "WorksitePosition", "Worksite Position", "Position", "Worksite", "worker assignment", "assignment context", "award classification", "employment classification"),
+            required_terms_any=("EmployeeAppointment", "Employee Appointment", "WorksitePosition", "Worksite Position", "Position", "Worksite", "assignment context"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="payroll_interpretation_rate_and_decision_story",
+            label="Award Positions / Classifications payroll interpretation rate and Decision Story",
+            query_terms=("classification context", "payroll interpretation", "RateSource", "Rate Story", "Decision Story", "Payroll Output", "calculated line evidence", "rate selection"),
+            required_terms_any=("classification context", "payroll interpretation", "RateSource", "Rate Story", "Decision Story", "Payroll Output"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="comparison_remediation_and_classification_lenses",
+            label="Award Positions / Classifications comparison remediation and classification lenses",
+            query_terms=("comparator classification", "award comparison", "comparison remediation", "imported classification mapping", "classification lenses", "comparison classes", "primary appointment class", "classification lens"),
+            required_terms_any=("comparator classification", "award comparison", "comparison remediation", "imported classification mapping", "classification lenses", "primary appointment class"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+        EvidenceGroup(
+            group_id="worker_story_admin_queue_and_readiness_relationship",
+            label="Award Positions / Classifications Worker Story Admin Queue and readiness relationship",
+            query_terms=("Worker Story", "PayRun Admin Queue", "Admin Queue", "Worker Attention", "Finalisation Readiness", "readiness", "configuration gaps", "NEEDS_CONFIGURATION", "evidence visibility"),
+            required_terms_any=("Worker Story", "Admin Queue", "Worker Attention", "Finalisation Readiness", "configuration gaps", "NEEDS_CONFIGURATION", "evidence visibility"),
+            preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
+        ),
+    ),
+)
+
 CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN = DomainRetrievalPlan(
     plan_id="CONTACTS_EMPLOYEE_APPOINTMENTS",
     domain="Contacts / Employee Appointments",
@@ -2865,6 +3012,9 @@ DOMAIN_RETRIEVAL_PLANS = (
     LEAVE_ACCRUAL_PROCESSING_PLAN,
     LEAVE_SOURCE_MODEL_PLAN,
     LEAVE_REQUESTS_WORKFLOW_PLAN,
+    PUBLIC_HOLIDAYS_PLAN,
+    ROSTERS_PATTERNS_SCHEDULING_PLAN,
+    AWARD_POSITIONS_CLASSIFICATIONS_PLAN,
     ONCOSTS_EMPLOYER_LIABILITIES_PLAN,
     AWARD_BUILD_EVIDENCE_PLAN,
     IMPORTS_ACTUALS_PLAN,
@@ -2915,6 +3065,10 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "worker attention" in normalized and (
             "model worker issue" in normalized
             or "worker issues" in normalized
+            or "blockers" in normalized
+            or "warnings" in normalized
+            or "fix links" in normalized
+            or "fix link" in normalized
             or "fix an issue" in normalized
             or "guide users" in normalized
             or "dirty contact state" in normalized
@@ -2990,6 +3144,56 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "work" in normalized
     ):
         return COSTING_GL_CONSEQUENCE_PLAN
+    award_positions_classifications_framed = (
+        "award positions / classifications" in normalized
+        or "award positions and classifications" in normalized
+        or "award positions classifications" in normalized
+        or "award position classification" in normalized
+        or "awardposition" in normalized
+        or "award position" in normalized
+        or "awardpositionclass" in normalized
+        or "award position class" in normalized
+        or "positionclass" in normalized
+        or "position class" in normalized
+        or ("classification" in normalized and ("award position" in normalized or "award class" in normalized or "employee appointment" in normalized or "worksiteposition" in normalized or "worksite position" in normalized))
+        or ("classification" in normalized and "pay guide" in normalized and ("payroll interpretation" in normalized or "class evidence" in normalized))
+        or ("classifications" in normalized and ("award position" in normalized or "award class" in normalized or "employee appointment" in normalized or "worksiteposition" in normalized or "worksite position" in normalized))
+        or ("class" in normalized and ("award position" in normalized or "worksite position" in normalized or "employee appointment" in normalized))
+    )
+    if award_positions_classifications_framed and not (
+        normalized.startswith("how should award build")
+        or normalized.startswith("how should award evidence")
+        or normalized.startswith("what is award build")
+        or normalized.startswith("what is award evidence")
+        or ("award build" in normalized and "classification" not in normalized and "class" not in normalized and "position" not in normalized)
+        or ("award evidence" in normalized and "classification" not in normalized and "class" not in normalized and "position" not in normalized)
+        or normalized.startswith("how should contacts")
+        or normalized.startswith("what are contacts")
+        or normalized.startswith("how should employee appointments")
+        or normalized.startswith("how do rosters")
+        or normalized.startswith("how does objecttime")
+        or normalized.startswith("what is objecttime")
+        or normalized.startswith("how does ratesource / rate story")
+        or normalized.startswith("how does rate source / rate story")
+        or normalized.startswith("how does decision story")
+        or normalized.startswith("what is decision story")
+        or normalized.startswith("what is payroll output")
+        or normalized.startswith("how does comparison / remediation")
+        or normalized.startswith("what is worker story")
+        or normalized.startswith("what is finalisation readiness")
+        or normalized.startswith("how does worker attention")
+        or normalized.startswith("how should imports / actuals")
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return AWARD_POSITIONS_CLASSIFICATIONS_PLAN
     if (
         "ratesource / rate story" in normalized
         or "ratesource rate story" in normalized
@@ -3026,6 +3230,86 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "platform" in normalized
     ):
         return RATE_SOURCE_RATE_STORY_PLAN
+    roster_pattern_scheduling_framed = (
+        "rosters / patterns / scheduling" in normalized
+        or "rosters patterns scheduling" in normalized
+        or "rosters, patterns and scheduling" in normalized
+        or "rosters patterns and scheduling" in normalized
+        or "roster pattern scheduling" in normalized
+        or "employeeappointmentpattern" in normalized
+        or "employee appointment pattern" in normalized
+        or "patternday" in normalized
+        or "pattern day" in normalized
+        or ("roster" in normalized and ("pattern" in normalized or "schedule" in normalized or "scheduling" in normalized or "ordinary hours" in normalized or "worksite" in normalized or "worker story" in normalized or "public holiday" in normalized or "readiness" in normalized))
+        or ("rosters" in normalized and ("pattern" in normalized or "schedule" in normalized or "scheduling" in normalized or "ordinary hours" in normalized or "worksite" in normalized or "worker story" in normalized or "public holiday" in normalized or "readiness" in normalized))
+        or ("pattern" in normalized and ("schedule" in normalized or "scheduling" in normalized or "ordinary hours" in normalized or "employee appointment" in normalized or "worksite" in normalized or "worker story" in normalized))
+        or ("patterns" in normalized and ("schedule" in normalized or "scheduling" in normalized or "ordinary hours" in normalized or "employee appointment" in normalized or "worksite" in normalized or "worker story" in normalized))
+        or ("work schedule" in normalized and ("roster" in normalized or "pattern" in normalized or "ordinary hours" in normalized or "employee appointment" in normalized))
+        or ("scheduling" in normalized and ("roster" in normalized or "pattern" in normalized or "ordinary hours" in normalized or "expected time" in normalized or "expected work" in normalized))
+        or ("scheduling context" in normalized and ("objecttime" in normalized or "actual worked time" in normalized or "source truth" in normalized))
+    )
+    if roster_pattern_scheduling_framed and not (
+        normalized.startswith("what is objecttime")
+        or normalized.startswith("how does objecttime")
+        or normalized.startswith("what is source truth")
+        or normalized.startswith("how does source truth")
+        or normalized.startswith("how should contacts")
+        or normalized.startswith("what are contacts")
+        or normalized.startswith("how should employee appointments")
+        or normalized.startswith("how are public holidays")
+        or normalized.startswith("how do public holidays")
+        or normalized.startswith("what is finalisation readiness")
+        or normalized.startswith("how does finalisation readiness")
+        or normalized.startswith("what is worker story")
+        or normalized.startswith("how should worker story")
+        or normalized.startswith("how does worker attention")
+        or normalized.startswith("what is payroll output")
+        or normalized.startswith("how should payroll output")
+        or normalized.startswith("how does decision story")
+        or normalized.startswith("what is decision story")
+        or normalized.startswith("how does process periods")
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return ROSTERS_PATTERNS_SCHEDULING_PLAN
+    if (
+        "public holidays" in normalized
+        or "public holiday" in normalized
+        or "publicholiday" in normalized
+        or "publicholidaygroup" in normalized
+        or "public holiday group" in normalized
+        or "deductsonpublicholiday" in normalized
+        or "deducts on public holiday" in normalized
+    ) and not (
+        normalized.startswith("how does decision story")
+        or normalized.startswith("what is decision story")
+        or normalized.startswith("what is decisionstory")
+        or normalized.startswith("what is the difference between decision story")
+        or normalized.startswith("what is decisionevidenceindex")
+        or normalized.startswith("what is decision evidence index")
+    ) and not (
+        ("leave request" in normalized or "leave workflow" in normalized or "leaveledger" in normalized or "leave ledger" in normalized)
+        and ("approval" in normalized or "preview" in normalized or "shortfall" in normalized or "posting" in normalized)
+        and "public holiday" not in normalized
+    ) and (
+        "what" in normalized
+        or "how" in normalized
+        or "why" in normalized
+        or "should" in normalized
+        or "evidence" in normalized
+        or "explain" in normalized
+        or "handled" in normalized
+        or "work" in normalized
+        or "platform" in normalized
+    ):
+        return PUBLIC_HOLIDAYS_PLAN
     if (
         "what is decision story" in normalized
         or "what is decisionstory" in normalized
@@ -3422,6 +3706,8 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or ("employee appointment scope" in normalized and "leave" in normalized)
         or ("appointment aware leave" in normalized)
         or ("source dimensions" in normalized and "leave" in normalized)
+    ) and not (
+        ("leave request" in normalized or "leaverequest" in normalized) and "workflow" in normalized
     ) and (
         "what" in normalized
         or "how" in normalized
@@ -3437,6 +3723,7 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         "leave requests / leave workflow" in normalized
         or "leave requests leave workflow" in normalized
         or ("leave workflow" in normalized and ("what" in normalized or "how" in normalized or "platform" in normalized))
+        or ("leave requests" in normalized and ("workflow" in normalized or "status" in normalized or "draft" in normalized or "submit" in normalized or "approve" in normalized or "reject" in normalized or "reopen" in normalized or "leaveledger" in normalized or "posting" in normalized or "balance" in normalized or "worker story" in normalized or "payrun" in normalized or "finalisation readiness" in normalized or "finalization readiness" in normalized))
         or ("leave request" in normalized and ("workflow" in normalized or "status" in normalized or "draft" in normalized or "submit" in normalized or "approve" in normalized or "reject" in normalized or "reopen" in normalized))
         or ("leaverequest" in normalized and ("workflow" in normalized or "status" in normalized or "draft" in normalized or "submit" in normalized or "approve" in normalized or "reject" in normalized or "reopen" in normalized))
         or ("leave submission" in normalized and ("workflow" in normalized or "review" in normalized or "approval" in normalized))

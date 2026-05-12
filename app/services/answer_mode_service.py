@@ -70,6 +70,10 @@ def classify_answer_mode(question: str) -> str:
         or "worker attention" in normalized and (
             "model worker issue" in normalized
             or "worker issues" in normalized
+            or "blockers" in normalized
+            or "warnings" in normalized
+            or "fix links" in normalized
+            or "fix link" in normalized
             or "fix an issue" in normalized
             or "guide users" in normalized
             or "dirty contact state" in normalized
@@ -91,6 +95,39 @@ def classify_answer_mode(question: str) -> str:
         or ("rate story" in normalized and ("worker story" in normalized or "gross to net" in normalized or "payroll output" in normalized))
         or ("ratesource" in normalized and ("rate story" in normalized or "selected rate" in normalized or "rate amount" in normalized or "evidence layer" in normalized))
         or ("rate source" in normalized and ("rate story" in normalized or "selected rate" in normalized or "rate amount" in normalized or "evidence layer" in normalized))
+    ):
+        return AnswerMode.PRODUCT_DOMAIN.value
+    if (
+        "award positions / classifications" in normalized
+        or "award positions and classifications" in normalized
+        or "award positions classifications" in normalized
+        or "award position classification" in normalized
+        or "awardposition" in normalized
+        or "award position" in normalized
+        or "awardpositionclass" in normalized
+        or "award position class" in normalized
+        or "positionclass" in normalized
+        or "position class" in normalized
+        or ("classification" in normalized and ("award position" in normalized or "award class" in normalized or "employee appointment" in normalized or "worksiteposition" in normalized or "worksite position" in normalized))
+        or ("classification" in normalized and "pay guide" in normalized and ("payroll interpretation" in normalized or "class evidence" in normalized))
+    ):
+        return AnswerMode.PRODUCT_DOMAIN.value
+    if (
+        "rosters / patterns / scheduling" in normalized
+        or "rosters patterns scheduling" in normalized
+        or "rosters, patterns and scheduling" in normalized
+        or "rosters patterns and scheduling" in normalized
+        or "roster pattern scheduling" in normalized
+        or "employeeappointmentpattern" in normalized
+        or "employee appointment pattern" in normalized
+        or "patternday" in normalized
+        or "pattern day" in normalized
+        or ("roster" in normalized and ("pattern" in normalized or "schedule" in normalized or "scheduling" in normalized or "ordinary hours" in normalized))
+        or ("rosters" in normalized and ("pattern" in normalized or "schedule" in normalized or "scheduling" in normalized or "ordinary hours" in normalized))
+        or ("pattern" in normalized and ("schedule" in normalized or "scheduling" in normalized or "ordinary hours" in normalized or "employee appointment" in normalized))
+        or ("work schedule" in normalized and ("roster" in normalized or "pattern" in normalized or "ordinary hours" in normalized))
+        or ("scheduling" in normalized and ("roster" in normalized or "pattern" in normalized or "ordinary hours" in normalized or "expected time" in normalized or "expected work" in normalized))
+        or ("scheduling context" in normalized and ("objecttime" in normalized or "actual worked time" in normalized or "source truth" in normalized))
     ):
         return AnswerMode.PRODUCT_DOMAIN.value
     if (
@@ -444,6 +481,23 @@ def classify_answer_mode(question: str) -> str:
         "contacts / employee appointments",
         "employeeappointment",
         "employee appointment",
+        "rosters / patterns / scheduling",
+        "rosters patterns scheduling",
+        "roster pattern scheduling",
+        "roster",
+        "rosters",
+        "patternday",
+        "pattern day",
+        "employeeappointmentpattern",
+        "employee appointment pattern",
+        "work schedule",
+        "ordinary hours",
+        "ordinary-hours",
+        "public holiday",
+        "public holidays",
+        "publicholiday",
+        "publicholidaygroup",
+        "deductsonpublicholiday",
         "contact history",
         "payrun admission",
         "worksiteposition",

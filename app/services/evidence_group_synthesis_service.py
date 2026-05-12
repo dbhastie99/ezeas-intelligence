@@ -1232,6 +1232,206 @@ LEAVE_REQUESTS_WORKFLOW_GROUP_SIGNAL_TERMS = {
     "outstanding_hardening": ("Leave Requests / Leave Workflow", "outstanding hardening", "leave workflow"),
 }
 
+PUBLIC_HOLIDAYS_GROUP_KEY_TERMS = {
+    "public_holiday_source_and_calendar": (
+        "PublicHoliday",
+        "Public Holiday",
+        "PublicHolidayGroup",
+        "Public Holiday Group",
+        "public holiday calendar",
+        "observed day",
+        "public holiday override",
+        "governed reference configuration",
+    ),
+    "worksite_state_and_applicability_context": (
+        "public holiday",
+        "PublicHolidayGroup",
+        "Worksite",
+        "WorksitePosition",
+        "EmployeeAppointment",
+        "worker",
+        "applies to a worker",
+        "state",
+        "jurisdiction",
+        "location context",
+        "applicability context",
+        "employer liabilities",
+        "on-costs",
+    ),
+    "payroll_treatment_and_decision_story": (
+        "public holiday payroll treatment",
+        "deterministic payroll interpretation",
+        "public holiday treatment decisions",
+        "public holiday decision",
+        "entitlement decision",
+        "treatment decision",
+        "Decision Story",
+        "Payroll Output",
+        "deterministic payroll services",
+    ),
+    "leave_interaction_and_deducts_on_public_holiday": (
+        "DeductsOnPublicHoliday",
+        "Deducts On Public Holiday",
+        "public holiday leave treatment",
+        "leave request",
+        "leave preview",
+        "LeaveLedger",
+        "leave posting",
+    ),
+    "worker_story_admin_queue_and_finalisation": (
+        "public holiday",
+        "Worker Story",
+        "Decision Story",
+        "Payroll Output",
+        "payroll evidence",
+        "source/context visibility",
+        "PayRun Admin Queue",
+        "Worker Attention",
+        "Finalisation Readiness",
+        "public holiday configuration",
+        "NEEDS_CONFIGURATION",
+        "source context missing",
+        "operator evidence",
+    ),
+}
+
+PUBLIC_HOLIDAYS_GROUP_SIGNAL_TERMS = {
+    "public_holiday_source_and_calendar": ("PublicHoliday", "PublicHolidayGroup", "public holiday calendar"),
+    "worksite_state_and_applicability_context": ("public holiday", "Worksite", "state", "location context", "applies to a worker"),
+    "payroll_treatment_and_decision_story": ("public holiday payroll treatment", "Decision Story", "Payroll Output", "deterministic payroll interpretation"),
+    "leave_interaction_and_deducts_on_public_holiday": ("DeductsOnPublicHoliday", "public holiday leave treatment", "LeaveLedger"),
+    "worker_story_admin_queue_and_finalisation": ("public holiday", "Worker Story", "Finalisation Readiness", "NEEDS_CONFIGURATION"),
+}
+
+ROSTERS_PATTERNS_SCHEDULING_GROUP_KEY_TERMS = {
+    "roster_pattern_source_and_configuration": (
+        "Roster",
+        "Rosters",
+        "Pattern",
+        "PatternDay",
+        "Pattern Day",
+        "EmployeeAppointmentPattern",
+        "Employee Appointment Pattern",
+        "roster schedule configuration",
+        "expected work context",
+        "governed configuration evidence",
+    ),
+    "appointment_worksite_and_applicability_context": (
+        "Roster",
+        "Pattern",
+        "EmployeeAppointment",
+        "WorksitePosition",
+        "Worksite",
+        "state",
+        "public holiday context",
+        "assignment context",
+        "applicability context",
+    ),
+    "ordinary_hours_leave_basis_and_public_holiday_context": (
+        "ordinary hours",
+        "ordinary-hours",
+        "leave basis minutes",
+        "schedule pattern relationship",
+        "public holiday",
+        "leave interaction",
+        "roster-based basis",
+        "deferred roster-based basis hardening",
+    ),
+    "payroll_interpretation_and_worker_story_relationship": (
+        "scheduling context",
+        "payroll interpretation",
+        "ObjectTime comparison",
+        "expected schedule",
+        "actual worked time",
+        "Worker Story",
+        "Decision Story",
+        "Payroll Output",
+        "source truth",
+    ),
+    "admin_queue_finalisation_and_readiness_relationship": (
+        "missing schedule",
+        "missing pattern",
+        "configuration gaps",
+        "Worker Attention",
+        "PayRun Admin Queue",
+        "Admin Queue",
+        "Finalisation Readiness",
+        "readiness evidence",
+        "NEEDS_CONFIGURATION",
+    ),
+}
+
+ROSTERS_PATTERNS_SCHEDULING_GROUP_SIGNAL_TERMS = {
+    "roster_pattern_source_and_configuration": ("Roster", "Pattern", "PatternDay", "EmployeeAppointmentPattern"),
+    "appointment_worksite_and_applicability_context": ("EmployeeAppointment", "WorksitePosition", "Worksite", "assignment context"),
+    "ordinary_hours_leave_basis_and_public_holiday_context": ("ordinary hours", "leave basis minutes", "public holiday"),
+    "payroll_interpretation_and_worker_story_relationship": ("payroll interpretation", "ObjectTime", "Worker Story", "Payroll Output"),
+    "admin_queue_finalisation_and_readiness_relationship": ("Worker Attention", "Admin Queue", "Finalisation Readiness", "NEEDS_CONFIGURATION"),
+}
+
+AWARD_POSITIONS_CLASSIFICATIONS_GROUP_KEY_TERMS = {
+    "award_position_classification_source_and_build": (
+        "AwardPosition",
+        "Award Position",
+        "AwardPositionClass",
+        "Award Position Class",
+        "PositionClass",
+        "Position Class",
+        "classification levels",
+        "position groups",
+        "pay guide",
+        "class evidence",
+        "award build extraction",
+        "deterministic extraction hardening",
+    ),
+    "appointment_position_and_worksite_assignment": (
+        "EmployeeAppointment",
+        "Employee Appointment",
+        "WorksitePosition",
+        "Worksite Position",
+        "Position",
+        "Worksite",
+        "worker assignment",
+        "assignment context",
+        "employment classification",
+    ),
+    "payroll_interpretation_rate_and_decision_story": (
+        "classification context",
+        "payroll interpretation",
+        "RateSource",
+        "Rate Story",
+        "Decision Story",
+        "Payroll Output",
+        "calculated line evidence",
+    ),
+    "comparison_remediation_and_classification_lenses": (
+        "comparator classification",
+        "award comparison",
+        "comparison remediation",
+        "imported classification mapping",
+        "classification lenses",
+        "comparison classes",
+        "primary appointment class",
+    ),
+    "worker_story_admin_queue_and_readiness_relationship": (
+        "Worker Story",
+        "Admin Queue",
+        "Worker Attention",
+        "Finalisation Readiness",
+        "configuration gaps",
+        "NEEDS_CONFIGURATION",
+        "evidence visibility",
+    ),
+}
+
+AWARD_POSITIONS_CLASSIFICATIONS_GROUP_SIGNAL_TERMS = {
+    "award_position_classification_source_and_build": ("AwardPosition", "AwardPositionClass", "classification levels", "pay guide"),
+    "appointment_position_and_worksite_assignment": ("EmployeeAppointment", "WorksitePosition", "Position", "Worksite"),
+    "payroll_interpretation_rate_and_decision_story": ("classification context", "RateSource", "Rate Story", "Decision Story"),
+    "comparison_remediation_and_classification_lenses": ("comparator classification", "classification lenses", "primary appointment class"),
+    "worker_story_admin_queue_and_readiness_relationship": ("Worker Story", "Worker Attention", "Finalisation Readiness", "NEEDS_CONFIGURATION"),
+}
+
 FINALISATION_READINESS_GROUP_KEY_TERMS = {
     "purpose_and_operator_meaning": (
         "Finalisation Readiness",
@@ -2559,6 +2759,18 @@ def _is_leave_requests_workflow_group(group: EvidenceGroup) -> bool:
     return group.label.startswith("Leave Requests / Leave Workflow")
 
 
+def _is_public_holidays_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Public Holidays")
+
+
+def _is_rosters_patterns_scheduling_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Rosters / Patterns / Scheduling")
+
+
+def _is_award_positions_classifications_group(group: EvidenceGroup) -> bool:
+    return group.label.startswith("Award Positions / Classifications")
+
+
 def _is_finalisation_readiness_group(group: EvidenceGroup) -> bool:
     return group.label.startswith("Finalisation Readiness")
 
@@ -3822,6 +4034,114 @@ def _leave_requests_workflow_domain_sentence(terms: list[str], label: str) -> st
     return f"{', '.join(clauses)}."
 
 
+def _public_holidays_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Public Holidays evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "PublicHoliday",
+            "Public Holiday",
+            "PublicHolidayGroup",
+            "Public Holiday Group",
+            "public holiday calendar",
+            "observed day",
+            "public holiday override",
+            "governed reference configuration",
+            "Worksite",
+            "WorksitePosition",
+            "EmployeeAppointment",
+            "state",
+            "jurisdiction",
+            "location context",
+            "public holiday payroll treatment",
+            "public holiday decision",
+            "Decision Story",
+            "Payroll Output",
+            "deterministic payroll services",
+            "DeductsOnPublicHoliday",
+            "public holiday leave treatment",
+            "leave request",
+            "LeaveLedger",
+            "Worker Story",
+            "PayRun Admin Queue",
+            "Worker Attention",
+            "Finalisation Readiness",
+            "operator evidence",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _rosters_patterns_scheduling_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Rosters / Patterns / Scheduling evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "Roster",
+            "Pattern",
+            "PatternDay",
+            "EmployeeAppointmentPattern",
+            "expected work context",
+            "EmployeeAppointment",
+            "WorksitePosition",
+            "Worksite",
+            "ordinary hours",
+            "leave basis minutes",
+            "public holiday",
+            "ObjectTime",
+            "expected schedule",
+            "actual worked time",
+            "Worker Story",
+            "Decision Story",
+            "Payroll Output",
+            "Worker Attention",
+            "Admin Queue",
+            "Finalisation Readiness",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
+def _award_positions_classifications_domain_sentence(terms: list[str], label: str) -> str:
+    clauses = [f"{label} is described in the retrieved Award Positions / Classifications evidence"]
+    detail_terms = [
+        term
+        for term in (
+            "AwardPosition",
+            "AwardPositionClass",
+            "PositionClass",
+            "classification levels",
+            "pay guide",
+            "EmployeeAppointment",
+            "WorksitePosition",
+            "Position",
+            "Worksite",
+            "classification context",
+            "RateSource",
+            "Rate Story",
+            "Decision Story",
+            "Payroll Output",
+            "comparator classification",
+            "classification lenses",
+            "primary appointment class",
+            "Worker Story",
+            "Worker Attention",
+            "Finalisation Readiness",
+            "NEEDS_CONFIGURATION",
+        )
+        if _has_any(terms, term)
+    ]
+    if detail_terms:
+        clauses.append(f"covering {', '.join(detail_terms[:10])}")
+    return f"{', '.join(clauses)}."
+
+
 def _leave_source_model_domain_sentence(terms: list[str], label: str) -> str:
     clauses = [f"{label} is described in the retrieved Leave Source Model evidence"]
     detail_terms = [
@@ -3964,6 +4284,12 @@ def _sentence_for_group(group: EvidenceGroup, terms: list[str]) -> str:
         return _leave_accrual_processing_domain_sentence(terms, group.label)
     if _is_leave_requests_workflow_group(group):
         return _leave_requests_workflow_domain_sentence(terms, group.label)
+    if _is_public_holidays_group(group):
+        return _public_holidays_domain_sentence(terms, group.label)
+    if _is_rosters_patterns_scheduling_group(group):
+        return _rosters_patterns_scheduling_domain_sentence(terms, group.label)
+    if _is_award_positions_classifications_group(group):
+        return _award_positions_classifications_domain_sentence(terms, group.label)
     if _is_payment_execution_remittance_group(group):
         return _payment_execution_remittance_domain_sentence(terms, group.label)
     if _is_retro_replay_group(group):
@@ -4078,6 +4404,15 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         LEAVE_REQUESTS_WORKFLOW_GROUP_KEY_TERMS.get(group.group_id)
         if _is_leave_requests_workflow_group(group)
         else
+        PUBLIC_HOLIDAYS_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_public_holidays_group(group)
+        else
+        ROSTERS_PATTERNS_SCHEDULING_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_rosters_patterns_scheduling_group(group)
+        else
+        AWARD_POSITIONS_CLASSIFICATIONS_GROUP_KEY_TERMS.get(group.group_id)
+        if _is_award_positions_classifications_group(group)
+        else
         PAYMENT_EXECUTION_REMITTANCE_GROUP_KEY_TERMS.get(group.group_id)
         if _is_payment_execution_remittance_group(group)
         else
@@ -4151,6 +4486,15 @@ def synthesize_evidence_group(group: EvidenceGroup, results: list[RetrievalResul
         else
         LEAVE_REQUESTS_WORKFLOW_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_leave_requests_workflow_group(group)
+        else
+        PUBLIC_HOLIDAYS_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_public_holidays_group(group)
+        else
+        ROSTERS_PATTERNS_SCHEDULING_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_rosters_patterns_scheduling_group(group)
+        else
+        AWARD_POSITIONS_CLASSIFICATIONS_GROUP_SIGNAL_TERMS.get(group.group_id)
+        if _is_award_positions_classifications_group(group)
         else
         PAYMENT_EXECUTION_REMITTANCE_GROUP_SIGNAL_TERMS.get(group.group_id)
         if _is_payment_execution_remittance_group(group)

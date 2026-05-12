@@ -554,6 +554,72 @@ Run the Leave Requests / Leave Workflow rich-answer benchmark after corpus chang
 .\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.leave_requests_workflow.json
 ```
 
+Run the Public Holidays rich-answer benchmark after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.public_holidays.json
+```
+
+Run the Rosters / Patterns / Scheduling rich-answer benchmark after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.rosters_patterns_scheduling.json
+```
+
+Run the Award Positions / Classifications rich-answer benchmark after corpus changes:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.award_positions_classifications.json
+```
+
+Run the diagnostic-only Rosters / Patterns / Scheduling corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_rosters_patterns_scheduling_corpus_coverage.py --json --output .\artifacts\eval\rosters_patterns_scheduling_corpus_coverage.json
+```
+
+Build the diagnostic-only Rosters / Patterns / Scheduling answer gap report from coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_rosters_patterns_scheduling_answer_gap_report.py --coverage-report .\artifacts\eval\rosters_patterns_scheduling_corpus_coverage.json --output .\artifacts\eval\rosters_patterns_scheduling_answer_gap_report.json
+```
+
+These Rosters / Patterns / Scheduling diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, read source code as Minerva evidence, connect Code Evidence Index to answer generation, and do not prove runtime operational truth. They do not create rosters, do not change worker schedules, do not mutate Pattern, PatternDay or EmployeeAppointmentPattern truth, do not mutate ObjectTime, do not calculate payroll, do not decide entitlements, do not calculate or approve leave, do not determine or finalise readiness, and do not mutate operational workforce/payroll/leave truth.
+
+For the repeatable Rosters / Patterns / Scheduling evaluation workflow and interpretation guidance, see [docs/ROSTERS_PATTERNS_SCHEDULING_EVALUATION_RUNBOOK.md](docs/ROSTERS_PATTERNS_SCHEDULING_EVALUATION_RUNBOOK.md).
+
+Run the diagnostic-only Public Holidays corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_public_holidays_corpus_coverage.py --json --output .\artifacts\eval\public_holidays_corpus_coverage.json
+```
+
+Build the diagnostic-only Public Holidays answer gap report from coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_public_holidays_answer_gap_report.py --coverage-report .\artifacts\eval\public_holidays_corpus_coverage.json --output .\artifacts\eval\public_holidays_answer_gap_report.json
+```
+
+These Public Holidays diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, read source code as Minerva evidence, connect Code Evidence Index to answer generation, and do not prove runtime operational truth. They do not calculate public holiday entitlements, do not decide payroll treatment, do not calculate or approve leave, do not post LeaveLedger rows, do not mutate Worksite/PublicHolidayGroup/EmployeeAppointment/PayRun/LeaveRequest truth, and do not determine or finalise readiness.
+
+For the repeatable Public Holidays evaluation workflow and interpretation guidance, see [docs/PUBLIC_HOLIDAYS_EVALUATION_RUNBOOK.md](docs/PUBLIC_HOLIDAYS_EVALUATION_RUNBOOK.md).
+
+Run the diagnostic-only Leave Requests / Leave Workflow corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_leave_requests_workflow_corpus_coverage.py --json --output .\artifacts\eval\leave_requests_workflow_corpus_coverage.json
+```
+
+Build the diagnostic-only Leave Requests / Leave Workflow answer gap report from coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_leave_requests_workflow_answer_gap_report.py --coverage-report .\artifacts\eval\leave_requests_workflow_corpus_coverage.json --output .\artifacts\eval\leave_requests_workflow_answer_gap_report.json
+```
+
+These Leave Requests / Leave Workflow diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, read source code as Minerva evidence, connect Code Evidence Index to answer generation, and do not prove runtime operational truth.
+
+For the repeatable Leave Requests / Leave Workflow evaluation workflow and interpretation guidance, see [docs/LEAVE_REQUESTS_WORKFLOW_EVALUATION_RUNBOOK.md](docs/LEAVE_REQUESTS_WORKFLOW_EVALUATION_RUNBOOK.md).
+
 Run the diagnostic-only Contact Payroll History corpus coverage scan:
 
 ```powershell

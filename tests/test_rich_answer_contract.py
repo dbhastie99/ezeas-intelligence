@@ -1000,38 +1000,47 @@ def _ingest_leave_requests_workflow_benchmark_evidence(db_session):
         ),
         (
             "Leave submission, submit leave, approve leave, reject leave, reopen leave and review leave are governed "
-            "workflow transitions. Minerva explains the workflow evidence but does not approve leave or reopen leave "
-            "requests.",
+            "workflow transitions driven by operator/user action. Minerva explains the workflow evidence but does "
+            "not approve leave or reopen leave requests.",
             "Developer Log - Leave Requests Submission Approval Reopen",
         ),
         (
-            "Leave overlap, overlap handling, shortfall substitution, shortfall and substitution should be explicit "
-            "workflow evidence where supported. Minerva does not resolve shortfalls.",
+            "Leave request preview is read-only. Leave overlap, overlap handling, same-type overlap, cross-type "
+            "overlap, shortfall substitution, shortfall, proposed plans, apply-plan, child request linkage and "
+            "substitution should be explicit workflow evidence where supported. Minerva does not resolve shortfalls.",
             "Developer Log - Leave Requests Overlap Shortfall",
         ),
         (
             "TAKEN leave valuation, leave valuation, leave valuation basis and hard fail behaviour are required when "
-            "valuation evidence is mandatory.",
+            "valuation evidence is mandatory. Ordinary rate, no silent minutes-only fallback, structured processing "
+            "error and needs configuration outcomes should be explicit where required inputs are missing. Minerva "
+            "does not value leave.",
             "Developer Log - Leave Requests Taken Valuation",
         ),
         (
             "LeaveLedger, leave posting, LeaveLedger posting, leave balance and leave ledger rows are deterministic "
-            "platform posting evidence. Minerva does not post LeaveLedger rows or change leave balances.",
+            "platform posting evidence. Accrual, taken, balance movement, parent/child request lineage, posting "
+            "evidence and audit/story evidence should distinguish ledger effects. Minerva does not post LeaveLedger "
+            "rows or change leave balances.",
             "Developer Log - Leave Requests Ledger Posting",
         ),
         (
             "Leave Source Model, leave applicability, LeaveTypeRule, source applicability and leave source evidence "
-            "should be caveated because LeaveTypeRule alone does not prove final leave applicability.",
+            "should be caveated because LeaveTypeRule is policy and calculation content, not final applicability "
+            "truth. Contact, EmployeeAppointment, employment/worksite/state dimensions, no entitlement and missing "
+            "output distinctions matter where supported. Minerva does not determine entitlement.",
             "Developer Log - Leave Requests Source Applicability",
         ),
         (
             "Worker Story, PayRun, leave request payment, Leave and Accrual Outcome and worker leave evidence connect "
-            "Leave Requests / Leave Workflow to worker-level explanation and PayRun context.",
+            "Leave Requests / Leave Workflow to worker-level explanation, PayRun processing, leave payment effects, "
+            "leave output, valuation and ledger evidence.",
             "Developer Log - Leave Requests Worker Story PayRun",
         ),
         (
-            "Finalisation readiness, leave readiness, missing leave output, PayRun finalisation and readiness connect "
-            "leave requests to finalisation readiness without Minerva finalising PayRuns.",
+            "Finalisation readiness, leave readiness, warnings, blockers, missing leave output, PayRun finalisation, "
+            "finalisation boundary and readiness connect leave requests to finalisation readiness without Minerva "
+            "finalising PayRuns or calculating payroll.",
             "Developer Log - Leave Requests Finalisation Readiness",
         ),
         (
@@ -1044,6 +1053,164 @@ def _ingest_leave_requests_workflow_benchmark_evidence(db_session):
             "Outstanding hardening remains around Leave Requests / Leave Workflow, leave workflow, request ownership, "
             "leave hardening, status honesty and broader workflow contracts.",
             "Developer Log - Leave Requests Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_public_holidays_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Public Holidays are governed date, calendar, location and context evidence that affect payroll treatment, "
+            "leave treatment, Worker Story, finalisation readiness and potentially employer liabilities.",
+            "Developer Log - Public Holidays Purpose",
+        ),
+        (
+            "PublicHoliday and PublicHolidayGroup source data provide public holiday calendar, date context, observed "
+            "days, overrides where supported and governed reference configuration evidence.",
+            "Developer Log - Public Holidays Source Calendar",
+        ),
+        (
+            "Public holiday applicability depends on Worksite, WorksitePosition, EmployeeAppointment, state, "
+            "jurisdiction and location context rather than a generic date alone. PublicHolidayGroup and governed "
+            "context help explain which Public Holiday applies to a worker through EmployeeAppointment, "
+            "WorksitePosition and Worksite traversal where supported.",
+            "Developer Log - Public Holidays Worksite State",
+        ),
+        (
+            "Public holiday payroll treatment, deterministic payroll interpretation, public holiday treatment "
+            "decisions, public holiday decision, entitlement decision and treatment decision are decided by "
+            "deterministic payroll services and explained through Decision Story and Payroll Output.",
+            "Developer Log - Public Holidays Payroll Decision Story",
+        ),
+        (
+            "Public holiday leave treatment can use DeductsOnPublicHoliday, Leave Requests, LeaveRequest, leave "
+            "preview, LeaveLedger and leave posting relationships. Minerva does not approve leave, calculate leave "
+            "post LeaveLedger rows or change leave balances.",
+            "Developer Log - Public Holidays Leave Interaction",
+        ),
+        (
+            "Worker Story, PayRun Admin Queue, Worker Attention and Finalisation Readiness can surface public holiday "
+            "evidence, Decision Story, Payroll Output, payroll evidence, evidence explanation, source/context "
+            "visibility, missing public holiday configuration, NEEDS_CONFIGURATION, source context missing, warnings, "
+            "blockers and operator evidence.",
+            "Developer Log - Public Holidays Operator Readiness",
+        ),
+        (
+            "Minerva explains Public Holiday handling but does not calculate public holiday entitlements, decide "
+            "payroll treatment, post payroll output, change PublicHolidayGroup configuration, mutate Worksite, "
+            "EmployeeAppointment, PayRun or LeaveRequest truth, determine finalisation readiness or finalise PayRuns.",
+            "Platform Doctrine - Public Holidays Minerva Boundary",
+        ),
+        (
+            "Current status and outstanding hardening should remain honest for Public Holidays where formal evidence "
+            "is partial around source/configuration coverage, location resolution, leave interaction and operator "
+            "readiness surfaces. Public Holidays can relate to employer liabilities and on-costs through state and "
+            "location context where formal evidence supports that relationship, but Public Holidays does not own the "
+            "broad on-costs domain.",
+            "Developer Log - Public Holidays Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_rosters_patterns_scheduling_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Rosters / Patterns / Scheduling are governed expected-time configuration and work-pattern evidence that "
+            "can support ordinary hours, leave basis, public holiday treatment, PayRun processing context, Worker "
+            "Story explanation and readiness evidence.",
+            "Developer Log - Rosters Patterns Scheduling Purpose",
+        ),
+        (
+            "Pattern, PatternDay and EmployeeAppointmentPattern source data provide roster schedule configuration, "
+            "expected work context and governed configuration evidence for Rosters / Patterns / Scheduling.",
+            "Developer Log - Rosters Patterns Scheduling Source Configuration",
+        ),
+        (
+            "Roster and pattern applicability depends on EmployeeAppointment, WorksitePosition, Worksite, state, "
+            "public holiday context, assignment context and applicability context rather than a generic worker date.",
+            "Developer Log - Rosters Patterns Scheduling Appointment Worksite",
+        ),
+        (
+            "Ordinary hours, ordinary-hours expectations, leave basis minutes, schedule pattern relationship, public "
+            "holiday context and leave interaction can be supported by roster evidence. Deferred roster-based basis "
+            "performance and hardening should remain status-honest.",
+            "Developer Log - Rosters Patterns Scheduling Ordinary Hours Leave",
+        ),
+        (
+            "Scheduling context can support payroll interpretation, ObjectTime comparison, source truth review, "
+            "expected schedule versus actual worked time, actual/source time rows, ObjectTime as actual source evidence, "
+            "Worker Story, Decision Story and Payroll Output explanation without becoming payroll calculation authority.",
+            "Developer Log - Rosters Patterns Scheduling Payroll Story",
+        ),
+        (
+            "Worker Attention, PayRun Admin Queue, Admin Queue and Finalisation Readiness can surface missing schedule, "
+            "missing pattern, configuration gaps, readiness evidence, NEEDS_CONFIGURATION, NEEDS_CONFIGURATION-style "
+            "concepts and status honesty around missing schedule context where formal evidence supports those relationships.",
+            "Developer Log - Rosters Patterns Scheduling Readiness",
+        ),
+        (
+            "Minerva explains Rosters / Patterns / Scheduling but does not create rosters, change worker schedules, "
+            "mutate Pattern, PatternDay or EmployeeAppointmentPattern truth, mutate ObjectTime, calculate payroll, "
+            "decide entitlements, calculate leave, approve leave, determine finalisation readiness, finalise PayRuns "
+            "or mutate operational workforce/payroll/leave truth.",
+            "Platform Doctrine - Rosters Patterns Scheduling Minerva Boundary",
+        ),
+        (
+            "Current status and outstanding hardening should remain honest for Rosters / Patterns / Scheduling where "
+            "formal evidence is partial around roster-based basis performance, schedule configuration, ordinary hours, "
+            "leave basis, public holiday treatment and readiness surfaces.",
+            "Developer Log - Rosters Patterns Scheduling Outstanding Hardening",
+        ),
+    ]
+    for text, title in evidence:
+        _ingest(db_session, text, title=title)
+
+
+def _ingest_award_positions_classifications_benchmark_evidence(db_session):
+    evidence = [
+        (
+            "Award Positions / Classifications are governed employment classification evidence that connects award "
+            "build, EmployeeAppointment, WorksitePosition, Position, payroll interpretation, RateSource and Rate Story, "
+            "Decision Story, Worker Story, comparison/remediation and readiness evidence.",
+            "Developer Log - Award Positions Classifications Purpose",
+        ),
+        (
+            "AwardPosition, AwardPositionClass, PositionClass, classification levels, position groups, pay guide and "
+            "class evidence come from award build extraction and configuration. Deterministic extraction hardening "
+            "and status honesty remain important.",
+            "Developer Log - Award Positions Classifications Source Build",
+        ),
+        (
+            "EmployeeAppointment connects through WorksitePosition, Position and Worksite worker assignment, assignment "
+            "context and employment classification evidence to the relevant award classification.",
+            "Developer Log - Award Positions Classifications Assignment",
+        ),
+        (
+            "Classification context supports payroll interpretation, RateSource selection, Rate Story, Decision Story, "
+            "Payroll Output and calculated line evidence, while deterministic payroll services decide runtime outcomes.",
+            "Developer Log - Award Positions Classifications Payroll Story",
+        ),
+        (
+            "Comparator classification, award comparison, comparison remediation, imported classification mapping, "
+            "classification lenses, comparison classes and primary appointment class evidence support comparison review. "
+            "Comparison classes do not automatically replace the primary appointment class.",
+            "Developer Log - Award Positions Classifications Comparison",
+        ),
+        (
+            "Worker Story, PayRun Admin Queue, Admin Queue, Worker Attention and Finalisation Readiness can surface "
+            "classification evidence, configuration gaps, NEEDS_CONFIGURATION and evidence visibility.",
+            "Developer Log - Award Positions Classifications Readiness",
+        ),
+        (
+            "Minerva explains Award Positions / Classifications but does not classify workers, change appointments, "
+            "change EmployeeAppointment, WorksitePosition, Position or AwardPositionClass records, select award classes "
+            "at runtime, interpret awards at runtime, calculate payroll, decide entitlements, mutate payroll output, "
+            "determine finalisation readiness, finalise PayRuns or mutate operational workforce/payroll/award truth.",
+            "Platform Doctrine - Award Positions Classifications Minerva Boundary",
         ),
     ]
     for text, title in evidence:
@@ -2026,8 +2193,62 @@ def test_leave_requests_workflow_rich_answer_benchmark_manifest_loads(db_session
     assert manifest["name"] == "Leave Requests / Leave Workflow rich-answer benchmark"
     assert {question["id"] for question in manifest["questions"]} == {
         "leave-requests-workflow-rich-answer",
+        "leave-requests-workflow-lifecycle-status",
+        "leave-requests-workflow-preview-overlap-shortfall",
+        "leave-requests-workflow-taken-valuation",
+        "leave-requests-workflow-ledger-balances",
+        "leave-requests-workflow-source-applicability",
+        "leave-requests-workflow-worker-story-payrun-finalisation",
     }
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.leave_requests_workflow.json")
+    assert result["total"] == 7
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_public_holidays_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.public_holidays.json")
+
+    assert manifest["name"] == "Public Holidays rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "public-holidays-rich-answer",
+        "public-holidays-worker-applicability",
+        "public-holidays-payroll-treatment",
+        "public-holidays-leave-requests-ledger",
+        "public-holidays-worker-story-payroll-evidence",
+        "public-holidays-missing-configuration-context",
+        "public-holidays-employer-liabilities-oncosts",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.public_holidays.json")
+    assert result["total"] == 7
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_rosters_patterns_scheduling_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.rosters_patterns_scheduling.json")
+
+    assert manifest["name"] == "Rosters / Patterns / Scheduling rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "rosters-patterns-scheduling-rich-answer",
+        "rosters-patterns-scheduling-expected-work-context",
+        "rosters-patterns-scheduling-appointments-worksites",
+        "rosters-patterns-scheduling-ordinary-hours-leave-basis",
+        "rosters-patterns-scheduling-objecttime-boundary",
+        "rosters-patterns-scheduling-worker-story-payroll-evidence",
+        "rosters-patterns-scheduling-missing-configuration",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.rosters_patterns_scheduling.json")
+    assert result["total"] == 7
+    assert all(item["checks"]["answer_mode"] is True for item in result["results"])
+
+
+def test_award_positions_classifications_rich_answer_benchmark_manifest_loads(db_session):
+    manifest = load_golden_manifest("samples/eval/rich_answer_benchmark.award_positions_classifications.json")
+
+    assert manifest["name"] == "Award Positions / Classifications rich-answer benchmark"
+    assert {question["id"] for question in manifest["questions"]} == {
+        "award-positions-classifications-rich-answer",
+    }
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.award_positions_classifications.json")
     assert result["total"] == 1
     assert all(item["checks"]["answer_mode"] is True for item in result["results"])
 
@@ -2601,7 +2822,7 @@ def test_leave_requests_workflow_benchmark_runner_returns_pass_status_with_seede
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.leave_requests_workflow.json")
 
     assert result["name"] == "Leave Requests / Leave Workflow rich-answer benchmark"
-    assert result["total"] == 1
+    assert result["total"] == 7
     failures = [
         {
             "id": item["id"],
@@ -2614,6 +2835,92 @@ def test_leave_requests_workflow_benchmark_runner_returns_pass_status_with_seede
     assert result["all_passed"] is True, json.dumps(failures, indent=2)
     assert {item["id"] for item in result["results"]} == {
         "leave-requests-workflow-rich-answer",
+        "leave-requests-workflow-lifecycle-status",
+        "leave-requests-workflow-preview-overlap-shortfall",
+        "leave-requests-workflow-taken-valuation",
+        "leave-requests-workflow-ledger-balances",
+        "leave-requests-workflow-source-applicability",
+        "leave-requests-workflow-worker-story-payrun-finalisation",
+    }
+
+
+def test_public_holidays_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_public_holidays_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.public_holidays.json")
+
+    assert result["name"] == "Public Holidays rich-answer benchmark"
+    assert result["total"] == 7
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert all(item["checks"]["forbidden_answer_patterns_any"] is True for item in result["results"])
+    assert {item["id"] for item in result["results"]} == {
+        "public-holidays-rich-answer",
+        "public-holidays-worker-applicability",
+        "public-holidays-payroll-treatment",
+        "public-holidays-leave-requests-ledger",
+        "public-holidays-worker-story-payroll-evidence",
+        "public-holidays-missing-configuration-context",
+        "public-holidays-employer-liabilities-oncosts",
+    }
+
+
+def test_rosters_patterns_scheduling_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_rosters_patterns_scheduling_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.rosters_patterns_scheduling.json")
+
+    assert result["name"] == "Rosters / Patterns / Scheduling rich-answer benchmark"
+    assert result["total"] == 7
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert all(item["checks"]["forbidden_answer_patterns_any"] is True for item in result["results"])
+    assert {item["id"] for item in result["results"]} == {
+        "rosters-patterns-scheduling-rich-answer",
+        "rosters-patterns-scheduling-expected-work-context",
+        "rosters-patterns-scheduling-appointments-worksites",
+        "rosters-patterns-scheduling-ordinary-hours-leave-basis",
+        "rosters-patterns-scheduling-objecttime-boundary",
+        "rosters-patterns-scheduling-worker-story-payroll-evidence",
+        "rosters-patterns-scheduling-missing-configuration",
+    }
+
+
+def test_award_positions_classifications_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):
+    _ingest_award_positions_classifications_benchmark_evidence(db_session)
+
+    result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.award_positions_classifications.json")
+
+    assert result["name"] == "Award Positions / Classifications rich-answer benchmark"
+    assert result["total"] == 1
+    failures = [
+        {
+            "id": item["id"],
+            "failure_reasons": item["failure_reasons"],
+            "failed_checks": [key for key, passed in item["checks"].items() if not passed],
+        }
+        for item in result["results"]
+        if not item["passed"]
+    ]
+    assert result["all_passed"] is True, json.dumps(failures, indent=2)
+    assert {item["id"] for item in result["results"]} == {
+        "award-positions-classifications-rich-answer",
     }
 
 

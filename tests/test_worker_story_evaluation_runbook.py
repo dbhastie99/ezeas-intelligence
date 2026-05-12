@@ -805,3 +805,216 @@ def test_contact_payroll_history_evaluation_runbook_exists_and_lists_required_gu
     assert "no operational JSON ingestion" in runbook
     assert "no Code Evidence answer integration" in runbook or "no Code Evidence Index answer integration" in runbook
     assert "Minerva does not calculate payroll history, change historical records, correct payroll outcomes, perform retro/replay, approve payroll changes, finalise PayRuns or mutate payroll truth" in runbook
+
+
+def test_leave_requests_workflow_evaluation_runbook_exists_and_lists_required_guidance():
+    runbook_path = Path("docs/LEAVE_REQUESTS_WORKFLOW_EVALUATION_RUNBOOK.md")
+
+    assert runbook_path.exists()
+
+    runbook = runbook_path.read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
+
+    assert "docs/LEAVE_REQUESTS_WORKFLOW_EVALUATION_RUNBOOK.md" in readme
+    assert ".\\.venv\\Scripts\\python.exe -m pytest --basetemp .\\.pytest_tmp" in runbook
+    assert "samples\\eval\\rich_answer_benchmark.leave_requests_workflow.json" in runbook
+    assert "scan_leave_requests_workflow_corpus_coverage.py" in runbook
+    assert "build_leave_requests_workflow_answer_gap_report.py" in runbook
+    assert "tests\\test_domain_retrieval_plans.py" in runbook
+    assert "tests\\test_rich_answer_contract.py" in runbook
+    assert "diagnostic-only" in runbook
+    assert "no corpus mutation" in runbook
+    assert "no live LLM" in runbook
+    assert "no database schema change" in runbook
+    assert "no operational JSON ingestion" in runbook
+    assert "no Code Evidence answer integration" in runbook
+    assert "no Code Evidence Index answer integration" in runbook
+    assert "not proof of runtime operational truth" in runbook
+    assert "STRONG" in runbook
+    assert "WEAK" in runbook
+    assert "MISSING" in runbook
+    assert "GOOD" in runbook
+    assert "NEEDS_REFINEMENT" in runbook
+    assert "INSUFFICIENT_CORPUS" in runbook
+    assert "KEEP" in runbook
+    assert "IMPROVE_RETRIEVAL_TERMS" in runbook
+    assert "IMPROVE_SYNTHESIS" in runbook
+    assert "ADD_FORMAL_SOURCE_EVIDENCE_LATER" in runbook
+    assert "request_lifecycle_and_status_transitions" in runbook
+    assert "preview_overlap_and_shortfall_handling" in runbook
+    assert "taken_leave_valuation_and_hard_fail" in runbook
+    assert "leaveledger_posting_and_balance_effects" in runbook
+    assert "leave_source_and_applicability_relationship" in runbook
+    assert "worker_story_payrun_and_finalisation_relationship" in runbook
+    assert "idempotency_reopen_and_approval_governance" in runbook
+    assert "minerva_boundaries_and_non_mutation_guardrails" in runbook
+    assert "Leave Requests / Leave Workflow" in runbook
+    assert "creating, submitting, reviewing, approving, rejecting, reopening, valuing, posting and explaining leave requests" in runbook
+    assert "Minerva explains Leave Requests / Leave Workflow" in runbook
+    assert "Minerva does not approve leave" in runbook
+    assert "Minerva does not calculate leave" in runbook
+    assert "Minerva does not post LeaveLedger rows" in runbook
+    assert "Minerva does not change leave balances" in runbook
+    assert "Minerva does not reopen leave requests" in runbook
+    assert "Minerva does not resolve shortfalls" in runbook
+    assert "Minerva does not finalise PayRuns" in runbook
+    assert "Minerva does not approve leave, calculate leave, post LeaveLedger rows, change leave balances, reopen leave requests, resolve shortfalls, finalise PayRuns or mutate operational leave/payroll truth" in runbook
+    assert "Diagnostics do not approve, post, reopen, resolve or finalise anything" in runbook
+    assert "Do not use operational JSON or Code Evidence as a shortcut" in runbook
+
+
+def test_public_holidays_evaluation_runbook_exists_and_lists_required_guidance():
+    runbook_path = Path("docs/PUBLIC_HOLIDAYS_EVALUATION_RUNBOOK.md")
+
+    assert runbook_path.exists()
+
+    runbook = runbook_path.read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
+
+    assert "docs/PUBLIC_HOLIDAYS_EVALUATION_RUNBOOK.md" in readme
+    assert ".\\.venv\\Scripts\\python.exe -m pytest --basetemp .\\.pytest_tmp" in runbook
+    assert "samples\\eval\\rich_answer_benchmark.public_holidays.json" in runbook
+    assert "scan_public_holidays_corpus_coverage.py" in runbook
+    assert "build_public_holidays_answer_gap_report.py" in runbook
+    assert "tests\\test_domain_retrieval_plans.py" in runbook
+    assert "tests\\test_rich_answer_contract.py" in runbook
+    assert "diagnostic-only" in runbook
+    assert "no corpus mutation" in runbook
+    assert "no live LLM" in runbook
+    assert "no database schema change" in runbook
+    assert "no operational JSON ingestion" in runbook
+    assert "no Code Evidence answer integration" in runbook
+    assert "no Code Evidence Index answer integration" in runbook
+    assert "not proof of runtime operational truth" in runbook
+    assert "STRONG" in runbook
+    assert "WEAK" in runbook
+    assert "MISSING" in runbook
+    assert "GOOD" in runbook
+    assert "NEEDS_REFINEMENT" in runbook
+    assert "INSUFFICIENT_CORPUS" in runbook
+    assert "KEEP" in runbook
+    assert "IMPROVE_RETRIEVAL_TERMS" in runbook
+    assert "IMPROVE_SYNTHESIS" in runbook
+    assert "ADD_FORMAL_SOURCE_EVIDENCE_LATER" in runbook
+    assert "public_holiday_source_and_calendar" in runbook
+    assert "worksite_state_and_applicability_context" in runbook
+    assert "payroll_treatment_and_decision_story" in runbook
+    assert "leave_interaction_and_deducts_on_public_holiday" in runbook
+    assert "worker_story_admin_queue_and_finalisation" in runbook
+    assert "minerva_boundaries_and_non_mutation_guardrails" in runbook
+    assert "Public Holidays is the Minerva product-domain explaining governed public holiday source/calendar evidence" in runbook
+    assert "PublicHolidayGroup context" in runbook
+    assert "worksite/state applicability" in runbook
+    assert "Worker Story evidence" in runbook
+    assert "Admin Queue / Worker Attention" in runbook
+    assert "Finalisation Readiness" in runbook
+    assert "Minerva explains Public Holiday handling" in runbook
+    assert "Minerva does not calculate public holiday entitlements" in runbook
+    assert "Minerva does not decide payroll treatment" in runbook
+    assert "Minerva does not post payroll output" in runbook
+    assert "Minerva does not approve leave" in runbook
+    assert "Minerva does not calculate leave" in runbook
+    assert "Minerva does not post LeaveLedger rows" in runbook
+    assert "Minerva does not change leave balances" in runbook
+    assert "Minerva does not change PublicHolidayGroup configuration" in runbook
+    assert "Minerva does not mutate Worksite, EmployeeAppointment, PayRun, LeaveRequest or payroll truth" in runbook
+    assert "Minerva does not determine finalisation readiness" in runbook
+    assert "Minerva does not finalise PayRuns" in runbook
+    assert "diagnostics do not mutate corpus" in runbook
+    assert "diagnostics do not call a live LLM" in runbook
+    assert "diagnostics do not ingest operational JSON" in runbook
+    assert "diagnostics do not connect Code Evidence to answer generation" in runbook
+    assert "diagnostics do not prove runtime operational truth" in runbook
+    assert "diagnostics do not calculate public holiday entitlements" in runbook
+    assert "diagnostics do not decide payroll treatment" in runbook
+    assert "diagnostics do not approve or calculate leave" in runbook
+    assert "diagnostics do not post LeaveLedger rows" in runbook
+    assert "diagnostics do not mutate Worksite/PublicHolidayGroup/EmployeeAppointment/PayRun/LeaveRequest truth" in runbook
+    assert "diagnostics do not determine or finalise readiness" in runbook
+    assert "When To Improve What" in runbook
+    assert "Improve retrieval terms when formal evidence exists but diagnostic coverage is `WEAK`" in runbook
+    assert "Improve synthesis when coverage is `STRONG` but benchmark or human review shows the answer is incomplete" in runbook
+    assert "Add formal source evidence later when the group is genuinely `MISSING`" in runbook
+    assert "Keep existing behavior where coverage and answer quality are acceptable" in runbook
+    assert "Do not use operational JSON or Code Evidence as a shortcut" in runbook
+
+
+def test_rosters_patterns_scheduling_evaluation_runbook_exists_and_lists_required_guidance():
+    runbook_path = Path("docs/ROSTERS_PATTERNS_SCHEDULING_EVALUATION_RUNBOOK.md")
+
+    assert runbook_path.exists()
+
+    runbook = runbook_path.read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
+
+    assert "docs/ROSTERS_PATTERNS_SCHEDULING_EVALUATION_RUNBOOK.md" in readme
+    assert ".\\.venv\\Scripts\\python.exe -m pytest --basetemp .\\.pytest_tmp" in runbook
+    assert "samples\\eval\\rich_answer_benchmark.rosters_patterns_scheduling.json" in runbook
+    assert "scan_rosters_patterns_scheduling_corpus_coverage.py" in runbook
+    assert "build_rosters_patterns_scheduling_answer_gap_report.py" in runbook
+    assert "tests\\test_domain_retrieval_plans.py" in runbook
+    assert "tests\\test_rich_answer_contract.py" in runbook
+    assert "diagnostic-only" in runbook
+    assert "no corpus mutation" in runbook
+    assert "no live LLM" in runbook
+    assert "no database schema change" in runbook
+    assert "no operational JSON ingestion" in runbook
+    assert "no Code Evidence answer integration" in runbook
+    assert "no Code Evidence Index answer integration" in runbook
+    assert "not proof of runtime operational truth" in runbook
+    assert "STRONG" in runbook
+    assert "WEAK" in runbook
+    assert "MISSING" in runbook
+    assert "GOOD" in runbook
+    assert "NEEDS_REFINEMENT" in runbook
+    assert "INSUFFICIENT_CORPUS" in runbook
+    assert "KEEP" in runbook
+    assert "IMPROVE_RETRIEVAL_TERMS" in runbook
+    assert "IMPROVE_SYNTHESIS" in runbook
+    assert "ADD_FORMAL_SOURCE_EVIDENCE_LATER" in runbook
+    assert "roster_pattern_source_and_configuration" in runbook
+    assert "appointment_worksite_and_applicability_context" in runbook
+    assert "ordinary_hours_leave_basis_and_public_holiday_context" in runbook
+    assert "payroll_interpretation_and_worker_story_relationship" in runbook
+    assert "admin_queue_finalisation_and_readiness_relationship" in runbook
+    assert "minerva_boundaries_and_non_mutation_guardrails" in runbook
+    assert "Rosters / Patterns / Scheduling is the Minerva product-domain explaining governed roster, pattern and schedule evidence" in runbook
+    assert "expected work context" in runbook
+    assert "Pattern / PatternDay / EmployeeAppointmentPattern configuration" in runbook
+    assert "appointment/worksite applicability" in runbook
+    assert "ordinary-hours and leave-basis context" in runbook
+    assert "ObjectTime/source-truth boundaries" in runbook
+    assert "Worker Story and payroll evidence relationships" in runbook
+    assert "Admin Queue / Worker Attention / Finalisation Readiness" in runbook
+    assert "Minerva explains Rosters / Patterns / Scheduling" in runbook
+    assert "Minerva does not create rosters" in runbook
+    assert "Minerva does not change worker schedules" in runbook
+    assert "Minerva does not mutate Pattern, PatternDay or EmployeeAppointmentPattern truth" in runbook
+    assert "Minerva does not mutate ObjectTime" in runbook
+    assert "Minerva does not calculate payroll" in runbook
+    assert "Minerva does not decide entitlements" in runbook
+    assert "Minerva does not calculate leave" in runbook
+    assert "Minerva does not approve leave" in runbook
+    assert "Minerva does not determine finalisation readiness" in runbook
+    assert "Minerva does not finalise PayRuns" in runbook
+    assert "Minerva does not mutate operational workforce/payroll/leave truth" in runbook
+    assert "diagnostics do not mutate corpus" in runbook
+    assert "diagnostics do not call a live LLM" in runbook
+    assert "diagnostics do not ingest operational JSON" in runbook
+    assert "diagnostics do not connect Code Evidence to answer generation" in runbook
+    assert "diagnostics do not prove runtime operational truth" in runbook
+    assert "diagnostics do not create rosters" in runbook
+    assert "diagnostics do not change worker schedules" in runbook
+    assert "diagnostics do not mutate Pattern, PatternDay or EmployeeAppointmentPattern truth" in runbook
+    assert "diagnostics do not mutate ObjectTime" in runbook
+    assert "diagnostics do not calculate payroll" in runbook
+    assert "diagnostics do not decide entitlements" in runbook
+    assert "diagnostics do not calculate or approve leave" in runbook
+    assert "diagnostics do not determine or finalise readiness" in runbook
+    assert "diagnostics do not mutate operational workforce/payroll/leave truth" in runbook
+    assert "When To Improve What" in runbook
+    assert "Improve retrieval terms when formal evidence exists but diagnostic coverage is `WEAK`" in runbook
+    assert "Improve synthesis when coverage is `STRONG` but benchmark or human review shows the answer is incomplete" in runbook
+    assert "Add formal source evidence later when the group is genuinely `MISSING`" in runbook
+    assert "Keep existing behavior where coverage and answer quality are acceptable" in runbook
+    assert "Do not use operational JSON or Code Evidence as a shortcut" in runbook

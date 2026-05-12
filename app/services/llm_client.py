@@ -1058,29 +1058,205 @@ def _leave_requests_workflow_focus_points(question: str) -> list[str]:
         points.append(
             "Focused workflow-state answer: create, draft, submit, approve, reject and reopen actions should follow "
             "governed leave status transitions with idempotency, including IdempotencyKey where formal evidence "
-            "supports it."
+            "supports it. The transition is an operator/user action, not a Minerva action."
         )
         points.append(
-            "Focused exception answer: leave overlap and shortfall substitution should be handled explicitly where "
-            "formal evidence supports those policies, rather than Minerva resolving shortfalls or silently changing "
-            "operational leave truth."
+            "Focused preview/exception answer: leave request preview is read-only and should surface leave overlap, "
+            "same-type overlap, cross-type overlap, shortfall substitution, proposed plans, apply-plan and child "
+            "request linkage where formal evidence supports those policies, rather than Minerva resolving shortfalls "
+            "or silently changing operational leave truth. Minerva does not resolve shortfalls."
         )
         points.append(
             "Focused valuation/posting answer: TAKEN leave valuation and leave valuation basis should hard fail where "
-            "required evidence is missing; LeaveLedger posting and leave balance movement remain deterministic platform "
-            "actions, not Minerva actions."
+            "required evidence is missing; valuation basis and ordinary rate evidence should not fall back to a "
+            "silent minutes-only fallback. No silent minutes-only fallback is allowed where valuation evidence is "
+            "mandatory, and missing inputs should produce a structured processing error or needs configuration "
+            "outcome where formal evidence supports it. Minerva does not value leave."
+        )
+        points.append(
+            "Focused ledger/balance answer: LeaveLedger posting distinguishes accrual, taken and balance movement, "
+            "including parent/child request lineage, posting evidence and audit/story evidence where supported. Leave "
+            "balance changes are deterministic platform outcomes, not Minerva actions. Minerva does not post "
+            "LeaveLedger rows or change leave balances."
         )
         points.append(
             "Focused source/story/readiness answer: Leave Requests / Leave Workflow relates to Leave Source Model and "
-            "leave applicability, Worker Story and Leave and Accrual Outcome, PayRun processing, finalisation readiness, "
-            "leave readiness and missing leave output without replacing those domain surfaces. Keep status honesty "
-            "visible around outstanding hardening."
+            "leave applicability, with LeaveTypeRule as policy and calculation content, not final applicability truth. "
+            "Contact, EmployeeAppointment and employment/worksite/state dimensions, plus the no entitlement versus "
+            "missing output distinction, matter where supported. Minerva does not determine entitlement."
+        )
+        points.append(
+            "Focused Worker Story/PayRun/readiness answer: Leave Requests / Leave Workflow connects to Worker Story, "
+            "Leave and Accrual Outcome, PayRun processing, leave payment effects, leave output, valuation, ledger "
+            "evidence, finalisation readiness, warnings, blockers and the finalisation boundary without making Leave "
+            "Requests alone proof of payroll correctness."
         )
         points.append(
             "Focused boundary answer: Minerva does not approve leave, calculate leave, post LeaveLedger rows, change "
-            "leave balances, reopen leave requests, resolve shortfalls, finalise PayRuns or mutate operational leave "
-            "or payroll truth. Leave Requests alone does not prove payroll correctness, and LeaveTypeRule alone does "
-            "not prove final leave applicability without the Leave Source Model caveat."
+            "leave balances, reopen leave requests, resolve shortfalls, finalise PayRuns, calculate payroll or mutate "
+            "operational leave or payroll truth. Leave Requests alone does not prove payroll correctness, and "
+            "LeaveTypeRule alone does not prove final leave applicability without the Leave Source Model caveat. "
+            "Minerva does not finalise PayRuns. Keep status honesty visible."
+        )
+    return points
+
+
+def _public_holidays_focus_points(question: str) -> list[str]:
+    normalized = question.lower().replace("-", " ")
+    points: list[str] = []
+    if "public holiday" in normalized or "public holidays" in normalized or "publicholiday" in normalized:
+        points.append(
+            "Focused Public Holidays answer: Public Holidays are governed date, calendar, location and context "
+            "evidence for public holiday handling, not Minerva calculation or mutation authority."
+        )
+        points.append(
+            "Focused source/calendar answer: PublicHoliday and PublicHolidayGroup evidence should explain source "
+            "data, calendar/date context, observed days, overrides where supported, and governed reference "
+            "configuration."
+        )
+        points.append(
+            "Focused applicability answer: public holiday handling depends on Worksite, WorksitePosition, "
+            "EmployeeAppointment, state, jurisdiction and location context where formal evidence supports those "
+            "dimensions, rather than a generic date alone. PublicHolidayGroup and governed context help explain "
+            "which Public Holiday applies to a worker through EmployeeAppointment / WorksitePosition / Worksite "
+            "traversal where the corpus supports that path."
+        )
+        points.append(
+            "Focused payroll answer: public holiday payroll treatment, deterministic payroll interpretation, "
+            "public holiday treatment decisions, entitlement decision and treatment decision belong to deterministic "
+            "payroll services and can be explained through Decision Story and Payroll Output. Minerva does not "
+            "calculate public holiday entitlements, decide payroll treatment or post payroll output."
+        )
+        points.append(
+            "Focused leave answer: public holiday leave treatment can relate to DeductsOnPublicHoliday, Leave "
+            "Requests, leave preview, LeaveLedger and leave posting, but Minerva does not approve leave, calculate "
+            "leave, post LeaveLedger rows or change leave balances."
+        )
+        points.append(
+            "Focused payroll-evidence answer: Public Holidays can appear in Worker Story, Decision Story and Payroll "
+            "Output as payroll evidence, evidence explanation and source/context visibility, without turning Minerva "
+            "into payroll output or entitlement authority."
+        )
+        points.append(
+            "Focused operator/readiness answer: Worker Story, PayRun Admin Queue, Worker Attention and Finalisation "
+            "Readiness can surface public holiday evidence, missing configuration, missing source context, warnings "
+            "or blockers for operators. Missing Public Holiday configuration or location context may be described as "
+            "NEEDS_CONFIGURATION or an equivalent status where formal evidence supports it, and the answer should "
+            "preserve status honesty. Minerva does not determine finalisation readiness or finalise PayRuns."
+        )
+        points.append(
+            "Focused employer-liability answer: Public Holidays can relate to employer liabilities and on-costs "
+            "through state and location context where formal evidence supports that relationship, while Public "
+            "Holidays does not own the broad on-costs domain."
+        )
+        points.append(
+            "Focused boundary answer: Minerva explains Public Holiday handling but does not change "
+            "PublicHolidayGroup configuration or mutate Worksite, EmployeeAppointment, PayRun or LeaveRequest truth."
+        )
+    return points
+
+
+def _rosters_patterns_scheduling_focus_points(question: str) -> list[str]:
+    normalized = question.lower().replace("-", " ")
+    points: list[str] = []
+    if (
+        "roster" in normalized
+        or "rosters" in normalized
+        or "pattern" in normalized
+        or "patterns" in normalized
+        or "schedule" in normalized
+        or "scheduling" in normalized
+        or "employeeappointmentpattern" in normalized
+    ):
+        points.append(
+            "Focused Rosters / Patterns / Scheduling answer: Rosters, Patterns and Scheduling are governed "
+            "expected-time configuration and work-pattern evidence, not Minerva roster creation or schedule mutation "
+            "authority."
+        )
+        points.append(
+            "Focused source/configuration answer: Pattern, PatternDay and EmployeeAppointmentPattern evidence should "
+            "explain roster schedule configuration, expected work context and governed configuration evidence."
+        )
+        points.append(
+            "Focused appointment/worksite answer: roster and pattern applicability depends on EmployeeAppointment, "
+            "WorksitePosition, Worksite, state and public holiday context where formal evidence supports those "
+            "dimensions, because scheduling context belongs to assignment context rather than a generic worker date."
+        )
+        points.append(
+            "Focused ordinary-hours answer: schedules and patterns can support ordinary hours, ordinary-hours "
+            "expectations, leave basis minutes, schedule pattern relationship, leave interaction and public holiday "
+            "context, while preserving status honesty around deferred roster-based basis performance and hardening."
+        )
+        points.append(
+            "Focused source-truth boundary answer: scheduling context can be compared with ObjectTime and source "
+            "truth, including actual/source time rows and ObjectTime as actual source evidence, but expected schedule "
+            "is not actual worked time and scheduling context must not be collapsed into actual worked time. Minerva "
+            "does not mutate ObjectTime."
+        )
+        points.append(
+            "Focused payroll/story answer: scheduling context can support payroll interpretation, Worker Story, "
+            "Decision Story and Payroll Output explanation, but Minerva does not calculate payroll or decide "
+            "entitlements."
+        )
+        points.append(
+            "Focused readiness answer: missing schedule, missing pattern or other pattern configuration gaps may surface through Worker "
+            "Attention, PayRun Admin Queue and Finalisation Readiness where formal evidence supports that relationship. "
+            "NEEDS_CONFIGURATION-style concepts and status honesty around missing schedule context should be included "
+            "where applicable. Minerva does not determine finalisation readiness or finalise PayRuns."
+        )
+        points.append(
+            "Focused boundary answer: Minerva explains Rosters / Patterns / Scheduling but does not create rosters, "
+            "change worker schedules, mutate Pattern, PatternDay or EmployeeAppointmentPattern truth, calculate leave, "
+            "approve leave, finalise PayRuns or mutate operational workforce/payroll/leave truth."
+        )
+    return points
+
+
+def _award_positions_classifications_focus_points(question: str) -> list[str]:
+    normalized = question.lower().replace("-", " ")
+    points: list[str] = []
+    if (
+        "award position" in normalized
+        or "awardposition" in normalized
+        or "classification" in normalized
+        or "classifications" in normalized
+        or "award class" in normalized
+        or "position class" in normalized
+        or "positionclass" in normalized
+    ):
+        points.append(
+            "Focused Award Positions / Classifications answer: Award Positions and Classifications are governed "
+            "employment classification evidence, not Minerva classifying workers or changing appointment truth."
+        )
+        points.append(
+            "Focused award-build answer: AwardPosition, AwardPositionClass, PositionClass, classification levels, "
+            "position groups, pay guide evidence and class evidence connect award build extraction/configuration to "
+            "status-honest deterministic extraction hardening."
+        )
+        points.append(
+            "Focused assignment answer: EmployeeAppointment, WorksitePosition, Position and Worksite evidence connect "
+            "a worker assignment and context to the relevant award classification without Minerva changing those records."
+        )
+        points.append(
+            "Focused payroll/story answer: classification context can support payroll interpretation, RateSource "
+            "selection, Rate Story, Decision Story, Payroll Output and calculated line evidence, but deterministic "
+            "platform services remain the runtime calculation and award interpretation path."
+        )
+        points.append(
+            "Focused comparison answer: comparator classification, imported classification mapping, classification "
+            "lenses and award comparison/remediation evidence can support review, but comparison classes do not "
+            "automatically replace the primary appointment class."
+        )
+        points.append(
+            "Focused readiness answer: Worker Story, PayRun Admin Queue, Worker Attention and Finalisation Readiness "
+            "can surface classification evidence, configuration gaps, NEEDS_CONFIGURATION-style concepts and evidence "
+            "visibility where formal evidence supports that relationship."
+        )
+        points.append(
+            "Focused boundary answer: Minerva explains Award Positions / Classifications but does not classify "
+            "workers, select award classes at runtime, interpret awards at runtime, calculate payroll, decide "
+            "entitlements, mutate payroll output, determine finalisation readiness, finalise PayRuns or mutate "
+            "operational workforce/payroll/award truth."
         )
     return points
 
@@ -1890,6 +2066,12 @@ class StubLLMClient(BaseLLMClient):
                     operation_points = _leave_accrual_processing_focus_points(question) + operation_points
                 if domain_plan.plan_id == "LEAVE_REQUESTS_WORKFLOW":
                     operation_points = _leave_requests_workflow_focus_points(question) + operation_points
+                if domain_plan.plan_id == "PUBLIC_HOLIDAYS":
+                    operation_points = _public_holidays_focus_points(question) + operation_points
+                if domain_plan.plan_id == "ROSTERS_PATTERNS_SCHEDULING":
+                    operation_points = _rosters_patterns_scheduling_focus_points(question) + operation_points
+                if domain_plan.plan_id == "AWARD_POSITIONS_CLASSIFICATIONS":
+                    operation_points = _award_positions_classifications_focus_points(question) + operation_points
                 if domain_plan.plan_id == "FINALISATION_READINESS":
                     operation_points = _finalisation_readiness_focus_points(question) + operation_points
                 if domain_plan.plan_id == "LEAVE_SOURCE_MODEL":
@@ -2206,6 +2388,60 @@ class StubLLMClient(BaseLLMClient):
                             "requests, resolves shortfalls, finalises PayRuns, mutates operational leave or payroll "
                             "truth, proves payroll correctness from Leave Requests alone, or treats LeaveTypeRule "
                             "alone as final leave applicability without the Leave Source Model caveat."
+                        )
+                    elif domain_plan.plan_id == "PUBLIC_HOLIDAYS":
+                        direct_summary = (
+                            "Public Holidays are governed date, calendar, location and context evidence that affect "
+                            "payroll treatment, leave treatment, Worker Story explanation, finalisation readiness and "
+                            "potentially employer liabilities. Public Holidays use source/calendar evidence such as "
+                            "PublicHoliday and PublicHolidayGroup, worksite/state applicability context, deterministic "
+                            "payroll treatment and Decision Story evidence, DeductsOnPublicHoliday leave interaction, "
+                            "Leave Requests and LeaveLedger relationships, and operator-facing Worker Story, Admin "
+                            "Queue, Worker Attention and Finalisation Readiness evidence."
+                        )
+                        status_text = (
+                            "The retrieved corpus describes Public Holidays as governed reference/configuration "
+                            "evidence with important status and limitation caveats. It should not imply Minerva "
+                            "calculates public holiday entitlements, decides payroll treatment, posts payroll output, "
+                            "approves leave, calculates leave, posts LeaveLedger rows, changes leave balances, "
+                            "changes PublicHolidayGroup configuration, mutates Worksite, EmployeeAppointment, PayRun "
+                            "or LeaveRequest truth, determines finalisation readiness or finalises PayRuns unless "
+                            "formal evidence explicitly says so."
+                        )
+                    elif domain_plan.plan_id == "ROSTERS_PATTERNS_SCHEDULING":
+                        direct_summary = (
+                            "Rosters / Patterns / Scheduling are governed expected-time configuration and work-pattern "
+                            "evidence that can support ordinary hours, leave basis, public holiday treatment, PayRun "
+                            "processing context, Worker Story explanation and readiness evidence. Rosters and patterns "
+                            "use source/configuration evidence such as Pattern, PatternDay and EmployeeAppointmentPattern, "
+                            "assignment context through EmployeeAppointment, WorksitePosition and Worksite, ordinary-hours "
+                            "and leave/public-holiday context, ObjectTime/source-truth comparison, Worker Story, Decision "
+                            "Story and Payroll Output explanation, and operator-facing Admin Queue, Worker Attention and "
+                            "Finalisation Readiness evidence."
+                        )
+                        status_text = (
+                            "The retrieved corpus describes Rosters / Patterns / Scheduling as governed expected-time "
+                            "configuration evidence with important status and limitation caveats. It should not imply "
+                            "Minerva creates rosters, changes worker schedules, mutates Pattern, PatternDay or "
+                            "EmployeeAppointmentPattern truth, mutates ObjectTime, calculates payroll, decides "
+                            "entitlements, calculates leave, approves leave, determines finalisation readiness, finalises "
+                            "PayRuns or mutates operational workforce/payroll/leave truth unless formal evidence "
+                            "explicitly says so."
+                        )
+                    elif domain_plan.plan_id == "AWARD_POSITIONS_CLASSIFICATIONS":
+                        direct_summary = (
+                            "Award Positions / Classifications are governed employment classification evidence that "
+                            "connects award build, pay guide and class evidence to EmployeeAppointment, WorksitePosition, "
+                            "Position and Worksite assignment context, payroll interpretation, RateSource and Rate Story, "
+                            "Decision Story, Worker Story, comparison/remediation and readiness evidence."
+                        )
+                        status_text = (
+                            "The retrieved corpus describes Award Positions / Classifications as governed classification "
+                            "evidence with important status and limitation caveats. It should not imply Minerva classifies "
+                            "workers, changes EmployeeAppointment, WorksitePosition, Position or AwardPositionClass records, "
+                            "selects award classes at runtime, interprets awards at runtime, calculates payroll, decides "
+                            "entitlements, mutates payroll output, determines finalisation readiness, finalises PayRuns or "
+                            "mutates operational workforce/payroll/award truth unless formal evidence explicitly says so."
                         )
                     elif domain_plan.plan_id == "FINALISATION_READINESS":
                         direct_summary = (

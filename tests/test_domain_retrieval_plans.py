@@ -2,6 +2,7 @@ from app.services.answer_generation_service import generate_grounded_answer
 from app.services.domain_retrieval_plan_service import (
     ANNUAL_LEAVE_MANAGEMENT_PLAN,
     AWARD_BUILD_EVIDENCE_PLAN,
+    AWARD_POSITIONS_CLASSIFICATIONS_PLAN,
     COMPARISON_REMEDIATION_PLAN,
     CONTACTS_EMPLOYEE_APPOINTMENTS_PLAN,
     CONTACT_PAYROLL_HISTORY_PLAN,
@@ -22,7 +23,9 @@ from app.services.domain_retrieval_plan_service import (
     PAYRUN_ADMIN_QUEUE_PLAN,
     PAYMENT_EXECUTION_REMITTANCE_PLAN,
     PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN,
+    PUBLIC_HOLIDAYS_PLAN,
     RATE_SOURCE_RATE_STORY_PLAN,
+    ROSTERS_PATTERNS_SCHEDULING_PLAN,
     RETRO_REPLAY_PLAN,
     TAX_PAYG_PLAN,
     WORKER_ATTENTION_ISSUE_RESOLUTION_PLAN,
@@ -193,6 +196,23 @@ def test_leave_requests_workflow_question_detects_domain_plan():
     assert plan.plan_id == "LEAVE_REQUESTS_WORKFLOW"
 
 
+def test_leave_requests_workflow_focused_questions_detect_domain_plan():
+    questions = [
+        "How does the Leave Request workflow move from draft to approval?",
+        "How does Leave Request preview handle overlaps and shortfalls?",
+        "How does the Leave Request workflow handle TAKEN leave valuation?",
+        "How do Leave Requests relate to LeaveLedger posting and leave balances?",
+        "How does the Leave Request workflow relate to Leave Source and applicability?",
+        "How do Leave Requests connect to Worker Story, PayRun and finalisation readiness?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "LEAVE_REQUESTS_WORKFLOW"
+
+
 def test_leave_requests_workflow_plan_contains_expected_evidence_groups():
     group_ids = {group.group_id for group in LEAVE_REQUESTS_WORKFLOW_PLAN.evidence_groups}
 
@@ -214,13 +234,21 @@ def test_leave_requests_workflow_plan_contains_expected_evidence_groups():
 def test_leave_requests_workflow_routing_overlaps_keep_existing_domain_owners():
     cases = {
         "How does leave accrue and get processed in Ezeas?": "LEAVE_ACCRUAL_PROCESSING",
+        "How should Leave Accrual / Processing handle TAKEN leave valuation?": "LEAVE_ACCRUAL_PROCESSING",
         "What is the Leave Source Model and why does it matter?": "LEAVE_SOURCE_MODEL",
+        "How does Leave Source and applicability determine leave output?": "LEAVE_SOURCE_MODEL",
         "What is Payroll Output in the platform?": "PAYROLL_OUTPUT",
+        "How should Payroll Output show leave payment effects?": "PAYROLL_OUTPUT",
         "What is Worker Story and what evidence does it show?": "WORKER_STORY",
+        "How should Worker Story explain worker-level leave evidence?": "WORKER_STORY",
         "What is Finalisation Readiness in the platform?": "FINALISATION_READINESS",
+        "How does Finalisation Readiness handle leave readiness warnings?": "FINALISATION_READINESS",
         "How does Contact Payroll History relate to leave, accrual and Worker Story?": "CONTACT_PAYROLL_HISTORY",
+        "How does Contact Payroll History show historical contact leave and payroll evidence?": "CONTACT_PAYROLL_HISTORY",
         "What are Deductions / Obligations and how should they work?": "DEDUCTIONS_OBLIGATIONS",
+        "How do Deductions / Obligations affect explicit net-pay deduction context?": "DEDUCTIONS_OBLIGATIONS",
         "How does Gross-to-Net move from gross earnings to net pay?": "GROSS_TO_NET",
+        "How does Gross-to-Net explain explicit net pay and deduction context?": "GROSS_TO_NET",
     }
 
     for question, expected_plan_id in cases.items():
@@ -228,6 +256,255 @@ def test_leave_requests_workflow_routing_overlaps_keep_existing_domain_owners():
 
         assert plan is not None
         assert plan.plan_id == expected_plan_id
+
+
+def test_public_holidays_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How are Public Holidays handled in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "PUBLIC_HOLIDAYS"
+
+
+def test_public_holidays_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in PUBLIC_HOLIDAYS_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "public_holiday_source_and_calendar",
+        "worksite_state_and_applicability_context",
+        "payroll_treatment_and_decision_story",
+        "leave_interaction_and_deducts_on_public_holiday",
+        "worker_story_admin_queue_and_finalisation",
+    }
+    groups = {group.group_id: group for group in PUBLIC_HOLIDAYS_PLAN.evidence_groups}
+    assert "PublicHolidayGroup" in groups["public_holiday_source_and_calendar"].query_terms
+    assert "WorksitePosition" in groups["worksite_state_and_applicability_context"].query_terms
+    assert "Decision Story" in groups["payroll_treatment_and_decision_story"].query_terms
+    assert "DeductsOnPublicHoliday" in groups["leave_interaction_and_deducts_on_public_holiday"].query_terms
+    assert "Finalisation Readiness" in groups["worker_story_admin_queue_and_finalisation"].query_terms
+
+
+def test_public_holidays_framed_questions_detect_domain_plan():
+    questions = [
+        "How are Public Holidays handled in the platform?",
+        "How does PublicHolidayGroup affect public holiday calendars?",
+        "How does DeductsOnPublicHoliday affect leave on public holidays?",
+        "How does public holiday payroll treatment relate to Decision Story?",
+        "How does the platform know which Public Holiday applies to a worker?",
+        "How do Public Holidays affect payroll treatment?",
+        "How do Public Holidays affect leave requests and LeaveLedger posting?",
+        "How do Public Holidays appear in Worker Story and payroll evidence?",
+        "What happens if Public Holiday configuration or location context is missing?",
+        "How do Public Holidays relate to employer liabilities or on-costs?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "PUBLIC_HOLIDAYS"
+
+
+def test_public_holidays_routing_overlaps_keep_existing_domain_owners():
+    cases = {
+        "How does the Leave Request workflow move from draft to approval?": "LEAVE_REQUESTS_WORKFLOW",
+        "How does Leave Request preview handle overlaps and shortfalls?": "LEAVE_REQUESTS_WORKFLOW",
+        "How do Leave Requests relate to LeaveLedger posting and leave balances?": "LEAVE_REQUESTS_WORKFLOW",
+        "How does leave accrue and get processed in Ezeas?": "LEAVE_ACCRUAL_PROCESSING",
+        "What is the Leave Source Model and why does it matter?": "LEAVE_SOURCE_MODEL",
+        "How should Payroll Output explain payroll lines?": "PAYROLL_OUTPUT",
+        "How does Decision Story explain treatment decisions?": "DECISION_STORY",
+        "What is Worker Story and what evidence does it show?": "WORKER_STORY",
+        "What is Finalisation Readiness in the platform?": "FINALISATION_READINESS",
+        "How does Worker Attention handle blockers, warnings and fix links?": "WORKER_ATTENTION_ISSUE_RESOLUTION",
+        "How should On-costs / Employer Liabilities work?": "ONCOSTS_EMPLOYER_LIABILITIES",
+        "How does Process Periods / PayRun Lifecycle handle period close?": "PROCESS_PERIOD_PAYRUN_LIFECYCLE",
+        "How should Contacts / Employee Appointments work?": "CONTACTS_EMPLOYEE_APPOINTMENTS",
+        "How does ObjectTime / Source Truth work?": "OBJECTTIME_SOURCE_TRUTH",
+    }
+
+    for question, expected_plan_id in cases.items():
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == expected_plan_id
+
+
+def test_rosters_patterns_scheduling_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How do Rosters, Patterns and Scheduling work in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "ROSTERS_PATTERNS_SCHEDULING"
+
+
+def test_rosters_patterns_scheduling_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in ROSTERS_PATTERNS_SCHEDULING_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "roster_pattern_source_and_configuration",
+        "appointment_worksite_and_applicability_context",
+        "ordinary_hours_leave_basis_and_public_holiday_context",
+        "payroll_interpretation_and_worker_story_relationship",
+        "admin_queue_finalisation_and_readiness_relationship",
+    }
+    groups = {group.group_id: group for group in ROSTERS_PATTERNS_SCHEDULING_PLAN.evidence_groups}
+    assert "PatternDay" in groups["roster_pattern_source_and_configuration"].query_terms
+    assert "EmployeeAppointmentPattern" in groups["roster_pattern_source_and_configuration"].query_terms
+    assert "WorksitePosition" in groups["appointment_worksite_and_applicability_context"].query_terms
+    assert "ordinary hours" in groups["ordinary_hours_leave_basis_and_public_holiday_context"].query_terms
+    assert "ObjectTime comparison" in groups["payroll_interpretation_and_worker_story_relationship"].query_terms
+    assert "Finalisation Readiness" in groups["admin_queue_finalisation_and_readiness_relationship"].query_terms
+
+
+def test_rosters_patterns_scheduling_framed_questions_detect_domain_plan():
+    questions = [
+        "How do Rosters, Patterns and Scheduling work in the platform?",
+        "How does PatternDay define expected work context?",
+        "How does EmployeeAppointmentPattern connect rosters to appointments?",
+        "How do roster schedules support ordinary hours and leave basis minutes?",
+        "How does scheduling context compare to ObjectTime actual worked time?",
+        "How can missing roster pattern configuration affect readiness evidence?",
+        "How does the platform use roster or pattern configuration for expected work context?",
+        "How do rosters and patterns relate to Employee Appointments and Worksites?",
+        "How do rosters or patterns affect ordinary hours and leave basis?",
+        "How are rosters or patterns different from ObjectTime source truth?",
+        "How do rosters and scheduling appear in Worker Story or payroll evidence?",
+        "What happens if roster or pattern configuration is missing?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "ROSTERS_PATTERNS_SCHEDULING"
+
+
+def test_rosters_patterns_scheduling_routing_overlaps_keep_existing_domain_owners():
+    cases = {
+        "How does ObjectTime / Source Truth work?": "OBJECTTIME_SOURCE_TRUTH",
+        "How should Contacts / Employee Appointments work?": "CONTACTS_EMPLOYEE_APPOINTMENTS",
+        "How are Public Holidays handled in the platform?": "PUBLIC_HOLIDAYS",
+        "How does leave accrue and get processed in Ezeas?": "LEAVE_ACCRUAL_PROCESSING",
+        "What is the Leave Source Model and why does it matter?": "LEAVE_SOURCE_MODEL",
+        "How does the Leave Request workflow move from draft to approval?": "LEAVE_REQUESTS_WORKFLOW",
+        "What is Payroll Output in the platform?": "PAYROLL_OUTPUT",
+        "How does Decision Story explain treatment decisions?": "DECISION_STORY",
+        "What is Worker Story and what evidence does it show?": "WORKER_STORY",
+        "What is Finalisation Readiness in the platform?": "FINALISATION_READINESS",
+        "How does Worker Attention handle blockers, warnings and fix links?": "WORKER_ATTENTION_ISSUE_RESOLUTION",
+        "How does Process Periods / PayRun Lifecycle handle period close?": "PROCESS_PERIOD_PAYRUN_LIFECYCLE",
+        "How does DeductsOnPublicHoliday affect leave on public holidays?": "PUBLIC_HOLIDAYS",
+        "How does PublicHolidayGroup affect public holiday calendars?": "PUBLIC_HOLIDAYS",
+        "What are Payroll Bases & Totals in the platform?": "PAYROLL_BASES_AND_TOTALS",
+    }
+
+    for question, expected_plan_id in cases.items():
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == expected_plan_id
+
+
+def test_award_positions_classifications_question_detects_domain_plan():
+    plan = detect_domain_retrieval_plan("How do Award Positions and Classifications work in the platform?")
+
+    assert plan is not None
+    assert plan.plan_id == "AWARD_POSITIONS_CLASSIFICATIONS"
+
+
+def test_award_positions_classifications_plan_contains_expected_evidence_groups():
+    group_ids = {group.group_id for group in AWARD_POSITIONS_CLASSIFICATIONS_PLAN.evidence_groups}
+
+    assert group_ids == {
+        "award_position_classification_source_and_build",
+        "appointment_position_and_worksite_assignment",
+        "payroll_interpretation_rate_and_decision_story",
+        "comparison_remediation_and_classification_lenses",
+        "worker_story_admin_queue_and_readiness_relationship",
+    }
+    groups = {group.group_id: group for group in AWARD_POSITIONS_CLASSIFICATIONS_PLAN.evidence_groups}
+    assert "AwardPosition" in groups["award_position_classification_source_and_build"].query_terms
+    assert "AwardPositionClass" in groups["award_position_classification_source_and_build"].query_terms
+    assert "PositionClass" in groups["award_position_classification_source_and_build"].query_terms
+    assert "EmployeeAppointment" in groups["appointment_position_and_worksite_assignment"].query_terms
+    assert "WorksitePosition" in groups["appointment_position_and_worksite_assignment"].query_terms
+    assert "RateSource" in groups["payroll_interpretation_rate_and_decision_story"].query_terms
+    assert "Decision Story" in groups["payroll_interpretation_rate_and_decision_story"].query_terms
+    assert "classification lenses" in groups["comparison_remediation_and_classification_lenses"].query_terms
+    assert "Finalisation Readiness" in groups["worker_story_admin_queue_and_readiness_relationship"].query_terms
+
+
+def test_award_positions_classifications_framed_questions_detect_domain_plan():
+    questions = [
+        "How do Award Positions and Classifications work in the platform?",
+        "How does AwardPositionClass connect to EmployeeAppointment classification?",
+        "How does Award Position Class evidence relate to Worksite Position assignment?",
+        "How do classification levels and pay guide class evidence support payroll interpretation?",
+        "How do Award Positions connect to RateSource and Rate Story?",
+        "How do classification lenses support comparison remediation?",
+        "How can missing AwardPositionClass configuration affect Worker Story and readiness evidence?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "AWARD_POSITIONS_CLASSIFICATIONS"
+
+
+def test_award_positions_classifications_routing_overlaps_keep_existing_domain_owners():
+    cases = {
+        "How should Award Build / Award Evidence handle RateSourceEvidenceIndex?": "AWARD_BUILD_EVIDENCE",
+        "How should Contacts / Employee Appointments work?": "CONTACTS_EMPLOYEE_APPOINTMENTS",
+        "How do Rosters, Patterns and Scheduling work in the platform?": "ROSTERS_PATTERNS_SCHEDULING",
+        "How does ObjectTime / Source Truth work?": "OBJECTTIME_SOURCE_TRUTH",
+        "How does RateSource / Rate Story explain selected rate amount?": "RATE_SOURCE_RATE_STORY",
+        "How does Decision Story explain treatment decisions?": "DECISION_STORY",
+        "What is Payroll Output in the platform?": "PAYROLL_OUTPUT",
+        "How does Comparison / Remediation compare primary and comparator lanes?": "COMPARISON_REMEDIATION",
+        "What is Worker Story and what evidence does it show?": "WORKER_STORY",
+        "What is Finalisation Readiness in the platform?": "FINALISATION_READINESS",
+        "How does Worker Attention handle blockers, warnings and fix links?": "WORKER_ATTENTION_ISSUE_RESOLUTION",
+        "How should Imports / Actuals map imported payroll evidence?": "IMPORTS_ACTUALS",
+    }
+
+    for question, expected_plan_id in cases.items():
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == expected_plan_id
+
+
+def test_award_positions_classifications_domain_retrieval_uses_group_specific_evidence(db_session):
+    _ingest(
+        db_session,
+        "Award Positions / Classifications are governed employment classification evidence with AwardPosition, "
+        "AwardPositionClass, PositionClass, classification levels, position groups, pay guide and class evidence.",
+        title="Developer Log - Award Positions Classifications Source",
+    )
+    _ingest(
+        db_session,
+        "EmployeeAppointment connects through WorksitePosition, Position and Worksite assignment context to award "
+        "classification without Minerva changing appointment truth.",
+        title="Developer Log - Award Classification Assignment",
+    )
+    _ingest(
+        db_session,
+        "Classification context supports payroll interpretation, RateSource, Rate Story, Decision Story, Payroll "
+        "Output and calculated line evidence.",
+        title="Developer Log - Award Classification Payroll Story",
+    )
+
+    results = retrieve_chunks_for_question(
+        db_session,
+        "How do Award Positions and Classifications work in the platform?",
+    )
+
+    assert {result.evidence_group_id for result in results} >= {
+        "award_position_classification_source_and_build",
+        "appointment_position_and_worksite_assignment",
+        "payroll_interpretation_rate_and_decision_story",
+    }
+    assert all(result.domain_plan_id == "AWARD_POSITIONS_CLASSIFICATIONS" for result in results)
 
 
 def test_gross_to_net_question_detects_domain_plan():

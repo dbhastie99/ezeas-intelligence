@@ -333,9 +333,41 @@ def test_project_term_normalization_matches_leave_source_model_variants():
 
 
 def test_project_term_normalization_matches_deducts_on_public_holiday_variants():
+    assert contains_normalized_term("PublicHoliday is configured", "Public Holiday")
+    assert contains_normalized_term("Public Holiday Group is selected", "PublicHolidayGroup")
+    assert contains_normalized_term("public holidays are governed", "Public Holidays")
+    assert contains_normalized_term("observedday is configured", "observed day")
+    assert contains_normalized_term("PH calendar evidence exists", "PH")
     assert contains_normalized_term("deductsonpublicholiday is configured", "DeductsOnPublicHoliday")
     assert contains_normalized_term("deducts on public holiday is configured", "DeductsOnPublicHoliday")
     assert contains_normalized_term("DeductsOnPublicHoliday is configured", "deducts on public holiday")
+
+
+def test_project_term_normalization_matches_roster_pattern_scheduling_variants():
+    assert contains_normalized_term("rosters patterns scheduling evidence exists", "Rosters / Patterns / Scheduling")
+    assert contains_normalized_term("Roster evidence exists", "Rosters")
+    assert contains_normalized_term("Patterns are configured", "Pattern")
+    assert contains_normalized_term("Pattern Day is configured", "PatternDay")
+    assert contains_normalized_term("patternday is configured", "Pattern Day")
+    assert contains_normalized_term("Employee Appointment Pattern is configured", "EmployeeAppointmentPattern")
+    assert contains_normalized_term("employeeappointmentpattern is configured", "Employee Appointment Pattern")
+    assert contains_normalized_term("work schedule evidence exists", "Schedule")
+    assert contains_normalized_term("ordinary-hours are expected", "ordinary hours")
+    assert contains_normalized_term("ordinary hours are expected", "ordinary-hours")
+
+
+def test_project_term_normalization_matches_award_positions_classifications_variants():
+    assert contains_normalized_term("award positions classifications evidence exists", "Award Positions / Classifications")
+    assert contains_normalized_term("Award Position is configured", "AwardPosition")
+    assert contains_normalized_term("awardposition is configured", "Award Position")
+    assert contains_normalized_term("Award Position Class is configured", "AwardPositionClass")
+    assert contains_normalized_term("awardpositionclass is configured", "Award Position Class")
+    assert contains_normalized_term("Position Class is configured", "PositionClass")
+    assert contains_normalized_term("positionclass is configured", "Position Class")
+    assert contains_normalized_term("Employee Appointment is assigned", "EmployeeAppointment")
+    assert contains_normalized_term("Worksite Position is assigned", "WorksitePosition")
+    assert contains_normalized_term("classification evidence exists", "class")
+    assert contains_normalized_term("level evidence exists", "classification")
 
 
 def test_project_term_normalization_matches_worker_story_variants():
