@@ -19,6 +19,8 @@ Code Evidence Index tooling is documented in [docs/CODE_EVIDENCE_INDEX.md](docs/
 
 Worker Story evaluation is documented in [docs/WORKER_STORY_EVALUATION_RUNBOOK.md](docs/WORKER_STORY_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, and answer gap report commands.
 
+Completed-domain baseline decisions are tracked in [docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md](docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md). The ledger is diagnostic/control documentation only and does not create v0.5 slices automatically.
+
 ## SQL Server Setup
 
 1. Create the database manually:
@@ -577,6 +579,22 @@ Run the Payroll Tax / WorkCover / WIC Liability Detail rich-answer benchmark aft
 ```powershell
 .\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payroll_tax_workcover_wic_liability_detail.json
 ```
+
+Run the diagnostic-only Payroll Tax / WorkCover / WIC Liability Detail corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_payroll_tax_workcover_wic_liability_detail_corpus_coverage.py --json --output .\artifacts\eval\payroll_tax_workcover_wic_liability_detail_corpus_coverage.json
+```
+
+Build the diagnostic-only Payroll Tax / WorkCover / WIC Liability Detail answer gap report from coverage JSON:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\build_payroll_tax_workcover_wic_liability_detail_answer_gap_report.py --coverage-report .\artifacts\eval\payroll_tax_workcover_wic_liability_detail_corpus_coverage.json --output .\artifacts\eval\payroll_tax_workcover_wic_liability_detail_answer_gap_report.json
+```
+
+These Payroll Tax / WorkCover / WIC Liability Detail diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, read source code as Minerva evidence, connect Code Evidence Index to answer generation, and do not prove runtime operational truth. They do not calculate payroll tax, do not calculate WorkCover or WIC liability, do not lodge or remit statutory returns, do not decide statutory liability, do not change employer-liability configuration, do not change Worksite, State or jurisdiction truth, do not calculate payroll, do not mutate payroll output, do not determine or finalise readiness, and do not mutate operational workforce/payroll/liability truth.
+
+For the repeatable Payroll Tax / WorkCover / WIC Liability Detail evaluation workflow and interpretation guidance, see [docs/PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_EVALUATION_RUNBOOK.md](docs/PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_EVALUATION_RUNBOOK.md).
 
 Run the diagnostic-only Award Positions / Classifications corpus coverage scan:
 
