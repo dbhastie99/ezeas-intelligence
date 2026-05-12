@@ -135,6 +135,8 @@ def classify_answer_mode(question: str) -> str:
         or ("liability wages" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized))
         or ("taxable wages" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized))
         or ("worksite.stateid" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liability" in normalized))
+        or "state or worksite context applies to employer liabilities" in normalized
+        or "worksite context applies to employer liabilities" in normalized
         or "liability ratesource" in normalized
         or "liability rate source" in normalized
     ):

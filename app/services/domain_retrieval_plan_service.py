@@ -3271,6 +3271,8 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "objecttime location" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liability" in normalized)
         or "worksite.stateid" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liability" in normalized)
         or "worksite state" in normalized and ("payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liability" in normalized)
+        or "state or worksite context applies to employer liabilities" in normalized
+        or "worksite context applies to employer liabilities" in normalized
         or "liability ratesource" in normalized
         or "liability rate source" in normalized
         or "date effective liability rate" in normalized
@@ -3294,8 +3296,8 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or normalized.startswith("what is tax payg")
         or ("payg" in normalized and "payroll tax" not in normalized and "payrolltax" not in normalized)
         or ("withholding" in normalized and "payroll tax" not in normalized and "payrolltax" not in normalized)
-        or normalized.startswith("how do payroll bases")
-        or normalized.startswith("what is payroll bases")
+        or (normalized.startswith("how do payroll bases") and "payroll tax" not in normalized and "workcover" not in normalized and "wic" not in normalized)
+        or (normalized.startswith("what is payroll bases") and "payroll tax" not in normalized and "workcover" not in normalized and "wic" not in normalized)
         or normalized.startswith("how does payment execution")
         or normalized.startswith("what is payment execution")
         or normalized.startswith("what is gross to net")

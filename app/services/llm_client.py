@@ -1283,20 +1283,28 @@ def _payroll_tax_workcover_wic_liability_detail_focus_points(question: str) -> l
     if "basis" in normalized or "bucket" in normalized or "taxable wages" in normalized or "liability wages" in normalized:
         points.append(
             "Focused basis answer: Payroll Bases & Totals and governed basis membership provide the basis evidence "
-            "for taxable wages or liability wages, including included or excluded RateTypes and AwardRateTypes where "
-            "that evidence exists."
+            "for taxable wages or liability wages, including payroll bucket evidence, payroll basis evidence, "
+            "included RateTypes, excluded RateTypes and AwardRateTypes where that evidence exists."
         )
     if "ratesource" in normalized or "rate source" in normalized or "rate" in normalized or "configuration" in normalized:
         points.append(
             "Focused rate evidence answer: liability rates should be explained through governed RateSource or "
-            "date-effective liability-rate configuration, including account, state or award scoping where supported, "
-            "while separating demo fallback rows from production truth."
+            "date-effective liability-rate configuration evidence, including account scoping, state scoping and "
+            "award scoping where supported, while separating demo fallback rows from production truth."
         )
     if "worker story" in normalized or "payroll output" in normalized or "gross to net" in normalized or "finalisation" in normalized or "readiness" in normalized:
         points.append(
             "Focused evidence-surface answer: Payroll Output and Worker Story can surface employer liability evidence "
-            "and keep the Gross-to-Net worker-pay boundary clear; Finalisation Readiness, Admin Queue and Worker "
-            "Attention may surface missing liability configuration where formal evidence supports that."
+            "and employer liability lines, keep the Gross-to-Net worker net pay boundary clear, and preserve audit "
+            "evidence and explanation relationships; Finalisation Readiness, Admin Queue and Worker Attention may "
+            "surface missing liability configuration where formal evidence supports that."
+        )
+    if "missing" in normalized or "configuration" in normalized or "needs configuration" in normalized or "needs_configuration" in normalized:
+        points.append(
+            "Focused missing-configuration answer: missing liability configuration for Payroll Tax, WorkCover or WIC should be "
+            "described as a status-honest configuration gap; where formal evidence supports it, Finalisation "
+            "Readiness, Admin Queue and Worker Attention can surface NEEDS_CONFIGURATION-style issues without Minerva "
+            "deciding liability, and Minerva does not determine finalisation readiness."
         )
     if "payroll tax" in normalized or "workcover" in normalized or "wic" in normalized or "liabilit" in normalized:
         points.append(

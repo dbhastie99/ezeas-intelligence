@@ -1098,3 +1098,84 @@ def test_award_positions_classifications_evaluation_runbook_exists_and_lists_req
     assert "Add formal source evidence later when the group is genuinely `MISSING`" in runbook
     assert "Keep existing behavior where coverage and answer quality are acceptable" in runbook
     assert "Do not use operational JSON or Code Evidence as a shortcut" in runbook
+
+
+def test_payroll_tax_workcover_wic_liability_detail_evaluation_runbook_exists_and_lists_required_guidance():
+    runbook_path = Path("docs/PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_EVALUATION_RUNBOOK.md")
+
+    assert runbook_path.exists()
+
+    runbook = runbook_path.read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
+
+    assert "docs/PAYROLL_TAX_WORKCOVER_WIC_LIABILITY_DETAIL_EVALUATION_RUNBOOK.md" in readme
+    assert ".\\.venv\\Scripts\\python.exe -m pytest --basetemp .\\.pytest_tmp" in runbook
+    assert "samples\\eval\\rich_answer_benchmark.payroll_tax_workcover_wic_liability_detail.json" in runbook
+    assert "scan_payroll_tax_workcover_wic_liability_detail_corpus_coverage.py" in runbook
+    assert "build_payroll_tax_workcover_wic_liability_detail_answer_gap_report.py" in runbook
+    assert "tests\\test_payroll_tax_workcover_wic_liability_detail_corpus_coverage.py" in runbook
+    assert "tests\\test_payroll_tax_workcover_wic_liability_detail_answer_gap_report.py" in runbook
+    assert "tests\\test_domain_retrieval_plans.py" in runbook
+    assert "tests\\test_rich_answer_contract.py" in runbook
+    assert "diagnostic-only" in runbook
+    assert "no corpus mutation" in runbook
+    assert "no live LLM" in runbook
+    assert "no database schema change" in runbook
+    assert "no operational JSON ingestion" in runbook
+    assert "no Code Evidence answer integration" in runbook
+    assert "no Code Evidence Index answer integration" in runbook
+    assert "not proof of runtime operational truth" in runbook
+    assert "STRONG" in runbook
+    assert "WEAK" in runbook
+    assert "MISSING" in runbook
+    assert "GOOD" in runbook
+    assert "NEEDS_REFINEMENT" in runbook
+    assert "INSUFFICIENT_CORPUS" in runbook
+    assert "KEEP" in runbook
+    assert "IMPROVE_RETRIEVAL_TERMS" in runbook
+    assert "IMPROVE_SYNTHESIS" in runbook
+    assert "ADD_FORMAL_SOURCE_EVIDENCE_LATER" in runbook
+    assert "liability_scope_and_employer_side_boundary" in runbook
+    assert "jurisdiction_worksite_and_state_context" in runbook
+    assert "governed_basis_membership_and_payroll_bases" in runbook
+    assert "rates_sources_and_liability_evidence" in runbook
+    assert "worker_story_output_and_finalisation_relationship" in runbook
+    assert "minerva_boundaries_and_non_mutation_guardrails" in runbook
+    assert "Payroll Tax / WorkCover / WIC Liability Detail is the Minerva product-domain explaining employer-side statutory/liability evidence" in runbook
+    assert "jurisdiction/worksite/state context" in runbook
+    assert "governed payroll basis membership" in runbook
+    assert "liability rate/source evidence" in runbook
+    assert "relationship to Payroll Bases, Payroll Output, Worker Story, Gross-to-Net boundaries and Finalisation Readiness" in runbook
+    assert "Minerva explains Payroll Tax / WorkCover / WIC liability evidence" in runbook
+    assert "Minerva does not calculate payroll tax" in runbook
+    assert "Minerva does not calculate WorkCover or WIC liability" in runbook
+    assert "Minerva does not lodge or remit statutory returns" in runbook
+    assert "Minerva does not decide statutory liability" in runbook
+    assert "Minerva does not change employer-liability configuration" in runbook
+    assert "Minerva does not change Worksite / State / jurisdiction truth" in runbook
+    assert "Minerva does not calculate payroll" in runbook
+    assert "Minerva does not mutate payroll output" in runbook
+    assert "Minerva does not determine finalisation readiness" in runbook
+    assert "Minerva does not finalise PayRuns" in runbook
+    assert "Minerva does not mutate operational workforce/payroll/liability truth" in runbook
+    assert "diagnostics do not mutate corpus" in runbook
+    assert "diagnostics do not call a live LLM" in runbook
+    assert "diagnostics do not ingest operational JSON" in runbook
+    assert "diagnostics do not connect Code Evidence to answer generation" in runbook
+    assert "diagnostics do not prove runtime operational truth" in runbook
+    assert "diagnostics do not calculate payroll tax" in runbook
+    assert "diagnostics do not calculate WorkCover or WIC liability" in runbook
+    assert "diagnostics do not lodge or remit statutory returns" in runbook
+    assert "diagnostics do not decide statutory liability" in runbook
+    assert "diagnostics do not change employer-liability configuration" in runbook
+    assert "diagnostics do not change Worksite / State / jurisdiction truth" in runbook
+    assert "diagnostics do not calculate payroll" in runbook
+    assert "diagnostics do not mutate payroll output" in runbook
+    assert "diagnostics do not determine or finalise readiness" in runbook
+    assert "diagnostics do not mutate operational workforce/payroll/liability truth" in runbook
+    assert "When To Improve What" in runbook
+    assert "Improve retrieval terms when formal evidence exists but diagnostic coverage is `WEAK`" in runbook
+    assert "Improve synthesis when coverage is `STRONG` but benchmark or human review shows the answer is incomplete" in runbook
+    assert "Add formal source evidence later when the group is genuinely `MISSING`" in runbook
+    assert "Keep existing behavior where coverage and answer quality are acceptable" in runbook
+    assert "Do not use operational JSON or Code Evidence as a shortcut" in runbook

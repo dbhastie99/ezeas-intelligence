@@ -1253,7 +1253,8 @@ def _ingest_payroll_tax_workcover_wic_liability_detail_benchmark_evidence(db_ses
         (
             "Worker Story, Payroll Output, Gross-to-Net, employer liability lines, worker net pay boundary, "
             "Finalisation Readiness, PayRun Admin Queue, Admin Queue, Worker Attention, missing liability "
-            "configuration, audit evidence and explanation relationships can surface Payroll Tax WorkCover WIC evidence.",
+            "configuration, NEEDS_CONFIGURATION, NEEDS_CONFIGURATION-style concepts, status honesty, status-honest "
+            "configuration gap, audit evidence and explanation relationships can surface Payroll Tax WorkCover WIC evidence.",
             "Developer Log - Payroll Tax WorkCover WIC Evidence Surfaces",
         ),
         (
@@ -2318,12 +2319,18 @@ def test_payroll_tax_workcover_wic_liability_detail_rich_answer_benchmark_manife
     assert manifest["name"] == "Payroll Tax / WorkCover / WIC Liability Detail rich-answer benchmark"
     assert {question["id"] for question in manifest["questions"]} == {
         "payroll-tax-workcover-wic-liability-detail-rich-answer",
+        "payroll-tax-workcover-wic-employer-boundary",
+        "payroll-tax-workcover-wic-state-worksite-context",
+        "payroll-tax-workcover-wic-payroll-bases-membership",
+        "payroll-tax-workcover-wic-ratesource-evidence",
+        "payroll-tax-workcover-wic-worker-story-output",
+        "payroll-tax-workcover-wic-missing-configuration",
     }
     result = run_golden_questions(
         db_session,
         "samples/eval/rich_answer_benchmark.payroll_tax_workcover_wic_liability_detail.json",
     )
-    assert result["total"] == 1
+    assert result["total"] == 7
     assert all(item["checks"]["answer_mode"] is True for item in result["results"])
 
 
@@ -3013,7 +3020,7 @@ def test_payroll_tax_workcover_wic_liability_detail_benchmark_runner_returns_pas
     )
 
     assert result["name"] == "Payroll Tax / WorkCover / WIC Liability Detail rich-answer benchmark"
-    assert result["total"] == 1
+    assert result["total"] == 7
     failures = [
         {
             "id": item["id"],
@@ -3027,6 +3034,12 @@ def test_payroll_tax_workcover_wic_liability_detail_benchmark_runner_returns_pas
     assert all(item["checks"]["forbidden_answer_patterns_any"] is True for item in result["results"])
     assert {item["id"] for item in result["results"]} == {
         "payroll-tax-workcover-wic-liability-detail-rich-answer",
+        "payroll-tax-workcover-wic-employer-boundary",
+        "payroll-tax-workcover-wic-state-worksite-context",
+        "payroll-tax-workcover-wic-payroll-bases-membership",
+        "payroll-tax-workcover-wic-ratesource-evidence",
+        "payroll-tax-workcover-wic-worker-story-output",
+        "payroll-tax-workcover-wic-missing-configuration",
     }
 
 

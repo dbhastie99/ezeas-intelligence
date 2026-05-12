@@ -565,6 +565,12 @@ def test_payroll_tax_workcover_wic_liability_detail_framed_questions_detect_doma
         "How should Worker Story show Payroll Tax WorkCover WIC liability evidence?",
         "How do taxable wages and liability wages affect WorkCover liability evidence?",
         "How does ObjectTime location support Payroll Tax WorkCover WIC jurisdiction evidence?",
+        "How are Payroll Tax, WorkCover and WIC different from PAYG or worker net pay?",
+        "How does the platform know which state or worksite context applies to employer liabilities?",
+        "How do Payroll Bases and governed basis membership affect Payroll Tax, WorkCover or WIC?",
+        "How are liability rates or RateSource evidence used for Payroll Tax, WorkCover or WIC?",
+        "How do Payroll Tax, WorkCover or WIC appear in Worker Story or Payroll Output?",
+        "What happens if Payroll Tax, WorkCover or WIC configuration is missing?",
     ]
 
     for question in questions:
@@ -589,6 +595,8 @@ def test_payroll_tax_workcover_wic_liability_detail_routing_overlaps_keep_existi
         "How does ObjectTime / Source Truth work?": "OBJECTTIME_SOURCE_TRUTH",
         "How should Contacts / Employee Appointments work?": "CONTACTS_EMPLOYEE_APPOINTMENTS",
         "How does RateSource / Rate Story explain selected rate amount?": "RATE_SOURCE_RATE_STORY",
+        "How do Award Positions and Classifications work in the platform?": "AWARD_POSITIONS_CLASSIFICATIONS",
+        "How does an Award Position Class connect to EmployeeAppointment?": "AWARD_POSITIONS_CLASSIFICATIONS",
     }
 
     for question, expected_plan_id in cases.items():

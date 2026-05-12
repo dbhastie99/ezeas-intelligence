@@ -12,6 +12,72 @@
       "expected_source_terms_all": ["Payroll Tax", "WorkCover", "WIC", "Worksite.StateId", "Payroll Bases & Totals", "RateSource"],
       "expected_source_terms_any": ["taxable wages", "liability wages", "Finalisation Readiness", "Worker Story", "demo fallback"],
       "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+tax\\.", "Minerva\\s+calculates\\s+WorkCover", "Minerva\\s+lodges", "Minerva\\s+decides\\s+statutory\\s+liability\\.", "Minerva\\s+changes\\s+employer-liability\\s+configuration\\.", "Minerva\\s+changes\\s+Worksite", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-tax-workcover-wic-employer-boundary",
+      "question": "How are Payroll Tax, WorkCover and WIC different from PAYG or worker net pay?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Tax / WorkCover / WIC Liability Detail", "employer-side", "payroll tax", "WorkCover", "WIC", "not worker net pay", "PAYG withholding", "payment execution", "Minerva"],
+      "expected_source_terms_all": ["Payroll Tax", "WorkCover", "WIC"],
+      "expected_source_terms_any": ["not worker net pay", "PAYG withholding", "payment execution", "employer-side liability evidence"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+tax\\.", "Minerva\\s+calculates\\s+WorkCover", "Minerva\\s+lodges", "Minerva\\s+decides\\s+statutory\\s+liability\\.", "Minerva\\s+changes\\s+employer-liability\\s+configuration\\.", "Minerva\\s+changes\\s+Worksite", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-tax-workcover-wic-state-worksite-context",
+      "question": "How does the platform know which state or worksite context applies to employer liabilities?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["state", "jurisdiction", "Worksite.StateId", "WorksitePosition", "EmployeeAppointment", "runtime location", "ObjectTime location", "demo fallback", "production truth", "status"],
+      "expected_source_terms_all": ["Worksite.StateId", "WorksitePosition", "EmployeeAppointment"],
+      "expected_source_terms_any": ["ObjectTime location", "runtime location", "demo fallback", "production truth"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+tax\\.", "Minerva\\s+calculates\\s+WorkCover", "Minerva\\s+lodges", "Minerva\\s+decides\\s+statutory\\s+liability\\.", "Minerva\\s+changes\\s+employer-liability\\s+configuration\\.", "Minerva\\s+changes\\s+Worksite", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-tax-workcover-wic-payroll-bases-membership",
+      "question": "How do Payroll Bases and governed basis membership affect Payroll Tax, WorkCover or WIC?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Payroll Bases & Totals", "governed basis membership", "payroll bucket", "payroll basis evidence", "taxable wages", "liability wages", "RateTypes", "AwardRateTypes"],
+      "expected_source_terms_all": ["governed basis membership", "Payroll Bases & Totals", "taxable wages", "liability wages"],
+      "expected_source_terms_any": ["included RateTypes", "excluded RateTypes", "AwardRateTypes", "basis totals"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+tax\\.", "Minerva\\s+calculates\\s+WorkCover", "Minerva\\s+lodges", "Minerva\\s+decides\\s+statutory\\s+liability\\.", "Minerva\\s+changes\\s+employer-liability\\s+configuration\\.", "Minerva\\s+changes\\s+Worksite", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-tax-workcover-wic-ratesource-evidence",
+      "question": "How are liability rates or RateSource evidence used for Payroll Tax, WorkCover or WIC?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["RateSource", "date-effective", "liability-rate evidence", "configuration evidence", "account scoping", "state scoping", "award scoping", "demo fallback", "production truth"],
+      "expected_source_terms_all": ["RateSource", "date-effective rates", "liability-rate evidence"],
+      "expected_source_terms_any": ["account scoping", "state scoping", "award scoping", "demo fallback", "production truth"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+tax\\.", "Minerva\\s+calculates\\s+WorkCover", "Minerva\\s+lodges", "Minerva\\s+decides\\s+statutory\\s+liability\\.", "Minerva\\s+changes\\s+employer-liability\\s+configuration\\.", "Minerva\\s+changes\\s+Worksite", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-tax-workcover-wic-worker-story-output",
+      "question": "How do Payroll Tax, WorkCover or WIC appear in Worker Story or Payroll Output?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["Worker Story", "Payroll Output", "Gross-to-Net", "employer liability lines", "worker net pay boundary", "employer liability evidence", "audit evidence", "explanation"],
+      "expected_source_terms_all": ["Worker Story", "Payroll Output", "Gross-to-Net"],
+      "expected_source_terms_any": ["employer liability lines", "worker net pay boundary", "audit evidence", "explanation relationships"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+tax\\.", "Minerva\\s+calculates\\s+WorkCover", "Minerva\\s+lodges", "Minerva\\s+decides\\s+statutory\\s+liability\\.", "Minerva\\s+changes\\s+employer-liability\\s+configuration\\.", "Minerva\\s+changes\\s+Worksite", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
+    },
+    {
+      "id": "payroll-tax-workcover-wic-missing-configuration",
+      "question": "What happens if Payroll Tax, WorkCover or WIC configuration is missing?",
+      "answer_mode": "PRODUCT_DOMAIN",
+      "expected_source_types_any": ["DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"],
+      "required_sections": ["Direct summary", "How the system works", "Current implementation status", "What remains outstanding", "Evidence basis"],
+      "expected_answer_terms_all": ["missing liability configuration", "Finalisation Readiness", "Admin Queue", "Worker Attention", "NEEDS_CONFIGURATION", "status-honest", "configuration gap", "does not determine finalisation readiness"],
+      "expected_source_terms_all": ["missing liability configuration", "Finalisation Readiness", "Worker Attention"],
+      "expected_source_terms_any": ["Admin Queue", "NEEDS_CONFIGURATION", "status honesty", "configuration gap"],
+      "forbidden_answer_patterns_any": ["Minerva\\s+calculates\\s+payroll\\s+tax\\.", "Minerva\\s+calculates\\s+WorkCover", "Minerva\\s+lodges", "Minerva\\s+decides\\s+statutory\\s+liability\\.", "Minerva\\s+changes\\s+employer-liability\\s+configuration\\.", "Minerva\\s+changes\\s+Worksite", "Minerva\\s+calculates\\s+payroll\\.", "Minerva\\s+mutates\\s+payroll\\s+output\\.", "Minerva\\s+determines\\s+finalisation\\s+readiness\\.", "Minerva\\s+finalises\\s+PayRuns\\.", "Code Evidence", "runtime truth from diagnostics"]
     }
   ]
 }
