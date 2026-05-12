@@ -21,6 +21,8 @@ Worker Story evaluation is documented in [docs/WORKER_STORY_EVALUATION_RUNBOOK.m
 
 Completed-domain baseline decisions are tracked in [docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md](docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md). The ledger is diagnostic/control documentation only and does not create v0.5 slices automatically.
 
+Worker Story baseline capture policy and the first checked-in baseline pack are documented under [docs/evaluation/worker_story_baselines/](docs/evaluation/worker_story_baselines/). These artefacts are comparison controls only; they do not mutate corpus, change routing, change answer generation, call a live LLM, ingest operational JSON, connect Code Evidence, or prove runtime platform truth.
+
 ## SQL Server Setup
 
 1. Create the database manually:

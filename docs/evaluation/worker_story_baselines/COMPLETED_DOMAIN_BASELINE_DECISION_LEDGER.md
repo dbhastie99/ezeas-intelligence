@@ -24,19 +24,20 @@ Decision rules:
 - `RUNBOOK_OUTSTANDING`: v0.1-v0.3-style artefacts exist but no v0.4 runbook exists.
 - `NEEDS_REVIEW`: repo evidence is ambiguous.
 
-No checked-in baseline artefact directory or result set was found for the completed v0.4 domains. README and runbooks reference output paths such as `.\\artifacts\\eval\\...` and `reports\\...`, but those are command targets rather than checked-in baseline artefacts.
+The Worker Story baseline-capture pilot added the first checked-in baseline artefact pack at `docs/evaluation/worker_story_baselines/worker_story/v0_1/`. README and runbooks also reference output paths such as `.\\artifacts\\eval\\...` and `reports\\...`, but those command targets are not themselves checked-in baseline artefacts unless a baseline pack intentionally versions them.
 
 ## Summary
 
 - Total domains inventoried: 31.
-- `BASELINE_REQUIRED`: 30.
-- `BASELINE_ALREADY_EXISTS`: 0.
+- `BASELINE_REQUIRED`: 29.
+- `BASELINE_ALREADY_EXISTS`: 1.
 - `NO_BASELINE_NEEDED`: 0.
 - `RUNBOOK_OUTSTANDING`: 1.
 - `NEEDS_REVIEW`: 0.
-- Domains requiring baseline capture: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Comparison / Remediation; Tax / PAYG; Deductions / Obligations; Retro / Replay; Payment Execution / Remittance; Leave Accrual / Processing; Finalisation Readiness; Leave Source Model; On-costs / Employer Liabilities; Award Build / Award Evidence; Imports / Actuals; ObjectTime / Source Truth; Contacts / Employee Appointments; Process Periods / PayRun Lifecycle; Costing / GL Consequence Evidence; Worker Attention / Issue Resolution; Gross-to-Net; RateSource / Rate Story; Decision Story; Payroll Output; Contact Payroll History; Leave Requests / Leave Workflow; Public Holidays; Rosters / Patterns / Scheduling; Award Positions / Classifications; Payroll Tax / WorkCover / WIC Liability Detail.
+- Domains requiring baseline capture: Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Comparison / Remediation; Tax / PAYG; Deductions / Obligations; Retro / Replay; Payment Execution / Remittance; Leave Accrual / Processing; Finalisation Readiness; Leave Source Model; On-costs / Employer Liabilities; Award Build / Award Evidence; Imports / Actuals; ObjectTime / Source Truth; Contacts / Employee Appointments; Process Periods / PayRun Lifecycle; Costing / GL Consequence Evidence; Worker Attention / Issue Resolution; Gross-to-Net; RateSource / Rate Story; Decision Story; Payroll Output; Contact Payroll History; Leave Requests / Leave Workflow; Public Holidays; Rosters / Patterns / Scheduling; Award Positions / Classifications; Payroll Tax / WorkCover / WIC Liability Detail.
+- Domains with baseline already existing: Worker Story.
 - Domains with runbook outstanding: Annual Leave / Leave Management.
-- Recommended next slice: implement a single Worker Story baseline-capture pilot that defines baseline artefact shape, storage location, command output policy, review policy and non-mutation guardrails before expanding baseline capture to other completed v0.4 domains.
+- Recommended next slice: review the Worker Story baseline-capture pilot and decide whether v0.2 should check in generated benchmark, coverage and answer-gap outputs or continue using curated markdown summaries only.
 
 This summary is not authorization to run benchmarks, mutate corpus, ingest operational JSON, connect Code Evidence, call a live LLM, or create v0.5 slices automatically.
 
@@ -45,7 +46,7 @@ This summary is not authorization to run benchmarks, mutate corpus, ingest opera
 | DomainName | LatestKnownVersion | HasRetrievalPlan | HasBroadBenchmark | HasFocusedCoverage | HasCoverageDiagnostic | HasAnswerGapReport | HasEvaluationRunbook | HasCheckedInBaselineArtefact | EvidencePaths | DecisionStatus | DecisionReason | RecommendedFollowUpSlice |
 |---|---:|---|---|---|---|---|---|---|---|---|---|---|
 | Annual Leave / Leave Management | v0.1 | yes | yes | no | no | no | no | no | `app/services/domain_retrieval_plan_service.py`; `samples/eval/rich_answer_benchmark.annual_leave.json`; `tests/test_rich_answer_contract.py` | RUNBOOK_OUTSTANDING | Retrieval and broad benchmark artefacts exist, but no v0.4 runbook or v0.3 diagnostic/gap report was found. | Define whether Annual Leave should enter the current v0.1-v0.4 maturity loop before baseline capture. |
-| Worker Story | v0.4 | yes | yes | yes | yes | yes | yes | no | `app/services/domain_retrieval_plan_service.py`; `samples/eval/rich_answer_benchmark.worker_story.json`; `app/services/worker_story_corpus_coverage_service.py`; `app/services/worker_story_answer_gap_report_service.py`; `scripts/scan_worker_story_corpus_coverage.py`; `scripts/build_worker_story_answer_gap_report.py`; `docs/WORKER_STORY_EVALUATION_RUNBOOK.md`; `tests/test_worker_story_evaluation_runbook.py` | BASELINE_REQUIRED | v0.4 runbook and evaluation outputs exist, no checked-in baseline artefact exists, and Worker Story is the intended baseline pilot stream. | Worker Story baseline-capture pilot v0.1. |
+| Worker Story | v0.4 | yes | yes | yes | yes | yes | yes | yes | `app/services/domain_retrieval_plan_service.py`; `samples/eval/rich_answer_benchmark.worker_story.json`; `app/services/worker_story_corpus_coverage_service.py`; `app/services/worker_story_answer_gap_report_service.py`; `scripts/scan_worker_story_corpus_coverage.py`; `scripts/build_worker_story_answer_gap_report.py`; `docs/WORKER_STORY_EVALUATION_RUNBOOK.md`; `tests/test_worker_story_evaluation_runbook.py`; `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`; `docs/evaluation/worker_story_baselines/worker_story/v0_1/BASELINE_SUMMARY.md` | BASELINE_ALREADY_EXISTS | Worker Story now has a checked-in baseline artefact pack defining the reusable baseline shape and policy. | Review Worker Story baseline-capture pilot v0.1 before expanding to another domain. |
 | Payroll Bases & Totals | v0.4 | yes | yes | yes | yes | yes | yes | no | `samples/eval/rich_answer_benchmark.payroll_bases_and_totals.json`; `app/services/payroll_bases_corpus_coverage_service.py`; `app/services/payroll_bases_answer_gap_report_service.py`; `scripts/scan_payroll_bases_corpus_coverage.py`; `scripts/build_payroll_bases_answer_gap_report.py`; `docs/PAYROLL_BASES_AND_TOTALS_EVALUATION_RUNBOOK.md` | BASELINE_REQUIRED | Completed v0.4 evaluation artefacts exist and future before/after comparison is useful for a shared evidence domain. | Defer until Worker Story baseline artefact convention is proven. |
 | PayRun Admin Queue | v0.4 | yes | yes | yes | yes | yes | yes | no | `samples/eval/rich_answer_benchmark.payrun_admin_queue.json`; `app/services/payrun_admin_queue_corpus_coverage_service.py`; `app/services/payrun_admin_queue_answer_gap_report_service.py`; `scripts/scan_payrun_admin_queue_corpus_coverage.py`; `scripts/build_payrun_admin_queue_answer_gap_report.py`; `docs/PAYRUN_ADMIN_QUEUE_EVALUATION_RUNBOOK.md` | BASELINE_REQUIRED | Completed v0.4 evaluation artefacts exist and no checked-in baseline artefact exists. | Defer until Worker Story baseline artefact convention is proven. |
 | Movement Review | v0.4 | yes | yes | yes | yes | yes | yes | no | `samples/eval/rich_answer_benchmark.movement_review.json`; `app/services/movement_review_corpus_coverage_service.py`; `app/services/movement_review_answer_gap_report_service.py`; `scripts/scan_movement_review_corpus_coverage.py`; `scripts/build_movement_review_answer_gap_report.py`; `docs/MOVEMENT_REVIEW_EVALUATION_RUNBOOK.md` | BASELINE_REQUIRED | Completed v0.4 evaluation artefacts exist and no checked-in baseline artefact exists. | Defer until Worker Story baseline artefact convention is proven. |
@@ -78,6 +79,6 @@ This summary is not authorization to run benchmarks, mutate corpus, ingest opera
 
 ## Baseline Artefact Finding
 
-No checked-in baseline/evaluation result artefact folder was found during this inspection. In particular, the repo includes command references to `.\\artifacts\\eval\\...` and `reports\\...`, but no checked-in result files in those locations were present as repo evidence for `BASELINE_ALREADY_EXISTS`.
+Worker Story now has a checked-in baseline artefact pack at `docs/evaluation/worker_story_baselines/worker_story/v0_1/`, supported by `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`.
 
-Therefore, this ledger does not claim baseline capture has already happened for any domain.
+For every other completed v0.4 domain, this ledger does not claim baseline capture has already happened. The repo includes command references to `.\\artifacts\\eval\\...` and `reports\\...`, but those paths are command targets rather than checked-in baseline artefacts unless a domain-specific baseline pack intentionally versions them.

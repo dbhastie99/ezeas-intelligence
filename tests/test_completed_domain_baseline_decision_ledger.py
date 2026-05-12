@@ -108,20 +108,22 @@ def test_completed_domain_baseline_decision_ledger_summary_and_counts_are_docume
 
     assert "## Summary" in ledger
     assert "Total domains inventoried: 31" in ledger
-    assert "`BASELINE_REQUIRED`: 30" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 0" in ledger
+    assert "`BASELINE_REQUIRED`: 29" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 1" in ledger
     assert "`NO_BASELINE_NEEDED`: 0" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 1" in ledger
     assert "`NEEDS_REVIEW`: 0" in ledger
-    assert "Recommended next slice: implement a single Worker Story baseline-capture pilot" in ledger
+    assert "Domains with baseline already existing: Worker Story" in ledger
+    assert "Recommended next slice: review the Worker Story baseline-capture pilot" in ledger
     assert "Domains with runbook outstanding: Annual Leave / Leave Management" in ledger
 
 
-def test_completed_domain_baseline_decision_ledger_does_not_claim_execution_or_existing_baselines():
+def test_completed_domain_baseline_decision_ledger_records_only_worker_story_baseline():
     ledger = _ledger()
 
     assert "This summary is not authorization to run benchmarks" in ledger
-    assert "this ledger does not claim baseline capture has already happened for any domain" in ledger
-    assert "| Worker Story | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "For every other completed v0.4 domain, this ledger does not claim baseline capture has already happened" in ledger
+    assert "| Worker Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "docs/evaluation/worker_story_baselines/worker_story/v0_1/BASELINE_SUMMARY.md" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Worker Story now has a checked-in baseline artefact pack" in ledger
     assert "| Payroll Tax / WorkCover / WIC Liability Detail | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
-    assert "BASELINE_ALREADY_EXISTS | Checked-in baseline" not in ledger
