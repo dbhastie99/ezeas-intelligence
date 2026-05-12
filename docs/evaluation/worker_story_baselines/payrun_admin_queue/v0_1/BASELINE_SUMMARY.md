@@ -1,6 +1,6 @@
 # PayRun Admin Queue Baseline Summary
 
-Slice name: Minerva Domain Baseline Capture Batch v0.1 - Blocked Database Capture
+Slice name: PayRun Admin Queue Baseline Capture v0.1 - Record READY Baseline Results With Failures
 
 Domain: PayRun Admin Queue
 
@@ -10,44 +10,50 @@ Source decision ledger: `docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN
 
 Baseline policy: `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`
 
-This baseline pack is diagnostic-only and not operational truth. It is a checked-in capture record for a controlled baseline attempt, not proof of runtime implementation, payroll correctness, corpus completeness or live platform state.
+This baseline pack is diagnostic-only and not operational truth. It is a checked-in comparison control for future PayRun Admin Queue evaluation changes. It does not prove runtime implementation, payroll correctness, corpus completeness or live platform state.
 
 ## Execution Context
 
 Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
-The read-only DB readiness gate returned `DATABASE_CONNECTION_FAILED` before the domain baseline commands were run.
+DB readiness returned `READY` before the PayRun Admin Queue baseline commands were run.
 
-- Readiness command: `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py`
 - Required tables checked: `KnowledgeDocument`, `KnowledgeChunk`
 - Missing tables: none
-- Blocker: SQL Server connection could not be established from this environment.
 
-Because DB readiness did not pass, the benchmark, corpus coverage diagnostic and answer gap report commands were not executed in this slice.
+Generated JSON reports were local/generated under `.\artifacts\eval\` and were not committed. This baseline summarizes those generated outputs into curated markdown only.
 
-## Commands Identified
+## Commands Executed
 
 | Area | Command | Completed In v0.1 | Captured Result Summary |
 |---|---|---:|---|
-| PayRun Admin Queue benchmark | `.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payrun_admin_queue.json` | no | `BLOCKED_DATABASE_CONNECTION`; no pass/fail counts captured. |
-| Corpus coverage diagnostic | `.\.venv\Scripts\python.exe scripts\scan_payrun_admin_queue_corpus_coverage.py` | no | `BLOCKED_DATABASE_CONNECTION`; no `STRONG` / `WEAK` / `MISSING` counts captured. |
-| Corpus coverage diagnostic JSON | `.\.venv\Scripts\python.exe scripts\scan_payrun_admin_queue_corpus_coverage.py --json --output .\artifacts\eval\payrun_admin_queue_corpus_coverage.json` | no | `BLOCKED_DATABASE_CONNECTION`; generated JSON was not created. |
-| Answer gap report | `.\.venv\Scripts\python.exe scripts\build_payrun_admin_queue_answer_gap_report.py --coverage-report .\artifacts\eval\payrun_admin_queue_corpus_coverage.json` | no | `BLOCKED_DATABASE_CONNECTION`; no overall status or action counts captured. |
-| Answer gap report JSON | `.\.venv\Scripts\python.exe scripts\build_payrun_admin_queue_answer_gap_report.py --coverage-report .\artifacts\eval\payrun_admin_queue_corpus_coverage.json --json --output .\artifacts\eval\payrun_admin_queue_answer_gap_report.json` | no | `BLOCKED_DATABASE_CONNECTION`; generated JSON was not created. |
+| PayRun Admin Queue benchmark | `.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payrun_admin_queue.json` | yes | 8 total, 6 passed, 2 failed; audit/chat rows created: false. |
+| Corpus coverage diagnostic | `.\.venv\Scripts\python.exe scripts\scan_payrun_admin_queue_corpus_coverage.py` | yes | PayRun Admin Queue coverage reported 11 STRONG, 0 WEAK, 0 MISSING. |
+| Corpus coverage diagnostic JSON | `.\.venv\Scripts\python.exe scripts\scan_payrun_admin_queue_corpus_coverage.py --json --output .\artifacts\eval\payrun_admin_queue_corpus_coverage.json` | yes | Local generated JSON report created and summarized, not committed. |
+| Answer gap report | `.\.venv\Scripts\python.exe scripts\build_payrun_admin_queue_answer_gap_report.py --coverage-report .\artifacts\eval\payrun_admin_queue_corpus_coverage.json` | yes | Overall status GOOD; 11 KEEP actions. |
+| Answer gap report JSON | `.\.venv\Scripts\python.exe scripts\build_payrun_admin_queue_answer_gap_report.py --coverage-report .\artifacts\eval\payrun_admin_queue_corpus_coverage.json --json --output .\artifacts\eval\payrun_admin_queue_answer_gap_report.json` | yes | Local generated JSON report created and summarized, not committed. |
 
 ## Captured High-Level Findings
 
-- DB readiness result: `DATABASE_CONNECTION_FAILED`.
-- Benchmark result: `BLOCKED_DATABASE_CONNECTION`; counts not captured.
-- Corpus coverage result: `BLOCKED_DATABASE_CONNECTION`; counts not captured.
-- Answer gap report: `BLOCKED_DATABASE_CONNECTION`; actions not captured.
-- Audit/chat rows created: not available because the benchmark was not run.
-- Command availability: canonical runbook commands and scripts exist.
+- DB readiness result: `READY`.
+- Benchmark result: 8 total, 6 passed, 2 failed.
+- Audit/chat rows created: false.
+- Failed benchmark case IDs: `payrun-admin-queue-rich-answer`; `payrun-admin-queue-cleanliness-assurance`.
+- Failure classification: benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap.
+- Observed answer framing was directionally PayRun Admin Queue-specific, but source snippet / matched phrase evidence checks failed.
+- Corpus coverage result: `STRONG` = 11, `WEAK` = 0, `MISSING` = 0.
+- Indexed corpus: 5 active documents, 4583 chunks.
+- Answer gap report: `GOOD`.
+- Recommended actions: 11 `KEEP`.
+- Recommended next action: Keep current PayRun Admin Queue retrieval terms and answer synthesis under benchmark watch.
+- Live LLM calls: no.
+- Corpus mutation: no.
+- Operational JSON ingestion: no.
 - Generated artefacts committed: no.
 
-## Evidence Groups In Scope
+## Evidence Groups Covered By The Baseline Shape
 
-The canonical coverage plan exists, but group statuses were not captured:
+The following PayRun Admin Queue evidence groups were reported as `STRONG`:
 
 - `purpose_and_operator_meaning`
 - `blockers_warnings_and_ready_actions`
@@ -61,12 +67,14 @@ The canonical coverage plan exists, but group statuses were not captured:
 - `movement_review_connection`
 - `outstanding_hardening`
 
+No evidence groups were reported as `WEAK` or `MISSING`.
+
 ## Known Gaps
 
-- This pack records a blocked baseline capture attempt, not an executed comparison baseline.
-- No benchmark pass/fail counts are available for this slice.
-- No corpus coverage counts are available for this slice.
-- No answer gap status or recommended action counts are available for this slice.
+- The benchmark completed with failures, so this is a captured baseline with failures, not a blocked baseline.
+- The failures are benchmark/source-evidence check or retrieval/source-matched-phrase drift, not missing formal corpus coverage.
+- Generated output files under `.\artifacts\eval\` were created locally and were not committed.
+- Movement Review and Gross-to-Net remain blocked v0.1 capture packs.
 - Annual Leave / Leave Management remains `RUNBOOK_OUTSTANDING` in the completed-domain ledger.
 
 ## Guardrails
@@ -89,4 +97,4 @@ This baseline pack:
 
 ## Recommended Next Slice
 
-Restore database connectivity and rerun the PayRun Admin Queue benchmark, corpus coverage diagnostic and answer gap report commands before treating this domain as `BASELINE_ALREADY_EXISTS`.
+Keep current PayRun Admin Queue retrieval terms and answer synthesis under benchmark watch. Treat the two failing benchmark cases as source-evidence check or retrieval/source-matched-phrase drift unless a later run proves otherwise.

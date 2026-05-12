@@ -204,10 +204,10 @@ def test_worker_story_baseline_ledger_status_and_counts_are_consistent():
 
     assert "| Worker Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "BASELINE_ALREADY_EXISTS | Worker Story now has a checked-in baseline artefact pack" in ledger
-    assert "`BASELINE_REQUIRED`: 28" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 2" in ledger
+    assert "`BASELINE_REQUIRED`: 27" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 3" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 1" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue" in ledger
 
 
 def test_worker_story_baseline_readme_pointer_exists():

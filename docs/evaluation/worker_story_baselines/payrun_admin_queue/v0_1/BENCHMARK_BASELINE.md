@@ -1,8 +1,8 @@
 # PayRun Admin Queue Benchmark Baseline
 
-This file records the PayRun Admin Queue benchmark baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the PayRun Admin Queue benchmark baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Command Identified
+## Command Executed
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.payrun_admin_queue.json
@@ -22,18 +22,33 @@ The benchmark checks deterministic retrieval and answer-contract behavior for Pa
 
 ## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED_WITH_FAILURES`
 
 Pass/fail summary:
 
-- Total: not captured
-- Passed: not captured
-- Failed: not captured
-- Audit/chat rows created: not available because the benchmark was not run
+- Total: 8
+- Passed: 6
+- Failed: 2
+- Audit/chat rows created: false
 
-The read-only DB readiness gate failed before this command was run. No benchmark result is inferred from this blocked state.
+Failed cases:
+
+- `payrun-admin-queue-rich-answer`
+  - Question: What is the PayRun Admin Queue and what does it show?
+  - Failure: Source snippets/matched phrases did not contain all expected terms: PayRun Admin Queue, Assurance Snapshot, Worker Attention.
+- `payrun-admin-queue-cleanliness-assurance`
+  - Question: Why does queue cleanliness not prove PayRun assurance?
+  - Failure: No source snippet/matched phrase contained expected terms: queue cleanliness, Assurance Snapshot, reasonableness.
+
+Observed answer framing was directionally PayRun Admin Queue-specific, but source snippet / matched phrase evidence checks failed. Failure classification: benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap.
 
 Generated artefact committed: no.
+
+Live LLM calls: no.
+
+Corpus mutation: no.
+
+Operational JSON ingestion: no.
 
 ## Source References
 

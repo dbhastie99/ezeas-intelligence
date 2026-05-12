@@ -1,8 +1,8 @@
 # PayRun Admin Queue Corpus Coverage Baseline
 
-This file records the PayRun Admin Queue corpus coverage baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the PayRun Admin Queue corpus coverage baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Commands Identified
+## Commands Executed
 
 Human-readable mode:
 
@@ -22,33 +22,37 @@ Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
 Domain: PayRun Admin Queue
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED`
+
+Indexed corpus: 5 active documents, 4583 chunks.
 
 | Evidence Group | Captured Coverage Status |
 |---|---|
-| `purpose_and_operator_meaning` | not captured |
-| `blockers_warnings_and_ready_actions` | not captured |
-| `worker_attention_and_dirty_contacts` | not captured |
-| `processing_and_reprocessing_actions` | not captured |
-| `finalisation_readiness` | not captured |
-| `assurance_snapshot` | not captured |
-| `review_surfaces_and_navigation` | not captured |
-| `worker_story_connection` | not captured |
-| `payroll_bases_connection` | not captured |
-| `movement_review_connection` | not captured |
-| `outstanding_hardening` | not captured |
+| `purpose_and_operator_meaning` | `STRONG` |
+| `blockers_warnings_and_ready_actions` | `STRONG` |
+| `worker_attention_and_dirty_contacts` | `STRONG` |
+| `processing_and_reprocessing_actions` | `STRONG` |
+| `finalisation_readiness` | `STRONG` |
+| `assurance_snapshot` | `STRONG` |
+| `review_surfaces_and_navigation` | `STRONG` |
+| `worker_story_connection` | `STRONG` |
+| `payroll_bases_connection` | `STRONG` |
+| `movement_review_connection` | `STRONG` |
+| `outstanding_hardening` | `STRONG` |
 
 ## Coverage Counts
 
-- `STRONG`: not captured
-- `WEAK`: not captured
-- `MISSING`: not captured
+- `STRONG`: 11
+- `WEAK`: 0
+- `MISSING`: 0
 
-Generated artefact committed: no. The JSON output command was not run and `.\artifacts\eval\payrun_admin_queue_corpus_coverage.json` was not created by this slice.
+Generated artefact committed: no. The JSON output command created `.\artifacts\eval\payrun_admin_queue_corpus_coverage.json` locally for summarization, but the file is not a required committed artefact.
 
 Live LLM calls: no.
 
 Corpus mutation: no.
+
+Operational JSON ingestion: no.
 
 ## Status Interpretation
 
@@ -60,7 +64,7 @@ Coverage status is about available indexed formal corpus evidence. It is not ope
 
 ## Diagnostic Interpretation
 
-No coverage interpretation is made for PayRun Admin Queue in this slice because the DB readiness gate failed.
+All 11 PayRun Admin Queue evidence groups were reported as `STRONG`. The benchmark failures are not classified as corpus gaps because the coverage diagnostic reported no `WEAK` or `MISSING` groups.
 
 ## Diagnostic-Only Guardrails
 

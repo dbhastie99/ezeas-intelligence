@@ -21,9 +21,6 @@ CAPTURED_BATCH_DOMAINS = {
         "scan": "scripts\\scan_payroll_bases_corpus_coverage.py",
         "gap": "scripts\\build_payroll_bases_answer_gap_report.py",
     },
-}
-
-BLOCKED_BATCH_DOMAINS = {
     "payrun_admin_queue": {
         "name": "PayRun Admin Queue",
         "runbook": "docs/PAYRUN_ADMIN_QUEUE_EVALUATION_RUNBOOK.md",
@@ -31,6 +28,9 @@ BLOCKED_BATCH_DOMAINS = {
         "scan": "scripts\\scan_payrun_admin_queue_corpus_coverage.py",
         "gap": "scripts\\build_payrun_admin_queue_answer_gap_report.py",
     },
+}
+
+BLOCKED_BATCH_DOMAINS = {
     "movement_review": {
         "name": "Movement Review",
         "runbook": "docs/MOVEMENT_REVIEW_EVALUATION_RUNBOOK.md",
@@ -85,6 +85,34 @@ def test_payroll_bases_baseline_pack_records_captured_ready_results():
     assert "`outstanding_hardening` -> `IMPROVE_RETRIEVAL_TERMS`" in combined
 
 
+def test_payrun_admin_queue_baseline_pack_records_captured_ready_results_with_failures():
+    metadata = CAPTURED_BATCH_DOMAINS["payrun_admin_queue"]
+    pack_path = BASELINE_ROOT / "payrun_admin_queue" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness result: `READY`" in combined
+    assert "Result status: `COMPLETED_WITH_FAILURES`" in combined
+    assert "Total: 8" in combined
+    assert "Passed: 6" in combined
+    assert "Failed: 2" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "payrun-admin-queue-rich-answer" in combined
+    assert "payrun-admin-queue-cleanliness-assurance" in combined
+    assert "benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in combined
+    assert "`STRONG`: 11" in combined
+    assert "`WEAK`: 0" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Overall status: `GOOD`" in combined
+    assert "`KEEP`: 11" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "BLOCKED_DATABASE_CONNECTION" not in combined
+
+
 def test_batch_baseline_packs_record_blocked_database_capture_and_commands():
     for slug, metadata in BLOCKED_BATCH_DOMAINS.items():
         pack_path = BASELINE_ROOT / slug / "v0_1"
@@ -124,14 +152,14 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_blocked_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 28" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 2" in ledger
+    assert "`BASELINE_REQUIRED`: 27" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 3" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 1" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue" in ledger
     assert "Annual Leave / Leave Management" in ledger
-    assert "PayRun Admin Queue, Movement Review and Gross-to-Net have blocked v0.1 capture packs" in ledger
-    assert "For ledger-count purposes these three domains remain `BASELINE_REQUIRED`" in ledger
-    assert "| PayRun Admin Queue | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "Movement Review and Gross-to-Net have blocked v0.1 capture packs" in ledger
+    assert "For ledger-count purposes these two domains remain `BASELINE_REQUIRED`" in ledger
+    assert "| PayRun Admin Queue | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "| Movement Review | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
     assert "| Gross-to-Net | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
     assert "| Payroll Bases & Totals | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
@@ -169,6 +197,7 @@ def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
         "artifacts/eval/payroll_bases_corpus_coverage.json",
         "artifacts/eval/payroll_bases_answer_gap_report.json",
         "artifacts/eval/payrun_admin_queue_corpus_coverage.json",
+        "artifacts/eval/payrun_admin_queue_answer_gap_report.json",
         "artifacts/eval/movement_review_corpus_coverage.json",
         "artifacts/eval/gross_to_net_corpus_coverage.json",
     ):
