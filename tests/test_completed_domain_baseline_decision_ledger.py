@@ -114,7 +114,7 @@ def test_completed_domain_baseline_decision_ledger_summary_and_counts_are_docume
     assert "`RUNBOOK_OUTSTANDING`: 1" in ledger
     assert "`NEEDS_REVIEW`: 0" in ledger
     assert "Domains with baseline already existing: Worker Story" in ledger
-    assert "Recommended next slice: review the Worker Story baseline-capture pilot" in ledger
+    assert "Recommended next slice: restore DB connectivity" in ledger
     assert "Domains with runbook outstanding: Annual Leave / Leave Management" in ledger
 
 
@@ -123,6 +123,8 @@ def test_completed_domain_baseline_decision_ledger_records_only_worker_story_bas
 
     assert "This summary is not authorization to run benchmarks" in ledger
     assert "For every other completed v0.4 domain, this ledger does not claim baseline capture has already happened" in ledger
+    assert "blocked v0.1 capture packs" in ledger
+    assert "They are not counted as `BASELINE_ALREADY_EXISTS`" in ledger
     assert "| Worker Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "docs/evaluation/worker_story_baselines/worker_story/v0_1/BASELINE_SUMMARY.md" in ledger
     assert "BASELINE_ALREADY_EXISTS | Worker Story now has a checked-in baseline artefact pack" in ledger

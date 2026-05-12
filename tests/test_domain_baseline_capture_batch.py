@@ -1,0 +1,141 @@
+from pathlib import Path
+
+
+BASELINE_ROOT = Path("docs/evaluation/worker_story_baselines")
+LEDGER_PATH = BASELINE_ROOT / "COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md"
+WORKER_STORY_PACK = BASELINE_ROOT / "worker_story" / "v0_1"
+REQUIRED_FILES = (
+    "BASELINE_SUMMARY.md",
+    "BENCHMARK_BASELINE.md",
+    "CORPUS_COVERAGE_BASELINE.md",
+    "ANSWER_GAP_REPORT_BASELINE.md",
+    "REVIEW_NOTES.md",
+)
+
+BLOCKED_BATCH_DOMAINS = {
+    "payroll_bases_totals": {
+        "name": "Payroll Bases & Totals",
+        "runbook": "docs/PAYROLL_BASES_AND_TOTALS_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.payroll_bases_and_totals.json",
+        "scan": "scripts\\scan_payroll_bases_corpus_coverage.py",
+        "gap": "scripts\\build_payroll_bases_answer_gap_report.py",
+    },
+    "payrun_admin_queue": {
+        "name": "PayRun Admin Queue",
+        "runbook": "docs/PAYRUN_ADMIN_QUEUE_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.payrun_admin_queue.json",
+        "scan": "scripts\\scan_payrun_admin_queue_corpus_coverage.py",
+        "gap": "scripts\\build_payrun_admin_queue_answer_gap_report.py",
+    },
+    "movement_review": {
+        "name": "Movement Review",
+        "runbook": "docs/MOVEMENT_REVIEW_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.movement_review.json",
+        "scan": "scripts\\scan_movement_review_corpus_coverage.py",
+        "gap": "scripts\\build_movement_review_answer_gap_report.py",
+    },
+    "gross_to_net": {
+        "name": "Gross-to-Net",
+        "runbook": "docs/GROSS_TO_NET_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.gross_to_net.json",
+        "scan": "scripts\\scan_gross_to_net_corpus_coverage.py",
+        "gap": "scripts\\build_gross_to_net_answer_gap_report.py",
+    },
+}
+
+
+def _read(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
+
+
+def test_batch_baseline_packs_exist_with_required_files():
+    for slug in BLOCKED_BATCH_DOMAINS:
+        pack_path = BASELINE_ROOT / slug / "v0_1"
+        assert pack_path.exists()
+        for file_name in REQUIRED_FILES:
+            assert (pack_path / file_name).exists()
+
+
+def test_batch_baseline_packs_record_blocked_database_capture_and_commands():
+    for slug, metadata in BLOCKED_BATCH_DOMAINS.items():
+        pack_path = BASELINE_ROOT / slug / "v0_1"
+        combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+        assert metadata["name"] in combined
+        assert metadata["runbook"] in combined
+        assert metadata["manifest"] in combined
+        assert metadata["scan"] in combined
+        assert metadata["gap"] in combined
+        assert "DATABASE_CONNECTION_FAILED" in combined
+        assert "BLOCKED_DATABASE_CONNECTION" in combined
+        assert "Total: not captured" in combined
+        assert "`STRONG`: not captured" in combined
+        assert "Overall status: not captured" in combined
+        assert "Audit/chat rows created: not available because the benchmark was not run" in combined
+
+
+def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
+    for slug in BLOCKED_BATCH_DOMAINS:
+        pack_path = BASELINE_ROOT / slug / "v0_1"
+        combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+        assert "diagnostic-only" in combined
+        assert "not operational truth" in combined
+        assert "does not mutate corpus" in combined
+        assert "does not change routing" in combined
+        assert "does not change answer generation" in combined
+        assert "does not call live LLM" in combined
+        assert "does not ingest operational JSON" in combined
+        assert "does not connect Code Evidence" in combined
+        assert "does not create DB schema or migrations" in combined
+        assert "does not add endpoints or UI" in combined
+        assert "does not change workforce-platform" in combined
+
+
+def test_ledger_counts_remain_honest_for_blocked_batch():
+    ledger = _read(LEDGER_PATH)
+
+    assert "`BASELINE_REQUIRED`: 29" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 1" in ledger
+    assert "`RUNBOOK_OUTSTANDING`: 1" in ledger
+    assert "Domains with baseline already existing: Worker Story" in ledger
+    assert "Annual Leave / Leave Management" in ledger
+    assert "They are not counted as `BASELINE_ALREADY_EXISTS`" in ledger
+    assert "For ledger-count purposes these four domains remain `BASELINE_REQUIRED`" in ledger
+
+
+def test_worker_story_baseline_history_remains_unchanged_after_batch():
+    summary = _read(WORKER_STORY_PACK / "BASELINE_SUMMARY.md")
+    benchmark = _read(WORKER_STORY_PACK / "BENCHMARK_BASELINE.md")
+
+    assert "Benchmark result: 5 total, 4 passed, 1 failed" in summary
+    assert "Failed benchmark: `worker-story-evidence-rich-answer`" in summary
+    assert "synthesis/routing/answer-mode drift" in summary
+    assert "Worker Story benchmark rerun: 5 total, 5 passed, 0 failed" in summary
+    assert "Result status: `COMPLETED_WITH_FAILURES`" in benchmark
+
+
+def test_annual_leave_remains_runbook_outstanding():
+    ledger = _read(LEDGER_PATH)
+
+    assert "| Annual Leave / Leave Management | v0.1 | yes | yes | no | no | no | no | no |" in ledger
+    assert "RUNBOOK_OUTSTANDING | Retrieval and broad benchmark artefacts exist" in ledger
+    assert "Domains with runbook outstanding: Annual Leave / Leave Management" in ledger
+
+
+def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
+    policy = _read(BASELINE_ROOT / "BASELINE_CAPTURE_POLICY.md")
+    ledger = _read(LEDGER_PATH)
+
+    assert "Generated outputs are transient evaluation materials" in policy
+    assert "those command targets are not themselves checked-in baseline artefacts" in ledger
+
+    for relative_path in (
+        "reports/worker_story_corpus_coverage.json",
+        "reports/worker_story_answer_gap_report.json",
+        "artifacts/eval/payroll_bases_corpus_coverage.json",
+        "artifacts/eval/payrun_admin_queue_corpus_coverage.json",
+        "artifacts/eval/movement_review_corpus_coverage.json",
+        "artifacts/eval/gross_to_net_corpus_coverage.json",
+    ):
+        assert not Path(relative_path).exists()

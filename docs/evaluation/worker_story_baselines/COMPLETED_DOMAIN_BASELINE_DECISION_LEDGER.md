@@ -26,6 +26,8 @@ Decision rules:
 
 The Worker Story baseline-capture pilot added the first checked-in baseline artefact pack at `docs/evaluation/worker_story_baselines/worker_story/v0_1/`. README and runbooks also reference output paths such as `.\\artifacts\\eval\\...` and `reports\\...`, but those command targets are not themselves checked-in baseline artefacts unless a baseline pack intentionally versions them.
 
+Minerva Domain Baseline Capture Batch v0.1 added blocked capture packs for Payroll Bases & Totals, PayRun Admin Queue, Movement Review and Gross-to-Net under `docs/evaluation/worker_story_baselines/`. These packs preserve the Worker Story artefact shape and canonical command references, but the DB readiness gate returned `DATABASE_CONNECTION_FAILED`, so benchmark, corpus coverage and answer gap report results were not captured. They are not counted as `BASELINE_ALREADY_EXISTS` until the commands run and produce actual baseline summaries.
+
 ## Summary
 
 - Total domains inventoried: 31.
@@ -37,7 +39,7 @@ The Worker Story baseline-capture pilot added the first checked-in baseline arte
 - Domains requiring baseline capture: Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Comparison / Remediation; Tax / PAYG; Deductions / Obligations; Retro / Replay; Payment Execution / Remittance; Leave Accrual / Processing; Finalisation Readiness; Leave Source Model; On-costs / Employer Liabilities; Award Build / Award Evidence; Imports / Actuals; ObjectTime / Source Truth; Contacts / Employee Appointments; Process Periods / PayRun Lifecycle; Costing / GL Consequence Evidence; Worker Attention / Issue Resolution; Gross-to-Net; RateSource / Rate Story; Decision Story; Payroll Output; Contact Payroll History; Leave Requests / Leave Workflow; Public Holidays; Rosters / Patterns / Scheduling; Award Positions / Classifications; Payroll Tax / WorkCover / WIC Liability Detail.
 - Domains with baseline already existing: Worker Story.
 - Domains with runbook outstanding: Annual Leave / Leave Management.
-- Recommended next slice: review the Worker Story baseline-capture pilot and decide whether v0.2 should check in generated benchmark, coverage and answer-gap outputs or continue using curated markdown summaries only.
+- Recommended next slice: restore DB connectivity and rerun the blocked Payroll Bases & Totals, PayRun Admin Queue, Movement Review and Gross-to-Net capture commands before changing these domains to `BASELINE_ALREADY_EXISTS`.
 
 This summary is not authorization to run benchmarks, mutate corpus, ingest operational JSON, connect Code Evidence, call a live LLM, or create v0.5 slices automatically.
 
@@ -80,5 +82,7 @@ This summary is not authorization to run benchmarks, mutate corpus, ingest opera
 ## Baseline Artefact Finding
 
 Worker Story now has a checked-in baseline artefact pack at `docs/evaluation/worker_story_baselines/worker_story/v0_1/`, supported by `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`.
+
+Payroll Bases & Totals, PayRun Admin Queue, Movement Review and Gross-to-Net have blocked v0.1 capture packs. The packs record canonical command availability and `BLOCKED_DATABASE_CONNECTION`, but they do not provide pass/fail counts, corpus coverage counts or answer gap statuses. For ledger-count purposes these four domains remain `BASELINE_REQUIRED` until an environment with reachable configured corpus storage captures actual command results.
 
 For every other completed v0.4 domain, this ledger does not claim baseline capture has already happened. The repo includes command references to `.\\artifacts\\eval\\...` and `reports\\...`, but those paths are command targets rather than checked-in baseline artefacts unless a domain-specific baseline pack intentionally versions them.
