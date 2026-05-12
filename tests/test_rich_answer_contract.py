@@ -2,6 +2,8 @@ import json
 import sys
 
 from app.services.answer_mode_service import AnswerMode, RichAnswerPlan, classify_answer_mode
+from app.services.answer_generation_service import generate_grounded_answer
+from app.services.domain_retrieval_plan_service import retrieve_chunks_for_question
 from app.services.golden_question_service import load_golden_manifest, run_golden_questions
 from app.services.ingestion_service import ingest_file_bytes
 from scripts import run_golden_questions as run_golden_questions_script
@@ -2706,6 +2708,9 @@ def test_worker_story_benchmark_runner_returns_pass_status_with_seeded_evidence(
     _ingest_worker_story_benchmark_evidence(db_session)
 
     result = run_golden_questions(db_session, "samples/eval/rich_answer_benchmark.worker_story.json")
+    broad_answer = next(
+        item["answer"] for item in result["results"] if item["id"] == "worker-story-evidence-rich-answer"
+    )
 
     assert result["name"] == "Worker Story rich-answer benchmark"
     assert result["total"] == 5
@@ -2717,6 +2722,69 @@ def test_worker_story_benchmark_runner_returns_pass_status_with_seeded_evidence(
         "worker-story-decision-vs-rate-story",
         "worker-story-movement-review-admin-queue",
     }
+    for expected in (
+        "Worker Story",
+        "platform evidence surface",
+        "source truth",
+        "calculated payroll outcome",
+        "current-effective payroll output",
+        "Decision Story",
+        "Rate Story",
+        "evidence",
+        "outstanding hardening",
+    ):
+        assert expected in broad_answer
+    assert "Annual Leave is partially described" not in broad_answer
+    assert "Annual Leave is managed" not in broad_answer
+
+
+def test_worker_story_partial_answer_keeps_worker_story_framing(db_session):
+    for text, title in (
+        (
+            "Worker Story and Worker Calculation Story are the Talking Payslip for worker evidence and explain payroll "
+            "outcomes.",
+            "Developer Log - Worker Story Purpose",
+        ),
+        (
+            "Worker Story uses SourceTruth and source truth inclusion to show which source truth inputs are included for "
+            "a worker in PayRun evidence.",
+            "Developer Log - Worker Story SourceTruth",
+        ),
+        (
+            "Calculated Payroll Outcome shows the current-effective payroll output from PayRun calculation evidence, "
+            "including quantity, rate, amount and line proof.",
+            "Developer Log - Worker Story Calculated Payroll Outcome",
+        ),
+        (
+            "Decision Story explains why a treatment or line exists. Rate Story explains rate source and rate amount.",
+            "Developer Log - Worker Story Decision Rate Evidence",
+        ),
+        (
+            "Worker Story outstanding hardening records limitations and future reusable story surfaces for evidence "
+            "explanation.",
+            "Developer Log - Worker Story Outstanding Hardening",
+        ),
+    ):
+        _ingest(db_session, text, title=title)
+
+    question = "What is Worker Story and what evidence does it show?"
+    results = retrieve_chunks_for_question(db_session, question)
+    answer, _, model_name, _ = generate_grounded_answer(question, results)
+
+    assert model_name == "STUB_LLM"
+    assert "Direct summary" in answer
+    assert "Worker Story is a platform evidence surface" in answer
+    assert "source truth" in answer
+    assert "calculated payroll outcome" in answer
+    assert "current-effective payroll output" in answer
+    assert "Decision Story" in answer
+    assert "Rate Story" in answer
+    assert "outstanding hardening" in answer
+    assert "does not prove live operational JSON ingestion" in answer
+    assert "Code Evidence answer integration" in answer
+    assert "Minerva payroll calculation" in answer
+    assert "Annual Leave is partially described" not in answer
+    assert "Annual Leave is managed" not in answer
 
 
 def test_payroll_bases_and_totals_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):

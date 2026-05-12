@@ -52,3 +52,43 @@ This baseline must not be read as proof that:
 ## Expansion Notes
 
 Future baseline packs for other `BASELINE_REQUIRED` domains should copy this structure, use the target domain runbook commands and preserve the same diagnostic-only boundary. Do not expand to all domains in one slice. Apply the pattern domain by domain after the Worker Story pilot is reviewed.
+
+## v0.3 Captured Baseline Review
+
+The v0.3 captured baseline is now usable as a Worker Story comparison control because DB readiness returned `READY` and the benchmark, corpus coverage and answer gap report commands produced diagnostic baseline results.
+
+Do not scale baseline capture to the 29 remaining `BASELINE_REQUIRED` domains until the Worker Story answer drift is fixed or formally accepted. The first failed benchmark, `worker-story-evidence-rich-answer`, should become the next hardening target because it exposes synthesis/routing/answer-mode drift rather than missing corpus evidence.
+
+Generated JSON artefacts remain local/transient unless baseline policy changes. The curated markdown summary is the checked-in comparison artefact.
+
+This baseline does not prove operational truth, runtime implementation, payroll correctness, corpus mutation, live LLM execution, operational JSON ingestion or Code Evidence answer integration.
+
+## Post-Baseline Hardening Note v0.1
+
+After Worker Story answer synthesis/routing drift hardening, the real DB-backed benchmark was rerun in the same environment after DB readiness returned `READY`.
+
+Confirmed rerun result:
+
+- Worker Story benchmark: 5 total, 5 passed, 0 failed.
+- Annual Leave regression benchmark: 1 total, 1 passed, 0 failed.
+- Audit/chat rows created: false.
+- The v0.3 failed case is considered addressed by synthesis/routing hardening.
+- Corpus coverage remains interpreted as sufficient; the prior failure is not considered a corpus coverage gap.
+
+This note does not change the completed-domain ledger. Worker Story remains `BASELINE_ALREADY_EXISTS`; counts remain `BASELINE_REQUIRED`: 29, `BASELINE_ALREADY_EXISTS`: 1 and `RUNBOOK_OUTSTANDING`: 1.
+
+The rerun note is diagnostic/control documentation only. It does not claim corpus mutation, routing changes in this baseline pack, answer generation changes in this baseline pack, live LLM calls, operational JSON ingestion, Code Evidence connection, runtime payroll truth, database schema changes, endpoints or UI changes.
+
+## v0.2 Captured Baseline Review
+
+The v0.2 captured baseline is complete enough to prove the artefact shape and command execution policy, but not complete enough to serve as a semantic Worker Story answer-quality comparison. The documented commands were executed, and the captured result is that the benchmark and coverage commands are blocked by the configured SQL Server connection in this environment.
+
+The pack shape is ready to copy to other domains only after reviewers accept that a baseline pack can record blocked execution honestly. Before scaling to the remaining 29 `BASELINE_REQUIRED` domains, run Worker Story again in an environment with reachable configured corpus storage and capture actual benchmark, coverage and answer-gap summaries.
+
+Recommended changes before scaling:
+
+- run `py scripts/check_worker_story_baseline_db_readiness.py` before retrying Worker Story baseline capture;
+- decide whether generated JSON should ever be checked in under domain baseline folders;
+- keep curated markdown summaries as the default;
+- require each baseline pack to distinguish environment blockers from product-domain failures;
+- keep the completed-domain ledger stable until each domain has its own checked-in pack.

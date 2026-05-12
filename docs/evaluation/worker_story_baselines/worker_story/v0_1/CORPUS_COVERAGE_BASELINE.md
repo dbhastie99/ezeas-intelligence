@@ -1,37 +1,57 @@
 # Worker Story Corpus Coverage Baseline
 
-This file records the Worker Story corpus coverage baseline shape for comparison control. It is diagnostic-only and not operational truth.
+This file records the Worker Story corpus coverage baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Command
+## Commands Executed
 
 Human-readable mode:
 
 ```powershell
-py scripts/scan_worker_story_corpus_coverage.py
+.\.venv\Scripts\python.exe scripts/scan_worker_story_corpus_coverage.py
 ```
 
 JSON mode with output file:
 
 ```powershell
-py scripts/scan_worker_story_corpus_coverage.py --json --output reports/worker_story_corpus_coverage.json
+.\.venv\Scripts\python.exe scripts/scan_worker_story_corpus_coverage.py --json --output reports/worker_story_corpus_coverage.json
 ```
+
+Captured on 2026-05-12 from `C:\Projects\ezeas-intelligence`.
 
 ## Evidence Group Coverage Summary
 
-The Worker Story coverage diagnostic is expected to report these evidence groups:
+Domain: Worker Story / Worker Calculation Story
 
-| Evidence Group | Baseline Capture State |
+Indexed corpus: 5 active documents, 4583 chunks.
+
+| Evidence Group | Captured Coverage Status |
 |---|---|
-| `worker_story_purpose` | shape recorded; generated coverage not captured in v0.1 |
-| `source_truth_and_inclusion` | shape recorded; generated coverage not captured in v0.1 |
-| `interpreted_worked_hours` | shape recorded; generated coverage not captured in v0.1 |
-| `calculated_payroll_outcome` | shape recorded; generated coverage not captured in v0.1 |
-| `decision_story_and_rate_story` | shape recorded; generated coverage not captured in v0.1 |
-| `leave_and_accrual_outcome` | shape recorded; generated coverage not captured in v0.1 |
-| `payroll_bases_and_totals` | shape recorded; generated coverage not captured in v0.1 |
-| `movement_review_and_admin_queue` | shape recorded; generated coverage not captured in v0.1 |
-| `current_effective_truth` | shape recorded; generated coverage not captured in v0.1 |
-| `outstanding_hardening` | shape recorded; generated coverage not captured in v0.1 |
+| `worker_story_purpose` | STRONG |
+| `source_truth_and_inclusion` | STRONG |
+| `interpreted_worked_hours` | STRONG |
+| `calculated_payroll_outcome` | STRONG |
+| `decision_story_and_rate_story` | STRONG |
+| `leave_and_accrual_outcome` | STRONG |
+| `payroll_bases_and_totals` | STRONG |
+| `movement_review_and_admin_queue` | STRONG |
+| `current_effective_truth` | STRONG |
+| `outstanding_hardening` | STRONG |
+
+## Coverage Counts
+
+Result status: `COMPLETED`
+
+- `STRONG`: 10
+- `WEAK`: 0
+- `MISSING`: 0
+
+Evidence groups with weak or missing coverage: none.
+
+Generated artefact committed: no. `reports/worker_story_corpus_coverage.json` was generated locally and summarized in this curated markdown baseline.
+
+Live LLM calls: no.
+
+Corpus mutation: no.
 
 ## Status Interpretation
 
@@ -41,11 +61,9 @@ The Worker Story coverage diagnostic is expected to report these evidence groups
 
 Coverage status is about available indexed formal corpus evidence. It is not operational truth and does not prove whether the platform runtime implements the behavior.
 
-## Current Baseline Finding
+## Diagnostic Interpretation
 
-The coverage diagnostic was not executed as a baseline-capture command in this v0.1 slice. This file defines the checked-in corpus coverage baseline capture shape and must be populated by a future rerun if generated coverage output is intentionally versioned.
-
-No `STRONG`, `WEAK` or `MISSING` result is claimed by this file.
+The corpus support signal is strong for the current Worker Story evidence groups. The remaining failed benchmark should be treated as synthesis/routing/answer-mode drift unless later evidence contradicts this baseline; it should not be treated as a formal corpus gap.
 
 ## Diagnostic-Only Guardrails
 
@@ -57,5 +75,6 @@ This corpus coverage baseline:
 - does not call live LLM;
 - does not ingest operational JSON;
 - does not connect Code Evidence;
+- does not connect Code Evidence to answer generation;
 - does not prove runtime platform truth;
 - does not prove payroll/runtime truth.

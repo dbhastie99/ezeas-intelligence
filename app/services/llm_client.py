@@ -30,6 +30,50 @@ def _coverage_label(strong_count: int, total_count: int) -> str:
     return "weak"
 
 
+def _weak_domain_corpus_text(domain_plan_id: str, domain_name: str) -> str:
+    if domain_plan_id == "WORKER_STORY":
+        return (
+            "The loaded formal corpus does not yet contain enough retrieved evidence for the Worker Story evidence "
+            "groups."
+        )
+    if domain_plan_id == "ANNUAL_LEAVE_MANAGEMENT":
+        return (
+            "The loaded formal corpus does not yet contain enough retrieved evidence for the Annual Leave management "
+            "evidence groups."
+        )
+    return f"The loaded formal corpus does not yet contain enough retrieved evidence for the {domain_name} evidence groups."
+
+
+def _partial_domain_summary(domain_plan_id: str, domain_name: str) -> tuple[str, str]:
+    if domain_plan_id == "WORKER_STORY":
+        return (
+            "Worker Story is a platform evidence surface for worker-level explanation and worker evidence. The "
+            "retrieved formal corpus partially supports Worker Story framing around source truth and inclusion, "
+            "interpreted worked hours where available, calculated payroll outcome, current-effective payroll output, "
+            "Decision Story, Rate Story, Payroll Bases & Totals, Movement Review, PayRun Admin Queue and outstanding "
+            "hardening, but some planned evidence groups were not retrieved strongly enough for a complete answer.",
+            "The retrieved corpus provides partial Worker Story implementation evidence only. It does not prove live "
+            "operational JSON ingestion, Code Evidence answer integration, Minerva payroll calculation, runtime "
+            "payroll truth or production completeness. Missing groups should be treated as unknown rather than "
+            "inferred.",
+        )
+    if domain_plan_id == "ANNUAL_LEAVE_MANAGEMENT":
+        return (
+            "Annual Leave is partially described by the loaded formal corpus, but some planned evidence groups are "
+            "missing. The answer below is limited to the retrieved evidence and should be treated as incomplete until "
+            "the missing groups are covered.",
+            "The retrieved corpus provides partial implementation evidence only. Missing groups should be treated as "
+            "unknown rather than inferred.",
+        )
+    return (
+        f"{domain_name} is partially described by the loaded formal corpus, but some planned evidence groups are "
+        "missing. The answer below is limited to the retrieved evidence and should be treated as incomplete until the "
+        "missing groups are covered.",
+        "The retrieved corpus provides partial implementation evidence only. Missing groups should be treated as "
+        "unknown rather than inferred.",
+    )
+
+
 def _evidence_basis_text(planned_chunks: list[RetrievalResult], strong_summaries: list[EvidenceGroupSummary]) -> str:
     source_parts: list[str] = []
     for result in planned_chunks:
@@ -2163,8 +2207,7 @@ class StubLLMClient(BaseLLMClient):
                         "The retrieved formal corpus is not yet sufficient to answer this at the required rich-answer "
                         "standard.\n\n"
                         "How the system works\n"
-                        "The loaded formal corpus does not yet contain enough retrieved evidence for the Annual Leave "
-                        "management evidence groups.\n\n"
+                        f"{_weak_domain_corpus_text(domain_plan.plan_id, domain_plan.domain)}\n\n"
                         "Current implementation status\n"
                         "Unknown from the currently retrieved formal corpus.\n\n"
                         "What remains outstanding\n"
@@ -2699,14 +2742,9 @@ class StubLLMClient(BaseLLMClient):
                             "the specific sub-area."
                         )
                 else:
-                    direct_summary = (
-                        "Annual Leave is partially described by the loaded formal corpus, but some planned evidence "
-                        "groups are missing. The answer below is limited to the retrieved evidence and should be treated "
-                        "as incomplete until the missing groups are covered."
-                    )
-                    status_text = (
-                        "The retrieved corpus provides partial implementation evidence only. Missing groups should be "
-                        "treated as unknown rather than inferred."
+                    direct_summary, status_text = _partial_domain_summary(
+                        domain_plan.plan_id,
+                        domain_plan.domain,
                     )
                 evidence_basis = _evidence_basis_text(planned_chunks, strong_summaries)
                 return (
