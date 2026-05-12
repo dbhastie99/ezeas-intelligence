@@ -29,6 +29,9 @@ The script exits `0` only when readiness status is `READY`. Any other status exi
 The check is intentionally small and read-only. It verifies:
 
 - `MINERVA_DATABASE_URL` is configured in the environment or `.env`;
+- which safe configuration source was used, without printing the connection string;
+- the redacted SQL Server target, database target, DSN and selected ODBC driver when these can be parsed safely;
+- local ODBC driver availability when `pyodbc` can inspect installed drivers;
 - a database connection can be opened;
 - the required knowledge tables are queryable by metadata inspection:
   - `KnowledgeDocument`
@@ -43,6 +46,44 @@ These are the minimum tables required by the Worker Story benchmark and corpus c
 - `DATABASE_CONNECTION_FAILED`: configuration exists, but the database connection could not be opened.
 - `REQUIRED_TABLES_MISSING`: the connection opened, but one or more required knowledge tables were not found.
 - `UNKNOWN_ERROR`: an unexpected readiness-check error occurred.
+
+## Troubleshooting `DATABASE_CONNECTION_FAILED`
+
+Use the readiness output to determine where the failure starts. The diagnostic output is intentionally redacted and must not be edited to print passwords, access tokens or full connection strings.
+
+1. Confirm the active configuration source:
+
+```powershell
+Get-ChildItem Env:MINERVA_DATABASE_URL
+Select-String -Path .env -Pattern '^MINERVA_DATABASE_URL='
+```
+
+Environment variables take precedence over `.env`. If the environment variable is present, that is the active source even when `.env` also contains a value.
+
+2. Confirm the expected local SQL Server target for this repo.
+
+The documented local example in `README.md` uses `mssql+pyodbc` with ODBC Driver 18, `Server=localhost`, and `Database=ezeas-intelligence-db`. If your environment uses a named SQL Server instance, a remote host, or a DSN, verify that the active `MINERVA_DATABASE_URL` points to that same intended knowledge store.
+
+3. Confirm ODBC driver availability.
+
+The readiness command reports the selected ODBC driver and, when `pyodbc` can inspect the machine, whether matching SQL Server ODBC drivers are installed. If the selected driver is unavailable, install the expected Microsoft SQL Server ODBC driver or update `MINERVA_DATABASE_URL` to an installed driver.
+
+4. Confirm the required database name and tables.
+
+The intended database must contain the Minerva knowledge tables:
+
+- `KnowledgeDocument`
+- `KnowledgeChunk`
+
+Readiness is read-only. Do not run migrations, create tables, ingest corpus, or mutate schema as part of this recovery slice.
+
+5. Rerun readiness before any baseline command:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py
+```
+
+Do not treat `DATABASE_CONNECTION_FAILED` as a corpus coverage gap, benchmark failure or answer gap failure. When readiness is not `READY`, benchmark, corpus coverage and answer gap commands have not proven anything about corpus sufficiency.
 
 ## Before Retrying Baseline Capture
 

@@ -29,8 +29,10 @@ class FakeEngine:
 class FakeInspector:
     def __init__(self, existing_tables: set[str]):
         self.existing_tables = existing_tables
+        self.checked_tables = []
 
     def has_table(self, table_name: str) -> bool:
+        self.checked_tables.append(table_name)
         return table_name in self.existing_tables
 
 
@@ -56,6 +58,8 @@ def test_worker_story_baseline_db_readiness_missing_configuration():
     assert data["IsReady"] is False
     assert data["RequiredTablesChecked"] == ["KnowledgeDocument", "KnowledgeChunk"]
     assert "MINERVA_DATABASE_URL" in data["ErrorSummary"]
+    assert data["Diagnostics"]["ConfigurationPresent"] is False
+    assert data["Diagnostics"]["ConfigurationSource"] == "database_url_provider"
 
 
 def test_worker_story_baseline_db_readiness_database_connection_failed():
@@ -68,13 +72,64 @@ def test_worker_story_baseline_db_readiness_database_connection_failed():
     assert data["Status"] == readiness.DATABASE_CONNECTION_FAILED
     assert data["IsReady"] is False
     assert "connection failed" in data["ErrorSummary"]
+    assert data["Diagnostics"]["ConfigurationPresent"] is True
+    assert data["Diagnostics"]["ConfigurationSource"] == "argument:database_url"
+
+
+def test_worker_story_baseline_db_readiness_diagnostics_redact_connection_secrets():
+    secret_url = (
+        "mssql+pyodbc://user:super-secret-password@sql.example.local/ezeas-intelligence-db"
+        "?token=private-token&driver=ODBC+Driver+18+for+SQL+Server"
+    )
+    result = readiness.check_worker_story_baseline_db_readiness(
+        database_url=secret_url,
+        engine_factory=_engine_factory(
+            FakeEngine(connect_error=SQLAlchemyError(f"login failed for {secret_url} token=private-token"))
+        ),
+    )
+    data = result.to_dict()
+    serialized = json.dumps(data)
+
+    assert data["Status"] == readiness.DATABASE_CONNECTION_FAILED
+    assert "super-secret-password" not in serialized
+    assert "private-token" not in serialized
+    assert "sql.example.local" not in serialized
+    assert "ezeas-intelligence-db" not in serialized
+    assert data["Diagnostics"]["ConnectionStringRedacted"] == "configured; value intentionally not printed"
+    assert data["Diagnostics"]["Target"]["Server"].startswith("sq...")
+    assert data["Diagnostics"]["Target"]["Database"].startswith("ez...")
+
+
+def test_worker_story_baseline_db_readiness_reports_odbc_driver_availability(monkeypatch):
+    monkeypatch.setattr(
+        readiness,
+        "_available_odbc_drivers",
+        lambda: ["ODBC Driver 17 for SQL Server", "ODBC Driver 18 for SQL Server"],
+    )
+    result = readiness.check_worker_story_baseline_db_readiness(
+        database_url=(
+            "mssql+pyodbc:///?odbc_connect=Driver%3D%7BODBC+Driver+18+for+SQL+Server%7D%3B"
+            "Server%3Dlocalhost%3BDatabase%3Dezeas-intelligence-db%3BTrusted_Connection%3Dyes%3B"
+        ),
+        engine_factory=_engine_factory(FakeEngine(connect_error=SQLAlchemyError("connection failed"))),
+    )
+    target = result.to_dict()["Diagnostics"]["Target"]
+
+    assert target["OdbcInspection"] == "pyodbc_available"
+    assert target["SelectedOdbcDriver"] == "ODBC Driver 18 for SQL Server"
+    assert target["SelectedOdbcDriverAvailable"] is True
+    assert target["InstalledSqlServerOdbcDrivers"] == [
+        "ODBC Driver 17 for SQL Server",
+        "ODBC Driver 18 for SQL Server",
+    ]
 
 
 def test_worker_story_baseline_db_readiness_required_tables_missing(monkeypatch):
+    inspector = FakeInspector(existing_tables={"KnowledgeDocument"})
     monkeypatch.setattr(
         readiness,
         "inspect",
-        lambda connection: FakeInspector(existing_tables={"KnowledgeDocument"}),
+        lambda connection: inspector,
     )
 
     result = readiness.check_worker_story_baseline_db_readiness(
@@ -86,6 +141,7 @@ def test_worker_story_baseline_db_readiness_required_tables_missing(monkeypatch)
     assert data["Status"] == readiness.REQUIRED_TABLES_MISSING
     assert data["IsReady"] is False
     assert data["MissingTables"] == ["KnowledgeChunk"]
+    assert inspector.checked_tables == ["KnowledgeDocument", "KnowledgeChunk"]
 
 
 def test_worker_story_baseline_db_readiness_ready(monkeypatch):
@@ -124,6 +180,10 @@ def test_worker_story_baseline_db_readiness_guardrails_are_read_only():
         "does not write chat messages or audit rows",
     ):
         assert expected in guardrails
+
+
+def test_worker_story_baseline_db_readiness_required_tables_constant_remains_knowledge_only():
+    assert readiness.REQUIRED_KNOWLEDGE_TABLES == ("KnowledgeDocument", "KnowledgeChunk")
 
 
 def test_worker_story_baseline_db_readiness_script_json_output(capsys):
@@ -165,6 +225,8 @@ def test_worker_story_baseline_db_readiness_script_non_ready_exits_nonzero(capsy
     assert exit_code == 1
     assert "Worker Story baseline DB readiness: DATABASE_CONNECTION_FAILED" in captured.out
     assert "Ready: no" in captured.out
+    assert "Diagnostics:" in captured.out
+    assert "Operator next step:" in captured.out
 
 
 def test_worker_story_baseline_db_readiness_documentation_and_baseline_notes():
@@ -184,6 +246,8 @@ def test_worker_story_baseline_db_readiness_documentation_and_baseline_notes():
     assert "does not run migrations" in doc
     assert "KnowledgeDocument" in doc
     assert "KnowledgeChunk" in doc
+    assert "Troubleshooting `DATABASE_CONNECTION_FAILED`" in doc
+    assert "Do not treat `DATABASE_CONNECTION_FAILED` as a corpus coverage gap" in doc
     assert "WORKER_STORY_BASELINE_DB_READINESS.md" in summary
     assert "check_worker_story_baseline_db_readiness.py" in notes
     assert "WORKER_STORY_BASELINE_DB_READINESS.md" in readme
