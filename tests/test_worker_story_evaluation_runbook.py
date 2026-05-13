@@ -284,7 +284,9 @@ def test_annual_leave_evaluation_runbook_exists_and_documents_foundation_status(
     assert "Public Holidays evaluates public-holiday source/calendar evidence" in runbook
     assert "Adjacent domain runbooks, corpus coverage diagnostics and answer gap reports must not be counted" in runbook
     assert "Annual Leave / Leave Management corpus coverage diagnostic classifies" in runbook
-    assert "No Annual Leave / Leave Management-specific answer gap report service or script exists" in runbook
+    assert "Annual Leave / Leave Management answer gap report consumes the saved corpus coverage JSON" in runbook
+    assert "Annual Leave / Leave Management now has the v0.4 runbook foundation" in runbook
+    assert "`BASELINE_REQUIRED`" in runbook
     assert "app/services/annual_leave_corpus_coverage_service.py" in runbook
     assert "scripts\\scan_annual_leave_corpus_coverage.py" in runbook
     assert "app/services/annual_leave_answer_gap_report_service.py" in runbook
@@ -304,7 +306,7 @@ def test_annual_leave_evaluation_runbook_exists_and_documents_foundation_status(
     assert "no endpoint or UI changes" in runbook
     assert "no workforce-platform changes" in runbook
     assert "Do not weaken benchmark expectations" in runbook
-    assert "do not create an Annual Leave baseline pack" in runbook
+    assert "create an Annual Leave baseline pack" in runbook
 
 
 def test_finalisation_readiness_evaluation_runbook_exists_and_lists_required_guidance():

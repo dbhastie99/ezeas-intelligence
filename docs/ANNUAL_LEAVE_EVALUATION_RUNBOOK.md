@@ -102,11 +102,16 @@ Implemented assets:
 - `scripts/scan_annual_leave_corpus_coverage.py`;
 - tests for Annual Leave corpus coverage diagnostics.
 
-### Missing Answer Gap Report
+### Annual Leave Answer Gap Report
 
-No Annual Leave / Leave Management-specific answer gap report service or script exists in this slice.
+```powershell
+.\.venv\Scripts\python.exe scripts\build_annual_leave_answer_gap_report.py --coverage-report .\artifacts\eval\annual_leave_corpus_coverage.json
+.\.venv\Scripts\python.exe scripts\build_annual_leave_answer_gap_report.py --coverage-report .\artifacts\eval\annual_leave_corpus_coverage.json --json --output .\artifacts\eval\annual_leave_answer_gap_report.json
+```
 
-Outstanding expected assets:
+The Annual Leave / Leave Management answer gap report consumes the saved corpus coverage JSON and maps `STRONG`, `WEAK`, and `MISSING` coverage to diagnostic answer-quality actions. It is read-only: it does not mutate corpus records, ingest operational JSON, call a live LLM, run migrations, connect Code Evidence Index to answer generation, or change endpoints/UI/workforce-platform.
+
+Implemented assets:
 
 - `app/services/annual_leave_answer_gap_report_service.py`;
 - `scripts/build_annual_leave_answer_gap_report.py`;
@@ -128,7 +133,7 @@ A failure does not automatically mean answer synthesis is wrong. Common causes a
 - synthesis found evidence but did not express the expected Annual Leave wording;
 - the benchmark expectation no longer matches the intended product-domain wording.
 
-Because Annual Leave-specific answer gap tooling is still missing, benchmark failures cannot yet be fully triaged with the complete domain-specific diagnostic/gap workflow. Do not claim baseline readiness from benchmark execution or corpus coverage execution alone.
+Benchmark failures can now be triaged with the domain-specific corpus coverage diagnostic and answer gap report before any baseline capture decision. Do not claim runtime leave truth from benchmark, corpus coverage, or answer-gap output.
 
 ## Current Readiness
 
@@ -141,8 +146,9 @@ Annual Leave / Leave Management has:
 - seed-corpus checklist and candidate-manifest helper scripts;
 - this v0.4 evaluation runbook foundation.
 - Annual Leave-specific corpus coverage diagnostic tooling.
+- Annual Leave-specific answer gap report tooling.
 
-Annual Leave / Leave Management is still not baseline-ready because it does not yet have Annual Leave-specific answer gap report tooling. No Annual Leave baseline pack should be created until the runbook, diagnostic and gap-report requirements are all complete and wired.
+Annual Leave / Leave Management now has the v0.4 runbook foundation, corpus coverage diagnostic tooling, and answer gap report tooling. It is therefore `BASELINE_REQUIRED` in the completed-domain baseline decision ledger, but no Annual Leave baseline pack exists or should be created by this diagnostic slice.
 
 ## Guardrails
 
@@ -165,4 +171,4 @@ This workflow must remain:
 - not proof that Minerva changes leave balances;
 - not proof that Minerva determines or finalises readiness.
 
-Do not weaken benchmark expectations, fabricate coverage or gap results, run Annual Leave baseline capture, or create an Annual Leave baseline pack from this foundation-only runbook. This slice must not and does not create an Annual Leave baseline pack; do not create an Annual Leave baseline pack until the diagnostic and gap tooling exists.
+Do not weaken benchmark expectations, fabricate coverage or gap results, run Annual Leave baseline capture, or create an Annual Leave baseline pack from this diagnostic-only tooling slice.

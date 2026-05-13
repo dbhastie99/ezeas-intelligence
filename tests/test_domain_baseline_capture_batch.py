@@ -242,9 +242,9 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 25" in ledger
+    assert "`BASELINE_REQUIRED`: 26" in ledger
     assert "`BASELINE_ALREADY_EXISTS`: 5" in ledger
-    assert "`RUNBOOK_OUTSTANDING`: 1" in ledger
+    assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
     assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
@@ -272,14 +272,15 @@ def test_worker_story_baseline_history_remains_unchanged_after_batch():
     assert "Result status: `COMPLETED_WITH_FAILURES`" in benchmark
 
 
-def test_annual_leave_remains_runbook_outstanding():
+def test_annual_leave_is_baseline_required_without_pack():
     ledger = _read(LEDGER_PATH)
 
-    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | yes | no | yes | no |" in ledger
-    assert "RUNBOOK_OUTSTANDING | Retrieval, broad benchmark, golden-question, seed-corpus, regression artefacts, v0.4 runbook foundation and Annual Leave-specific corpus coverage diagnostic exist" in ledger
-    assert "no Annual Leave-specific answer gap report service/script was found" in ledger
+    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | yes | yes | yes | no |" in ledger
+    assert "BASELINE_REQUIRED | Completed v0.4 evaluation artefacts exist and no checked-in baseline artefact exists." in ledger
+    assert "app/services/annual_leave_answer_gap_report_service.py" in ledger
+    assert "scripts/build_annual_leave_answer_gap_report.py" in ledger
     assert "Adjacent leave-domain v0.4 diagnostics are not substitutes" in ledger
-    assert "Domains with runbook outstanding: Annual Leave / Leave Management" in ledger
+    assert "Domains with runbook outstanding: none" in ledger
     assert not (BASELINE_ROOT / "annual_leave" / "v0_1").exists()
 
 

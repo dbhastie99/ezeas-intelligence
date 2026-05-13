@@ -192,4 +192,5 @@ def test_annual_leave_runbook_includes_corpus_coverage_command():
 
     assert "scripts\\scan_annual_leave_corpus_coverage.py" in runbook
     assert "build_annual_leave_answer_gap_report.py" in runbook
-    assert "No Annual Leave / Leave Management-specific answer gap report service or script exists" in runbook
+    assert "app/services/annual_leave_answer_gap_report_service.py" in runbook
+    assert "scripts/build_annual_leave_answer_gap_report.py" in runbook
