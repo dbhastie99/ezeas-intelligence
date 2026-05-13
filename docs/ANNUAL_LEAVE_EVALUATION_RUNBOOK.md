@@ -85,17 +85,22 @@ The golden-question manifest covers Annual Leave management, accrual, TAKEN post
 
 These helper scripts support candidate formal-document review and manifest creation for targeted Annual Leave corpus supplementation. They are not Annual Leave corpus coverage diagnostics and are not answer gap reports.
 
-### Missing Corpus Coverage Diagnostic
+### Annual Leave Corpus Coverage Diagnostic
 
-No Annual Leave / Leave Management-specific corpus coverage diagnostic service or script exists in this slice.
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_annual_leave_corpus_coverage.py
+.\.venv\Scripts\python.exe scripts\scan_annual_leave_corpus_coverage.py --json --output .\artifacts\eval\annual_leave_corpus_coverage.json
+```
 
-Outstanding expected assets:
+The Annual Leave / Leave Management corpus coverage diagnostic classifies the canonical `ANNUAL_LEAVE_MANAGEMENT` evidence groups as `STRONG`, `WEAK`, or `MISSING`. It is read-only: it does not mutate corpus records, ingest operational JSON, call a live LLM, run migrations, connect Code Evidence Index to answer generation, or change endpoints/UI/workforce-platform.
+
+The diagnostic must remain distinct from adjacent leave-domain diagnostics. Do not use `scan_leave_accrual_processing_corpus_coverage.py`, `scan_leave_source_model_corpus_coverage.py`, `scan_leave_requests_workflow_corpus_coverage.py`, or `scan_public_holidays_corpus_coverage.py` as substitutes.
+
+Implemented assets:
 
 - `app/services/annual_leave_corpus_coverage_service.py`;
 - `scripts/scan_annual_leave_corpus_coverage.py`;
 - tests for Annual Leave corpus coverage diagnostics.
-
-Do not use `scan_leave_accrual_processing_corpus_coverage.py`, `scan_leave_source_model_corpus_coverage.py`, `scan_leave_requests_workflow_corpus_coverage.py`, or `scan_public_holidays_corpus_coverage.py` as substitutes.
 
 ### Missing Answer Gap Report
 
@@ -123,7 +128,7 @@ A failure does not automatically mean answer synthesis is wrong. Common causes a
 - synthesis found evidence but did not express the expected Annual Leave wording;
 - the benchmark expectation no longer matches the intended product-domain wording.
 
-Because Annual Leave-specific corpus coverage and answer gap tooling are still missing, benchmark failures cannot yet be triaged with a domain-specific coverage diagnostic or gap report. Do not claim baseline readiness from benchmark execution alone.
+Because Annual Leave-specific answer gap tooling is still missing, benchmark failures cannot yet be fully triaged with the complete domain-specific diagnostic/gap workflow. Do not claim baseline readiness from benchmark execution or corpus coverage execution alone.
 
 ## Current Readiness
 
@@ -135,8 +140,9 @@ Annual Leave / Leave Management has:
 - README references;
 - seed-corpus checklist and candidate-manifest helper scripts;
 - this v0.4 evaluation runbook foundation.
+- Annual Leave-specific corpus coverage diagnostic tooling.
 
-Annual Leave / Leave Management is still not baseline-ready because it does not yet have Annual Leave-specific corpus coverage diagnostic tooling or Annual Leave-specific answer gap report tooling. No Annual Leave baseline pack should be created until the runbook, diagnostic and gap-report requirements are all complete and wired.
+Annual Leave / Leave Management is still not baseline-ready because it does not yet have Annual Leave-specific answer gap report tooling. No Annual Leave baseline pack should be created until the runbook, diagnostic and gap-report requirements are all complete and wired.
 
 ## Guardrails
 

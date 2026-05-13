@@ -19,7 +19,7 @@ Code Evidence Index tooling is documented in [docs/CODE_EVIDENCE_INDEX.md](docs/
 
 Worker Story evaluation is documented in [docs/WORKER_STORY_EVALUATION_RUNBOOK.md](docs/WORKER_STORY_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, and answer gap report commands.
 
-Annual Leave / Leave Management evaluation is documented in [docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md](docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md). The runbook records the existing Annual Leave benchmark and golden-question commands, and keeps Annual Leave baseline readiness outstanding until Annual Leave-specific corpus coverage and answer gap tooling exists.
+Annual Leave / Leave Management evaluation is documented in [docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md](docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md). The runbook records the existing Annual Leave benchmark, golden-question, and corpus coverage diagnostic commands, and keeps Annual Leave baseline readiness outstanding until Annual Leave-specific answer gap tooling exists.
 
 Completed-domain baseline decisions are tracked in [docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md](docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md). The ledger is diagnostic/control documentation only and does not create v0.5 slices automatically.
 
@@ -903,6 +903,16 @@ Build a diagnostic-only Leave Accrual / Processing answer gap report from the co
 These Leave Accrual / Processing diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, or connect Code Evidence Index to answer generation.
 
 For the repeatable Leave Accrual / Processing evaluation workflow and interpretation guidance, see [docs/LEAVE_ACCRUAL_PROCESSING_EVALUATION_RUNBOOK.md](docs/LEAVE_ACCRUAL_PROCESSING_EVALUATION_RUNBOOK.md).
+
+Run the diagnostic-only Annual Leave / Leave Management corpus coverage scan:
+
+```powershell
+.\.venv\Scripts\python.exe scripts\scan_annual_leave_corpus_coverage.py --json --output .\artifacts\eval\annual_leave_corpus_coverage.json
+```
+
+This Annual Leave diagnostic reads the already indexed formal corpus only. It does not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, or connect Code Evidence Index to answer generation. Annual Leave / Leave Management still has no Annual Leave-specific answer gap report command, so it remains `RUNBOOK_OUTSTANDING` and must not receive a baseline pack.
+
+For the repeatable Annual Leave / Leave Management evaluation workflow and interpretation guidance, see [docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md](docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md).
 
 Run the diagnostic-only Payment Execution / Remittance corpus coverage scan:
 
