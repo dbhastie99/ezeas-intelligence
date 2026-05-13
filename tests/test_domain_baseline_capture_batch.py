@@ -5,6 +5,7 @@ from pathlib import Path
 BASELINE_ROOT = Path("docs/evaluation/worker_story_baselines")
 LEDGER_PATH = BASELINE_ROOT / "COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md"
 CLOSEOUT_PATH = BASELINE_ROOT / "BASELINE_BATCH_CLOSEOUT_2026_05_13.md"
+MATURITY_CLOSEOUT_PATH = BASELINE_ROOT / "BASELINE_MATURITY_CLOSEOUT_2026_05_13.md"
 WORKER_STORY_PACK = BASELINE_ROOT / "worker_story" / "v0_1"
 ANNUAL_LEAVE_PACK = BASELINE_ROOT / "annual_leave" / "v0_1"
 REQUIRED_FILES = (
@@ -65,6 +66,82 @@ def test_four_domain_batch_closeout_exists_and_is_linked_from_readme():
     readme = _read(Path("README.md"))
 
     assert "docs/evaluation/worker_story_baselines/BASELINE_BATCH_CLOSEOUT_2026_05_13.md" in readme
+
+
+def test_six_domain_maturity_closeout_exists_and_is_linked_from_readme():
+    assert MATURITY_CLOSEOUT_PATH.exists()
+
+    readme = _read(Path("README.md"))
+
+    assert "docs/evaluation/worker_story_baselines/BASELINE_MATURITY_CLOSEOUT_2026_05_13.md" in readme
+
+
+def test_six_domain_maturity_closeout_records_packs_and_final_ledger_counts():
+    closeout = _read(MATURITY_CLOSEOUT_PATH)
+
+    assert "`BASELINE_REQUIRED`: 25" in closeout
+    assert "`BASELINE_ALREADY_EXISTS`: 6" in closeout
+    assert "`RUNBOOK_OUTSTANDING`: 0" in closeout
+    assert "Domains with runbook outstanding: none" in closeout
+    assert "Annual Leave / Leave Management is no longer `RUNBOOK_OUTSTANDING`; it is now `BASELINE_ALREADY_EXISTS`" in closeout
+
+    for pack_name in (
+        "worker_story/v0_1/",
+        "payroll_bases_totals/v0_1/",
+        "payrun_admin_queue/v0_1/",
+        "movement_review/v0_1/",
+        "gross_to_net/v0_1/",
+        "annual_leave/v0_1/",
+    ):
+        assert f"docs/evaluation/worker_story_baselines/{pack_name}" in closeout
+
+
+def test_six_domain_maturity_closeout_records_outcomes_without_changing_numbers():
+    closeout = _read(MATURITY_CLOSEOUT_PATH)
+
+    assert "Original v0.3 history records 5 total / 4 passed / 1 failed" in closeout
+    assert "later rerun records 5 total / 5 passed / 0 failed" in closeout
+    assert "| Payroll Bases & Totals | Passed baseline with refinement | 6 total / 6 passed / 0 failed | STRONG=8, WEAK=1, MISSING=0 | NEEDS_REFINEMENT |" in closeout
+    assert "| PayRun Admin Queue | Captured-with-failures baseline | 8 total / 6 passed / 2 failed | STRONG=11, WEAK=0, MISSING=0 | GOOD; 11 KEEP actions |" in closeout
+    assert "| Movement Review | Passed baseline | 8 total / 8 passed / 0 failed | STRONG=11, WEAK=0, MISSING=0 | GOOD; 11 KEEP actions |" in closeout
+    assert "| Gross-to-Net | Captured-with-failures baseline | 6 total / 5 passed / 1 failed | STRONG=10, WEAK=0, MISSING=0 | GOOD; 10 KEEP actions |" in closeout
+    assert "| Annual Leave / Leave Management | Passed baseline | 1 total / 1 passed / 0 failed | STRONG=7, WEAK=0, MISSING=0 | GOOD; 7 KEEP actions |" in closeout
+
+
+def test_six_domain_maturity_closeout_records_failure_and_refinement_classifications():
+    closeout = _read(MATURITY_CLOSEOUT_PATH)
+
+    assert "Payroll Bases & Totals remains `NEEDS_REFINEMENT`" in closeout
+    assert "weak `outstanding_hardening` coverage maps to `IMPROVE_RETRIEVAL_TERMS`" in closeout
+    assert "payrun-admin-queue-rich-answer" in closeout
+    assert "payrun-admin-queue-cleanliness-assurance" in closeout
+    assert "PayRun Admin Queue failures are not corpus gaps" in closeout
+    assert "gross-to-net-current-effective-worker-story" in closeout
+    assert "Gross-to-Net failure is not a corpus gap" in closeout
+    assert "Do not weaken benchmark expectations" in closeout
+
+
+def test_six_domain_maturity_closeout_records_transient_json_policy_and_guardrails():
+    closeout = _read(MATURITY_CLOSEOUT_PATH)
+
+    assert "Generated JSON outputs from benchmark, corpus coverage or answer-gap commands are transient evaluation materials" in closeout
+    assert "not durable checked-in artefacts unless explicitly versioned" in closeout
+    assert "operational JSON ingestion" in closeout
+    assert "Code Evidence answer integration" in closeout
+    assert "live LLM calls" in closeout
+    assert "corpus mutation" in closeout
+    assert "DB or schema migration" in closeout
+    assert "endpoints or UI" in closeout
+    assert "workforce-platform changes" in closeout
+    assert "No operational JSON ingestion occurred" in closeout
+    assert "No Code Evidence answer integration occurred" in closeout
+    assert "No live LLM call occurred" in closeout
+    assert "No corpus mutation occurred" in closeout
+    assert "No DB or schema migration occurred" in closeout
+    assert "No endpoint or UI change occurred" in closeout
+    assert "No workforce-platform change occurred" in closeout
+    assert "should be small" in closeout
+    assert "not attempt all remaining 25 `BASELINE_REQUIRED` domains at once" in closeout
 
 
 def test_four_domain_batch_closeout_records_all_domain_outcomes_and_ledger_counts():
