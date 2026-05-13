@@ -9,6 +9,7 @@ MATURITY_CLOSEOUT_PATH = BASELINE_ROOT / "BASELINE_MATURITY_CLOSEOUT_2026_05_13.
 WORKER_STORY_PACK = BASELINE_ROOT / "worker_story" / "v0_1"
 ANNUAL_LEAVE_PACK = BASELINE_ROOT / "annual_leave" / "v0_1"
 CORE_PAYROLL_BLOCKED_CLOSEOUT_PATH = BASELINE_ROOT / "CORE_PAYROLL_EXPLANATION_BASELINE_BATCH_2026_05_13.md"
+CORE_PAYROLL_CLOSEOUT_PATH = BASELINE_ROOT / "CORE_PAYROLL_EXPLANATION_BATCH_CLOSEOUT_2026_05_13.md"
 REQUIRED_FILES = (
     "BASELINE_SUMMARY.md",
     "BENCHMARK_BASELINE.md",
@@ -137,6 +138,14 @@ def test_core_payroll_explanation_blocked_closeout_exists_and_is_linked_from_rea
     assert "docs/evaluation/worker_story_baselines/CORE_PAYROLL_EXPLANATION_BASELINE_BATCH_2026_05_13.md" in readme
 
 
+def test_core_payroll_explanation_batch_closeout_exists_and_is_linked_from_readme():
+    assert CORE_PAYROLL_CLOSEOUT_PATH.exists()
+
+    readme = _read(Path("README.md"))
+
+    assert "docs/evaluation/worker_story_baselines/CORE_PAYROLL_EXPLANATION_BATCH_CLOSEOUT_2026_05_13.md" in readme
+
+
 def test_decision_story_baseline_pack_exists_with_required_files():
     pack_path = BASELINE_ROOT / "decision_story" / "v0_1"
     assert pack_path.exists()
@@ -178,6 +187,71 @@ def test_core_payroll_explanation_blocked_closeout_records_honest_statuses():
 
     for domain in ("Finalisation Readiness", "Payroll Output", "RateSource / Rate Story", "Decision Story"):
         assert f"| {domain} | `DATABASE_CONNECTION_FAILED` | blocked pack only | not run | not run | not run | `BASELINE_REQUIRED` |" in closeout
+
+
+def test_core_payroll_explanation_batch_closeout_records_ledger_and_packs():
+    closeout = _read(CORE_PAYROLL_CLOSEOUT_PATH)
+
+    assert "`BASELINE_REQUIRED`: 21" in closeout
+    assert "`BASELINE_ALREADY_EXISTS`: 10" in closeout
+    assert "`RUNBOOK_OUTSTANDING`: 0" in closeout
+    assert "No Core Payroll Explanation batch domains remain blocked" in closeout
+
+    for pack_name in (
+        "finalisation_readiness/v0_1/",
+        "payroll_output/v0_1/",
+        "ratesource_rate_story/v0_1/",
+        "decision_story/v0_1/",
+    ):
+        assert f"docs/evaluation/worker_story_baselines/{pack_name}" in closeout
+
+
+def test_core_payroll_explanation_batch_closeout_records_outcomes_without_changing_numbers():
+    closeout = _read(CORE_PAYROLL_CLOSEOUT_PATH)
+
+    assert "| Finalisation Readiness | Passed baseline with refinement | 12 total / 12 passed / 0 failed | STRONG=11, WEAK=1, MISSING=0 | NEEDS_REFINEMENT; 11 KEEP actions; 1 IMPROVE_SYNTHESIS action |" in closeout
+    assert "| Payroll Output | Captured-with-failures baseline | 7 total / 6 passed / 1 failed | STRONG=10, WEAK=1, MISSING=0 | NEEDS_REFINEMENT; 10 KEEP actions; 1 IMPROVE_SYNTHESIS action |" in closeout
+    assert "| RateSource / Rate Story | Captured-with-failures baseline | 6 total / 5 passed / 1 failed | STRONG=10, WEAK=1, MISSING=0 | NEEDS_REFINEMENT; 10 KEEP actions; 1 IMPROVE_SYNTHESIS action |" in closeout
+    assert "| Decision Story | Captured-with-failures baseline | 7 total / 6 passed / 1 failed | STRONG=10, WEAK=0, MISSING=0 | GOOD; 10 KEEP actions |" in closeout
+    assert "Passed baselines and captured-with-failures baselines are both durable comparison controls, but they are different signals" in closeout
+
+
+def test_core_payroll_explanation_batch_closeout_records_failure_and_refinement_classifications():
+    closeout = _read(CORE_PAYROLL_CLOSEOUT_PATH)
+
+    assert "payroll-output-rich-answer" in closeout
+    assert "rate-source-rate-story-rich-answer" in closeout
+    assert "decision-story-rich-answer" in closeout
+    assert "Payroll Output failure is not corpus gap" in closeout
+    assert "RateSource / Rate Story failure is not corpus gap" in closeout
+    assert "Decision Story failure is not corpus gap" in closeout
+    assert "benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in closeout
+    assert "Finalisation Readiness needs synthesis refinement for `purpose_and_operator_meaning`" in closeout
+    assert "Payroll Output needs synthesis refinement for `worker_level_output`" in closeout
+    assert "RateSource / Rate Story needs synthesis refinement for `rate_source_evidence_index`" in closeout
+
+
+def test_core_payroll_explanation_batch_closeout_records_transient_json_policy_and_guardrails():
+    closeout = _read(CORE_PAYROLL_CLOSEOUT_PATH)
+
+    assert "Generated JSON outputs from benchmark, corpus coverage or answer-gap commands are transient evaluation materials" in closeout
+    assert "not durable checked-in artefacts unless explicitly versioned" in closeout
+    assert "operational JSON ingestion" in closeout
+    assert "Code Evidence answer integration" in closeout
+    assert "live LLM calls" in closeout
+    assert "corpus mutation" in closeout
+    assert "DB or schema migration" in closeout
+    assert "endpoints or UI" in closeout
+    assert "workforce-platform changes" in closeout
+    assert "No operational JSON ingestion occurred" in closeout
+    assert "No Code Evidence answer integration occurred" in closeout
+    assert "No live LLM call occurred" in closeout
+    assert "No corpus mutation occurred" in closeout
+    assert "No DB or schema migration occurred" in closeout
+    assert "No endpoint or UI change occurred" in closeout
+    assert "No workforce-platform change occurred" in closeout
+    assert "should be small" in closeout
+    assert "not attempt all remaining 21 `BASELINE_REQUIRED` domains at once" in closeout
 
 
 def test_decision_story_baseline_pack_records_captured_ready_results_with_failures():
