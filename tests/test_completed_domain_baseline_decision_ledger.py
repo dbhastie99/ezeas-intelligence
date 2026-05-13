@@ -124,22 +124,23 @@ def test_annual_leave_runbook_outstanding_reason_is_precise_and_not_baseline_rea
     assert "## Annual Leave / Leave Management Outstanding Finding" in ledger
     assert "Annual Leave / Leave Management remains `RUNBOOK_OUTSTANDING`" in ledger
     assert "not a stale ledger entry and not an older naming/path mismatch" in ledger
-    assert "Annual Leave-specific v0.4 evaluation runbook" in ledger
+    assert "Annual Leave-specific v0.4 evaluation runbook foundation" in ledger
     assert "corpus coverage diagnostic service/script" in ledger
     assert "answer gap report service/script" in ledger
     assert "Adjacent leave-domain v0.4 diagnostics are not substitutes" in ledger
     assert "does not promote Annual Leave to `BASELINE_REQUIRED`" in ledger
     assert "does not create an Annual Leave baseline pack" in ledger
 
-    assert "| Annual Leave / Leave Management | v0.1 | yes | yes | no | no | no | no | no |" in ledger
+    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | no | no | yes | no |" in ledger
     assert "samples/eval/golden_questions.annual_leave.json" in ledger
     assert "scripts/scan_leave_corpus_candidates.py" in ledger
     assert "scripts/build_leave_manifest_from_candidates.py" in ledger
     assert "ANNUAL_LEAVE_CORPUS_CHECKLIST.md" in ledger
+    assert "docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md" in ledger
 
 
-def test_annual_leave_missing_runbook_and_diagnostics_are_not_hidden_by_adjacent_domains():
-    assert not Path("docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md").exists()
+def test_annual_leave_missing_diagnostics_are_not_hidden_by_adjacent_domains():
+    assert Path("docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md").exists()
     assert not Path("app/services/annual_leave_corpus_coverage_service.py").exists()
     assert not Path("app/services/annual_leave_answer_gap_report_service.py").exists()
     assert not Path("scripts/scan_annual_leave_corpus_coverage.py").exists()

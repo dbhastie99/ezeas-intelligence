@@ -275,9 +275,9 @@ def test_worker_story_baseline_history_remains_unchanged_after_batch():
 def test_annual_leave_remains_runbook_outstanding():
     ledger = _read(LEDGER_PATH)
 
-    assert "| Annual Leave / Leave Management | v0.1 | yes | yes | no | no | no | no | no |" in ledger
-    assert "RUNBOOK_OUTSTANDING | Retrieval, broad benchmark, golden-question, seed-corpus and regression artefacts exist" in ledger
-    assert "no Annual Leave-specific v0.4 evaluation runbook, corpus coverage diagnostic service/script, or answer gap report service/script was found" in ledger
+    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | no | no | yes | no |" in ledger
+    assert "RUNBOOK_OUTSTANDING | Retrieval, broad benchmark, golden-question, seed-corpus, regression artefacts and v0.4 runbook foundation exist" in ledger
+    assert "no Annual Leave-specific corpus coverage diagnostic service/script or answer gap report service/script was found" in ledger
     assert "Adjacent leave-domain v0.4 diagnostics are not substitutes" in ledger
     assert "Domains with runbook outstanding: Annual Leave / Leave Management" in ledger
     assert not (BASELINE_ROOT / "annual_leave" / "v0_1").exists()

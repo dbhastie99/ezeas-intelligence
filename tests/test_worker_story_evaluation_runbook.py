@@ -256,6 +256,57 @@ def test_leave_accrual_processing_evaluation_runbook_exists_and_lists_required_g
     assert "Payroll Bases & Totals" in runbook
 
 
+def test_annual_leave_evaluation_runbook_exists_and_documents_foundation_status():
+    runbook_path = Path("docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md")
+
+    assert runbook_path.exists()
+
+    runbook = runbook_path.read_text(encoding="utf-8")
+    readme = Path("README.md").read_text(encoding="utf-8")
+
+    assert "docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md" in readme
+    assert "samples\\eval\\rich_answer_benchmark.annual_leave.json" in runbook
+    assert "samples\\eval\\golden_questions.annual_leave.json" in runbook
+    assert "scripts\\scan_leave_corpus_candidates.py" in runbook
+    assert "scripts\\build_leave_manifest_from_candidates.py" in runbook
+    assert "app/services/domain_retrieval_plan_service.py" in runbook
+    assert "ANNUAL_LEAVE_MANAGEMENT" in runbook
+    assert "configuration" in runbook
+    assert "accrual" in runbook
+    assert "taken" in runbook
+    assert "valuation" in runbook
+    assert "payrun" in runbook
+    assert "worker_story" in runbook
+    assert "outstanding" in runbook
+    assert "Leave Accrual / Processing is narrower and deeper" in runbook
+    assert "Leave Source Model evaluates source truth and applicability boundaries" in runbook
+    assert "Leave Requests / Leave Workflow evaluates request lifecycle" in runbook
+    assert "Public Holidays evaluates public-holiday source/calendar evidence" in runbook
+    assert "Adjacent domain runbooks, corpus coverage diagnostics and answer gap reports must not be counted" in runbook
+    assert "No Annual Leave / Leave Management-specific corpus coverage diagnostic service or script exists" in runbook
+    assert "No Annual Leave / Leave Management-specific answer gap report service or script exists" in runbook
+    assert "app/services/annual_leave_corpus_coverage_service.py" in runbook
+    assert "scripts/scan_annual_leave_corpus_coverage.py" in runbook
+    assert "app/services/annual_leave_answer_gap_report_service.py" in runbook
+    assert "scripts/build_annual_leave_answer_gap_report.py" in runbook
+    assert "scan_leave_accrual_processing_corpus_coverage.py" in runbook
+    assert "scan_leave_source_model_corpus_coverage.py" in runbook
+    assert "scan_leave_requests_workflow_corpus_coverage.py" in runbook
+    assert "scan_public_holidays_corpus_coverage.py" in runbook
+    assert "Do not use adjacent leave-domain answer gap reports as substitutes" in runbook
+    assert "Minerva explains Annual Leave but does not calculate leave" in runbook
+    assert "no operational JSON ingestion" in runbook
+    assert "no Code Evidence answer integration" in runbook
+    assert "no Code Evidence Index answer integration" in runbook
+    assert "no live LLM" in runbook
+    assert "no corpus mutation" in runbook
+    assert "no database schema change" in runbook
+    assert "no endpoint or UI changes" in runbook
+    assert "no workforce-platform changes" in runbook
+    assert "Do not weaken benchmark expectations" in runbook
+    assert "do not create an Annual Leave baseline pack" in runbook
+
+
 def test_finalisation_readiness_evaluation_runbook_exists_and_lists_required_guidance():
     runbook_path = Path("docs/FINALISATION_READINESS_EVALUATION_RUNBOOK.md")
 
