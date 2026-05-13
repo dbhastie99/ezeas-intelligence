@@ -100,20 +100,6 @@ PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {
         "scan": "scripts\\scan_objecttime_source_truth_corpus_coverage.py",
         "gap": "scripts\\build_objecttime_source_truth_answer_gap_report.py",
     },
-    "process_periods_payrun_lifecycle": {
-        "name": "Process Periods / PayRun Lifecycle",
-        "runbook": "docs/PROCESS_PERIOD_PAYRUN_LIFECYCLE_EVALUATION_RUNBOOK.md",
-        "manifest": "samples\\eval\\rich_answer_benchmark.process_period_payrun_lifecycle.json",
-        "scan": "scripts\\scan_process_period_payrun_lifecycle_corpus_coverage.py",
-        "gap": "scripts\\build_process_period_payrun_lifecycle_answer_gap_report.py",
-    },
-    "imports_actuals": {
-        "name": "Imports / Actuals",
-        "runbook": "docs/IMPORTS_ACTUALS_EVALUATION_RUNBOOK.md",
-        "manifest": "samples\\eval\\rich_answer_benchmark.imports_actuals.json",
-        "scan": "scripts\\scan_imports_actuals_corpus_coverage.py",
-        "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
-    },
 }
 
 
@@ -376,6 +362,40 @@ def test_payroll_evidence_context_blocked_packs_are_diagnostic_only_not_runtime_
         assert "does not create DB schema or migrations" in combined
         assert "does not add endpoints or UI" in combined
         assert "does not change workforce-platform" in combined
+
+
+def test_objecttime_source_truth_blocked_pack_preserves_domain_boundaries():
+    pack_path = BASELINE_ROOT / "objecttime_source_truth" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    for term in (
+        "ObjectTimeAttribute",
+        "ObjectTimeAssessment",
+        "ObjectTimeAssessmentResponse",
+        "SourceTruth is not WorkedHours",
+        "Raw span hours are not user-facing payroll worked hours",
+        "RoundedStart boundary for WORK ObjectTime",
+        "changed-field detection",
+        "previous value capture",
+        "new value capture",
+        "Finalised or protected dirty exclusion",
+        "finalised correction review pathway",
+        "EnableFinalisedCorrectionObjectTimeHookDryRun",
+        "FinalisedCorrectionObjectTimeHookDryRunPreview",
+        "DRY_RUN_PREVIEW_ERROR",
+        "runtime intake readiness versus runtime intake implementation",
+        "no mutation guarantee",
+        "no dirty runtime call guarantee",
+        "no review request creation guarantee",
+    ):
+        assert term in combined
+
+    assert "Do not overclaim v5.56" in combined
+    assert "It is not runtime intake" in combined
+    assert "runtime source-change hook or intake" in combined
+    assert "correction execution" in combined
+    assert "payment or remittance execution" in combined
+    assert "finalisation mutation" in combined
 
 
 def test_contact_payroll_history_baseline_pack_records_captured_ready_results_with_failures():
