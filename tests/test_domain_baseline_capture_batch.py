@@ -276,8 +276,11 @@ def test_annual_leave_remains_runbook_outstanding():
     ledger = _read(LEDGER_PATH)
 
     assert "| Annual Leave / Leave Management | v0.1 | yes | yes | no | no | no | no | no |" in ledger
-    assert "RUNBOOK_OUTSTANDING | Retrieval and broad benchmark artefacts exist" in ledger
+    assert "RUNBOOK_OUTSTANDING | Retrieval, broad benchmark, golden-question, seed-corpus and regression artefacts exist" in ledger
+    assert "no Annual Leave-specific v0.4 evaluation runbook, corpus coverage diagnostic service/script, or answer gap report service/script was found" in ledger
+    assert "Adjacent leave-domain v0.4 diagnostics are not substitutes" in ledger
     assert "Domains with runbook outstanding: Annual Leave / Leave Management" in ledger
+    assert not (BASELINE_ROOT / "annual_leave" / "v0_1").exists()
 
 
 def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
@@ -298,6 +301,8 @@ def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
         "artifacts/eval/movement_review_answer_gap_report.json",
         "artifacts/eval/gross_to_net_corpus_coverage.json",
         "artifacts/eval/gross_to_net_answer_gap_report.json",
+        "artifacts/eval/annual_leave_corpus_coverage.json",
+        "artifacts/eval/annual_leave_answer_gap_report.json",
     ):
         tracked = subprocess.run(
             ["git", "ls-files", "--error-unmatch", relative_path],
