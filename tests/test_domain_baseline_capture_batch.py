@@ -100,6 +100,13 @@ PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {
         "scan": "scripts\\scan_objecttime_source_truth_corpus_coverage.py",
         "gap": "scripts\\build_objecttime_source_truth_answer_gap_report.py",
     },
+    "process_periods_payrun_lifecycle": {
+        "name": "Process Periods / PayRun Lifecycle",
+        "runbook": "docs/PROCESS_PERIOD_PAYRUN_LIFECYCLE_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.process_period_payrun_lifecycle.json",
+        "scan": "scripts\\scan_process_period_payrun_lifecycle_corpus_coverage.py",
+        "gap": "scripts\\build_process_period_payrun_lifecycle_answer_gap_report.py",
+    },
 }
 
 
@@ -396,6 +403,32 @@ def test_objecttime_source_truth_blocked_pack_preserves_domain_boundaries():
     assert "correction execution" in combined
     assert "payment or remittance execution" in combined
     assert "finalisation mutation" in combined
+
+
+def test_process_periods_payrun_lifecycle_blocked_pack_preserves_domain_boundaries():
+    pack_path = BASELINE_ROOT / "process_periods_payrun_lifecycle" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    for term in (
+        "not merely a date range or run list domain",
+        "ProcessPeriod",
+        "ProcessPeriodGroup",
+        "PaymentDate",
+        "PayRunBatch",
+        "PayRunContact",
+        "worker story PayRun context",
+        "Contact Payroll History dependency",
+        "reconciliation dependency",
+        "source truth impact on PayRun outcomes",
+        "`PaymentDate` belongs on `ProcessPeriod`",
+        "payment-date derivation policy belongs on `ProcessPeriodGroup`",
+        "`DAILY`, `WEEKLY`, `FORTNIGHTLY`, `MONTHLY` and `QUARTERLY`",
+        "Dirty contact doctrine",
+        "full contact-level PayRun reprocessing",
+        "Finalised or protected PayRuns require correction or review pathways",
+        "no runtime mutation guarantee",
+    ):
+        assert term in combined
 
 
 def test_contact_payroll_history_baseline_pack_records_captured_ready_results_with_failures():
