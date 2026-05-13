@@ -30,11 +30,26 @@ Minerva Domain Baseline Capture Batch v0.1 added capture packs for Payroll Bases
 
 Annual Leave Baseline Capture v0.1 added a checked-in Annual Leave / Leave Management baseline pack at `docs/evaluation/worker_story_baselines/annual_leave/v0_1/` after DB readiness returned `READY`: benchmark 1 total, 1 passed, 0 failed; corpus coverage 7 STRONG, 0 WEAK, 0 MISSING; answer gap status `GOOD` with 7 KEEP actions. Generated JSON reports under `.\artifacts\eval\` were summarized into curated markdown and are not required committed artefacts.
 
+Core Payroll Explanation Baseline Batch v0.1 inspected Finalisation Readiness, Payroll Output, RateSource / Rate Story and Decision Story. The shared DB readiness check returned `DATABASE_CONNECTION_FAILED`, so no benchmark, corpus coverage or answer gap commands were run and no captured baseline was counted. Blocked diagnostic packs were added under `docs/evaluation/worker_story_baselines/finalisation_readiness/v0_1/`, `docs/evaluation/worker_story_baselines/payroll_output/v0_1/`, `docs/evaluation/worker_story_baselines/ratesource_rate_story/v0_1/` and `docs/evaluation/worker_story_baselines/decision_story/v0_1/`. These blocked packs are not `BASELINE_ALREADY_EXISTS`; all four domains remain `BASELINE_REQUIRED`.
+
 ## Annual Leave / Leave Management Baseline Captured Finding
 
 Annual Leave / Leave Management is now `BASELINE_ALREADY_EXISTS` after the v0.4 evaluation runbook foundation, corpus coverage diagnostic, answer gap report tooling slices, and Annual Leave Baseline Capture v0.1. Repo evidence shows an Annual Leave retrieval plan, broad rich-answer benchmark, golden-question manifest, regression benchmark coverage, README references, seed-corpus checklist, candidate-manifest helper scripts, Annual Leave-specific v0.4 evaluation runbook foundation, Annual Leave-specific corpus coverage diagnostic service/script, Annual Leave-specific answer gap report service/script, and a checked-in Annual Leave baseline pack. Existing `Leave Accrual / Processing`, `Leave Source Model`, `Leave Requests / Leave Workflow`, and `Public Holidays` diagnostics remain narrower adjacent domains and are not substitutes for the broader Annual Leave / Leave Management overview baseline.
 
 This ledger marks Annual Leave as `BASELINE_ALREADY_EXISTS` because the authorized baseline-capture slice has recorded actual command results in curated markdown. The pack is diagnostic-only and does not make generated JSON output a required committed artefact.
+
+## Core Payroll Explanation Blocked Baseline Finding
+
+Finalisation Readiness, Payroll Output, RateSource / Rate Story and Decision Story remain `BASELINE_REQUIRED`. Repo evidence shows v0.4 runbooks, benchmark manifests, focused benchmark coverage, corpus coverage diagnostics and answer gap report tooling for each domain, but DB readiness returned `DATABASE_CONNECTION_FAILED` during the v0.1 capture slice. The benchmark, corpus coverage and answer gap commands were not run after that readiness failure, and no generated JSON outputs were created for these four domains.
+
+Blocked packs exist only as diagnostic records of the failed readiness gate:
+
+- `docs/evaluation/worker_story_baselines/finalisation_readiness/v0_1/`
+- `docs/evaluation/worker_story_baselines/payroll_output/v0_1/`
+- `docs/evaluation/worker_story_baselines/ratesource_rate_story/v0_1/`
+- `docs/evaluation/worker_story_baselines/decision_story/v0_1/`
+
+These packs do not change the ledger counts because they do not contain actual benchmark, corpus coverage or answer gap result summaries. They are not operational truth, do not prove corpus coverage, do not prove payroll/runtime truth, and do not make generated JSON output a required committed artefact.
 
 ## Summary
 
@@ -47,7 +62,7 @@ This ledger marks Annual Leave as `BASELINE_ALREADY_EXISTS` because the authoriz
 - Domains requiring baseline capture: Comparison / Remediation; Tax / PAYG; Deductions / Obligations; Retro / Replay; Payment Execution / Remittance; Leave Accrual / Processing; Finalisation Readiness; Leave Source Model; On-costs / Employer Liabilities; Award Build / Award Evidence; Imports / Actuals; ObjectTime / Source Truth; Contacts / Employee Appointments; Process Periods / PayRun Lifecycle; Costing / GL Consequence Evidence; Worker Attention / Issue Resolution; RateSource / Rate Story; Decision Story; Payroll Output; Contact Payroll History; Leave Requests / Leave Workflow; Public Holidays; Rosters / Patterns / Scheduling; Award Positions / Classifications; Payroll Tax / WorkCover / WIC Liability Detail.
 - Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management.
 - Domains with runbook outstanding: none.
-- Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net and Annual Leave / Leave Management as captured comparison controls, refine Payroll Bases & Totals `outstanding_hardening` retrieval terms, keep PayRun Admin Queue benchmark/source-evidence failures under benchmark watch, keep Movement Review retrieval terms and answer synthesis under benchmark watch, keep Gross-to-Net `gross-to-net-current-effective-worker-story` benchmark drift under benchmark watch, and keep Annual Leave / Leave Management retrieval terms and answer synthesis under benchmark watch.
+- Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net and Annual Leave / Leave Management as captured comparison controls, keep Finalisation Readiness, Payroll Output, RateSource / Rate Story and Decision Story as blocked `BASELINE_REQUIRED` domains until DB readiness returns `READY`, refine Payroll Bases & Totals `outstanding_hardening` retrieval terms, keep PayRun Admin Queue benchmark/source-evidence failures under benchmark watch, keep Movement Review retrieval terms and answer synthesis under benchmark watch, keep Gross-to-Net `gross-to-net-current-effective-worker-story` benchmark drift under benchmark watch, and keep Annual Leave / Leave Management retrieval terms and answer synthesis under benchmark watch.
 
 This summary is not authorization to run benchmarks, mutate corpus, ingest operational JSON, connect Code Evidence, call a live LLM, or create v0.5 slices automatically.
 

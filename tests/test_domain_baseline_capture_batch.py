@@ -8,6 +8,7 @@ CLOSEOUT_PATH = BASELINE_ROOT / "BASELINE_BATCH_CLOSEOUT_2026_05_13.md"
 MATURITY_CLOSEOUT_PATH = BASELINE_ROOT / "BASELINE_MATURITY_CLOSEOUT_2026_05_13.md"
 WORKER_STORY_PACK = BASELINE_ROOT / "worker_story" / "v0_1"
 ANNUAL_LEAVE_PACK = BASELINE_ROOT / "annual_leave" / "v0_1"
+CORE_PAYROLL_BLOCKED_CLOSEOUT_PATH = BASELINE_ROOT / "CORE_PAYROLL_EXPLANATION_BASELINE_BATCH_2026_05_13.md"
 REQUIRED_FILES = (
     "BASELINE_SUMMARY.md",
     "BENCHMARK_BASELINE.md",
@@ -44,6 +45,37 @@ CAPTURED_BATCH_DOMAINS = {
         "manifest": "samples\\eval\\rich_answer_benchmark.gross_to_net.json",
         "scan": "scripts\\scan_gross_to_net_corpus_coverage.py",
         "gap": "scripts\\build_gross_to_net_answer_gap_report.py",
+    },
+}
+
+CORE_PAYROLL_BLOCKED_DOMAINS = {
+    "finalisation_readiness": {
+        "name": "Finalisation Readiness",
+        "runbook": "docs/FINALISATION_READINESS_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.finalisation_readiness.json",
+        "scan": "scripts\\scan_finalisation_readiness_corpus_coverage.py",
+        "gap": "scripts\\build_finalisation_readiness_answer_gap_report.py",
+    },
+    "payroll_output": {
+        "name": "Payroll Output",
+        "runbook": "docs/PAYROLL_OUTPUT_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.payroll_output.json",
+        "scan": "scripts\\scan_payroll_output_corpus_coverage.py",
+        "gap": "scripts\\build_payroll_output_answer_gap_report.py",
+    },
+    "ratesource_rate_story": {
+        "name": "RateSource / Rate Story",
+        "runbook": "docs/RATE_SOURCE_RATE_STORY_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.rate_source_rate_story.json",
+        "scan": "scripts\\scan_rate_source_rate_story_corpus_coverage.py",
+        "gap": "scripts\\build_rate_source_rate_story_answer_gap_report.py",
+    },
+    "decision_story": {
+        "name": "Decision Story",
+        "runbook": "docs/DECISION_STORY_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.decision_story.json",
+        "scan": "scripts\\scan_decision_story_corpus_coverage.py",
+        "gap": "scripts\\build_decision_story_answer_gap_report.py",
     },
 }
 
@@ -94,6 +126,78 @@ def test_six_domain_maturity_closeout_records_packs_and_final_ledger_counts():
         "annual_leave/v0_1/",
     ):
         assert f"docs/evaluation/worker_story_baselines/{pack_name}" in closeout
+
+
+def test_core_payroll_explanation_blocked_closeout_exists_and_is_linked_from_readme():
+    assert CORE_PAYROLL_BLOCKED_CLOSEOUT_PATH.exists()
+
+    readme = _read(Path("README.md"))
+
+    assert "docs/evaluation/worker_story_baselines/CORE_PAYROLL_EXPLANATION_BASELINE_BATCH_2026_05_13.md" in readme
+
+
+def test_core_payroll_explanation_blocked_packs_exist_with_required_files():
+    for slug in CORE_PAYROLL_BLOCKED_DOMAINS:
+        pack_path = BASELINE_ROOT / slug / "v0_1"
+        assert pack_path.exists()
+        for file_name in REQUIRED_FILES:
+            assert (pack_path / file_name).exists()
+
+
+def test_core_payroll_explanation_blocked_closeout_records_honest_statuses():
+    closeout = _read(CORE_PAYROLL_BLOCKED_CLOSEOUT_PATH)
+
+    assert "`BASELINE_REQUIRED`: 25" in closeout
+    assert "`BASELINE_ALREADY_EXISTS`: 6" in closeout
+    assert "`RUNBOOK_OUTSTANDING`: 0" in closeout
+    assert "Readiness status: `DATABASE_CONNECTION_FAILED`" in closeout
+    assert "Because readiness was not `READY`, benchmark, corpus coverage and answer gap commands were not run" in closeout
+    assert "No other baseline-required domains were attempted" in closeout
+    assert "No benchmark, corpus coverage or answer gap JSON reports were generated for this batch" in closeout
+
+    for domain in ("Finalisation Readiness", "Payroll Output", "RateSource / Rate Story", "Decision Story"):
+        assert f"| {domain} | `DATABASE_CONNECTION_FAILED` | blocked pack only | not run | not run | not run | `BASELINE_REQUIRED` |" in closeout
+
+
+def test_core_payroll_explanation_blocked_packs_record_commands_not_run():
+    for slug, metadata in CORE_PAYROLL_BLOCKED_DOMAINS.items():
+        pack_path = BASELINE_ROOT / slug / "v0_1"
+        combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+        assert metadata["name"] in combined
+        assert metadata["runbook"] in combined
+        assert metadata["manifest"] in combined
+        assert metadata["scan"] in combined
+        assert metadata["gap"] in combined
+        assert "DB readiness result: `DATABASE_CONNECTION_FAILED`" in combined
+        assert "Result status: `BLOCKED_DATABASE_CONNECTION`" in combined
+        assert "Benchmark result: not run" in combined
+        assert "Corpus coverage result: not run" in combined
+        assert "Answer gap report: not run" in combined
+        assert "Audit/chat rows created: false" in combined
+        assert "Generated artefact committed: no" in combined
+        assert "Final ledger status remains `BASELINE_REQUIRED`" in combined
+        assert "Total: not run" in combined
+        assert "`STRONG`: not run" in combined
+        assert "Overall status: not run" in combined
+
+
+def test_core_payroll_explanation_blocked_packs_are_diagnostic_only_not_runtime_truth():
+    for slug in CORE_PAYROLL_BLOCKED_DOMAINS:
+        pack_path = BASELINE_ROOT / slug / "v0_1"
+        combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+        assert "diagnostic-only" in combined
+        assert "not operational truth" in combined
+        assert "does not mutate corpus" in combined
+        assert "change routing" in combined
+        assert "change answer generation" in combined
+        assert "call live LLM" in combined
+        assert "ingest operational JSON" in combined
+        assert "connect Code Evidence" in combined
+        assert "create DB schema or migrations" in combined
+        assert "add endpoints or UI" in combined
+        assert "change workforce-platform" in combined
 
 
 def test_six_domain_maturity_closeout_records_outcomes_without_changing_numbers():
@@ -428,6 +532,14 @@ def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
         "artifacts/eval/gross_to_net_answer_gap_report.json",
         "artifacts/eval/annual_leave_corpus_coverage.json",
         "artifacts/eval/annual_leave_answer_gap_report.json",
+        "artifacts/eval/finalisation_readiness_corpus_coverage.json",
+        "artifacts/eval/finalisation_readiness_answer_gap_report.json",
+        "artifacts/eval/payroll_output_corpus_coverage.json",
+        "artifacts/eval/payroll_output_answer_gap_report.json",
+        "artifacts/eval/rate_source_rate_story_corpus_coverage.json",
+        "artifacts/eval/rate_source_rate_story_answer_gap_report.json",
+        "artifacts/eval/decision_story_corpus_coverage.json",
+        "artifacts/eval/decision_story_answer_gap_report.json",
     ):
         tracked = subprocess.run(
             ["git", "ls-files", "--error-unmatch", relative_path],
