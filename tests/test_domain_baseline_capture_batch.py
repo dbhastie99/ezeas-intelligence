@@ -56,14 +56,15 @@ PAYROLL_OUTPUT_CAPTURED_DOMAIN = {
     "gap": "scripts\\build_payroll_output_answer_gap_report.py",
 }
 
+RATE_SOURCE_RATE_STORY_CAPTURED_DOMAIN = {
+    "name": "RateSource / Rate Story",
+    "runbook": "docs/RATE_SOURCE_RATE_STORY_EVALUATION_RUNBOOK.md",
+    "manifest": "samples\\eval\\rich_answer_benchmark.rate_source_rate_story.json",
+    "scan": "scripts\\scan_rate_source_rate_story_corpus_coverage.py",
+    "gap": "scripts\\build_rate_source_rate_story_answer_gap_report.py",
+}
+
 CORE_PAYROLL_BLOCKED_DOMAINS = {
-    "ratesource_rate_story": {
-        "name": "RateSource / Rate Story",
-        "runbook": "docs/RATE_SOURCE_RATE_STORY_EVALUATION_RUNBOOK.md",
-        "manifest": "samples\\eval\\rich_answer_benchmark.rate_source_rate_story.json",
-        "scan": "scripts\\scan_rate_source_rate_story_corpus_coverage.py",
-        "gap": "scripts\\build_rate_source_rate_story_answer_gap_report.py",
-    },
     "decision_story": {
         "name": "Decision Story",
         "runbook": "docs/DECISION_STORY_EVALUATION_RUNBOOK.md",
@@ -155,6 +156,13 @@ def test_finalisation_readiness_baseline_pack_exists_with_required_files():
 
 def test_payroll_output_baseline_pack_exists_with_required_files():
     pack_path = BASELINE_ROOT / "payroll_output" / "v0_1"
+    assert pack_path.exists()
+    for file_name in REQUIRED_FILES:
+        assert (pack_path / file_name).exists()
+
+
+def test_rate_source_rate_story_baseline_pack_exists_with_required_files():
+    pack_path = BASELINE_ROOT / "ratesource_rate_story" / "v0_1"
     assert pack_path.exists()
     for file_name in REQUIRED_FILES:
         assert (pack_path / file_name).exists()
@@ -259,6 +267,41 @@ def test_payroll_output_baseline_pack_records_captured_ready_results_with_failur
     assert "Source coverage plan: `PAYROLL_OUTPUT`" in combined
     assert "`worker_level_output` -> `IMPROVE_SYNTHESIS`" in combined
     assert "Tighten Payroll Output answer synthesis for weak core groups while keeping status caveats" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "BLOCKED_DATABASE_CONNECTION" not in combined
+
+
+def test_rate_source_rate_story_baseline_pack_records_captured_ready_results_with_failures():
+    metadata = RATE_SOURCE_RATE_STORY_CAPTURED_DOMAIN
+    pack_path = BASELINE_ROOT / "ratesource_rate_story" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness result: `READY`" in combined
+    assert "Result status: `COMPLETED_WITH_FAILURES`" in combined
+    assert "Total: 6" in combined
+    assert "Passed: 5" in combined
+    assert "Failed: 1" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "rate-source-rate-story-rich-answer" in combined
+    assert "Source snippets/matched phrases did not contain all expected terms: RateSource, Rate Story, rate amount" in combined
+    assert "benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in combined
+    assert "Evidence groups: 11" in combined
+    assert "`STRONG`: 10" in combined
+    assert "`WEAK`: 1" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Overall status: `NEEDS_REFINEMENT`" in combined
+    assert "`KEEP`: 10" in combined
+    assert "`IMPROVE_SYNTHESIS`: 1" in combined
+    assert "Report type: `RATE_SOURCE_RATE_STORY_ANSWER_GAP_REPORT`" in combined
+    assert "Source coverage plan: `RATE_SOURCE_RATE_STORY`" in combined
+    assert "`rate_source_evidence_index` -> `IMPROVE_SYNTHESIS`" in combined
+    assert "Tighten RateSource / Rate Story answer synthesis for weak core groups while keeping status caveats" in combined
     assert "Generated artefact committed: no" in combined
     assert "Code Evidence answer integration: no" in combined
     assert "BLOCKED_DATABASE_CONNECTION" not in combined
@@ -506,10 +549,10 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 23" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 8" in ledger
+    assert "`BASELINE_REQUIRED`: 22" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 9" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
@@ -537,8 +580,12 @@ def test_ledger_counts_remain_honest_for_captured_batch():
     assert "corpus coverage 10 STRONG, 1 WEAK, 0 MISSING" in ledger
     assert "answer gap status NEEDS_REFINEMENT with 10 KEEP actions and 1 IMPROVE_SYNTHESIS action for `worker_level_output`" in ledger
     assert "Failure is benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in ledger
-    for domain in ("RateSource / Rate Story", "Decision Story"):
-        assert f"| {domain} | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "| RateSource / Rate Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | RateSource / Rate Story now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "benchmark 6 total, 5 passed, 1 failed" in ledger
+    assert "rate-source-rate-story-rich-answer" in ledger
+    assert "answer gap status NEEDS_REFINEMENT with 10 KEEP actions and 1 IMPROVE_SYNTHESIS action for `rate_source_evidence_index`" in ledger
+    assert "| Decision Story | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
 
 def test_worker_story_baseline_history_remains_unchanged_after_batch():
