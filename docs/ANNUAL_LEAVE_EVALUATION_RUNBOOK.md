@@ -148,7 +148,7 @@ Annual Leave / Leave Management has:
 - Annual Leave-specific corpus coverage diagnostic tooling.
 - Annual Leave-specific answer gap report tooling.
 
-Annual Leave / Leave Management now has the v0.4 runbook foundation, corpus coverage diagnostic tooling, and answer gap report tooling. It is therefore `BASELINE_REQUIRED` in the completed-domain baseline decision ledger, but no Annual Leave baseline pack exists or should be created by this diagnostic slice.
+Annual Leave / Leave Management now has the v0.4 runbook foundation, corpus coverage diagnostic tooling, answer gap report tooling, and a checked-in v0.1 baseline pack under `docs/evaluation/worker_story_baselines/annual_leave/v0_1/`. Generated JSON reports remain transient evaluation artefacts unless explicitly versioned as part of a baseline pack.
 
 ## Guardrails
 

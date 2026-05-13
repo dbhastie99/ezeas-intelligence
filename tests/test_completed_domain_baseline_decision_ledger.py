@@ -108,29 +108,31 @@ def test_completed_domain_baseline_decision_ledger_summary_and_counts_are_docume
 
     assert "## Summary" in ledger
     assert "Total domains inventoried: 31" in ledger
-    assert "`BASELINE_REQUIRED`: 26" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 5" in ledger
+    assert "`BASELINE_REQUIRED`: 25" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 6" in ledger
     assert "`NO_BASELINE_NEEDED`: 0" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
     assert "`NEEDS_REVIEW`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net" in ledger
-    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review and Gross-to-Net as captured comparison controls" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management" in ledger
+    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net and Annual Leave / Leave Management as captured comparison controls" in ledger
     assert "Domains with runbook outstanding: none" in ledger
 
 
-def test_annual_leave_is_baseline_required_without_baseline_pack():
+def test_annual_leave_is_baseline_already_exists_with_baseline_pack():
     ledger = _ledger()
 
-    assert "## Annual Leave / Leave Management Baseline-Required Finding" in ledger
-    assert "Annual Leave / Leave Management is now `BASELINE_REQUIRED`" in ledger
+    assert "## Annual Leave / Leave Management Baseline Captured Finding" in ledger
+    assert "Annual Leave / Leave Management is now `BASELINE_ALREADY_EXISTS`" in ledger
     assert "Annual Leave-specific v0.4 evaluation runbook foundation" in ledger
     assert "corpus coverage diagnostic service/script" in ledger
     assert "answer gap report service/script" in ledger
     assert "Adjacent leave-domain v0.4 diagnostics are not substitutes" in ledger
-    assert "does not mark Annual Leave as `BASELINE_ALREADY_EXISTS`" in ledger
-    assert "does not create an Annual Leave baseline pack" in ledger
+    assert "checked-in Annual Leave baseline pack" in ledger
+    assert "benchmark 1 total, 1 passed, 0 failed" in ledger
+    assert "corpus coverage 7 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status GOOD with 7 KEEP actions" in ledger
 
-    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | yes | yes | yes | no |" in ledger
+    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | yes | yes | yes | yes |" in ledger
     assert "samples/eval/golden_questions.annual_leave.json" in ledger
     assert "app/services/annual_leave_corpus_coverage_service.py" in ledger
     assert "app/services/annual_leave_answer_gap_report_service.py" in ledger
@@ -140,15 +142,16 @@ def test_annual_leave_is_baseline_required_without_baseline_pack():
     assert "scripts/build_leave_manifest_from_candidates.py" in ledger
     assert "ANNUAL_LEAVE_CORPUS_CHECKLIST.md" in ledger
     assert "docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md" in ledger
+    assert "docs/evaluation/worker_story_baselines/annual_leave/v0_1/BASELINE_SUMMARY.md" in ledger
 
 
-def test_annual_leave_diagnostics_are_present_without_baseline_pack():
+def test_annual_leave_diagnostics_are_present_with_baseline_pack():
     assert Path("docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md").exists()
     assert Path("app/services/annual_leave_corpus_coverage_service.py").exists()
     assert Path("app/services/annual_leave_answer_gap_report_service.py").exists()
     assert Path("scripts/scan_annual_leave_corpus_coverage.py").exists()
     assert Path("scripts/build_annual_leave_answer_gap_report.py").exists()
-    assert not Path("docs/evaluation/worker_story_baselines/annual_leave/v0_1").exists()
+    assert Path("docs/evaluation/worker_story_baselines/annual_leave/v0_1").exists()
 
     assert Path("docs/LEAVE_ACCRUAL_PROCESSING_EVALUATION_RUNBOOK.md").exists()
     assert Path("docs/LEAVE_SOURCE_MODEL_EVALUATION_RUNBOOK.md").exists()
@@ -183,4 +186,6 @@ def test_completed_domain_baseline_decision_ledger_records_captured_baselines():
     assert "| Gross-to-Net | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "docs/evaluation/worker_story_baselines/gross_to_net/v0_1/BASELINE_SUMMARY.md" in ledger
     assert "BASELINE_ALREADY_EXISTS | Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "docs/evaluation/worker_story_baselines/annual_leave/v0_1/BASELINE_SUMMARY.md" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Annual Leave / Leave Management now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "| Payroll Tax / WorkCover / WIC Liability Detail | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger

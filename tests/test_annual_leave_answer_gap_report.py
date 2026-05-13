@@ -1,4 +1,5 @@
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -193,6 +194,13 @@ def test_annual_leave_gap_report_missing_coverage_report_path_fails_clearly(tmp_
     assert "Coverage report does not exist" in captured.out
 
 
-def test_annual_leave_gap_report_does_not_require_committed_generated_json_or_baseline_pack():
-    assert not Path("docs/evaluation/worker_story_baselines/annual_leave/v0_1").exists()
-    assert not Path("artifacts/eval/annual_leave_answer_gap_report.json").exists()
+def test_annual_leave_gap_report_does_not_require_committed_generated_json():
+    assert Path("docs/evaluation/worker_story_baselines/annual_leave/v0_1").exists()
+
+    tracked = subprocess.run(
+        ["git", "ls-files", "--error-unmatch", "artifacts/eval/annual_leave_answer_gap_report.json"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert tracked.returncode != 0

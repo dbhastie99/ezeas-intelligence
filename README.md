@@ -19,7 +19,7 @@ Code Evidence Index tooling is documented in [docs/CODE_EVIDENCE_INDEX.md](docs/
 
 Worker Story evaluation is documented in [docs/WORKER_STORY_EVALUATION_RUNBOOK.md](docs/WORKER_STORY_EVALUATION_RUNBOOK.md), including benchmark, corpus coverage diagnostic, and answer gap report commands.
 
-Annual Leave / Leave Management evaluation is documented in [docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md](docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md). The runbook records the Annual Leave benchmark, golden-question, corpus coverage diagnostic, and answer gap report commands. Annual Leave is `BASELINE_REQUIRED` in the completed-domain ledger, with no checked-in Annual Leave baseline pack.
+Annual Leave / Leave Management evaluation is documented in [docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md](docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md). The runbook records the Annual Leave benchmark, golden-question, corpus coverage diagnostic, and answer gap report commands. Annual Leave is `BASELINE_ALREADY_EXISTS` in the completed-domain ledger, with a checked-in v0.1 baseline pack at [docs/evaluation/worker_story_baselines/annual_leave/v0_1/](docs/evaluation/worker_story_baselines/annual_leave/v0_1/).
 
 Completed-domain baseline decisions are tracked in [docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md](docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md). The ledger is diagnostic/control documentation only and does not create v0.5 slices automatically.
 
@@ -916,7 +916,7 @@ Build the diagnostic-only Annual Leave / Leave Management answer gap report from
 .\.venv\Scripts\python.exe scripts\build_annual_leave_answer_gap_report.py --coverage-report .\artifacts\eval\annual_leave_corpus_coverage.json --output .\artifacts\eval\annual_leave_answer_gap_report.json
 ```
 
-These Annual Leave diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, read source code as Minerva evidence, or connect Code Evidence Index to answer generation. Annual Leave / Leave Management is `BASELINE_REQUIRED` in the completed-domain ledger, but this does not create or authorize an Annual Leave baseline pack.
+These Annual Leave diagnostics read the already indexed formal corpus and saved diagnostic JSON only. They do not mutate corpus records, run migrations, ingest operational JSON, call a live LLM, read source code as Minerva evidence, or connect Code Evidence Index to answer generation. Annual Leave / Leave Management now has a checked-in v0.1 baseline pack under `docs/evaluation/worker_story_baselines/annual_leave/v0_1/`; generated JSON reports remain transient evaluation artefacts unless explicitly versioned.
 
 For the repeatable Annual Leave / Leave Management evaluation workflow and interpretation guidance, see [docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md](docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md).
 

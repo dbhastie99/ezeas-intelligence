@@ -286,7 +286,7 @@ def test_annual_leave_evaluation_runbook_exists_and_documents_foundation_status(
     assert "Annual Leave / Leave Management corpus coverage diagnostic classifies" in runbook
     assert "Annual Leave / Leave Management answer gap report consumes the saved corpus coverage JSON" in runbook
     assert "Annual Leave / Leave Management now has the v0.4 runbook foundation" in runbook
-    assert "`BASELINE_REQUIRED`" in runbook
+    assert "checked-in v0.1 baseline pack" in runbook
     assert "app/services/annual_leave_corpus_coverage_service.py" in runbook
     assert "scripts\\scan_annual_leave_corpus_coverage.py" in runbook
     assert "app/services/annual_leave_answer_gap_report_service.py" in runbook

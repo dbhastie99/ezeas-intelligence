@@ -6,6 +6,7 @@ BASELINE_ROOT = Path("docs/evaluation/worker_story_baselines")
 LEDGER_PATH = BASELINE_ROOT / "COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md"
 CLOSEOUT_PATH = BASELINE_ROOT / "BASELINE_BATCH_CLOSEOUT_2026_05_13.md"
 WORKER_STORY_PACK = BASELINE_ROOT / "worker_story" / "v0_1"
+ANNUAL_LEAVE_PACK = BASELINE_ROOT / "annual_leave" / "v0_1"
 REQUIRED_FILES = (
     "BASELINE_SUMMARY.md",
     "BENCHMARK_BASELINE.md",
@@ -242,10 +243,10 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 26" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 5" in ledger
+    assert "`BASELINE_REQUIRED`: 25" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 6" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
@@ -259,6 +260,8 @@ def test_ledger_counts_remain_honest_for_captured_batch():
     assert "| Gross-to-Net | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "BASELINE_ALREADY_EXISTS | Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "| Payroll Bases & Totals | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Annual Leave / Leave Management now has a checked-in DB-backed baseline artefact pack" in ledger
 
 
 def test_worker_story_baseline_history_remains_unchanged_after_batch():
@@ -272,16 +275,60 @@ def test_worker_story_baseline_history_remains_unchanged_after_batch():
     assert "Result status: `COMPLETED_WITH_FAILURES`" in benchmark
 
 
-def test_annual_leave_is_baseline_required_without_pack():
+def test_annual_leave_baseline_pack_records_captured_ready_results():
     ledger = _read(LEDGER_PATH)
+    combined = "\n".join(_read(ANNUAL_LEAVE_PACK / file_name) for file_name in REQUIRED_FILES)
 
-    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | yes | yes | yes | no |" in ledger
-    assert "BASELINE_REQUIRED | Completed v0.4 evaluation artefacts exist and no checked-in baseline artefact exists." in ledger
+    assert ANNUAL_LEAVE_PACK.exists()
+    for file_name in REQUIRED_FILES:
+        assert (ANNUAL_LEAVE_PACK / file_name).exists()
+
+    assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Annual Leave / Leave Management now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "app/services/annual_leave_answer_gap_report_service.py" in ledger
     assert "scripts/build_annual_leave_answer_gap_report.py" in ledger
     assert "Adjacent leave-domain v0.4 diagnostics are not substitutes" in ledger
     assert "Domains with runbook outstanding: none" in ledger
-    assert not (BASELINE_ROOT / "annual_leave" / "v0_1").exists()
+
+    assert "Annual Leave / Leave Management" in combined
+    assert "docs/ANNUAL_LEAVE_EVALUATION_RUNBOOK.md" in combined
+    assert "samples\\eval\\rich_answer_benchmark.annual_leave.json" in combined
+    assert "scripts\\scan_annual_leave_corpus_coverage.py" in combined
+    assert "scripts\\build_annual_leave_answer_gap_report.py" in combined
+    assert "DB readiness result: `READY`" in combined
+    assert "Result status: `COMPLETED`" in combined
+    assert "Total: 1" in combined
+    assert "Passed: 1" in combined
+    assert "Failed: 0" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "Evidence groups: 7" in combined
+    assert "`STRONG`: 7" in combined
+    assert "`WEAK`: 0" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Overall status: `GOOD`" in combined
+    assert "`KEEP`: 7" in combined
+    assert "Report type: `ANNUAL_LEAVE_MANAGEMENT_ANSWER_GAP_REPORT`" in combined
+    assert "Source coverage plan: `ANNUAL_LEAVE_MANAGEMENT`" in combined
+    assert "Keep current Annual Leave / Leave Management retrieval terms and answer synthesis under benchmark watch" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "BLOCKED_DATABASE_CONNECTION" not in combined
+
+
+def test_annual_leave_baseline_is_diagnostic_only_not_runtime_truth():
+    combined = "\n".join(_read(ANNUAL_LEAVE_PACK / file_name) for file_name in REQUIRED_FILES)
+
+    assert "diagnostic-only" in combined
+    assert "not operational truth" in combined
+    assert "does not mutate corpus" in combined
+    assert "does not change routing" in combined
+    assert "does not change answer generation" in combined
+    assert "does not call live LLM" in combined
+    assert "does not ingest operational JSON" in combined
+    assert "does not connect Code Evidence" in combined
+    assert "does not create DB schema or migrations" in combined
+    assert "does not add endpoints or UI" in combined
+    assert "does not change workforce-platform" in combined
 
 
 def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
