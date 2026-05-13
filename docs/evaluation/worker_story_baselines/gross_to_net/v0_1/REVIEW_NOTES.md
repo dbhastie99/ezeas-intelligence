@@ -1,6 +1,6 @@
 # Gross-to-Net Baseline Review Notes
 
-These notes define the manual review checklist for the Gross-to-Net baseline capture attempt. They are diagnostic-only and not operational truth.
+These notes define the manual review checklist for the Gross-to-Net captured baseline. They are diagnostic-only and not operational truth.
 
 This review file does not mutate corpus, does not change routing, does not change answer generation, does not call live LLM, does not ingest operational JSON, and does not connect Code Evidence.
 
@@ -10,16 +10,22 @@ This review file does not mutate corpus, does not change routing, does not chang
 - Confirm the baseline pack references `docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md`.
 - Confirm all required files exist: `BASELINE_SUMMARY.md`, `BENCHMARK_BASELINE.md`, `CORPUS_COVERAGE_BASELINE.md`, `ANSWER_GAP_REPORT_BASELINE.md` and `REVIEW_NOTES.md`.
 - Confirm command completion status is explicit.
-- Confirm blocked execution is labelled `BLOCKED_DATABASE_CONNECTION`.
-- Confirm generated output is either intentionally absent or clearly labelled.
+- Confirm this pack is labelled as captured, not as a blocked database capture.
+- Confirm benchmark result is 6 total, 5 passed, 1 failed.
+- Confirm failed benchmark case ID `gross-to-net-current-effective-worker-story` is recorded.
+- Confirm the failure is classified as benchmark answer-term expectation drift, not a corpus gap.
+- Confirm corpus coverage is 10 `STRONG`, 0 `WEAK`, 0 `MISSING`.
+- Confirm answer gap report status is `GOOD` with 10 `KEEP` actions.
+- Confirm generated output is summarized into curated markdown and not required as a committed artefact.
 - Confirm every file keeps diagnostic-only guardrails.
 - Confirm no operational JSON, secrets, tenant data, source-code evidence content or runtime payroll truth is included.
 
 ## Reviewer Questions
 
-- Does this blocked capture pack help the next reviewer rerun the canonical commands?
-- Is the database blocker clearly separated from product-domain evidence quality?
-- Is the decision ledger clear that Gross-to-Net is not yet treated as `BASELINE_ALREADY_EXISTS`?
+- Is the decision ledger clear that Gross-to-Net is now `BASELINE_ALREADY_EXISTS`?
+- Is the failed benchmark case preserved without weakening expectations?
+- Is the recommended next action limited to benchmark watch rather than corpus mutation?
+- Are generated JSON outputs treated as local evaluation artefacts rather than required committed baseline files?
 
 ## What Must Not Be Inferred
 
@@ -38,4 +44,4 @@ This baseline must not be read as proof that:
 
 ## Expansion Notes
 
-Do not expand this blocked capture to all remaining domains. Restore DB connectivity and capture actual command results for this domain before moving it to `BASELINE_ALREADY_EXISTS`.
+This completes the previously blocked Gross-to-Net pack from the small four-domain baseline batch. No domains from that batch remain blocked. Annual Leave / Leave Management remains `RUNBOOK_OUTSTANDING`.

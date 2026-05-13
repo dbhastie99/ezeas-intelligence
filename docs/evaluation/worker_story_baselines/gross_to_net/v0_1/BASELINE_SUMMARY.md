@@ -1,6 +1,6 @@
 # Gross-to-Net Baseline Summary
 
-Slice name: Minerva Domain Baseline Capture Batch v0.1 - Blocked Database Capture
+Slice name: Gross-to-Net Baseline Capture v0.1 - Record READY Baseline Results
 
 Domain: Gross-to-Net
 
@@ -10,44 +10,51 @@ Source decision ledger: `docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN
 
 Baseline policy: `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`
 
-This baseline pack is diagnostic-only and not operational truth. It is a checked-in capture record for a controlled baseline attempt, not proof of runtime implementation, payroll correctness, corpus completeness or live platform state.
+This baseline pack is diagnostic-only and not operational truth. It is a checked-in comparison control for future Gross-to-Net evaluation changes. It does not prove runtime implementation, payroll correctness, corpus completeness or live platform state.
 
 ## Execution Context
 
 Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
-The read-only DB readiness gate returned `DATABASE_CONNECTION_FAILED` before the domain baseline commands were run.
+DB readiness returned `READY` before the Gross-to-Net baseline commands were run.
 
-- Readiness command: `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py`
 - Required tables checked: `KnowledgeDocument`, `KnowledgeChunk`
 - Missing tables: none
-- Blocker: SQL Server connection could not be established from this environment.
 
-Because DB readiness did not pass, the benchmark, corpus coverage diagnostic and answer gap report commands were not executed in this slice.
+Generated JSON reports were local/generated under `.\artifacts\eval\` and were not committed. This baseline summarizes those generated outputs into curated markdown only.
 
-## Commands Identified
+## Commands Executed
 
 | Area | Command | Completed In v0.1 | Captured Result Summary |
 |---|---|---:|---|
-| Gross-to-Net benchmark | `.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.gross_to_net.json` | no | `BLOCKED_DATABASE_CONNECTION`; no pass/fail counts captured. |
-| Corpus coverage diagnostic | `.\.venv\Scripts\python.exe scripts\scan_gross_to_net_corpus_coverage.py` | no | `BLOCKED_DATABASE_CONNECTION`; no `STRONG` / `WEAK` / `MISSING` counts captured. |
-| Corpus coverage diagnostic JSON | `.\.venv\Scripts\python.exe scripts\scan_gross_to_net_corpus_coverage.py --json --output .\artifacts\eval\gross_to_net_corpus_coverage.json` | no | `BLOCKED_DATABASE_CONNECTION`; generated JSON was not created. |
-| Answer gap report | `.\.venv\Scripts\python.exe scripts\build_gross_to_net_answer_gap_report.py --coverage-report .\artifacts\eval\gross_to_net_corpus_coverage.json` | no | `BLOCKED_DATABASE_CONNECTION`; no overall status or action counts captured. |
-| Answer gap report JSON | `.\.venv\Scripts\python.exe scripts\build_gross_to_net_answer_gap_report.py --coverage-report .\artifacts\eval\gross_to_net_corpus_coverage.json --json --output .\artifacts\eval\gross_to_net_answer_gap_report.json` | no | `BLOCKED_DATABASE_CONNECTION`; generated JSON was not created. |
+| Gross-to-Net benchmark | `.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.gross_to_net.json` | yes | 6 total, 5 passed, 1 failed; audit/chat rows created: false. |
+| Corpus coverage diagnostic | `.\.venv\Scripts\python.exe scripts\scan_gross_to_net_corpus_coverage.py` | yes | Gross-to-Net coverage reported 10 STRONG, 0 WEAK, 0 MISSING. |
+| Corpus coverage diagnostic JSON | `.\.venv\Scripts\python.exe scripts\scan_gross_to_net_corpus_coverage.py --json --output .\artifacts\eval\gross_to_net_corpus_coverage.json` | yes | Local generated JSON report created and summarized, not committed. |
+| Answer gap report | `.\.venv\Scripts\python.exe scripts\build_gross_to_net_answer_gap_report.py --coverage-report .\artifacts\eval\gross_to_net_corpus_coverage.json` | yes | Overall status GOOD; 10 KEEP actions. |
+| Answer gap report JSON | `.\.venv\Scripts\python.exe scripts\build_gross_to_net_answer_gap_report.py --coverage-report .\artifacts\eval\gross_to_net_corpus_coverage.json --json --output .\artifacts\eval\gross_to_net_answer_gap_report.json` | yes | Local generated JSON report created and summarized, not committed. |
 
 ## Captured High-Level Findings
 
-- DB readiness result: `DATABASE_CONNECTION_FAILED`.
-- Benchmark result: `BLOCKED_DATABASE_CONNECTION`; counts not captured.
-- Corpus coverage result: `BLOCKED_DATABASE_CONNECTION`; counts not captured.
-- Answer gap report: `BLOCKED_DATABASE_CONNECTION`; actions not captured.
-- Audit/chat rows created: not available because the benchmark was not run.
-- Command availability: canonical runbook commands and scripts exist.
+- DB readiness result: `READY`.
+- Benchmark result: 6 total, 5 passed, 1 failed.
+- Failed benchmark case: `gross-to-net-current-effective-worker-story`.
+- Failure classification: benchmark answer-term expectation drift, not corpus gap; coverage is strong across all planned Gross-to-Net evidence groups.
+- Audit/chat rows created: false.
+- Corpus coverage result: `STRONG` = 10, `WEAK` = 0, `MISSING` = 0.
+- Indexed corpus: 5 active documents, 4583 chunks.
+- Answer gap report: `GOOD`.
+- Report type: `GROSS_TO_NET_ANSWER_GAP_REPORT`.
+- Source coverage plan: `GROSS_TO_NET`.
+- Recommended actions: 10 `KEEP`.
+- Recommended next action: Keep current Gross-to-Net retrieval terms and answer synthesis under benchmark watch.
+- Live LLM calls: no.
+- Corpus mutation: no.
+- Operational JSON ingestion: no.
 - Generated artefacts committed: no.
 
-## Evidence Groups In Scope
+## Evidence Groups Covered By The Baseline Shape
 
-The canonical coverage plan exists, but group statuses were not captured:
+The following Gross-to-Net evidence groups were reported as `STRONG`:
 
 - `gross_to_net_purpose`
 - `gross_earnings_and_payroll_output`
@@ -60,12 +67,13 @@ The canonical coverage plan exists, but group statuses were not captured:
 - `current_effective_output_truth`
 - `outstanding_hardening`
 
+No evidence groups were reported as `WEAK` or `MISSING`.
+
 ## Known Gaps
 
-- This pack records a blocked baseline capture attempt, not an executed comparison baseline.
-- No benchmark pass/fail counts are available for this slice.
-- No corpus coverage counts are available for this slice.
-- No answer gap status or recommended action counts are available for this slice.
+- This is a captured baseline with a benchmark failure, not a blocked database capture.
+- The failing benchmark case remains recorded for future comparison; expectations were not weakened.
+- Generated output files under `.\artifacts\eval\` were created locally and were not committed.
 - Annual Leave / Leave Management remains `RUNBOOK_OUTSTANDING` in the completed-domain ledger.
 
 ## Guardrails
@@ -88,4 +96,4 @@ This baseline pack:
 
 ## Recommended Next Slice
 
-Restore database connectivity and rerun the Gross-to-Net benchmark, corpus coverage diagnostic and answer gap report commands before treating this domain as `BASELINE_ALREADY_EXISTS`.
+Keep current Gross-to-Net retrieval terms and answer synthesis under benchmark watch. Treat `gross-to-net-current-effective-worker-story` as captured benchmark drift against otherwise strong corpus coverage, not as a corpus mutation request.

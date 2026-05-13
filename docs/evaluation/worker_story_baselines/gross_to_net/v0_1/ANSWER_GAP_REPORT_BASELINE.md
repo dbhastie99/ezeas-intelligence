@@ -1,8 +1,8 @@
 # Gross-to-Net Answer Gap Report Baseline
 
-This file records the Gross-to-Net answer gap report baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the Gross-to-Net answer gap report baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Commands Identified
+## Commands Executed
 
 Human-readable mode:
 
@@ -20,24 +20,34 @@ Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
 ## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED`
 
-Overall status: not captured
+Report type: `GROSS_TO_NET_ANSWER_GAP_REPORT`
+
+Source coverage plan: `GROSS_TO_NET`
+
+Overall status: `GOOD`
 
 Recommended action counts:
 
-- `KEEP`: not captured
-- `IMPROVE_RETRIEVAL_TERMS`: not captured
-- `IMPROVE_SYNTHESIS`: not captured
-- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: not captured
+- `KEEP`: 10
+- `IMPROVE_RETRIEVAL_TERMS`: 0
+- `IMPROVE_SYNTHESIS`: 0
+- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: 0
 
-The answer gap report was not run because the coverage report could not be generated after DB readiness failed.
+Recommended next action: Keep current Gross-to-Net retrieval terms and answer synthesis under benchmark watch.
 
-Generated artefact committed: no.
+Generated artefact committed: no. The JSON output command created `.\artifacts\eval\gross_to_net_answer_gap_report.json` locally for summarization, but the file is not a required committed artefact.
 
 Live LLM calls: no.
 
 Corpus mutation: no.
+
+Operational JSON ingestion: no.
+
+## Action Mapping
+
+Each reported Gross-to-Net evidence group was `STRONG` -> `KEEP`.
 
 ## Status Interpretation
 
@@ -49,7 +59,7 @@ Answer gap status is an evaluation signal. It is not operational truth and does 
 
 ## Diagnostic Interpretation
 
-No answer gap interpretation is made for Gross-to-Net in this slice because the DB readiness gate failed.
+The answer gap report recommended keeping current Gross-to-Net retrieval terms and answer synthesis under benchmark watch. It did not recommend formal corpus additions.
 
 ## Diagnostic-Only Guardrails
 

@@ -1,8 +1,8 @@
 # Gross-to-Net Corpus Coverage Baseline
 
-This file records the Gross-to-Net corpus coverage baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the Gross-to-Net corpus coverage baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Commands Identified
+## Commands Executed
 
 Human-readable mode:
 
@@ -22,32 +22,36 @@ Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
 Domain: Gross-to-Net
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED`
+
+Indexed corpus: 5 active documents, 4583 chunks.
 
 | Evidence Group | Captured Coverage Status |
 |---|---|
-| `gross_to_net_purpose` | not captured |
-| `gross_earnings_and_payroll_output` | not captured |
-| `taxable_basis_and_payg` | not captured |
-| `deductions_and_obligations` | not captured |
-| `negative_net_pay` | not captured |
-| `net_pay_and_payment_allocation` | not captured |
-| `worker_story_relationship` | not captured |
-| `finalisation_and_payment_execution` | not captured |
-| `current_effective_output_truth` | not captured |
-| `outstanding_hardening` | not captured |
+| `gross_to_net_purpose` | `STRONG` |
+| `gross_earnings_and_payroll_output` | `STRONG` |
+| `taxable_basis_and_payg` | `STRONG` |
+| `deductions_and_obligations` | `STRONG` |
+| `negative_net_pay` | `STRONG` |
+| `net_pay_and_payment_allocation` | `STRONG` |
+| `worker_story_relationship` | `STRONG` |
+| `finalisation_and_payment_execution` | `STRONG` |
+| `current_effective_output_truth` | `STRONG` |
+| `outstanding_hardening` | `STRONG` |
 
 ## Coverage Counts
 
-- `STRONG`: not captured
-- `WEAK`: not captured
-- `MISSING`: not captured
+- `STRONG`: 10
+- `WEAK`: 0
+- `MISSING`: 0
 
-Generated artefact committed: no. The JSON output command was not run and `.\artifacts\eval\gross_to_net_corpus_coverage.json` was not created by this slice.
+Generated artefact committed: no. The JSON output command created `.\artifacts\eval\gross_to_net_corpus_coverage.json` locally for summarization, but the file is not a required committed artefact.
 
 Live LLM calls: no.
 
 Corpus mutation: no.
+
+Operational JSON ingestion: no.
 
 ## Status Interpretation
 
@@ -59,7 +63,7 @@ Coverage status is about available indexed formal corpus evidence. It is not ope
 
 ## Diagnostic Interpretation
 
-No coverage interpretation is made for Gross-to-Net in this slice because the DB readiness gate failed.
+All 10 Gross-to-Net evidence groups were reported as `STRONG`. The benchmark failure is therefore classified as benchmark answer-term expectation drift, not a formal-corpus gap.
 
 ## Diagnostic-Only Guardrails
 

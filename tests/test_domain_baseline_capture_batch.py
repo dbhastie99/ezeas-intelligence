@@ -35,9 +35,6 @@ CAPTURED_BATCH_DOMAINS = {
         "scan": "scripts\\scan_movement_review_corpus_coverage.py",
         "gap": "scripts\\build_movement_review_answer_gap_report.py",
     },
-}
-
-BLOCKED_BATCH_DOMAINS = {
     "gross_to_net": {
         "name": "Gross-to-Net",
         "runbook": "docs/GROSS_TO_NET_EVALUATION_RUNBOOK.md",
@@ -53,7 +50,7 @@ def _read(path: Path) -> str:
 
 
 def test_batch_baseline_packs_exist_with_required_files():
-    for slug in (*CAPTURED_BATCH_DOMAINS, *BLOCKED_BATCH_DOMAINS):
+    for slug in CAPTURED_BATCH_DOMAINS:
         pack_path = BASELINE_ROOT / slug / "v0_1"
         assert pack_path.exists()
         for file_name in REQUIRED_FILES:
@@ -141,26 +138,38 @@ def test_movement_review_baseline_pack_records_captured_ready_results():
     assert "BLOCKED_DATABASE_CONNECTION" not in combined
 
 
-def test_batch_baseline_packs_record_blocked_database_capture_and_commands():
-    for slug, metadata in BLOCKED_BATCH_DOMAINS.items():
-        pack_path = BASELINE_ROOT / slug / "v0_1"
-        combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+def test_gross_to_net_baseline_pack_records_captured_ready_results_with_failures():
+    metadata = CAPTURED_BATCH_DOMAINS["gross_to_net"]
+    pack_path = BASELINE_ROOT / "gross_to_net" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
 
-        assert metadata["name"] in combined
-        assert metadata["runbook"] in combined
-        assert metadata["manifest"] in combined
-        assert metadata["scan"] in combined
-        assert metadata["gap"] in combined
-        assert "DATABASE_CONNECTION_FAILED" in combined
-        assert "BLOCKED_DATABASE_CONNECTION" in combined
-        assert "Total: not captured" in combined
-        assert "`STRONG`: not captured" in combined
-        assert "Overall status: not captured" in combined
-        assert "Audit/chat rows created: not available because the benchmark was not run" in combined
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness result: `READY`" in combined
+    assert "Result status: `COMPLETED_WITH_FAILURES`" in combined
+    assert "Total: 6" in combined
+    assert "Passed: 5" in combined
+    assert "Failed: 1" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "gross-to-net-current-effective-worker-story" in combined
+    assert "benchmark answer-term expectation drift, not corpus gap" in combined
+    assert "`STRONG`: 10" in combined
+    assert "`WEAK`: 0" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Overall status: `GOOD`" in combined
+    assert "`KEEP`: 10" in combined
+    assert "Report type: `GROSS_TO_NET_ANSWER_GAP_REPORT`" in combined
+    assert "Source coverage plan: `GROSS_TO_NET`" in combined
+    assert "Keep current Gross-to-Net retrieval terms and answer synthesis under benchmark watch" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "BLOCKED_DATABASE_CONNECTION" not in combined
 
 
 def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
-    for slug in (*CAPTURED_BATCH_DOMAINS, *BLOCKED_BATCH_DOMAINS):
+    for slug in CAPTURED_BATCH_DOMAINS:
         pack_path = BASELINE_ROOT / slug / "v0_1"
         combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
 
@@ -177,22 +186,25 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
         assert "does not change workforce-platform" in combined
 
 
-def test_ledger_counts_remain_honest_for_captured_and_blocked_batch():
+def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 26" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 4" in ledger
+    assert "`BASELINE_REQUIRED`: 25" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 5" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 1" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
-    assert "Gross-to-Net has a blocked v0.1 capture pack" in ledger
-    assert "For ledger-count purposes Gross-to-Net remains `BASELINE_REQUIRED`" in ledger
+    assert "Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "benchmark 6 total, 5 passed, 1 failed" in ledger
+    assert "gross-to-net-current-effective-worker-story" in ledger
+    assert "Failure is benchmark answer-term expectation drift, not corpus gap" in ledger
     assert "| PayRun Admin Queue | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "| Movement Review | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "BASELINE_ALREADY_EXISTS | Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "benchmark 8 total, 8 passed, 0 failed" in ledger
-    assert "| Gross-to-Net | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "| Gross-to-Net | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "| Payroll Bases & Totals | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
 
 
@@ -232,6 +244,7 @@ def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
         "artifacts/eval/movement_review_corpus_coverage.json",
         "artifacts/eval/movement_review_answer_gap_report.json",
         "artifacts/eval/gross_to_net_corpus_coverage.json",
+        "artifacts/eval/gross_to_net_answer_gap_report.json",
     ):
         tracked = subprocess.run(
             ["git", "ls-files", "--error-unmatch", relative_path],

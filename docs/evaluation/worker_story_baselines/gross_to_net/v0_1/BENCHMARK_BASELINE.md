@@ -1,8 +1,8 @@
 # Gross-to-Net Benchmark Baseline
 
-This file records the Gross-to-Net benchmark baseline capture attempt for comparison control. It is diagnostic-only and not operational truth.
+This file records the Gross-to-Net benchmark baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Command Identified
+## Command Executed
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.gross_to_net.json
@@ -22,18 +22,30 @@ The benchmark checks deterministic retrieval and answer-contract behavior for Gr
 
 ## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED_WITH_FAILURES`
 
 Pass/fail summary:
 
-- Total: not captured
-- Passed: not captured
-- Failed: not captured
-- Audit/chat rows created: not available because the benchmark was not run
+- Total: 6
+- Passed: 5
+- Failed: 1
+- Audit/chat rows created: false
 
-The read-only DB readiness gate failed before this command was run. No benchmark result is inferred from this blocked state.
+Failed cases:
+
+- `gross-to-net-current-effective-worker-story`
+  - Question: How does Gross-to-Net relate to current-effective payroll output and Worker Story?
+  - Failure: Answer did not contain all expected terms: current-effective payroll output truth, full run, targeted reprocess, Worker Story, calculated payroll outcome, line proof, amounts, deductions, net pay, superseded output, current truth, audit story.
+
+Observed answer framing was directionally Gross-to-Net-specific, but the benchmark answer-term expectation failed for the current-effective Worker Story relationship case. Failure classification: benchmark answer-term expectation drift, not corpus gap. Corpus coverage was 10 STRONG, 0 WEAK, 0 MISSING.
 
 Generated artefact committed: no.
+
+Live LLM calls: no.
+
+Corpus mutation: no.
+
+Operational JSON ingestion: no.
 
 ## Source References
 
