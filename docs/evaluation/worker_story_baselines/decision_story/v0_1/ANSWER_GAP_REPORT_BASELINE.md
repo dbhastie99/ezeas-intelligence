@@ -1,26 +1,43 @@
 # Decision Story Answer Gap Report Baseline
 
-This file records that answer gap report capture was blocked. It is diagnostic-only and not operational truth.
+This file records the Decision Story answer gap report baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Commands Not Executed
+## Commands Executed
+
+Human-readable mode:
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\build_decision_story_answer_gap_report.py --coverage-report .\artifacts\eval\decision_story_corpus_coverage.json
+```
+
+JSON mode with output file:
+
+```powershell
 .\.venv\Scripts\python.exe scripts\build_decision_story_answer_gap_report.py --coverage-report .\artifacts\eval\decision_story_corpus_coverage.json --json --output .\artifacts\eval\decision_story_answer_gap_report.json
 ```
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
-The report was not run because DB readiness was not `READY` and the coverage JSON was not created.
+## Captured Result Summary
 
-Overall status: not run
+Result status: `COMPLETED`
 
-- `KEEP`: not run
-- `IMPROVE_RETRIEVAL_TERMS`: not run
-- `IMPROVE_SYNTHESIS`: not run
-- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: not run
+Report type: `DECISION_STORY_ANSWER_GAP_REPORT`
 
-Generated artefact committed: no.
+Source coverage plan: `DECISION_STORY`
+
+Overall status: `GOOD`
+
+Recommended action counts:
+
+- `KEEP`: 10
+- `IMPROVE_RETRIEVAL_TERMS`: 0
+- `IMPROVE_SYNTHESIS`: 0
+- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: 0
+
+Recommended next action: Keep current Decision Story retrieval terms and answer synthesis under benchmark watch.
+
+Generated artefact committed: no. The JSON output command created `.\artifacts\eval\decision_story_answer_gap_report.json` locally for summarization, but the file is not a required committed artefact.
 
 Live LLM calls: no.
 
@@ -28,6 +45,34 @@ Corpus mutation: no.
 
 Operational JSON ingestion: no.
 
+Code Evidence answer integration: no.
+
+## Action Mapping
+
+All 10 Decision Story evidence groups map to `KEEP`.
+
+## Status Interpretation
+
+- `GOOD`: core evidence is strong enough for the current answer path.
+- `NEEDS_REFINEMENT`: evidence exists, but retrieval terms or synthesis may need refinement.
+- `INSUFFICIENT_CORPUS`: important evidence is missing from the indexed formal corpus.
+
+Answer gap status is an evaluation signal. It is not operational truth and does not prove runtime implementation.
+
+## Diagnostic Interpretation
+
+The answer gap report recommended keeping the current Decision Story retrieval terms and answer synthesis under benchmark watch. It did not recommend retrieval-term changes, synthesis changes or formal corpus additions.
+
 ## Diagnostic-Only Guardrails
 
-This answer gap report baseline does not mutate corpus, change routing, change answer generation, call live LLM, ingest operational JSON, connect Code Evidence, prove runtime platform truth, create DB schema or migrations, add endpoints or UI, or change workforce-platform.
+This answer gap report baseline:
+
+- does not mutate corpus;
+- does not change routing;
+- does not change answer generation;
+- does not call live LLM;
+- does not ingest operational JSON;
+- does not connect Code Evidence;
+- does not connect Code Evidence to answer generation;
+- does not prove runtime platform truth;
+- does not prove payroll/runtime truth.

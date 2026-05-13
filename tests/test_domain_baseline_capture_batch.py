@@ -64,14 +64,12 @@ RATE_SOURCE_RATE_STORY_CAPTURED_DOMAIN = {
     "gap": "scripts\\build_rate_source_rate_story_answer_gap_report.py",
 }
 
-CORE_PAYROLL_BLOCKED_DOMAINS = {
-    "decision_story": {
-        "name": "Decision Story",
-        "runbook": "docs/DECISION_STORY_EVALUATION_RUNBOOK.md",
-        "manifest": "samples\\eval\\rich_answer_benchmark.decision_story.json",
-        "scan": "scripts\\scan_decision_story_corpus_coverage.py",
-        "gap": "scripts\\build_decision_story_answer_gap_report.py",
-    },
+DECISION_STORY_CAPTURED_DOMAIN = {
+    "name": "Decision Story",
+    "runbook": "docs/DECISION_STORY_EVALUATION_RUNBOOK.md",
+    "manifest": "samples\\eval\\rich_answer_benchmark.decision_story.json",
+    "scan": "scripts\\scan_decision_story_corpus_coverage.py",
+    "gap": "scripts\\build_decision_story_answer_gap_report.py",
 }
 
 FINALISATION_READINESS_CAPTURED_DOMAIN = {
@@ -139,12 +137,11 @@ def test_core_payroll_explanation_blocked_closeout_exists_and_is_linked_from_rea
     assert "docs/evaluation/worker_story_baselines/CORE_PAYROLL_EXPLANATION_BASELINE_BATCH_2026_05_13.md" in readme
 
 
-def test_core_payroll_explanation_blocked_packs_exist_with_required_files():
-    for slug in CORE_PAYROLL_BLOCKED_DOMAINS:
-        pack_path = BASELINE_ROOT / slug / "v0_1"
-        assert pack_path.exists()
-        for file_name in REQUIRED_FILES:
-            assert (pack_path / file_name).exists()
+def test_decision_story_baseline_pack_exists_with_required_files():
+    pack_path = BASELINE_ROOT / "decision_story" / "v0_1"
+    assert pack_path.exists()
+    for file_name in REQUIRED_FILES:
+        assert (pack_path / file_name).exists()
 
 
 def test_finalisation_readiness_baseline_pack_exists_with_required_files():
@@ -183,27 +180,37 @@ def test_core_payroll_explanation_blocked_closeout_records_honest_statuses():
         assert f"| {domain} | `DATABASE_CONNECTION_FAILED` | blocked pack only | not run | not run | not run | `BASELINE_REQUIRED` |" in closeout
 
 
-def test_core_payroll_explanation_blocked_packs_record_commands_not_run():
-    for slug, metadata in CORE_PAYROLL_BLOCKED_DOMAINS.items():
-        pack_path = BASELINE_ROOT / slug / "v0_1"
-        combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+def test_decision_story_baseline_pack_records_captured_ready_results_with_failures():
+    metadata = DECISION_STORY_CAPTURED_DOMAIN
+    pack_path = BASELINE_ROOT / "decision_story" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
 
-        assert metadata["name"] in combined
-        assert metadata["runbook"] in combined
-        assert metadata["manifest"] in combined
-        assert metadata["scan"] in combined
-        assert metadata["gap"] in combined
-        assert "DB readiness result: `DATABASE_CONNECTION_FAILED`" in combined
-        assert "Result status: `BLOCKED_DATABASE_CONNECTION`" in combined
-        assert "Benchmark result: not run" in combined
-        assert "Corpus coverage result: not run" in combined
-        assert "Answer gap report: not run" in combined
-        assert "Audit/chat rows created: false" in combined
-        assert "Generated artefact committed: no" in combined
-        assert "Final ledger status remains `BASELINE_REQUIRED`" in combined
-        assert "Total: not run" in combined
-        assert "`STRONG`: not run" in combined
-        assert "Overall status: not run" in combined
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness result: `READY`" in combined
+    assert "Result status: `COMPLETED_WITH_FAILURES`" in combined
+    assert "Total: 7" in combined
+    assert "Passed: 6" in combined
+    assert "Failed: 1" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "decision-story-rich-answer" in combined
+    assert "Source snippets/matched phrases did not contain all expected terms: Decision Story, DecisionEvidenceIndex, why a treatment" in combined
+    assert "benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in combined
+    assert "Evidence groups: 10" in combined
+    assert "`STRONG`: 10" in combined
+    assert "`WEAK`: 0" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Overall status: `GOOD`" in combined
+    assert "`KEEP`: 10" in combined
+    assert "Report type: `DECISION_STORY_ANSWER_GAP_REPORT`" in combined
+    assert "Source coverage plan: `DECISION_STORY`" in combined
+    assert "Keep current Decision Story retrieval terms and answer synthesis under benchmark watch" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "BLOCKED_DATABASE_CONNECTION" not in combined
 
 
 def test_finalisation_readiness_baseline_pack_records_captured_ready_results():
@@ -308,7 +315,7 @@ def test_rate_source_rate_story_baseline_pack_records_captured_ready_results_wit
 
 
 def test_core_payroll_explanation_blocked_packs_are_diagnostic_only_not_runtime_truth():
-    for slug in CORE_PAYROLL_BLOCKED_DOMAINS:
+    for slug in ("decision_story",):
         pack_path = BASELINE_ROOT / slug / "v0_1"
         combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
 
@@ -549,10 +556,10 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 22" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 9" in ledger
+    assert "`BASELINE_REQUIRED`: 21" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 10" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
@@ -585,7 +592,10 @@ def test_ledger_counts_remain_honest_for_captured_batch():
     assert "benchmark 6 total, 5 passed, 1 failed" in ledger
     assert "rate-source-rate-story-rich-answer" in ledger
     assert "answer gap status NEEDS_REFINEMENT with 10 KEEP actions and 1 IMPROVE_SYNTHESIS action for `rate_source_evidence_index`" in ledger
-    assert "| Decision Story | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "| Decision Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Decision Story now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "decision-story-rich-answer" in ledger
+    assert "answer gap status GOOD with 10 KEEP actions" in ledger
 
 
 def test_worker_story_baseline_history_remains_unchanged_after_batch():

@@ -108,14 +108,13 @@ def test_completed_domain_baseline_decision_ledger_summary_and_counts_are_docume
 
     assert "## Summary" in ledger
     assert "Total domains inventoried: 31" in ledger
-    assert "`BASELINE_REQUIRED`: 22" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 9" in ledger
+    assert "`BASELINE_REQUIRED`: 21" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 10" in ledger
     assert "`NO_BASELINE_NEEDED`: 0" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
     assert "`NEEDS_REVIEW`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story" in ledger
-    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net, Annual Leave / Leave Management, Finalisation Readiness, Payroll Output and RateSource / Rate Story as captured comparison controls" in ledger
-    assert "keep Decision Story as a blocked `BASELINE_REQUIRED` domain until DB readiness returns `READY` for its own capture" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story" in ledger
+    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net, Annual Leave / Leave Management, Finalisation Readiness, Payroll Output, RateSource / Rate Story and Decision Story as captured comparison controls" in ledger
     assert "Domains with runbook outstanding: none" in ledger
 
 
@@ -209,10 +208,17 @@ def test_completed_domain_baseline_decision_ledger_records_captured_baselines():
     assert "benchmark 6 total, 5 passed, 1 failed" in ledger
     assert "rate-source-rate-story-rich-answer" in ledger
     assert "answer gap status NEEDS_REFINEMENT with 10 KEEP actions and 1 IMPROVE_SYNTHESIS action for `rate_source_evidence_index`" in ledger
+    assert "| Decision Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "docs/evaluation/worker_story_baselines/decision_story/v0_1/BASELINE_SUMMARY.md" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Decision Story now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "benchmark 7 total, 6 passed, 1 failed" in ledger
+    assert "decision-story-rich-answer" in ledger
+    assert "corpus coverage 10 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status GOOD with 10 KEEP actions" in ledger
     assert "| Payroll Tax / WorkCover / WIC Liability Detail | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
 
-def test_core_payroll_domains_capture_progress_keeps_decision_story_blocked():
+def test_core_payroll_domains_capture_progress_has_no_domains_blocked():
     ledger = _ledger()
 
     assert "## Finalisation Readiness Baseline Captured Finding" in ledger
@@ -236,16 +242,22 @@ def test_core_payroll_domains_capture_progress_keeps_decision_story_blocked():
     assert "corpus coverage 10 STRONG, 1 WEAK, 0 MISSING" in ledger
     assert "answer gap status `NEEDS_REFINEMENT` with 10 KEEP actions and 1 IMPROVE_SYNTHESIS action" in ledger
     assert "weak/refinement group is `rate_source_evidence_index`" in ledger
-    assert "`BASELINE_REQUIRED`: 22" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 9" in ledger
+    assert "## Decision Story Baseline Captured Finding" in ledger
+    assert "Decision Story is now `BASELINE_ALREADY_EXISTS`" in ledger
+    assert "benchmark 7 total, 6 passed, 1 failed" in ledger
+    assert "failed case `decision-story-rich-answer`" in ledger
+    assert "Source snippets/matched phrases did not contain all expected terms: Decision Story, DecisionEvidenceIndex, why a treatment" not in ledger
+    assert "corpus coverage 10 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status `GOOD` with 10 KEEP actions" in ledger
+    assert "benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in ledger
+    assert "`BASELINE_REQUIRED`: 21" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 10" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
 
-    assert "## Core Payroll Explanation Blocked Baseline Finding" in ledger
-    assert "Decision Story remains `BASELINE_REQUIRED`" in ledger
-    assert "Finalisation Readiness, Payroll Output and RateSource / Rate Story are no longer part of this blocked set" in ledger
+    assert "No domains from the Core Payroll Explanation batch remain blocked" in ledger
+    assert "## Core Payroll Explanation Blocked Baseline Finding" not in ledger
+    assert "Decision Story remains `BASELINE_REQUIRED`" not in ledger
     assert "| Finalisation Readiness | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "| Payroll Output | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "| RateSource / Rate Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
-
-    assert "docs/evaluation/worker_story_baselines/decision_story/v0_1/" in ledger
-    assert "| Decision Story | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "| Decision Story | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
