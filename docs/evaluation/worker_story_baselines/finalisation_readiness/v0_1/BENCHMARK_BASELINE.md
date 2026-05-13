@@ -1,23 +1,37 @@
 # Finalisation Readiness Benchmark Baseline
 
-This file records that benchmark capture was blocked. It is diagnostic-only and not operational truth.
+This file records the Finalisation Readiness benchmark baseline execution result for comparison control. It is diagnostic-only and not operational truth.
 
-## Command Not Executed
+## Command Executed
 
 ```powershell
 .\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.finalisation_readiness.json
 ```
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Captured on 2026-05-13 from `C:\Projects\ezeas-intelligence`.
 
-The benchmark was not run because `scripts\check_worker_story_baseline_db_readiness.py` returned `DATABASE_CONNECTION_FAILED`.
+## Scope
+
+The benchmark scope is the Finalisation Readiness rich-answer manifest:
+
+```text
+samples\eval\rich_answer_benchmark.finalisation_readiness.json
+```
+
+The benchmark checks deterministic retrieval and answer-contract behavior for Finalisation Readiness questions. It is not a live LLM review and does not prove runtime payroll or finalisation correctness.
+
+## Captured Result Summary
+
+Result status: `COMPLETED`
 
 Pass/fail summary:
 
-- Total: not run
-- Passed: not run
-- Failed: not run
+- Total: 12
+- Passed: 12
+- Failed: 0
 - Audit/chat rows created: false
+
+Failed cases: none.
 
 Generated artefact committed: no.
 
@@ -31,8 +45,18 @@ Operational JSON ingestion: no.
 
 - Runbook: `docs/FINALISATION_READINESS_EVALUATION_RUNBOOK.md`
 - Manifest: `samples\eval\rich_answer_benchmark.finalisation_readiness.json`
-- Runner: `scripts\run_golden_questions.py`
+- Runner: `scripts/run_golden_questions.py`
 
 ## Diagnostic-Only Guardrails
 
-This benchmark baseline does not mutate corpus, change routing, change answer generation, call live LLM, ingest operational JSON, connect Code Evidence, prove runtime platform truth, create DB schema or migrations, add endpoints or UI, or change workforce-platform.
+This benchmark baseline:
+
+- does not mutate corpus;
+- does not change routing;
+- does not change answer generation;
+- does not call live LLM;
+- does not ingest operational JSON;
+- does not connect Code Evidence;
+- does not connect Code Evidence to answer generation;
+- does not prove runtime platform truth;
+- does not prove payroll/runtime truth.

@@ -49,13 +49,6 @@ CAPTURED_BATCH_DOMAINS = {
 }
 
 CORE_PAYROLL_BLOCKED_DOMAINS = {
-    "finalisation_readiness": {
-        "name": "Finalisation Readiness",
-        "runbook": "docs/FINALISATION_READINESS_EVALUATION_RUNBOOK.md",
-        "manifest": "samples\\eval\\rich_answer_benchmark.finalisation_readiness.json",
-        "scan": "scripts\\scan_finalisation_readiness_corpus_coverage.py",
-        "gap": "scripts\\build_finalisation_readiness_answer_gap_report.py",
-    },
     "payroll_output": {
         "name": "Payroll Output",
         "runbook": "docs/PAYROLL_OUTPUT_EVALUATION_RUNBOOK.md",
@@ -77,6 +70,14 @@ CORE_PAYROLL_BLOCKED_DOMAINS = {
         "scan": "scripts\\scan_decision_story_corpus_coverage.py",
         "gap": "scripts\\build_decision_story_answer_gap_report.py",
     },
+}
+
+FINALISATION_READINESS_CAPTURED_DOMAIN = {
+    "name": "Finalisation Readiness",
+    "runbook": "docs/FINALISATION_READINESS_EVALUATION_RUNBOOK.md",
+    "manifest": "samples\\eval\\rich_answer_benchmark.finalisation_readiness.json",
+    "scan": "scripts\\scan_finalisation_readiness_corpus_coverage.py",
+    "gap": "scripts\\build_finalisation_readiness_answer_gap_report.py",
 }
 
 
@@ -144,6 +145,13 @@ def test_core_payroll_explanation_blocked_packs_exist_with_required_files():
             assert (pack_path / file_name).exists()
 
 
+def test_finalisation_readiness_baseline_pack_exists_with_required_files():
+    pack_path = BASELINE_ROOT / "finalisation_readiness" / "v0_1"
+    assert pack_path.exists()
+    for file_name in REQUIRED_FILES:
+        assert (pack_path / file_name).exists()
+
+
 def test_core_payroll_explanation_blocked_closeout_records_honest_statuses():
     closeout = _read(CORE_PAYROLL_BLOCKED_CLOSEOUT_PATH)
 
@@ -180,6 +188,38 @@ def test_core_payroll_explanation_blocked_packs_record_commands_not_run():
         assert "Total: not run" in combined
         assert "`STRONG`: not run" in combined
         assert "Overall status: not run" in combined
+
+
+def test_finalisation_readiness_baseline_pack_records_captured_ready_results():
+    metadata = FINALISATION_READINESS_CAPTURED_DOMAIN
+    pack_path = BASELINE_ROOT / "finalisation_readiness" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness result: `READY`" in combined
+    assert "Result status: `COMPLETED`" in combined
+    assert "Total: 12" in combined
+    assert "Passed: 12" in combined
+    assert "Failed: 0" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "Evidence groups: 12" in combined
+    assert "`STRONG`: 11" in combined
+    assert "`WEAK`: 1" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Overall status: `NEEDS_REFINEMENT`" in combined
+    assert "`KEEP`: 11" in combined
+    assert "`IMPROVE_SYNTHESIS`: 1" in combined
+    assert "Report type: `FINALISATION_READINESS_ANSWER_GAP_REPORT`" in combined
+    assert "Source coverage plan: `FINALISATION_READINESS`" in combined
+    assert "`purpose_and_operator_meaning` -> `IMPROVE_SYNTHESIS`" in combined
+    assert "Tighten Finalisation Readiness answer synthesis for weak core groups while keeping status caveats" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "BLOCKED_DATABASE_CONNECTION" not in combined
 
 
 def test_core_payroll_explanation_blocked_packs_are_diagnostic_only_not_runtime_truth():
@@ -424,10 +464,10 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 25" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 6" in ledger
+    assert "`BASELINE_REQUIRED`: 24" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 7" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
@@ -443,6 +483,13 @@ def test_ledger_counts_remain_honest_for_captured_batch():
     assert "| Payroll Bases & Totals | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "| Annual Leave / Leave Management | v0.4 | yes | yes | no | yes | yes | yes | yes |" in ledger
     assert "BASELINE_ALREADY_EXISTS | Annual Leave / Leave Management now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "| Finalisation Readiness | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Finalisation Readiness now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "benchmark 12 total, 12 passed, 0 failed" in ledger
+    assert "corpus coverage 11 STRONG, 1 WEAK, 0 MISSING" in ledger
+    assert "answer gap status NEEDS_REFINEMENT with 11 KEEP actions and 1 IMPROVE_SYNTHESIS action for `purpose_and_operator_meaning`" in ledger
+    for domain in ("Payroll Output", "RateSource / Rate Story", "Decision Story"):
+        assert f"| {domain} | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
 
 def test_worker_story_baseline_history_remains_unchanged_after_batch():

@@ -108,14 +108,14 @@ def test_completed_domain_baseline_decision_ledger_summary_and_counts_are_docume
 
     assert "## Summary" in ledger
     assert "Total domains inventoried: 31" in ledger
-    assert "`BASELINE_REQUIRED`: 25" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 6" in ledger
+    assert "`BASELINE_REQUIRED`: 24" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 7" in ledger
     assert "`NO_BASELINE_NEEDED`: 0" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
     assert "`NEEDS_REVIEW`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management" in ledger
-    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net and Annual Leave / Leave Management as captured comparison controls" in ledger
-    assert "keep Finalisation Readiness, Payroll Output, RateSource / Rate Story and Decision Story as blocked `BASELINE_REQUIRED` domains until DB readiness returns `READY`" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness" in ledger
+    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net, Annual Leave / Leave Management and Finalisation Readiness as captured comparison controls" in ledger
+    assert "keep Payroll Output, RateSource / Rate Story and Decision Story as blocked `BASELINE_REQUIRED` domains until DB readiness returns `READY` for their own capture" in ledger
     assert "Domains with runbook outstanding: none" in ledger
 
 
@@ -189,25 +189,39 @@ def test_completed_domain_baseline_decision_ledger_records_captured_baselines():
     assert "BASELINE_ALREADY_EXISTS | Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "docs/evaluation/worker_story_baselines/annual_leave/v0_1/BASELINE_SUMMARY.md" in ledger
     assert "BASELINE_ALREADY_EXISTS | Annual Leave / Leave Management now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "| Finalisation Readiness | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "docs/evaluation/worker_story_baselines/finalisation_readiness/v0_1/BASELINE_SUMMARY.md" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Finalisation Readiness now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "benchmark 12 total, 12 passed, 0 failed" in ledger
+    assert "corpus coverage 11 STRONG, 1 WEAK, 0 MISSING" in ledger
+    assert "answer gap status NEEDS_REFINEMENT with 11 KEEP actions and 1 IMPROVE_SYNTHESIS action for `purpose_and_operator_meaning`" in ledger
     assert "| Payroll Tax / WorkCover / WIC Liability Detail | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
 
-def test_core_payroll_explanation_blocked_batch_does_not_change_captured_counts():
+def test_finalisation_readiness_is_captured_while_other_core_payroll_domains_remain_blocked():
     ledger = _ledger()
 
-    assert "## Core Payroll Explanation Blocked Baseline Finding" in ledger
-    assert "Core Payroll Explanation Baseline Batch v0.1 inspected Finalisation Readiness, Payroll Output, RateSource / Rate Story and Decision Story" in ledger
-    assert "DB readiness returned `DATABASE_CONNECTION_FAILED`" in ledger
-    assert "no benchmark, corpus coverage or answer gap commands were run" in ledger
-    assert "These blocked packs are not `BASELINE_ALREADY_EXISTS`; all four domains remain `BASELINE_REQUIRED`" in ledger
-    assert "`BASELINE_REQUIRED`: 25" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 6" in ledger
+    assert "## Finalisation Readiness Baseline Captured Finding" in ledger
+    assert "Finalisation Readiness is now `BASELINE_ALREADY_EXISTS`" in ledger
+    assert "benchmark 12 total, 12 passed, 0 failed" in ledger
+    assert "corpus coverage 11 STRONG, 1 WEAK, 0 MISSING" in ledger
+    assert "answer gap status `NEEDS_REFINEMENT` with 11 KEEP actions and 1 IMPROVE_SYNTHESIS action" in ledger
+    assert "weak/refinement group is `purpose_and_operator_meaning`" in ledger
+    assert "`BASELINE_REQUIRED`: 24" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 7" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
 
+    assert "## Core Payroll Explanation Blocked Baseline Finding" in ledger
+    assert "Payroll Output, RateSource / Rate Story and Decision Story remain `BASELINE_REQUIRED`" in ledger
+    assert "Finalisation Readiness is no longer part of this blocked set" in ledger
+    assert "| Finalisation Readiness | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+
     for pack in (
-        "docs/evaluation/worker_story_baselines/finalisation_readiness/v0_1/",
         "docs/evaluation/worker_story_baselines/payroll_output/v0_1/",
         "docs/evaluation/worker_story_baselines/ratesource_rate_story/v0_1/",
         "docs/evaluation/worker_story_baselines/decision_story/v0_1/",
     ):
         assert pack in ledger
+
+    for domain in ("Payroll Output", "RateSource / Rate Story", "Decision Story"):
+        assert f"| {domain} | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
