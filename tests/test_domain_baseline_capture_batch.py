@@ -4,6 +4,7 @@ from pathlib import Path
 
 BASELINE_ROOT = Path("docs/evaluation/worker_story_baselines")
 LEDGER_PATH = BASELINE_ROOT / "COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md"
+CLOSEOUT_PATH = BASELINE_ROOT / "BASELINE_BATCH_CLOSEOUT_2026_05_13.md"
 WORKER_STORY_PACK = BASELINE_ROOT / "worker_story" / "v0_1"
 REQUIRED_FILES = (
     "BASELINE_SUMMARY.md",
@@ -55,6 +56,58 @@ def test_batch_baseline_packs_exist_with_required_files():
         assert pack_path.exists()
         for file_name in REQUIRED_FILES:
             assert (pack_path / file_name).exists()
+
+
+def test_four_domain_batch_closeout_exists_and_is_linked_from_readme():
+    assert CLOSEOUT_PATH.exists()
+
+    readme = _read(Path("README.md"))
+
+    assert "docs/evaluation/worker_story_baselines/BASELINE_BATCH_CLOSEOUT_2026_05_13.md" in readme
+
+
+def test_four_domain_batch_closeout_records_all_domain_outcomes_and_ledger_counts():
+    closeout = _read(CLOSEOUT_PATH)
+
+    assert "`BASELINE_REQUIRED`: 25" in closeout
+    assert "`BASELINE_ALREADY_EXISTS`: 5" in closeout
+    assert "`RUNBOOK_OUTSTANDING`: 1" in closeout
+    assert "Baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net" in closeout
+    assert "Annual Leave / Leave Management remains `RUNBOOK_OUTSTANDING`" in closeout
+
+    assert "| Payroll Bases & Totals | Passed baseline | 6 total / 6 passed / 0 failed | STRONG=8, WEAK=1, MISSING=0 | NEEDS_REFINEMENT |" in closeout
+    assert "| PayRun Admin Queue | Captured-with-failures baseline | 8 total / 6 passed / 2 failed | STRONG=11, WEAK=0, MISSING=0 | GOOD; 11 KEEP actions |" in closeout
+    assert "| Movement Review | Passed baseline | 8 total / 8 passed / 0 failed | STRONG=11, WEAK=0, MISSING=0 | GOOD; 11 KEEP actions |" in closeout
+    assert "| Gross-to-Net | Captured-with-failures baseline | 6 total / 5 passed / 1 failed | STRONG=10, WEAK=0, MISSING=0 | GOOD; 10 KEEP actions |" in closeout
+
+
+def test_four_domain_batch_closeout_preserves_failure_and_refinement_classifications():
+    closeout = _read(CLOSEOUT_PATH)
+
+    assert "Weak `outstanding_hardening` coverage requires retrieval-term hardening" in closeout
+    assert "`outstanding_hardening` -> `IMPROVE_RETRIEVAL_TERMS`" in closeout
+    assert "This is not a corpus gap" in closeout
+    assert "payrun-admin-queue-rich-answer" in closeout
+    assert "payrun-admin-queue-cleanliness-assurance" in closeout
+    assert "benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in closeout
+    assert "gross-to-net-current-effective-worker-story" in closeout
+    assert "benchmark answer-term expectation drift, not corpus gap" in closeout
+    assert "Do not weaken benchmark expectations" in closeout
+    assert "Movement Review is the clean baseline in this batch" in closeout
+
+
+def test_four_domain_batch_closeout_records_diagnostic_boundaries_and_json_policy():
+    closeout = _read(CLOSEOUT_PATH)
+
+    assert "operational JSON ingestion" in closeout
+    assert "Code Evidence answer integration" in closeout
+    assert "live LLM calls" in closeout
+    assert "corpus mutation" in closeout
+    assert "DB or schema migration" in closeout
+    assert "endpoints or UI" in closeout
+    assert "workforce-platform changes" in closeout
+    assert "Generated JSON outputs from benchmark, corpus coverage or answer-gap commands are transient evaluation materials" in closeout
+    assert "not durable checked-in artefacts unless explicitly versioned" in closeout
 
 
 def test_payroll_bases_baseline_pack_records_captured_ready_results():
