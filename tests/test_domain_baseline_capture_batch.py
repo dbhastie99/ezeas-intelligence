@@ -107,6 +107,13 @@ PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {
         "scan": "scripts\\scan_process_period_payrun_lifecycle_corpus_coverage.py",
         "gap": "scripts\\build_process_period_payrun_lifecycle_answer_gap_report.py",
     },
+    "imports_actuals": {
+        "name": "Imports / Actuals",
+        "runbook": "docs/IMPORTS_ACTUALS_EVALUATION_RUNBOOK.md",
+        "manifest": "samples\\eval\\rich_answer_benchmark.imports_actuals.json",
+        "scan": "scripts\\scan_imports_actuals_corpus_coverage.py",
+        "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
+    },
 }
 
 
@@ -427,6 +434,48 @@ def test_process_periods_payrun_lifecycle_blocked_pack_preserves_domain_boundari
         "full contact-level PayRun reprocessing",
         "Finalised or protected PayRuns require correction or review pathways",
         "no runtime mutation guarantee",
+    ):
+        assert term in combined
+
+
+def test_imports_actuals_blocked_pack_preserves_domain_boundaries():
+    pack_path = BASELINE_ROOT / "imports_actuals" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    for term in (
+        "not merely file upload or CSV parsing",
+        "import batch",
+        "import row",
+        "import validation",
+        "import error",
+        "import warning",
+        "award-specific CSV template",
+        "timesheet import",
+        "payroll actuals import",
+        "external actuals",
+        "calculated versus actual",
+        "reconciliation",
+        "variance",
+        "pay code mapping",
+        "RateType mapping",
+        "tenant override mapping",
+        "mapping snapshot",
+        "shift assessment import",
+        "shift attribute import",
+        "claim import",
+        "Claimable",
+        "Claimable Hourly",
+        "Claim Amount",
+        "piece work / expense / mileage amount import context",
+        "source truth provenance",
+        "evidence preservation",
+        "worker story explanation context",
+        "source truth impact on PayRun outcomes",
+        "no runtime mutation guarantee",
+        "no benchmark promotion when DB readiness is blocked",
+        "Imported actuals are evidence for reconciliation",
+        "not the same as calculated payroll truth",
+        "Minerva baseline packs do not mutate operational payroll data",
     ):
         assert term in combined
 
