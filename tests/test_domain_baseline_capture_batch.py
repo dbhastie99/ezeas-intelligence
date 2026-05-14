@@ -136,6 +136,9 @@ COMPARISON_REMEDIATION_CAPTURED_DOMAIN = {
 IMPORTS_ACTUALS_FORMAL_EVIDENCE_GAP_PLAN = (
     BASELINE_ROOT / "imports_actuals" / "v0_1" / "FORMAL_EVIDENCE_GAP_PLAN.md"
 )
+TAX_PAYG_FORMAL_EVIDENCE_GAP_PLAN = (
+    BASELINE_ROOT / "tax_payg" / "v0_1" / "FORMAL_EVIDENCE_GAP_PLAN.md"
+)
 IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT = (
     Path("docs/evaluation/source_evidence_drafts/imports_actuals")
     / "IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md"
@@ -541,6 +544,35 @@ def test_tax_payg_recaptured_pack_records_unpromoted_refinement_state():
     assert "Benchmark result: not run" not in combined
     assert "Baseline pack created: blocked pack only" not in combined
     assert "Final ledger status is `BASELINE_ALREADY_EXISTS`" not in combined
+
+
+def test_tax_payg_formal_evidence_gap_plan_records_required_gaps_and_guardrails():
+    assert TAX_PAYG_FORMAL_EVIDENCE_GAP_PLAN.exists()
+
+    plan = _read(TAX_PAYG_FORMAL_EVIDENCE_GAP_PLAN)
+
+    assert "Tax / PAYG remains `BASELINE_REQUIRED`" in plan
+    assert "cannot be promoted solely through answer-synthesis hardening" in plan
+    assert "DB readiness was not the blocker" in plan
+    assert "Benchmark: 9 total / 7 passed / 2 failed" in plan
+    assert "STRONG=10, WEAK=1, MISSING=1" in plan
+    assert "Answer gap: `NEEDS_REFINEMENT`" in plan
+    assert "10 KEEP, 1 ADD_FORMAL_SOURCE_EVIDENCE_LATER, 1 IMPROVE_RETRIEVAL_TERMS" in plan
+    assert "`purpose_and_operator_meaning`" in plan
+    assert "`outstanding_hardening`" in plan
+    assert "Missing formal source evidence group" in plan
+    assert "Weak formal source evidence group" in plan
+    assert "Minerva explains Tax / PAYG but does not calculate PAYG withholding" in plan
+    assert "Formal source evidence is added to the corpus through the governed ingestion process" in plan
+    assert "Coverage improves to no MISSING groups" in plan
+    assert "`outstanding_hardening` becomes STRONG or is otherwise accepted with documented rationale" in plan
+    assert "Benchmark passes 9/9" in plan
+    assert "Answer gap becomes GOOD or acceptable" in plan
+    assert "Ledger is promoted only after real command results support it" in plan
+    assert "no corpus mutation" in plan
+    assert "no operational JSON ingestion" in plan
+    assert "no Code Evidence answer integration" in plan
+    assert "no ledger promotion" in plan
 
 
 def test_objecttime_source_truth_recaptured_pack_records_promoted_state():
