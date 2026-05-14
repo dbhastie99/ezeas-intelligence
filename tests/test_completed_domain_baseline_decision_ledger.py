@@ -108,13 +108,13 @@ def test_completed_domain_baseline_decision_ledger_summary_and_counts_are_docume
 
     assert "## Summary" in ledger
     assert "Total domains inventoried: 31" in ledger
-    assert "`BASELINE_REQUIRED`: 18" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 13" in ledger
+    assert "`BASELINE_REQUIRED`: 17" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 14" in ledger
     assert "`NO_BASELINE_NEEDED`: 0" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
     assert "`NEEDS_REVIEW`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth; Process Periods / PayRun Lifecycle" in ledger
-    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net, Annual Leave / Leave Management, Finalisation Readiness, Payroll Output, RateSource / Rate Story, Decision Story, Contact Payroll History, ObjectTime / Source Truth and Process Periods / PayRun Lifecycle as captured comparison controls" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth; Process Periods / PayRun Lifecycle; Comparison / Remediation" in ledger
+    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net, Annual Leave / Leave Management, Finalisation Readiness, Payroll Output, RateSource / Rate Story, Decision Story, Contact Payroll History, ObjectTime / Source Truth, Process Periods / PayRun Lifecycle and Comparison / Remediation as captured comparison controls" in ledger
     assert "keep Imports / Actuals as `BASELINE_REQUIRED` until DB readiness returns `READY`" in ledger
     assert "Domains with runbook outstanding: none" in ledger
 
@@ -228,6 +228,12 @@ def test_completed_domain_baseline_decision_ledger_records_captured_baselines():
     assert "current_and_historical_payroll_output" in ledger
     assert "retro_replay_and_correction_relationship" in ledger
     assert "outstanding_hardening" in ledger
+    assert "| Comparison / Remediation | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "docs/evaluation/worker_story_baselines/comparison_remediation/v0_1/BASELINE_SUMMARY.md" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Comparison / Remediation now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "benchmark 9 total, 9 passed, 0 failed" in ledger
+    assert "corpus coverage 12 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status GOOD with 12 KEEP actions" in ledger
     assert "| Payroll Tax / WorkCover / WIC Liability Detail | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
 
@@ -263,8 +269,8 @@ def test_core_payroll_domains_capture_progress_has_no_domains_blocked():
     assert "corpus coverage 10 STRONG, 0 WEAK, 0 MISSING" in ledger
     assert "answer gap status `GOOD` with 10 KEEP actions" in ledger
     assert "benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in ledger
-    assert "`BASELINE_REQUIRED`: 18" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 13" in ledger
+    assert "`BASELINE_REQUIRED`: 17" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 14" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
 
     assert "No domains from the Core Payroll Explanation batch remain blocked" in ledger
@@ -305,8 +311,8 @@ def test_payroll_evidence_context_domains_track_contact_objecttime_capture_and_r
     assert "the shared read-only DB readiness check returned `DATABASE_CONNECTION_FAILED`" in ledger
     assert "benchmark, corpus coverage and answer gap commands have not run for it" in ledger
     assert "Generated JSON reports were not produced for that blocked domain" in ledger
-    assert "`BASELINE_REQUIRED`: 18" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 13" in ledger
+    assert "`BASELINE_REQUIRED`: 17" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 14" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
 
     assert "| Contact Payroll History | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
@@ -322,3 +328,30 @@ def test_payroll_evidence_context_domains_track_contact_objecttime_capture_and_r
     assert "docs/evaluation/worker_story_baselines/process_periods_payrun_lifecycle/v0_1/BASELINE_SUMMARY.md" in ledger
     assert "docs/evaluation/worker_story_baselines/objecttime_source_truth/v0_1/BASELINE_SUMMARY.md" in ledger
     assert "not a captured baseline" in ledger
+
+
+def test_comparison_remediation_is_baseline_already_exists_with_baseline_pack():
+    ledger = _ledger()
+    pack_path = Path("docs/evaluation/worker_story_baselines/comparison_remediation/v0_1")
+    combined = "\n".join(
+        (pack_path / file_name).read_text(encoding="utf-8")
+        for file_name in (
+            "BASELINE_SUMMARY.md",
+            "BENCHMARK_BASELINE.md",
+            "CORPUS_COVERAGE_BASELINE.md",
+            "ANSWER_GAP_REPORT_BASELINE.md",
+            "REVIEW_NOTES.md",
+        )
+    )
+
+    assert "## Comparison / Remediation Baseline Captured Finding" in ledger
+    assert "Comparison / Remediation is now `BASELINE_ALREADY_EXISTS`" in ledger
+    assert "benchmark 9 total, 9 passed, 0 failed" in ledger
+    assert "corpus coverage 12 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status `GOOD` with 12 KEEP actions" in ledger
+    assert "payroll evidence and review/remediation context, not generic diffing" in combined
+    assert "primary calculated, comparator calculated, and actual imported / actuals lane" in combined
+    assert "The primary award path remains operational payroll truth" in combined
+    assert "Imported actuals are external outcome truth" in combined
+    assert "Variance/top-up is a governed consequence" in combined
+    assert "Final ledger status is `BASELINE_ALREADY_EXISTS`" in combined

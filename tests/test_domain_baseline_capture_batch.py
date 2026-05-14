@@ -117,6 +117,14 @@ IMPORTS_ACTUALS_RECAPTURED_DOMAIN = {
     "scan": "scripts\\scan_imports_actuals_corpus_coverage.py",
     "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
 }
+
+COMPARISON_REMEDIATION_CAPTURED_DOMAIN = {
+    "name": "Comparison / Remediation",
+    "runbook": "docs/COMPARISON_REMEDIATION_EVALUATION_RUNBOOK.md",
+    "manifest": "samples\\eval\\rich_answer_benchmark.comparison_remediation.json",
+    "scan": "scripts\\scan_comparison_remediation_corpus_coverage.py",
+    "gap": "scripts\\build_comparison_remediation_answer_gap_report.py",
+}
 IMPORTS_ACTUALS_FORMAL_EVIDENCE_GAP_PLAN = (
     BASELINE_ROOT / "imports_actuals" / "v0_1" / "FORMAL_EVIDENCE_GAP_PLAN.md"
 )
@@ -512,6 +520,71 @@ def test_objecttime_source_truth_recaptured_pack_records_promoted_state():
     assert "objecttime-sourcetruth-vs-workedhours" not in combined
     assert "objecttime-current-effective-output" not in combined
     assert "objecttime-worker-story-source-truth" not in combined
+
+
+def test_comparison_remediation_pack_records_promoted_state():
+    metadata = COMPARISON_REMEDIATION_CAPTURED_DOMAIN
+    pack_path = BASELINE_ROOT / "comparison_remediation" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness returned `READY`" in combined
+    assert "Ready: yes" in combined
+    assert "Selected ODBC driver: `ODBC Driver 17 for SQL Server`" in combined
+    assert "Result status: `PROMOTED_BASELINE_CAPTURED`" in combined
+    assert "captured evidence and promoted" in combined
+    assert "Total: 9" in combined
+    assert "Passed: 9" in combined
+    assert "Failed: 0" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "Evidence groups: 12" in combined
+    assert "`STRONG`: 12" in combined
+    assert "`WEAK`: 0" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Indexed corpus: 5 active documents, 4583 chunks" in combined
+    assert "Overall status: `GOOD`" in combined
+    assert "`LOW` / `KEEP` groups: 12" in combined
+    assert "`MEDIUM` refinement groups: 0" in combined
+    assert "`three_lane_comparison_model`: STRONG -> `KEEP`" in combined
+    assert "`actuals_as_external_outcome_truth`: STRONG -> `KEEP`" in combined
+    assert "`outstanding_hardening`: STRONG -> `KEEP`" in combined
+    assert "Final ledger status is `BASELINE_ALREADY_EXISTS`" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "DB readiness returned `DATABASE_CONNECTION_FAILED`" not in combined
+    assert "Result status: `BLOCKED_DATABASE_CONNECTION`" not in combined
+    assert "Benchmark result: not run" not in combined
+
+
+def test_comparison_remediation_pack_preserves_domain_boundaries():
+    pack_path = BASELINE_ROOT / "comparison_remediation" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    for term in (
+        "payroll evidence and review/remediation context, not generic diffing",
+        "primary calculated",
+        "comparator calculated",
+        "actual imported / actuals lane",
+        "primary award path remains operational payroll truth",
+        "Imported actuals are external outcome truth",
+        "comparison policy",
+        "comparator selection",
+        "active lanes",
+        "offset policy",
+        "output mode",
+        "variance treatment",
+        "review requirements",
+        "Comparison run and line evidence",
+        "Variance/top-up is a governed consequence",
+        "Position/classification mapping",
+        "Worker Story, Admin Queue, and Movement Review consume comparison evidence",
+        "Baseline capture does not implement runtime comparison/remediation behaviour",
+    ):
+        assert term in combined
 
 
 def test_objecttime_source_truth_recaptured_pack_preserves_domain_boundaries():
@@ -1108,10 +1181,10 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 18" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 13" in ledger
+    assert "`BASELINE_REQUIRED`: 17" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 14" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth; Process Periods / PayRun Lifecycle" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth; Process Periods / PayRun Lifecycle; Comparison / Remediation" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
@@ -1163,6 +1236,11 @@ def test_ledger_counts_remain_honest_for_captured_batch():
     assert "BASELINE_ALREADY_EXISTS | Process Periods / PayRun Lifecycle now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "corpus coverage 13 STRONG, 0 WEAK, 0 MISSING" in ledger
     assert "answer gap status GOOD with 13 KEEP actions" in ledger
+    assert "| Comparison / Remediation | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Comparison / Remediation now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "benchmark 9 total, 9 passed, 0 failed" in ledger
+    assert "corpus coverage 12 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status GOOD with 12 KEEP actions" in ledger
     assert "| Imports / Actuals | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
 
@@ -1269,6 +1347,8 @@ def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
         "artifacts/eval/process_period_payrun_lifecycle_answer_gap_report.json",
         "artifacts/eval/imports_actuals_corpus_coverage.json",
         "artifacts/eval/imports_actuals_answer_gap_report.json",
+        "artifacts/eval/comparison_remediation_corpus_coverage.json",
+        "artifacts/eval/comparison_remediation_answer_gap_report.json",
     ):
         tracked = subprocess.run(
             ["git", "ls-files", "--error-unmatch", relative_path],
