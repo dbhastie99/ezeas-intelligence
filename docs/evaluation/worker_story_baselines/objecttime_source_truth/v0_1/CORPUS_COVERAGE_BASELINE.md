@@ -1,21 +1,20 @@
 # ObjectTime / Source Truth Corpus Coverage Baseline
 
-This file records intentional corpus coverage non-execution for the ObjectTime / Source Truth baseline pack. It is diagnostic-only and not operational truth.
+This file records manually captured corpus coverage output for the ObjectTime / Source Truth recapture attempt. It is diagnostic-only and not operational truth.
 
-## Commands Not Run
+## Command
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\scan_objecttime_source_truth_corpus_coverage.py
-.\.venv\Scripts\python.exe scripts\scan_objecttime_source_truth_corpus_coverage.py --json --output .\artifacts\eval\objecttime_source_truth_corpus_coverage.json
+python scripts\scan_objecttime_source_truth_corpus_coverage.py
 ```
 
-DB readiness returned `DATABASE_CONNECTION_FAILED`, so the coverage diagnostic was not run.
+DB readiness returned `READY`, and the coverage diagnostic was captured from manual PowerShell output.
 
 ## Scope
 
 The ObjectTime / Source Truth corpus coverage diagnostic reads the already indexed formal corpus and reports evidence group coverage. It does not ingest files, mutate corpus records, call a live LLM or change schema.
 
-Coverage should preserve evidence for:
+Coverage preserves evidence for:
 
 - ObjectTime;
 - ObjectTimeAttribute;
@@ -49,29 +48,43 @@ Coverage should preserve evidence for:
 - no review request creation guarantee;
 - no correction, retro, replay, supplementary, adjustment, payment, remittance or finalisation execution guarantee.
 
-## Blocked Result Summary
+## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `RECAPTURED_REQUIRES_REFINEMENT`
 
-- Domain: ObjectTime / Source Truth
-- Plan id: not evaluated
-- Evidence groups: not evaluated
-- `STRONG`: not evaluated
-- `WEAK`: not evaluated
-- `MISSING`: not evaluated
-- Coverage JSON generated: no
+- Plan/domain: `OBJECTTIME_SOURCE_TRUTH` / ObjectTime / Source Truth
+- Evidence groups: 12
+- `STRONG`: 11
+- `WEAK`: 1
+- `MISSING`: 0
+- Coverage JSON generated: yes, transient only
 - Generated artefact committed: no
-- Indexed corpus: not evaluated
+- Indexed corpus: 5 active documents, 4583 chunks
 - Live LLM calls: no
 - Corpus mutation: no
 - Operational JSON ingestion: no
 - Code Evidence answer integration: no
 
-Corpus coverage result: not run.
+Corpus coverage result: completed with one weak supporting group and no missing groups.
 
-Baseline pack created: blocked pack only.
+Baseline pack state: captured evidence with promotion withheld.
 
-Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+
+## Coverage Groups
+
+- STRONG `purpose_and_operator_meaning`
+- STRONG `objecttime_as_source_evidence`
+- STRONG `payrun_inclusion_and_source_truth`
+- STRONG `imported_and_generated_source_rows`
+- STRONG `source_truth_vs_worked_hours`
+- STRONG `current_effective_output_connection`
+- STRONG `worker_story_connection`
+- STRONG `payroll_bases_and_leave_accrual_connection`
+- STRONG `comparison_movement_and_replay_connection`
+- STRONG `corrections_dirty_contacts_and_reprocessing`
+- STRONG `evidence_provenance_and_audit`
+- WEAK `outstanding_hardening`
 
 ## Source References
 
@@ -82,7 +95,9 @@ Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not coun
 
 ## Interpretation
 
-No coverage conclusion exists for this slice. The next run must wait for readiness to be `READY` before running commands and must report ObjectTime / Source Truth evidence gaps from actual diagnostic output.
+Coverage is not the blocker for promotion. The benchmark failures are answer-synthesis and term-coverage issues because coverage reported STRONG=11, WEAK=1 and MISSING=0.
+
+The weak `outstanding_hardening` group should be refined through ObjectTime / Source Truth retrieval-term hardening before promotion.
 
 ## Diagnostic-Only Guardrails
 

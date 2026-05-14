@@ -1,6 +1,6 @@
 # ObjectTime / Source Truth Baseline Summary
 
-Slice name: ObjectTime / Source Truth Baseline Capture v0.1
+Slice name: ObjectTime / Source Truth Baseline Recapture Result Update v0.1
 
 Domain: ObjectTime / Source Truth
 
@@ -10,58 +10,74 @@ Source decision ledger: `docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN
 
 Baseline policy: `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`
 
-This blocked baseline pack is diagnostic-only and not operational truth. It records DB-readiness non-execution for ObjectTime / Source Truth and does not capture benchmark, corpus coverage or answer gap results.
+This pack is diagnostic-only and not operational truth. It records manually captured PowerShell command outputs for an ObjectTime / Source Truth recapture attempt. Promotion is withheld because the benchmark failed 4 of 12 questions and the answer gap report is `NEEDS_REFINEMENT`.
+
+ObjectTime / Source Truth remains `BASELINE_REQUIRED`. This pack must not be counted as `BASELINE_ALREADY_EXISTS`.
 
 ## Execution Context
 
-Attempted on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
+Recapture attempted on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
 
-DB readiness returned `DATABASE_CONNECTION_FAILED`.
+DB readiness returned `READY`.
 
 - Readiness command: `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py`
-- Ready: no.
+- Ready: yes.
+- Configuration source: `.env:MINERVA_DATABASE_URL`
+- Selected ODBC driver: `ODBC Driver 17 for SQL Server`
 - Required tables checked: `KnowledgeDocument`, `KnowledgeChunk`
 - Missing tables: none.
-- Configuration source reported: `.env:MINERVA_DATABASE_URL`
-- Dialect/driver reported: `mssql/pyodbc`
-- Selected ODBC driver reported: `ODBC Driver 18 for SQL Server`
-- Error class: `pyodbc.OperationalError`
-- Result status: `BLOCKED_DATABASE_CONNECTION`
+- Read-only guardrails remained in place.
 
-Because readiness was not `READY`, ObjectTime / Source Truth benchmark, corpus coverage and answer gap commands were not run. No generated JSON reports were produced for this ObjectTime / Source Truth attempt.
+The benchmark, corpus coverage diagnostic and answer gap report were then captured manually from PowerShell output. Codex did not rerun DB-backed commands for this documentation update.
 
 ## Commands
 
-| Area | Command | Completed In v0.1 | Captured Result Summary |
+| Area | Command | Completed In Recapture | Captured Result Summary |
 |---|---|---:|---|
-| DB readiness check | `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py` | yes | `DATABASE_CONNECTION_FAILED`; ready: no. |
-| ObjectTime / Source Truth benchmark | `.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.objecttime_source_truth.json` | no | Blocked by DB readiness. |
-| Corpus coverage diagnostic | `.\.venv\Scripts\python.exe scripts\scan_objecttime_source_truth_corpus_coverage.py` | no | Blocked by DB readiness. |
-| Corpus coverage diagnostic JSON | `.\.venv\Scripts\python.exe scripts\scan_objecttime_source_truth_corpus_coverage.py --json --output .\artifacts\eval\objecttime_source_truth_corpus_coverage.json` | no | Blocked by DB readiness; generated artefact committed: no. |
-| Answer gap report | `.\.venv\Scripts\python.exe scripts\build_objecttime_source_truth_answer_gap_report.py --coverage-report .\artifacts\eval\objecttime_source_truth_corpus_coverage.json` | no | Blocked by DB readiness. |
-| Answer gap report JSON | `.\.venv\Scripts\python.exe scripts\build_objecttime_source_truth_answer_gap_report.py --coverage-report .\artifacts\eval\objecttime_source_truth_corpus_coverage.json --json --output .\artifacts\eval\objecttime_source_truth_answer_gap_report.json` | no | Blocked by DB readiness; generated artefact committed: no. |
+| DB readiness check | `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py` | yes | `READY`; ready: yes. |
+| ObjectTime / Source Truth benchmark | `python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.objecttime_source_truth.json` | yes | 12 total / 8 passed / 4 failed; audit/chat rows created: false. |
+| Corpus coverage diagnostic | `python scripts\scan_objecttime_source_truth_corpus_coverage.py` | yes | 12 evidence groups; STRONG=11, WEAK=1, MISSING=0; indexed corpus 5 active documents, 4583 chunks. |
+| Answer gap report | `python scripts\build_objecttime_source_truth_answer_gap_report.py --coverage-report .\artifacts\eval\objecttime_source_truth_corpus_coverage.json` | yes | `NEEDS_REFINEMENT`; 11 LOW / KEEP groups; 1 MEDIUM / IMPROVE_RETRIEVAL_TERMS group. |
+| Answer gap report JSON | `python scripts\build_objecttime_source_truth_answer_gap_report.py --coverage-report .\artifacts\eval\objecttime_source_truth_corpus_coverage.json --json --output .\artifacts\eval\objecttime_source_truth_answer_gap_report.json` | yes | Generated transient JSON; committed: no. |
 
-## Blocked Finding
+## Recapture Finding
 
-- Readiness status: `DATABASE_CONNECTION_FAILED`.
-- Result status: `BLOCKED_DATABASE_CONNECTION`.
-- Baseline pack created: blocked pack only.
-- Benchmark result: not run.
-- Corpus coverage result: not run.
-- Answer gap report: not run.
+- DB readiness result: `READY`.
+- Result status: `RECAPTURED_REQUIRES_REFINEMENT`.
+- Baseline pack state: captured evidence with promotion withheld.
+- Benchmark result: 12 total, 8 passed, 4 failed.
+- Corpus coverage result: STRONG=11, WEAK=1, MISSING=0.
+- Answer gap report: `NEEDS_REFINEMENT`.
 - Generated artefact committed: no.
 - Live LLM calls: no.
 - Corpus mutation: no.
 - Operational JSON ingestion: no.
 - Code Evidence answer integration: no.
 - Final ledger status remains `BASELINE_REQUIRED`.
-- This blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+- This recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+
+The benchmark failures are answer-synthesis and term-coverage issues, not corpus absence issues. Corpus coverage reported no missing groups.
+
+## Failed Benchmark Cases
+
+1. `objecttime-payrun-inclusion`
+   - Question: How does ObjectTime explain PayRun inclusion?
+   - Missing expected terms: `ObjectTime`, `PayRun inclusion`, `source row`, `belongs in a PayRun`, `source inclusion`, `SourceTruth`
+2. `objecttime-sourcetruth-vs-workedhours`
+   - Question: What is the difference between SourceTruth and WorkedHours?
+   - Missing expected terms: `SourceTruth`, `WorkedHours`, `separate concepts`, `source inclusion`, `worked hours`, `raw span hours`
+3. `objecttime-current-effective-output`
+   - Question: How does ObjectTime / Source Truth connect to current-effective payroll output?
+   - Missing expected terms: `ObjectTime / Source Truth`, `current-effective payroll output`, `processed source truth`, `payroll outcome`, `current-effective truth`
+4. `objecttime-worker-story-source-truth`
+   - Question: How should Worker Story use Source Truth?
+   - Missing expected terms: `Worker Story`, `Source Truth`, `source inclusion`, `calculated payroll outcome`, `before`, `Decision Story`
 
 ## Domain Boundary To Preserve
 
 ObjectTime / Source Truth is source evidence and PayRun inclusion context. It is not merely a timesheet or shift domain, and it is not payroll calculation truth by itself.
 
-The next captured run must preserve these boundaries:
+The next refinement slice must preserve these boundaries:
 
 - ObjectTime, ObjectTimeAttribute, ObjectTimeAssessment and ObjectTimeAssessmentResponse are ObjectTime-family source evidence surfaces.
 - SourceTruth is not WorkedHours.
@@ -105,8 +121,16 @@ Do not overclaim v5.56. It is a readiness contract only. It is not runtime intak
 
 This pack does not implement or claim:
 
+- DB writes;
+- migrations;
+- corpus mutation;
+- operational JSON ingestion;
+- Code Evidence answer integration;
+- live LLM calls;
+- endpoint/UI/workforce-platform/runtime changes;
+- dirty runtime calls;
+- correction/review/payment/finalisation execution;
 - runtime source-change hook or intake;
-- dirty runtime from source-change hooks;
 - Finalised correction intake creation from hooks;
 - review request creation from hooks;
 - correction execution;
@@ -119,7 +143,7 @@ This pack does not implement or claim:
 
 ## Guardrails
 
-This blocked pack:
+This recaptured-result pack:
 
 - does not mutate corpus;
 - does not change routing;
@@ -137,4 +161,4 @@ This blocked pack:
 
 ## Recommended Next Slice
 
-Fix SQL Server connectivity or credentials so the readiness check returns `READY` before running commands. Then rerun the ObjectTime / Source Truth benchmark, corpus coverage diagnostic and answer gap report before moving this domain to `BASELINE_ALREADY_EXISTS`.
+Refine ObjectTime / Source Truth retrieval terms and answer synthesis for the failed benchmark terms and the weak `outstanding_hardening` supporting group before promoting this domain. Do not add new corpus merely to address the four benchmark failures unless a later diagnostic shows a real source-evidence gap.

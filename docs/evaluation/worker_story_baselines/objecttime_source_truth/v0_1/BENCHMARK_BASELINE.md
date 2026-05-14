@@ -1,16 +1,14 @@
 # ObjectTime / Source Truth Benchmark Baseline
 
-This file records intentional benchmark non-execution for the ObjectTime / Source Truth baseline pack. It is diagnostic-only and not operational truth.
+This file records manually captured benchmark output for the ObjectTime / Source Truth recapture attempt. It is diagnostic-only and not operational truth.
 
-## Command Not Run
+## Command
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.objecttime_source_truth.json
+python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.objecttime_source_truth.json
 ```
 
-Attempted baseline capture on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
-
-DB readiness returned `DATABASE_CONNECTION_FAILED`.
+Recapture attempted on 2026-05-14 from `C:\Projects\ezeas-intelligence` after DB readiness returned `READY`.
 
 ## Scope
 
@@ -22,20 +20,21 @@ samples\eval\rich_answer_benchmark.objecttime_source_truth.json
 
 The manifest covers ObjectTime / Source Truth, governed source evidence, PayRun inclusion context, SourceTruth versus WorkedHours, raw span hours, interpreted worked hours boundaries, imported and generated source rows, current-effective payroll output, Worker Story, Payroll Bases, Leave Accrual, Comparison / Remediation, Movement Review, Retro / Replay, corrections, dirty contacts, reprocessing, provenance and audit.
 
-## Blocked Result Summary
+## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `RECAPTURED_REQUIRES_REFINEMENT`
 
 Pass/fail summary:
 
-- Total: not run
-- Passed: not run
-- Failed: not run
+- Golden questions: ObjectTime / Source Truth rich-answer benchmark
+- Total: 12
+- Passed: 8
+- Failed: 4
 - Audit/chat rows created: false
 
-Benchmark result: not run.
+Benchmark result: completed with failures.
 
-Baseline pack created: blocked pack only.
+Baseline pack state: captured evidence with promotion withheld.
 
 Generated artefact committed: no.
 
@@ -47,11 +46,70 @@ Operational JSON ingestion: no.
 
 Code Evidence answer integration: no.
 
-Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+
+## Failed Cases
+
+### objecttime-payrun-inclusion
+
+Question: How does ObjectTime explain PayRun inclusion?
+
+Missing expected terms:
+
+- `ObjectTime`
+- `PayRun inclusion`
+- `source row`
+- `belongs in a PayRun`
+- `source inclusion`
+- `SourceTruth`
+
+### objecttime-sourcetruth-vs-workedhours
+
+Question: What is the difference between SourceTruth and WorkedHours?
+
+Missing expected terms:
+
+- `SourceTruth`
+- `WorkedHours`
+- `separate concepts`
+- `source inclusion`
+- `worked hours`
+- `raw span hours`
+
+### objecttime-current-effective-output
+
+Question: How does ObjectTime / Source Truth connect to current-effective payroll output?
+
+Missing expected terms:
+
+- `ObjectTime / Source Truth`
+- `current-effective payroll output`
+- `processed source truth`
+- `payroll outcome`
+- `current-effective truth`
+
+### objecttime-worker-story-source-truth
+
+Question: How should Worker Story use Source Truth?
+
+Missing expected terms:
+
+- `Worker Story`
+- `Source Truth`
+- `source inclusion`
+- `calculated payroll outcome`
+- `before`
+- `Decision Story`
+
+## Failure Classification
+
+The failures are answer-synthesis and term-coverage issues, not corpus absence issues. The paired corpus coverage diagnostic reported STRONG=11, WEAK=1, MISSING=0 across 12 evidence groups.
+
+Do not weaken benchmark expectations. Refine retrieval terms and answer synthesis so answers preserve ObjectTime / Source Truth naming, SourceTruth versus WorkedHours boundaries, source inclusion, current-effective payroll output and Worker Story sequencing before promotion.
 
 ## Boundary Expectations
 
-When DB readiness returns `READY`, the benchmark must not weaken expectations that:
+The benchmark must not weaken expectations that:
 
 - ObjectTime is source evidence and PayRun inclusion context, not payroll calculation truth.
 - SourceTruth and WorkedHours are separate concepts.

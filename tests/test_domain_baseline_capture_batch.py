@@ -93,13 +93,6 @@ CONTACT_PAYROLL_HISTORY_CAPTURED_DOMAIN = {
 }
 
 PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {
-    "objecttime_source_truth": {
-        "name": "ObjectTime / Source Truth",
-        "runbook": "docs/OBJECTTIME_SOURCE_TRUTH_EVALUATION_RUNBOOK.md",
-        "manifest": "samples\\eval\\rich_answer_benchmark.objecttime_source_truth.json",
-        "scan": "scripts\\scan_objecttime_source_truth_corpus_coverage.py",
-        "gap": "scripts\\build_objecttime_source_truth_answer_gap_report.py",
-    },
     "process_periods_payrun_lifecycle": {
         "name": "Process Periods / PayRun Lifecycle",
         "runbook": "docs/PROCESS_PERIOD_PAYRUN_LIFECYCLE_EVALUATION_RUNBOOK.md",
@@ -114,6 +107,14 @@ PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {
         "scan": "scripts\\scan_imports_actuals_corpus_coverage.py",
         "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
     },
+}
+
+OBJECTTIME_SOURCE_TRUTH_RECAPTURED_DOMAIN = {
+    "name": "ObjectTime / Source Truth",
+    "runbook": "docs/OBJECTTIME_SOURCE_TRUTH_EVALUATION_RUNBOOK.md",
+    "manifest": "samples\\eval\\rich_answer_benchmark.objecttime_source_truth.json",
+    "scan": "scripts\\scan_objecttime_source_truth_corpus_coverage.py",
+    "gap": "scripts\\build_objecttime_source_truth_answer_gap_report.py",
 }
 
 
@@ -378,7 +379,47 @@ def test_payroll_evidence_context_blocked_packs_are_diagnostic_only_not_runtime_
         assert "does not change workforce-platform" in combined
 
 
-def test_objecttime_source_truth_blocked_pack_preserves_domain_boundaries():
+def test_objecttime_source_truth_recaptured_pack_records_refinement_required_state():
+    metadata = OBJECTTIME_SOURCE_TRUTH_RECAPTURED_DOMAIN
+    pack_path = BASELINE_ROOT / "objecttime_source_truth" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness returned `READY`" in combined
+    assert "Ready: yes" in combined
+    assert "Selected ODBC driver: `ODBC Driver 17 for SQL Server`" in combined
+    assert "Result status: `RECAPTURED_REQUIRES_REFINEMENT`" in combined
+    assert "captured evidence with promotion withheld" in combined
+    assert "Total: 12" in combined
+    assert "Passed: 8" in combined
+    assert "Failed: 4" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "objecttime-payrun-inclusion" in combined
+    assert "objecttime-sourcetruth-vs-workedhours" in combined
+    assert "objecttime-current-effective-output" in combined
+    assert "objecttime-worker-story-source-truth" in combined
+    assert "`STRONG`: 11" in combined
+    assert "`WEAK`: 1" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Overall status: `NEEDS_REFINEMENT`" in combined
+    assert "`KEEP`: 11" in combined
+    assert "`IMPROVE_RETRIEVAL_TERMS`: 1" in combined
+    assert "`outstanding_hardening` -> `IMPROVE_RETRIEVAL_TERMS`" in combined
+    assert "benchmark failures are answer-synthesis/term-coverage issues, not corpus absence issues" in combined
+    assert "Final ledger status remains `BASELINE_REQUIRED`" in combined
+    assert "does not count as `BASELINE_ALREADY_EXISTS`" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "DB readiness returned `DATABASE_CONNECTION_FAILED`" not in combined
+    assert "Result status: `BLOCKED_DATABASE_CONNECTION`" not in combined
+    assert "Benchmark result: not run" not in combined
+
+
+def test_objecttime_source_truth_recaptured_pack_preserves_domain_boundaries():
     pack_path = BASELINE_ROOT / "objecttime_source_truth" / "v0_1"
     combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
 
