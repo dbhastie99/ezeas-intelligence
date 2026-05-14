@@ -92,15 +92,7 @@ CONTACT_PAYROLL_HISTORY_CAPTURED_DOMAIN = {
     "gap": "scripts\\build_contact_payroll_history_answer_gap_report.py",
 }
 
-PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {
-    "imports_actuals": {
-        "name": "Imports / Actuals",
-        "runbook": "docs/IMPORTS_ACTUALS_EVALUATION_RUNBOOK.md",
-        "manifest": "samples\\eval\\rich_answer_benchmark.imports_actuals.json",
-        "scan": "scripts\\scan_imports_actuals_corpus_coverage.py",
-        "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
-    },
-}
+PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {}
 
 PROCESS_PERIODS_PAYRUN_LIFECYCLE_RECAPTURED_DOMAIN = {
     "name": "Process Periods / PayRun Lifecycle",
@@ -116,6 +108,14 @@ OBJECTTIME_SOURCE_TRUTH_RECAPTURED_DOMAIN = {
     "manifest": "samples\\eval\\rich_answer_benchmark.objecttime_source_truth.json",
     "scan": "scripts\\scan_objecttime_source_truth_corpus_coverage.py",
     "gap": "scripts\\build_objecttime_source_truth_answer_gap_report.py",
+}
+
+IMPORTS_ACTUALS_RECAPTURED_DOMAIN = {
+    "name": "Imports / Actuals",
+    "runbook": "docs/IMPORTS_ACTUALS_EVALUATION_RUNBOOK.md",
+    "manifest": "samples\\eval\\rich_answer_benchmark.imports_actuals.json",
+    "scan": "scripts\\scan_imports_actuals_corpus_coverage.py",
+    "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
 }
 
 
@@ -418,6 +418,52 @@ def test_payroll_evidence_context_blocked_packs_are_diagnostic_only_not_runtime_
         assert "does not change workforce-platform" in combined
 
 
+def test_imports_actuals_recaptured_pack_records_unpromoted_refinement_state():
+    metadata = IMPORTS_ACTUALS_RECAPTURED_DOMAIN
+    pack_path = BASELINE_ROOT / "imports_actuals" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness result: `READY`" in combined
+    assert "Result status: `RECAPTURED_BASELINE_REQUIRES_REFINEMENT`" in combined
+    assert "Result status: `COMPLETED_WITH_FAILURES`" in combined
+    assert "Total: 11" in combined
+    assert "Passed: 8" in combined
+    assert "Failed: 3" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "imports-actuals-pay-code-ratetype-mapping" in combined
+    assert "imports-actuals-comparison-remediation-connection" in combined
+    assert "imports-actuals-worker-story-admin-queue" in combined
+    assert "Evidence groups: 12" in combined
+    assert "`STRONG`: 9" in combined
+    assert "`WEAK`: 1" in combined
+    assert "`MISSING`: 2" in combined
+    assert "`purpose_and_operator_meaning`: MISSING" in combined
+    assert "`pay_code_and_rate_type_mapping`: WEAK" in combined
+    assert "`outstanding_hardening`: MISSING" in combined
+    assert "Indexed corpus: 5 active documents, 4583 chunks" in combined
+    assert "Overall status: `NEEDS_REFINEMENT`" in combined
+    assert "`LOW` / `KEEP` groups: 9" in combined
+    assert "`MEDIUM` / `IMPROVE_SYNTHESIS` groups: 1" in combined
+    assert "`ADD_FORMAL_SOURCE_EVIDENCE_LATER` groups: 2" in combined
+    assert "This is not a successful captured/promoted baseline" in combined
+    assert "Final ledger status remains `BASELINE_REQUIRED`" in combined
+    assert "does not count as `BASELINE_ALREADY_EXISTS`" in combined
+    assert "real formal-corpus gaps" in combined
+    assert "Promotion cannot happen solely through synthesis hardening" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "DB readiness returned `DATABASE_CONNECTION_FAILED`" not in combined
+    assert "Result status: `BLOCKED_DATABASE_CONNECTION`" not in combined
+    assert "Benchmark result: not run" not in combined
+    assert "Baseline pack created: blocked pack only" not in combined
+    assert "Final ledger status is `BASELINE_ALREADY_EXISTS`" not in combined
+
+
 def test_objecttime_source_truth_recaptured_pack_records_promoted_state():
     metadata = OBJECTTIME_SOURCE_TRUTH_RECAPTURED_DOMAIN
     pack_path = BASELINE_ROOT / "objecttime_source_truth" / "v0_1"
@@ -513,7 +559,7 @@ def test_process_periods_payrun_lifecycle_pack_preserves_domain_boundaries():
         assert term in combined
 
 
-def test_imports_actuals_blocked_pack_preserves_domain_boundaries():
+def test_imports_actuals_recaptured_pack_preserves_domain_boundaries():
     pack_path = BASELINE_ROOT / "imports_actuals" / "v0_1"
     combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
 
@@ -547,7 +593,7 @@ def test_imports_actuals_blocked_pack_preserves_domain_boundaries():
         "worker story explanation context",
         "source truth impact on PayRun outcomes",
         "no runtime mutation guarantee",
-        "no benchmark promotion when DB readiness is blocked",
+        "no promotion while benchmark failures and formal corpus gaps remain",
         "Imported actuals are evidence for reconciliation",
         "not the same as calculated payroll truth",
         "Minerva baseline packs do not mutate operational payroll data",

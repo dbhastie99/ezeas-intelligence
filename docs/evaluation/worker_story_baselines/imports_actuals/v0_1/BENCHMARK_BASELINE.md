@@ -1,16 +1,14 @@
 # Imports / Actuals Benchmark Baseline
 
-This file records intentional benchmark non-execution for the Imports / Actuals baseline pack. It is diagnostic-only and not operational truth.
+This file records the manually captured benchmark result for the Imports / Actuals baseline pack. It is diagnostic-only and not operational truth.
 
-## Command Not Run
+## Command Executed
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.imports_actuals.json
+python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.imports_actuals.json
 ```
 
-Attempted baseline capture on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
-
-DB readiness returned `DATABASE_CONNECTION_FAILED`.
+Recaptured on 2026-05-14 from `C:\Projects\ezeas-intelligence` after DB readiness returned `READY`.
 
 ## Scope
 
@@ -22,20 +20,20 @@ samples\eval\rich_answer_benchmark.imports_actuals.json
 
 The manifest covers Imports / Actuals, governed imported evidence, imported timesheet source truth, imported payroll actuals, external actuals, source-system mapping, validation, pay code / RateType mapping, position/classification mapping, ObjectTime/source truth, Comparison / Remediation, reconciliation, Movement Review, Worker Story, Admin Queue, evidence provenance and audit.
 
-## Blocked Result Summary
+## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED_WITH_FAILURES`
 
 Pass/fail summary:
 
-- Total: not run
-- Passed: not run
-- Failed: not run
+- Total: 11
+- Passed: 8
+- Failed: 3
 - Audit/chat rows created: false
 
-Benchmark result: not run.
+Benchmark result: recaptured with failures.
 
-Baseline pack created: blocked pack only.
+Baseline pack state: recaptured result, not promoted.
 
 Generated artefact committed: no.
 
@@ -47,11 +45,52 @@ Operational JSON ingestion: no.
 
 Code Evidence answer integration: no.
 
-Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+
+## Failed Cases
+
+### `imports-actuals-pay-code-ratetype-mapping`
+
+Question: How should pay code and RateType mapping work for imported actuals?
+
+Missing expected terms:
+
+- pay code mapping
+- RateType mapping
+- platform concepts
+- unmapped actuals
+- deterministic
+- review
+- configuration issues
+
+### `imports-actuals-comparison-remediation-connection`
+
+Question: How do Imports / Actuals connect to Comparison / Remediation?
+
+Missing expected terms:
+
+- Imports / Actuals
+- Comparison / Remediation
+- primary calculated
+- comparator calculated
+- imported actual lanes
+- actuals lane
+- variance
+
+### `imports-actuals-worker-story-admin-queue`
+
+Question: How should Worker Story and Admin Queue surface import and actuals issues?
+
+Failed source-evidence check:
+
+- No source snippet/matched phrase contained any expected terms:
+- Worker Story
+- Admin Queue
+- mapping issues
 
 ## Boundary Expectations
 
-When DB readiness returns `READY`, the benchmark must not weaken expectations that:
+Refinement must not weaken expectations that:
 
 - Imports / Actuals is source-evidence and reconciliation context, not merely file upload or CSV parsing.
 - Imported timesheet truth and imported payroll actuals are separate evidence lanes.

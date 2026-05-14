@@ -1,48 +1,65 @@
 # Imports / Actuals Answer Gap Report Baseline
 
-This file records intentional answer gap report non-execution for the Imports / Actuals baseline pack. It is diagnostic-only and not operational truth.
+This file records the manually captured answer gap report result for the Imports / Actuals baseline pack. It is diagnostic-only and not operational truth.
 
-## Commands Not Run
+## Commands Executed
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\build_imports_actuals_answer_gap_report.py --coverage-report .\artifacts\eval\imports_actuals_corpus_coverage.json
-.\.venv\Scripts\python.exe scripts\build_imports_actuals_answer_gap_report.py --coverage-report .\artifacts\eval\imports_actuals_corpus_coverage.json --json --output .\artifacts\eval\imports_actuals_answer_gap_report.json
+python scripts\build_imports_actuals_answer_gap_report.py --coverage-report .\artifacts\eval\imports_actuals_corpus_coverage.json
+python scripts\build_imports_actuals_answer_gap_report.py --coverage-report .\artifacts\eval\imports_actuals_corpus_coverage.json --json --output .\artifacts\eval\imports_actuals_answer_gap_report.json
 ```
-
-DB readiness returned `DATABASE_CONNECTION_FAILED`, so the answer gap report was not run.
 
 ## Scope
 
-The Imports / Actuals answer gap report consumes the corpus coverage JSON and recommends whether each evidence group should be kept, refined or deferred for formal source evidence. Because corpus coverage did not run, no answer gap conclusion exists for this slice.
+The Imports / Actuals answer gap report consumes the captured corpus coverage JSON and recommends whether each evidence group should be kept, refined or deferred for formal source evidence.
 
-## Blocked Result Summary
+## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED_WITH_REFINEMENT_NEEDED`
 
 - Domain: Imports / Actuals
-- Report type: not evaluated
-- Source coverage plan: not evaluated
-- Overall status: not evaluated
-- `KEEP`: not evaluated
-- `IMPROVE_RETRIEVAL_TERMS`: not evaluated
-- `IMPROVE_SYNTHESIS`: not evaluated
-- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: not evaluated
-- Answer gap JSON generated: no
+- Report type: `IMPORTS_ACTUALS_ANSWER_GAP_REPORT`
+- Source coverage plan: `IMPORTS_ACTUALS`
+- Overall status: `NEEDS_REFINEMENT`
+- `LOW` / `KEEP` groups: 9
+- `MEDIUM` / `IMPROVE_SYNTHESIS` groups: 1
+- `ADD_FORMAL_SOURCE_EVIDENCE_LATER` groups: 2
+- Answer gap JSON generated: yes
 - Generated artefact committed: no
 - Live LLM calls: no
 - Corpus mutation: no
 - Operational JSON ingestion: no
 - Code Evidence answer integration: no
 
-Answer gap report: not run.
+Answer gap report: recaptured and requires refinement.
 
-Baseline pack created: blocked pack only.
+Baseline pack state: recaptured result, not promoted.
 
-Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+
+## Recommended Actions
+
+`LOW` / `KEEP` groups:
+
+- 9 groups.
+
+`MEDIUM` / `IMPROVE_SYNTHESIS` group:
+
+- `pay_code_and_rate_type_mapping`
+
+`ADD_FORMAL_SOURCE_EVIDENCE_LATER` groups:
+
+- `purpose_and_operator_meaning`: HIGH
+- `outstanding_hardening`: MEDIUM
+
+Recommended next actions:
+
+- Add formal source evidence later for missing Imports / Actuals groups before widening answer claims.
+- Tighten Imports / Actuals answer synthesis for weak core groups while keeping status caveats.
 
 ## Boundary Expectations
 
-When DB readiness returns `READY`, answer gap classification must preserve:
+Answer gap refinement must preserve:
 
 - imported actuals as evidence for reconciliation, not calculated payroll truth;
 - source truth provenance and evidence preservation;
@@ -60,11 +77,11 @@ When DB readiness returns `READY`, answer gap classification must preserve:
 - Runbook: `docs/IMPORTS_ACTUALS_EVALUATION_RUNBOOK.md`
 - Answer gap service: `app/services/imports_actuals_answer_gap_report_service.py`
 - Answer gap script: `scripts\build_imports_actuals_answer_gap_report.py`
-- Readiness check: `scripts/check_worker_story_baseline_db_readiness.py`
+- Required coverage JSON: `.\artifacts\eval\imports_actuals_corpus_coverage.json`
 
 ## Interpretation
 
-No answer gap conclusion exists for this slice. Imports / Actuals must remain blocked until DB readiness is `READY` and actual benchmark, coverage and gap results are captured.
+Imports / Actuals is a recaptured baseline result with refinement still required. The missing `purpose_and_operator_meaning` and `outstanding_hardening` groups are formal source-evidence gaps, not only synthesis or retrieval drift. Promotion should not be considered until those gaps are addressed or the coverage plan is revised with justification, and the benchmark failure set is resolved or deliberately accepted under a documented baseline policy.
 
 ## Diagnostic-Only Guardrails
 

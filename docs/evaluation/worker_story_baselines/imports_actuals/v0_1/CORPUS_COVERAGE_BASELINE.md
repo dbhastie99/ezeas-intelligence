@@ -1,21 +1,19 @@
 # Imports / Actuals Corpus Coverage Baseline
 
-This file records intentional corpus coverage non-execution for the Imports / Actuals baseline pack. It is diagnostic-only and not operational truth.
+This file records the manually captured corpus coverage result for the Imports / Actuals baseline pack. It is diagnostic-only and not operational truth.
 
-## Commands Not Run
+## Commands Executed
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\scan_imports_actuals_corpus_coverage.py
-.\.venv\Scripts\python.exe scripts\scan_imports_actuals_corpus_coverage.py --json --output .\artifacts\eval\imports_actuals_corpus_coverage.json
+python scripts\scan_imports_actuals_corpus_coverage.py
+python scripts\scan_imports_actuals_corpus_coverage.py --json --output .\artifacts\eval\imports_actuals_corpus_coverage.json
 ```
-
-DB readiness returned `DATABASE_CONNECTION_FAILED`, so the coverage diagnostic was not run.
 
 ## Scope
 
 The Imports / Actuals corpus coverage diagnostic reads the already indexed formal corpus and reports evidence group coverage. It does not ingest files, mutate corpus records, call a live LLM or change schema.
 
-Coverage should preserve evidence for:
+Coverage preserves evidence for:
 
 - import batch;
 - import row;
@@ -46,29 +44,51 @@ Coverage should preserve evidence for:
 - worker story explanation context;
 - no runtime mutation guarantee.
 
-## Blocked Result Summary
+## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED_WITH_CORPUS_GAPS`
 
-- Domain: Imports / Actuals
-- Plan id: not evaluated
-- Evidence groups: not evaluated
-- `STRONG`: not evaluated
-- `WEAK`: not evaluated
-- `MISSING`: not evaluated
-- Coverage JSON generated: no
+- Plan/domain: `IMPORTS_ACTUALS` / Imports / Actuals
+- Evidence groups: 12
+- `STRONG`: 9
+- `WEAK`: 1
+- `MISSING`: 2
+- Coverage JSON generated: yes
 - Generated artefact committed: no
-- Indexed corpus: not evaluated
+- Indexed corpus: 5 active documents, 4583 chunks
 - Live LLM calls: no
 - Corpus mutation: no
 - Operational JSON ingestion: no
 - Code Evidence answer integration: no
 
-Corpus coverage result: not run.
+Corpus coverage result: recaptured with real formal-corpus gaps.
 
-Baseline pack created: blocked pack only.
+Baseline pack state: recaptured result, not promoted.
 
-Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+
+## Evidence Groups
+
+- `purpose_and_operator_meaning`: MISSING
+- `imported_timesheet_source_truth`: STRONG
+- `imported_payroll_actuals_lane`: STRONG
+- `source_system_mapping_and_validation`: STRONG
+- `pay_code_and_rate_type_mapping`: WEAK
+- `position_classification_mapping`: STRONG
+- `objecttime_and_source_truth_connection`: STRONG
+- `comparison_and_remediation_connection`: STRONG
+- `reconciliation_and_movement_review_connection`: STRONG
+- `worker_story_and_admin_queue_connection`: STRONG
+- `evidence_provenance_and_audit`: STRONG
+- `outstanding_hardening`: MISSING
+
+Important details:
+
+- `purpose_and_operator_meaning` matched 0 chunks across 0 documents.
+- `outstanding_hardening` matched 0 chunks across 0 documents.
+- `pay_code_and_rate_type_mapping` matched 4 chunks across 1 document and is WEAK.
+- `worker_story_and_admin_queue_connection` is STRONG, but the benchmark source-evidence check still failed for expected terms Worker Story, Admin Queue and mapping issues.
+- `comparison_and_remediation_connection` is STRONG, but the benchmark answer still missed expected lane terms.
 
 ## Source References
 
@@ -76,10 +96,11 @@ Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not coun
 - Coverage service: `app/services/imports_actuals_corpus_coverage_service.py`
 - Coverage script: `scripts\scan_imports_actuals_corpus_coverage.py`
 - Readiness check: `scripts/check_worker_story_baseline_db_readiness.py`
+- Transient JSON: `.\artifacts\eval\imports_actuals_corpus_coverage.json`
 
 ## Interpretation
 
-No coverage conclusion exists for this slice. The next run must wait for readiness to be `READY` before running commands and must report Imports / Actuals evidence gaps from actual diagnostic output.
+Imports / Actuals has genuine formal-corpus gaps: 9 STRONG, 1 WEAK and 2 MISSING coverage groups. The missing groups mean this domain cannot be promoted solely through synthesis hardening unless formal source evidence is added or the coverage plan is legitimately revised with justification.
 
 ## Diagnostic-Only Guardrails
 
