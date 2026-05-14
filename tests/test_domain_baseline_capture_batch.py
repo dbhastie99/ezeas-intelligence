@@ -362,7 +362,7 @@ def test_payroll_evidence_context_blocked_packs_record_non_execution_honestly():
         assert "Result status: `COMPLETED_WITH_FAILURES`" not in combined
 
 
-def test_process_periods_payrun_lifecycle_pack_records_recaptured_not_promoted_state():
+def test_process_periods_payrun_lifecycle_pack_records_promoted_state():
     metadata = PROCESS_PERIODS_PAYRUN_LIFECYCLE_RECAPTURED_DOMAIN
     pack_path = BASELINE_ROOT / "process_periods_payrun_lifecycle" / "v0_1"
     combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
@@ -373,32 +373,25 @@ def test_process_periods_payrun_lifecycle_pack_records_recaptured_not_promoted_s
     assert metadata["scan"] in combined
     assert metadata["gap"] in combined
     assert "Readiness status: `READY`" in combined
-    assert "Result status: `RECAPTURED_REQUIRES_REFINEMENT`" in combined
-    assert "Result status: `COMPLETED_WITH_FAILURES`" in combined
+    assert "Result status: `PROMOTED_BASELINE_CAPTURED`" in combined
+    assert "Result status: `COMPLETED`" in combined
     assert "Total: 13" in combined
-    assert "Passed: 7" in combined
-    assert "Failed: 6" in combined
+    assert "Passed: 13" in combined
+    assert "Failed: 0" in combined
     assert "Audit/chat rows created: false" in combined
-    assert "process-period-payrun-lifecycle-rich-answer" in combined
-    assert "process-period-closed-dominates-open" in combined
-    assert "process-period-close-rolls-forward" in combined
-    assert "process-period-paymentdate" in combined
-    assert "process-period-payrun-creation-admission" in combined
-    assert "process-period-admission-not-processing" in combined
     assert "Evidence groups: 13" in combined
-    assert "`STRONG`: 10" in combined
-    assert "`WEAK`: 3" in combined
+    assert "`STRONG`: 13" in combined
+    assert "`WEAK`: 0" in combined
     assert "`MISSING`: 0" in combined
     assert "Indexed corpus: 5 active documents, 4583 chunks" in combined
-    assert "Overall status: `NEEDS_REFINEMENT`" in combined
-    assert "`LOW` / `KEEP` groups: 10" in combined
-    assert "`MEDIUM` refinement groups: 3" in combined
-    assert "`purpose_and_operator_meaning`: WEAK -> `IMPROVE_SYNTHESIS`" in combined
-    assert "`close_rolls_forward`: WEAK -> `IMPROVE_RETRIEVAL_TERMS`" in combined
-    assert "`outstanding_hardening`: WEAK -> `IMPROVE_RETRIEVAL_TERMS`" in combined
-    assert "Baseline promotion: withheld" in combined
-    assert "Final ledger status remains `BASELINE_REQUIRED`" in combined
-    assert "does not count as `BASELINE_ALREADY_EXISTS`" in combined
+    assert "Overall status: `GOOD`" in combined
+    assert "`LOW` / `KEEP` groups: 13" in combined
+    assert "`MEDIUM` refinement groups: 0" in combined
+    assert "`purpose_and_operator_meaning`: STRONG -> `KEEP`" in combined
+    assert "`close_rolls_forward`: STRONG -> `KEEP`" in combined
+    assert "`outstanding_hardening`: STRONG -> `KEEP`" in combined
+    assert "Baseline pack state: captured evidence and promoted" in combined
+    assert "Final ledger status is `BASELINE_ALREADY_EXISTS`" in combined
     assert "not corpus absence issues" in combined
     assert "Generated artefact committed: no" in combined
     assert "Code Evidence answer integration: no" in combined
@@ -498,7 +491,7 @@ def test_objecttime_source_truth_recaptured_pack_preserves_domain_boundaries():
     assert "finalisation mutation" in combined
 
 
-def test_process_periods_payrun_lifecycle_blocked_pack_preserves_domain_boundaries():
+def test_process_periods_payrun_lifecycle_pack_preserves_domain_boundaries():
     pack_path = BASELINE_ROOT / "process_periods_payrun_lifecycle" / "v0_1"
     combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
 
@@ -507,19 +500,15 @@ def test_process_periods_payrun_lifecycle_blocked_pack_preserves_domain_boundari
         "ProcessPeriod",
         "ProcessPeriodGroup",
         "PaymentDate",
-        "PayRunBatch",
         "PayRunContact",
-        "worker story PayRun context",
-        "Contact Payroll History dependency",
-        "reconciliation dependency",
-        "source truth impact on PayRun outcomes",
+        "Worker Story",
+        "PayRun Admin Queue",
+        "Movement Review",
         "`PaymentDate` belongs on `ProcessPeriod`",
         "payment-date derivation policy belongs on `ProcessPeriodGroup`",
-        "`DAILY`, `WEEKLY`, `FORTNIGHTLY`, `MONTHLY` and `QUARTERLY`",
-        "Dirty contact doctrine",
-        "full contact-level PayRun reprocessing",
-        "Finalised or protected PayRuns require correction or review pathways",
-        "no runtime mutation guarantee",
+        "admission is not processing",
+        "closed dominates open",
+        "current-effective payroll output",
     ):
         assert term in combined
 
@@ -982,10 +971,10 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 19" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 12" in ledger
+    assert "`BASELINE_REQUIRED`: 18" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 13" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth; Process Periods / PayRun Lifecycle" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
@@ -1033,7 +1022,10 @@ def test_ledger_counts_remain_honest_for_captured_batch():
     assert "BASELINE_ALREADY_EXISTS | ObjectTime / Source Truth now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "corpus coverage 12 STRONG, 0 WEAK, 0 MISSING" in ledger
     assert "answer gap status GOOD with 12 KEEP actions" in ledger
-    assert "| Process Periods / PayRun Lifecycle | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "| Process Periods / PayRun Lifecycle | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | Process Periods / PayRun Lifecycle now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "corpus coverage 13 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status GOOD with 13 KEEP actions" in ledger
     assert "| Imports / Actuals | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
 

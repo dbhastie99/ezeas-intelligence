@@ -108,14 +108,14 @@ def test_completed_domain_baseline_decision_ledger_summary_and_counts_are_docume
 
     assert "## Summary" in ledger
     assert "Total domains inventoried: 31" in ledger
-    assert "`BASELINE_REQUIRED`: 19" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 12" in ledger
+    assert "`BASELINE_REQUIRED`: 18" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 13" in ledger
     assert "`NO_BASELINE_NEEDED`: 0" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
     assert "`NEEDS_REVIEW`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth" in ledger
-    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net, Annual Leave / Leave Management, Finalisation Readiness, Payroll Output, RateSource / Rate Story, Decision Story, Contact Payroll History and ObjectTime / Source Truth as captured comparison controls" in ledger
-    assert "keep Process Periods / PayRun Lifecycle and Imports / Actuals as `BASELINE_REQUIRED` until DB readiness returns `READY`" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth; Process Periods / PayRun Lifecycle" in ledger
+    assert "Recommended next slice: keep Payroll Bases & Totals, PayRun Admin Queue, Movement Review, Gross-to-Net, Annual Leave / Leave Management, Finalisation Readiness, Payroll Output, RateSource / Rate Story, Decision Story, Contact Payroll History, ObjectTime / Source Truth and Process Periods / PayRun Lifecycle as captured comparison controls" in ledger
+    assert "keep Imports / Actuals as `BASELINE_REQUIRED` until DB readiness returns `READY`" in ledger
     assert "Domains with runbook outstanding: none" in ledger
 
 
@@ -263,8 +263,8 @@ def test_core_payroll_domains_capture_progress_has_no_domains_blocked():
     assert "corpus coverage 10 STRONG, 0 WEAK, 0 MISSING" in ledger
     assert "answer gap status `GOOD` with 10 KEEP actions" in ledger
     assert "benchmark/source-evidence check or retrieval/source-matched-phrase drift, not corpus gap" in ledger
-    assert "`BASELINE_REQUIRED`: 19" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 12" in ledger
+    assert "`BASELINE_REQUIRED`: 18" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 13" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
 
     assert "No domains from the Core Payroll Explanation batch remain blocked" in ledger
@@ -294,25 +294,31 @@ def test_payroll_evidence_context_domains_track_contact_objecttime_capture_and_r
     assert "answer gap status `GOOD` with 12 KEEP actions" in ledger
     assert "no corpus was added" in ledger
 
+    assert "## Process Periods / PayRun Lifecycle Baseline Captured Finding" in ledger
+    assert "Process Periods / PayRun Lifecycle is now `BASELINE_ALREADY_EXISTS`" in ledger
+    assert "benchmark 13 total, 13 passed, 0 failed" in ledger
+    assert "corpus coverage 13 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status `GOOD` with 13 KEEP actions" in ledger
+
     assert "## Payroll Evidence Context Remaining Blocked Baseline Finding" in ledger
-    assert "Process Periods / PayRun Lifecycle and Imports / Actuals remain `BASELINE_REQUIRED`" in ledger
+    assert "Imports / Actuals remains `BASELINE_REQUIRED`" in ledger
     assert "the shared read-only DB readiness check returned `DATABASE_CONNECTION_FAILED`" in ledger
-    assert "benchmark, corpus coverage and answer gap commands have not run for them" in ledger
-    assert "Generated JSON reports were not produced for these blocked domains" in ledger
-    assert "`BASELINE_REQUIRED`: 19" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 12" in ledger
+    assert "benchmark, corpus coverage and answer gap commands have not run for it" in ledger
+    assert "Generated JSON reports were not produced for that blocked domain" in ledger
+    assert "`BASELINE_REQUIRED`: 18" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 13" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
 
     assert "| Contact Payroll History | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "| ObjectTime / Source Truth | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
-    assert "| Process Periods / PayRun Lifecycle | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "| Process Periods / PayRun Lifecycle | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
     assert "| Imports / Actuals | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
     for path in (
-        "docs/evaluation/worker_story_baselines/process_periods_payrun_lifecycle/v0_1/BASELINE_SUMMARY.md",
         "docs/evaluation/worker_story_baselines/imports_actuals/v0_1/BASELINE_SUMMARY.md",
     ):
         assert path in ledger
 
+    assert "docs/evaluation/worker_story_baselines/process_periods_payrun_lifecycle/v0_1/BASELINE_SUMMARY.md" in ledger
     assert "docs/evaluation/worker_story_baselines/objecttime_source_truth/v0_1/BASELINE_SUMMARY.md" in ledger
-    assert "not captured baselines" in ledger
+    assert "not a captured baseline" in ledger

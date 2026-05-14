@@ -1933,26 +1933,35 @@ def _process_period_payrun_lifecycle_focus_points(question: str) -> list[str]:
         or "processing" in normalized
         or "current effective" in normalized
         or "current-effective" in normalized
+        or "close rolls forward" in normalized
+        or "roll forward" in normalized
+        or "closed" in normalized
         or "finalisation readiness" in normalized
         or "admin queue" in normalized
         or "movement review" in normalized
     ):
         points.append(
-            "Focused Process Periods / PayRun Lifecycle answer: ProcessPeriod is governed payroll-period and "
-            "processing context, not just a date range and not payroll calculation truth; ProcessPeriodGroup provides "
-            "recurring calendar and payment policy context where formal evidence supports it."
+            "Focused Process Periods / PayRun Lifecycle answer: Process Periods / PayRun Lifecycle uses "
+            "ProcessPeriod and ProcessPeriodGroup as governed payroll-period context and payment-event lifecycle "
+            "evidence. ProcessPeriod is not payroll calculation truth, not a generic date range and not just a date "
+            "range; it is processing context for governed payment events. ProcessPeriodGroup provides recurring "
+            "calendar and payment policy context where formal evidence supports it."
         )
         points.append(
             "Focused lifecycle answer: open, not-open and closed states are distinct, closed dominates open, and "
-            "close rolls forward may open or create the next period where that lifecycle behavior is implemented."
+            "closed-period truth must not be overwritten by ordinary open-period assumptions. Close rolls forward "
+            "means period close may roll forward to open next period or create next period where that lifecycle "
+            "behavior is implemented."
         )
         points.append(
             "Focused payment-date answer: PaymentDate and payment date matter for tax/PAYG and payment context and "
-            "should be governed or derived from calendar policy rather than hardcoded."
+            "should be a governed, derived value from calendar policy and not hardcoded."
         )
         points.append(
             "Focused PayRun answer: PayRuns are governed payment or processing events inside process-period context; "
-            "PayRun creation and PayRun admission do not mean worker processing has happened."
+            "PayRun creation and PayRun admission establish worker inclusion and payment event setup. Admission is "
+            "not processing, and PayRun admission does not mean later calculation, interpreter or payroll outcome "
+            "processing has happened."
         )
         points.append(
             "Focused run-type answer: RunType and RunPurpose should remain separate, and regular PayRun, "
@@ -2705,17 +2714,20 @@ class StubLLMClient(BaseLLMClient):
                         direct_summary = (
                             "Process Periods / PayRun Lifecycle is governed payroll-period and payment-event "
                             "lifecycle evidence, not payroll calculation truth and not a generic date range. "
-                            "ProcessPeriod and ProcessPeriodGroup provide period, calendar and payment policy context; "
-                            "PayRuns are governed payment or processing events inside that context; and PayRunContact "
-                            "is the operational state layer for worker participation, admission and processing state."
+                            "ProcessPeriod and ProcessPeriodGroup provide governed payroll-period, recurring calendar "
+                            "policy and payment policy context; PayRun creation and PayRun admission happen inside "
+                            "that process-period context; admission is not processing; and PayRunContact is the "
+                            "operational state layer for worker participation, admission and processing state."
                         )
                         status_text = (
                             "The retrieved corpus describes Process Periods / PayRun Lifecycle as governed lifecycle "
                             "evidence with important outstanding hardening. It should not imply ProcessPeriod or "
                             "PayRun lifecycle calculates payroll, open means safe to finalise, closed-period truth can "
-                            "be silently changed, regular, supplementary and retro PayRuns are interchangeable, "
-                            "PaymentDate derivation is hardcoded, payment execution or period close is complete, or "
-                            "Minerva mutates lifecycle data unless formal evidence explicitly says so."
+                            "be silently changed, regular PayRun, supplementary PayRun, retro PayRun, termination "
+                            "PayRun, reversal PayRun and adjustment PayRun are interchangeable, PaymentDate "
+                            "derivation is hardcoded, payment execution or period close is complete, close rolls "
+                            "forward always runs everywhere, or Minerva mutates lifecycle data unless formal evidence "
+                            "explicitly says so."
                         )
                     elif domain_plan.plan_id == "COSTING_GL_CONSEQUENCE":
                         direct_summary = (

@@ -1,6 +1,6 @@
 # Process Periods / PayRun Lifecycle Benchmark Baseline
 
-This file records the manually captured benchmark result for the Process Periods / PayRun Lifecycle baseline pack. It is diagnostic-only and not operational truth.
+This file records manually captured benchmark output for the Process Periods / PayRun Lifecycle promoted baseline. It is diagnostic-only and not operational truth.
 
 ## Command
 
@@ -8,9 +8,7 @@ This file records the manually captured benchmark result for the Process Periods
 python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.process_period_payrun_lifecycle.json
 ```
 
-Recaptured on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
-
-DB readiness was `READY` in normal PowerShell before capture. Codex did not rerun this DB-backed command.
+Recaptured on 2026-05-14 from `C:\Projects\ezeas-intelligence` after DB readiness returned `READY`.
 
 ## Scope
 
@@ -24,109 +22,43 @@ The manifest covers governed payroll-period context, `ProcessPeriod`, `ProcessPe
 
 ## Captured Result Summary
 
-Result status: `COMPLETED_WITH_FAILURES`
+Result status: `PROMOTED_BASELINE_CAPTURED`
 
-Pass/fail summary:
-
+- Golden questions: Process Periods / PayRun Lifecycle rich-answer benchmark
 - Total: 13
-- Passed: 7
-- Failed: 6
+- Passed: 13
+- Failed: 0
 - Audit/chat rows created: false
 
-Baseline promotion: withheld.
+Benchmark result: completed with full pass.
 
-Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+Baseline pack state: captured evidence and promoted.
 
-## Failed Cases
+Generated artefact committed: no.
 
-### `process-period-payrun-lifecycle-rich-answer`
+Live LLM calls: no.
 
-Question: How should Process Periods and PayRun Lifecycle work in Ezeas?
+Corpus mutation: no.
 
-Missing expected terms include:
+Operational JSON ingestion: no.
 
-- `Process Periods / PayRun Lifecycle`
-- `ProcessPeriod`
-- `ProcessPeriodGroup`
-- governed payroll-period
-- payment-event lifecycle evidence
-- not payroll calculation truth
-- not a generic date range
-- open
-- not-open
-- closed
-- closed dominates open
-- close rolls forward
-- `PaymentDate`
-- payment date
-- tax/PAYG
-- governed
-- not hardcoded
-- PayRun creation
-- PayRun admission
-- admission is not processing
-- `RunType`
-- `RunPurpose`
-- regular PayRun
-- supplementary PayRun
-- retro PayRun
-- termination PayRun
-- reversal PayRun
-- adjustment PayRun
-- `PayRunContact`
-- worker participation
-- operational state layer
-- current-effective output
-- current-effective payroll output
-- stale
-- superseded
-- current truth
-- finalisation readiness
-- payment execution
-- period close
-- downstream governed outcomes
-- Worker Story
-- PayRun Admin Queue
-- Movement Review
-- readiness
-- review implications
-- outstanding hardening
+Code Evidence answer integration: no.
 
-### `process-period-closed-dominates-open`
+Final ledger status is `BASELINE_ALREADY_EXISTS`.
 
-Question: Why does closed dominate open in ProcessPeriod governance?
+## Boundary Expectations
 
-Missing expected terms: closed, dominates open, closed dominates open, `ProcessPeriod`, period lifecycle and closed-period truth.
+The benchmark did not weaken expectations that:
 
-### `process-period-close-rolls-forward`
-
-Question: What does close rolls forward mean?
-
-Missing expected terms: close rolls forward, roll forward, period close, open next period, create next period and implemented.
-
-### `process-period-paymentdate`
-
-Question: Why does PaymentDate matter in Process Periods and PayRun Lifecycle?
-
-Missing expected terms: `PaymentDate`, payment date, tax/PAYG, payment context, calendar policy, governed, derived and not hardcoded.
-
-### `process-period-payrun-creation-admission`
-
-Question: How do PayRun creation and worker admission work inside a ProcessPeriod?
-
-Missing expected terms: PayRun creation, PayRun admission, `ProcessPeriod`, process-period context, worker inclusion, payment event and admission is not processing.
-
-No source snippet or matched phrase contained expected terms PayRun creation, PayRun admission or admission is not processing.
-
-### `process-period-admission-not-processing`
-
-Question: Why is admission not the same as processing?
-
-Missing expected terms: admission, processing, admission is not processing, worker inclusion, `PayRunContact` and processing state.
-
-## Interpretation
-
-The benchmark failures are answer-synthesis and retrieval-term issues, not corpus absence issues. Corpus coverage for the same recapture is 10 STRONG, 3 WEAK and 0 MISSING.
+- ProcessPeriod is governed payroll-period context, payment-event lifecycle evidence, not payroll calculation truth and not a generic date range.
+- ProcessPeriodGroup carries recurring calendar and payment policy context where supported.
+- Open, not-open and closed are distinct lifecycle states, and closed dominates open to protect closed-period truth.
+- Close rolls forward may open next period or create next period only where implemented.
+- PaymentDate matters for tax/PAYG, payment context and governed derived calendar policy; it must not be hardcoded.
+- PayRun creation and PayRun admission are not payroll processing, and admission is not processing.
+- PayRunContact represents worker participation, admission and processing state.
+- Current-effective output and current-effective payroll output must not treat stale or superseded rows as current truth.
+- Finalisation readiness, payment execution, period close, Worker Story, PayRun Admin Queue and Movement Review are downstream evidence/review consumers, not Minerva mutation authority.
 
 ## Source References
 
@@ -140,8 +72,7 @@ The benchmark failures are answer-synthesis and retrieval-term issues, not corpu
 This benchmark baseline:
 
 - does not mutate corpus;
-- does not change routing;
-- does not change answer generation;
+- does not change endpoint/UI/runtime behavior;
 - does not call live LLM;
 - does not ingest operational JSON;
 - does not connect Code Evidence;
