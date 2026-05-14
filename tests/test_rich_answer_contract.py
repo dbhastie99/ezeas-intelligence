@@ -3501,6 +3501,22 @@ def test_objecttime_source_truth_benchmark_runner_returns_pass_status_with_seede
         "objecttime-corrections-dirty-reprocessing",
         "objecttime-provenance-audit",
     }
+    answers_by_id = {item["id"]: item["answer"] for item in result["results"]}
+    assert "source row belongs in a PayRun" in answers_by_id["objecttime-payrun-inclusion"]
+    assert "source inclusion and SourceTruth evidence" in answers_by_id["objecttime-payrun-inclusion"]
+    assert "SourceTruth and WorkedHours are separate concepts" in answers_by_id[
+        "objecttime-sourcetruth-vs-workedhours"
+    ]
+    assert "raw span hours are not the final payroll worked-hours truth" in answers_by_id[
+        "objecttime-sourcetruth-vs-workedhours"
+    ]
+    assert "processed source truth to current-effective payroll output and payroll outcome" in answers_by_id[
+        "objecttime-current-effective-output"
+    ]
+    assert "current-effective truth" in answers_by_id["objecttime-current-effective-output"]
+    assert "Worker Story should present Source Truth before calculated payroll outcome and Decision Story" in answers_by_id[
+        "objecttime-worker-story-source-truth"
+    ]
 
 
 def test_contacts_employee_appointments_benchmark_runner_returns_pass_status_with_seeded_evidence(db_session):

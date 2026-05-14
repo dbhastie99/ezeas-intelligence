@@ -2663,9 +2663,15 @@ class StubLLMClient(BaseLLMClient):
                         direct_summary = (
                             "ObjectTime / Source Truth is governed source evidence for work/time/source-row inclusion "
                             "and PayRun inclusion context, not payroll calculation truth by itself and not user-facing "
-                            "worked hours by itself. It explains why a worker or source row belongs in a PayRun, keeps "
-                            "imported and generated source-row provenance, separates SourceTruth from WorkedHours, "
-                            "and connects processed source truth to current-effective payroll output and Worker Story."
+                            "worked hours by itself. ObjectTime explains why a worker or source row belongs in a "
+                            "PayRun through source inclusion and SourceTruth evidence. SourceTruth and WorkedHours "
+                            "are separate concepts: SourceTruth explains source inclusion and payroll-causality "
+                            "evidence, while WorkedHours are interpreted worked hours, so raw span hours are not the "
+                            "final payroll worked-hours truth. The answer pattern is source row to source inclusion "
+                            "to PayRun inclusion to processed source truth to calculated payroll outcome or "
+                            "current-effective truth. ObjectTime / Source Truth connects processed source truth to "
+                            "current-effective payroll output and payroll outcome, and Worker Story should present "
+                            "Source Truth before calculated payroll outcome and Decision Story."
                         )
                         status_text = (
                             "The retrieved corpus describes ObjectTime / Source Truth as governed source evidence "
