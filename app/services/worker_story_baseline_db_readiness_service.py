@@ -24,6 +24,8 @@ REQUIRED_KNOWLEDGE_TABLES = (
     KnowledgeChunk.__tablename__,
 )
 
+ACCEPTED_DATABASE_CONFIGURATION_VARIABLES = ("MINERVA_DATABASE_URL",)
+
 GUARDRAILS = (
     "read-only",
     "does not mutate corpus",
@@ -72,18 +74,19 @@ class WorkerStoryBaselineDbReadinessResult:
 
 
 def resolve_database_configuration(project_root: Path | None = None) -> DatabaseConfiguration:
-    checked_sources = ["environment:MINERVA_DATABASE_URL"]
-    env_value = os.getenv("MINERVA_DATABASE_URL")
+    variable_name = ACCEPTED_DATABASE_CONFIGURATION_VARIABLES[0]
+    checked_sources = [f"environment:{variable_name}"]
+    env_value = os.getenv(variable_name)
     if env_value:
         return DatabaseConfiguration(
             url=env_value,
-            source="environment:MINERVA_DATABASE_URL",
+            source=f"environment:{variable_name}",
             checked_sources=checked_sources,
         )
 
     root = project_root or Path(__file__).resolve().parents[2]
     env_file = root / ".env"
-    checked_sources.append(".env:MINERVA_DATABASE_URL")
+    checked_sources.append(f".env:{variable_name}")
     if not env_file.exists():
         return DatabaseConfiguration(url=None, source="not_configured", checked_sources=checked_sources)
 
@@ -92,10 +95,10 @@ def resolve_database_configuration(project_root: Path | None = None) -> Database
         if not stripped or stripped.startswith("#") or "=" not in stripped:
             continue
         key, value = stripped.split("=", 1)
-        if key.strip() == "MINERVA_DATABASE_URL" and value.strip():
+        if key.strip() == variable_name and value.strip():
             return DatabaseConfiguration(
                 url=value.strip().strip('"').strip("'"),
-                source=".env:MINERVA_DATABASE_URL",
+                source=f".env:{variable_name}",
                 checked_sources=checked_sources,
             )
     return DatabaseConfiguration(url=None, source="not_configured", checked_sources=checked_sources)
@@ -198,6 +201,7 @@ def _diagnostics(configuration: DatabaseConfiguration, database_url: str | None)
     return {
         "ConfigurationPresent": bool(database_url),
         "ConfigurationSource": configuration.source,
+        "AcceptedConfigurationVariables": list(ACCEPTED_DATABASE_CONFIGURATION_VARIABLES),
         "CheckedConfigurationSources": configuration.checked_sources,
         "ConnectionStringRedacted": "configured; value intentionally not printed" if database_url else None,
         "Target": _connection_target_diagnostics(database_url),
@@ -281,7 +285,10 @@ def check_worker_story_baseline_db_readiness(
     if not resolved_database_url:
         return _result(
             MISSING_CONFIGURATION,
-            error_summary="MINERVA_DATABASE_URL was not found in the environment or .env file.",
+            error_summary=(
+                "MINERVA_DATABASE_URL was not found in the environment or .env file. "
+                "Accepted configuration variables: MINERVA_DATABASE_URL."
+            ),
             diagnostics=diagnostics,
         )
 

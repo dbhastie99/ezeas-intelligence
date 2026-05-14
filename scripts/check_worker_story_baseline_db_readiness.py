@@ -21,6 +21,10 @@ def print_summary(result: dict) -> None:
     print("Diagnostics:")
     print(f"- Configuration present: {'yes' if diagnostics.get('ConfigurationPresent') else 'no'}")
     print(f"- Configuration source: {diagnostics.get('ConfigurationSource') or '-'}")
+    print(
+        "- Accepted configuration variables: "
+        f"{', '.join(diagnostics.get('AcceptedConfigurationVariables', [])) or '-'}"
+    )
     print(f"- Checked configuration sources: {', '.join(diagnostics.get('CheckedConfigurationSources', [])) or '-'}")
     print(f"- Connection string: {diagnostics.get('ConnectionStringRedacted') or '-'}")
     print(f"- Dialect/driver: {target.get('Dialect') or '-'}/{target.get('Driver') or '-'}")

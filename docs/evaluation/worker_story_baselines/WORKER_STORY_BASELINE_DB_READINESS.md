@@ -29,6 +29,7 @@ The script exits `0` only when readiness status is `READY`. Any other status exi
 The check is intentionally small and read-only. It verifies:
 
 - `MINERVA_DATABASE_URL` is configured in the environment or `.env`;
+- the accepted configuration variable name is `MINERVA_DATABASE_URL`;
 - which safe configuration source was used, without printing the connection string;
 - the redacted SQL Server target, database target, DSN and selected ODBC driver when these can be parsed safely;
 - local ODBC driver availability when `pyodbc` can inspect installed drivers;
@@ -59,6 +60,12 @@ Select-String -Path .env -Pattern '^MINERVA_DATABASE_URL='
 ```
 
 Environment variables take precedence over `.env`. If the environment variable is present, that is the active source even when `.env` also contains a value.
+
+Accepted configuration variable:
+
+- `MINERVA_DATABASE_URL`
+
+Do not use `DATABASE_URL` or an unprefixed SQLAlchemy setting for this readiness check. The application settings use the `MINERVA_` prefix, and this diagnostic requires an explicit environment or `.env` value instead of silently relying on a local default.
 
 2. Confirm the expected local SQL Server target for this repo.
 

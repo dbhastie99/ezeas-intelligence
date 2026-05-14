@@ -60,6 +60,7 @@ def test_worker_story_baseline_db_readiness_missing_configuration():
     assert "MINERVA_DATABASE_URL" in data["ErrorSummary"]
     assert data["Diagnostics"]["ConfigurationPresent"] is False
     assert data["Diagnostics"]["ConfigurationSource"] == "database_url_provider"
+    assert data["Diagnostics"]["AcceptedConfigurationVariables"] == ["MINERVA_DATABASE_URL"]
 
 
 def test_worker_story_baseline_db_readiness_database_connection_failed():
@@ -74,6 +75,7 @@ def test_worker_story_baseline_db_readiness_database_connection_failed():
     assert "connection failed" in data["ErrorSummary"]
     assert data["Diagnostics"]["ConfigurationPresent"] is True
     assert data["Diagnostics"]["ConfigurationSource"] == "argument:database_url"
+    assert data["Diagnostics"]["AcceptedConfigurationVariables"] == ["MINERVA_DATABASE_URL"]
 
 
 def test_worker_story_baseline_db_readiness_diagnostics_redact_connection_secrets():
@@ -217,6 +219,7 @@ def test_worker_story_baseline_db_readiness_script_non_ready_exits_nonzero(capsy
         error_summary="connection failed",
         guardrails=list(readiness.GUARDRAILS),
         recommended_next_action="Fix connectivity.",
+        diagnostics={"AcceptedConfigurationVariables": ["MINERVA_DATABASE_URL"]},
     )
 
     exit_code = readiness_script.main([], readiness_checker=lambda: result)
@@ -226,6 +229,7 @@ def test_worker_story_baseline_db_readiness_script_non_ready_exits_nonzero(capsy
     assert "Worker Story baseline DB readiness: DATABASE_CONNECTION_FAILED" in captured.out
     assert "Ready: no" in captured.out
     assert "Diagnostics:" in captured.out
+    assert "Accepted configuration variables: MINERVA_DATABASE_URL" in captured.out
     assert "Operator next step:" in captured.out
 
 
@@ -246,6 +250,7 @@ def test_worker_story_baseline_db_readiness_documentation_and_baseline_notes():
     assert "does not run migrations" in doc
     assert "KnowledgeDocument" in doc
     assert "KnowledgeChunk" in doc
+    assert "Accepted configuration variable" in doc
     assert "Troubleshooting `DATABASE_CONNECTION_FAILED`" in doc
     assert "Do not treat `DATABASE_CONNECTION_FAILED` as a corpus coverage gap" in doc
     assert "WORKER_STORY_BASELINE_DB_READINESS.md" in summary
