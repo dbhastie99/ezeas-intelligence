@@ -1,6 +1,6 @@
 # ObjectTime / Source Truth Benchmark Baseline
 
-This file records manually captured benchmark output for the ObjectTime / Source Truth recapture attempt. It is diagnostic-only and not operational truth.
+This file records manually captured benchmark output for the ObjectTime / Source Truth promoted baseline. It is diagnostic-only and not operational truth.
 
 ## Command
 
@@ -8,7 +8,7 @@ This file records manually captured benchmark output for the ObjectTime / Source
 python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.objecttime_source_truth.json
 ```
 
-Recapture attempted on 2026-05-14 from `C:\Projects\ezeas-intelligence` after DB readiness returned `READY`.
+Recaptured on 2026-05-14 from `C:\Projects\ezeas-intelligence` after DB readiness returned `READY`.
 
 ## Scope
 
@@ -22,19 +22,17 @@ The manifest covers ObjectTime / Source Truth, governed source evidence, PayRun 
 
 ## Captured Result Summary
 
-Result status: `RECAPTURED_REQUIRES_REFINEMENT`
-
-Pass/fail summary:
+Result status: `PROMOTED_BASELINE_CAPTURED`
 
 - Golden questions: ObjectTime / Source Truth rich-answer benchmark
 - Total: 12
-- Passed: 8
-- Failed: 4
+- Passed: 12
+- Failed: 0
 - Audit/chat rows created: false
 
-Benchmark result: completed with failures.
+Benchmark result: completed with full pass.
 
-Baseline pack state: captured evidence with promotion withheld.
+Baseline pack state: captured evidence and promoted.
 
 Generated artefact committed: no.
 
@@ -46,70 +44,11 @@ Operational JSON ingestion: no.
 
 Code Evidence answer integration: no.
 
-Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
-
-## Failed Cases
-
-### objecttime-payrun-inclusion
-
-Question: How does ObjectTime explain PayRun inclusion?
-
-Missing expected terms:
-
-- `ObjectTime`
-- `PayRun inclusion`
-- `source row`
-- `belongs in a PayRun`
-- `source inclusion`
-- `SourceTruth`
-
-### objecttime-sourcetruth-vs-workedhours
-
-Question: What is the difference between SourceTruth and WorkedHours?
-
-Missing expected terms:
-
-- `SourceTruth`
-- `WorkedHours`
-- `separate concepts`
-- `source inclusion`
-- `worked hours`
-- `raw span hours`
-
-### objecttime-current-effective-output
-
-Question: How does ObjectTime / Source Truth connect to current-effective payroll output?
-
-Missing expected terms:
-
-- `ObjectTime / Source Truth`
-- `current-effective payroll output`
-- `processed source truth`
-- `payroll outcome`
-- `current-effective truth`
-
-### objecttime-worker-story-source-truth
-
-Question: How should Worker Story use Source Truth?
-
-Missing expected terms:
-
-- `Worker Story`
-- `Source Truth`
-- `source inclusion`
-- `calculated payroll outcome`
-- `before`
-- `Decision Story`
-
-## Failure Classification
-
-The failures are answer-synthesis and term-coverage issues, not corpus absence issues. The paired corpus coverage diagnostic reported STRONG=11, WEAK=1, MISSING=0 across 12 evidence groups.
-
-Do not weaken benchmark expectations. Refine retrieval terms and answer synthesis so answers preserve ObjectTime / Source Truth naming, SourceTruth versus WorkedHours boundaries, source inclusion, current-effective payroll output and Worker Story sequencing before promotion.
+Final ledger status is `BASELINE_ALREADY_EXISTS`.
 
 ## Boundary Expectations
 
-The benchmark must not weaken expectations that:
+The benchmark did not weaken expectations that:
 
 - ObjectTime is source evidence and PayRun inclusion context, not payroll calculation truth.
 - SourceTruth and WorkedHours are separate concepts.

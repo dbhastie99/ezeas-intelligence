@@ -1,6 +1,6 @@
 # ObjectTime / Source Truth Answer Gap Report Baseline
 
-This file records manually captured answer gap output for the ObjectTime / Source Truth recapture attempt. It is diagnostic-only and not operational truth.
+This file records manually captured answer gap output for the ObjectTime / Source Truth promoted baseline. It is diagnostic-only and not operational truth.
 
 ## Commands
 
@@ -17,10 +17,10 @@ The answer gap report consumes `.\artifacts\eval\objecttime_source_truth_corpus_
 
 ## Captured Result Summary
 
-Result status: `RECAPTURED_REQUIRES_REFINEMENT`
+Result status: `PROMOTED_BASELINE_CAPTURED`
 
 - Report type: `OBJECTTIME_SOURCE_TRUTH_ANSWER_GAP_REPORT`
-- Overall status: `NEEDS_REFINEMENT`
+- Overall status: `GOOD`
 - Source coverage plan: `OBJECTTIME_SOURCE_TRUTH`
 - Generated artefact committed: no
 - Live LLM calls: no
@@ -28,28 +28,28 @@ Result status: `RECAPTURED_REQUIRES_REFINEMENT`
 - Operational JSON ingestion: no
 - Code Evidence answer integration: no
 
-Answer gap report: completed and requires refinement.
+Answer gap report: completed and acceptable for promotion.
 
-Baseline pack state: captured evidence with promotion withheld.
+Baseline pack state: captured evidence and promoted.
 
 Recommended actions:
 
-- `KEEP`: 11
-- `IMPROVE_RETRIEVAL_TERMS`: 1
+- `KEEP`: 12
+- `IMPROVE_RETRIEVAL_TERMS`: 0
 - `IMPROVE_SYNTHESIS`: 0
 - `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: 0
 
 Action detail:
 
-- `outstanding_hardening` -> `IMPROVE_RETRIEVAL_TERMS`
+- `outstanding_hardening` -> `KEEP`
 
-Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+Final ledger status is `BASELINE_ALREADY_EXISTS`.
 
 ## Recommendation
 
-Recommended next action: Refine ObjectTime / Source Truth retrieval terms for weak supporting groups before adding new corpus.
+Recommended next action: Keep current ObjectTime / Source Truth retrieval terms and answer synthesis under benchmark watch.
 
-The answer gap result confirms the promotion blocker is refinement, not DB readiness and not corpus absence. The paired benchmark failures still need answer-synthesis and expected-term coverage work before this domain can be promoted.
+The answer gap result confirms the previous promotion blocker is resolved without adding corpus.
 
 ## Source References
 
@@ -60,7 +60,7 @@ The answer gap result confirms the promotion blocker is refinement, not DB readi
 
 ## Interpretation
 
-ObjectTime / Source Truth must remain `BASELINE_REQUIRED` because benchmark failed 4 of 12 and the answer gap status is `NEEDS_REFINEMENT`.
+ObjectTime / Source Truth is now `BASELINE_ALREADY_EXISTS` because the benchmark passed 12 of 12, corpus coverage is STRONG=12, WEAK=0, MISSING=0, and the answer gap status is `GOOD`.
 
 Any next answer gap review must preserve that SourceTruth is not WorkedHours, raw span hours are not user-facing payroll worked hours, and v5.56 is runtime intake readiness only, not runtime intake implementation.
 

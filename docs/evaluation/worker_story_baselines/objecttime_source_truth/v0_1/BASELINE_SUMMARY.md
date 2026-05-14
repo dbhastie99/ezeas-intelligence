@@ -1,6 +1,6 @@
 # ObjectTime / Source Truth Baseline Summary
 
-Slice name: ObjectTime / Source Truth Baseline Recapture Result Update v0.1
+Slice name: ObjectTime / Source Truth Retrieval-Term Hardening v0.1
 
 Domain: ObjectTime / Source Truth
 
@@ -10,13 +10,13 @@ Source decision ledger: `docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN
 
 Baseline policy: `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`
 
-This pack is diagnostic-only and not operational truth. It records manually captured PowerShell command outputs for an ObjectTime / Source Truth recapture attempt. Promotion is withheld because the benchmark failed 4 of 12 questions and the answer gap report is `NEEDS_REFINEMENT`.
+This pack is diagnostic-only and not operational truth. It records manually captured PowerShell command outputs after ObjectTime / Source Truth answer-synthesis hardening and retrieval-term hardening. Promotion is now allowed because the benchmark passes and the answer gap report is `GOOD`.
 
-ObjectTime / Source Truth remains `BASELINE_REQUIRED`. This pack must not be counted as `BASELINE_ALREADY_EXISTS`.
+ObjectTime / Source Truth is now `BASELINE_ALREADY_EXISTS`.
 
 ## Execution Context
 
-Recapture attempted on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
+Recaptured on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
 
 DB readiness returned `READY`.
 
@@ -28,56 +28,37 @@ DB readiness returned `READY`.
 - Missing tables: none.
 - Read-only guardrails remained in place.
 
-The benchmark, corpus coverage diagnostic and answer gap report were then captured manually from PowerShell output. Codex did not rerun DB-backed commands for this documentation update.
-
 ## Commands
 
-| Area | Command | Completed In Recapture | Captured Result Summary |
+| Area | Command | Completed | Captured Result Summary |
 |---|---|---:|---|
-| DB readiness check | `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py` | yes | `READY`; ready: yes. |
-| ObjectTime / Source Truth benchmark | `python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.objecttime_source_truth.json` | yes | 12 total / 8 passed / 4 failed; audit/chat rows created: false. |
-| Corpus coverage diagnostic | `python scripts\scan_objecttime_source_truth_corpus_coverage.py` | yes | 12 evidence groups; STRONG=11, WEAK=1, MISSING=0; indexed corpus 5 active documents, 4583 chunks. |
-| Answer gap report | `python scripts\build_objecttime_source_truth_answer_gap_report.py --coverage-report .\artifacts\eval\objecttime_source_truth_corpus_coverage.json` | yes | `NEEDS_REFINEMENT`; 11 LOW / KEEP groups; 1 MEDIUM / IMPROVE_RETRIEVAL_TERMS group. |
+| ObjectTime / Source Truth benchmark | `python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.objecttime_source_truth.json` | yes | 12 total / 12 passed / 0 failed; audit/chat rows created: false. |
+| Corpus coverage diagnostic | `python scripts\scan_objecttime_source_truth_corpus_coverage.py` | yes | 12 evidence groups; STRONG=12, WEAK=0, MISSING=0; indexed corpus 5 active documents, 4583 chunks. |
+| Corpus coverage JSON | `python scripts\scan_objecttime_source_truth_corpus_coverage.py --json --output .\artifacts\eval\objecttime_source_truth_corpus_coverage.json` | yes | Generated transient JSON; committed: no. |
+| Answer gap report | `python scripts\build_objecttime_source_truth_answer_gap_report.py --coverage-report .\artifacts\eval\objecttime_source_truth_corpus_coverage.json` | yes | `GOOD`; 12 LOW / KEEP groups. |
 | Answer gap report JSON | `python scripts\build_objecttime_source_truth_answer_gap_report.py --coverage-report .\artifacts\eval\objecttime_source_truth_corpus_coverage.json --json --output .\artifacts\eval\objecttime_source_truth_answer_gap_report.json` | yes | Generated transient JSON; committed: no. |
 
-## Recapture Finding
+## Captured Finding
 
 - DB readiness result: `READY`.
-- Result status: `RECAPTURED_REQUIRES_REFINEMENT`.
-- Baseline pack state: captured evidence with promotion withheld.
-- Benchmark result: 12 total, 8 passed, 4 failed.
-- Corpus coverage result: STRONG=11, WEAK=1, MISSING=0.
-- Answer gap report: `NEEDS_REFINEMENT`.
+- Result status: `PROMOTED_BASELINE_CAPTURED`.
+- Baseline pack state: captured evidence and promoted.
+- Benchmark result: 12 total, 12 passed, 0 failed.
+- Corpus coverage result: STRONG=12, WEAK=0, MISSING=0.
+- Answer gap report: `GOOD`.
+- Answer gap actions: 12 KEEP, 0 IMPROVE_RETRIEVAL_TERMS, 0 IMPROVE_SYNTHESIS, 0 ADD_FORMAL_SOURCE_EVIDENCE_LATER.
 - Generated artefact committed: no.
 - Live LLM calls: no.
 - Corpus mutation: no.
 - Operational JSON ingestion: no.
 - Code Evidence answer integration: no.
-- Final ledger status remains `BASELINE_REQUIRED`.
-- This recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+- Final ledger status is `BASELINE_ALREADY_EXISTS`.
 
-The benchmark failures are answer-synthesis and term-coverage issues, not corpus absence issues. Corpus coverage reported no missing groups.
-
-## Failed Benchmark Cases
-
-1. `objecttime-payrun-inclusion`
-   - Question: How does ObjectTime explain PayRun inclusion?
-   - Missing expected terms: `ObjectTime`, `PayRun inclusion`, `source row`, `belongs in a PayRun`, `source inclusion`, `SourceTruth`
-2. `objecttime-sourcetruth-vs-workedhours`
-   - Question: What is the difference between SourceTruth and WorkedHours?
-   - Missing expected terms: `SourceTruth`, `WorkedHours`, `separate concepts`, `source inclusion`, `worked hours`, `raw span hours`
-3. `objecttime-current-effective-output`
-   - Question: How does ObjectTime / Source Truth connect to current-effective payroll output?
-   - Missing expected terms: `ObjectTime / Source Truth`, `current-effective payroll output`, `processed source truth`, `payroll outcome`, `current-effective truth`
-4. `objecttime-worker-story-source-truth`
-   - Question: How should Worker Story use Source Truth?
-   - Missing expected terms: `Worker Story`, `Source Truth`, `source inclusion`, `calculated payroll outcome`, `before`, `Decision Story`
+The previous blocker was weak `outstanding_hardening` coverage. Retrieval terms now include existing ObjectTime guardrail/readiness concepts such as guarded dry-run, readiness contract, source-change runtime intake readiness, runtime source-change hook, not implemented, not production enabled, finalised correction intake, review request creation, no correction execution, production enablement, guardrails and non-goals. The group now reports STRONG support across Developer Log and Hardening Doctrine without adding corpus.
 
 ## Domain Boundary To Preserve
 
 ObjectTime / Source Truth is source evidence and PayRun inclusion context. It is not merely a timesheet or shift domain, and it is not payroll calculation truth by itself.
-
-The next refinement slice must preserve these boundaries:
 
 - ObjectTime, ObjectTimeAttribute, ObjectTimeAssessment and ObjectTimeAssessmentResponse are ObjectTime-family source evidence surfaces.
 - SourceTruth is not WorkedHours.
@@ -87,8 +68,6 @@ The next refinement slice must preserve these boundaries:
 - Minerva baseline packs are diagnostic comparison controls, not operational payroll truth.
 
 ## Source-Change Status To Preserve
-
-Current known source-change status is recorded here as a review guardrail only. It is not benchmark output.
 
 ObjectTime-family guarded dry-run route wiring is complete for:
 
@@ -143,7 +122,7 @@ This pack does not implement or claim:
 
 ## Guardrails
 
-This recaptured-result pack:
+This promoted baseline pack:
 
 - does not mutate corpus;
 - does not change routing;
@@ -161,4 +140,4 @@ This recaptured-result pack:
 
 ## Recommended Next Slice
 
-Refine ObjectTime / Source Truth retrieval terms and answer synthesis for the failed benchmark terms and the weak `outstanding_hardening` supporting group before promoting this domain. Do not add new corpus merely to address the four benchmark failures unless a later diagnostic shows a real source-evidence gap.
+Keep current ObjectTime / Source Truth retrieval terms and answer synthesis under benchmark watch.

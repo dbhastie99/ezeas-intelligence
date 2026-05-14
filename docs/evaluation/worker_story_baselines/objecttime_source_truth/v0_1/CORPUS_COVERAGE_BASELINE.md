@@ -1,14 +1,15 @@
 # ObjectTime / Source Truth Corpus Coverage Baseline
 
-This file records manually captured corpus coverage output for the ObjectTime / Source Truth recapture attempt. It is diagnostic-only and not operational truth.
+This file records manually captured corpus coverage output for the ObjectTime / Source Truth promoted baseline. It is diagnostic-only and not operational truth.
 
-## Command
+## Commands
 
 ```powershell
 python scripts\scan_objecttime_source_truth_corpus_coverage.py
+python scripts\scan_objecttime_source_truth_corpus_coverage.py --json --output .\artifacts\eval\objecttime_source_truth_corpus_coverage.json
 ```
 
-DB readiness returned `READY`, and the coverage diagnostic was captured from manual PowerShell output.
+DB readiness returned `READY`, and the coverage diagnostic was captured from manual PowerShell output. Generated JSON remains a transient evaluation artefact and is not a committed baseline artefact.
 
 ## Scope
 
@@ -50,12 +51,12 @@ Coverage preserves evidence for:
 
 ## Captured Result Summary
 
-Result status: `RECAPTURED_REQUIRES_REFINEMENT`
+Result status: `PROMOTED_BASELINE_CAPTURED`
 
 - Plan/domain: `OBJECTTIME_SOURCE_TRUTH` / ObjectTime / Source Truth
 - Evidence groups: 12
-- `STRONG`: 11
-- `WEAK`: 1
+- `STRONG`: 12
+- `WEAK`: 0
 - `MISSING`: 0
 - Coverage JSON generated: yes, transient only
 - Generated artefact committed: no
@@ -65,11 +66,11 @@ Result status: `RECAPTURED_REQUIRES_REFINEMENT`
 - Operational JSON ingestion: no
 - Code Evidence answer integration: no
 
-Corpus coverage result: completed with one weak supporting group and no missing groups.
+Corpus coverage result: completed with all groups strong and no missing groups.
 
-Baseline pack state: captured evidence with promotion withheld.
+Baseline pack state: captured evidence and promoted.
 
-Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+Final ledger status is `BASELINE_ALREADY_EXISTS`.
 
 ## Coverage Groups
 
@@ -84,7 +85,9 @@ Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not
 - STRONG `comparison_movement_and_replay_connection`
 - STRONG `corrections_dirty_contacts_and_reprocessing`
 - STRONG `evidence_provenance_and_audit`
-- WEAK `outstanding_hardening`
+- STRONG `outstanding_hardening`
+
+The `outstanding_hardening` group matched 4 chunks across 2 documents. Representative matched terms were `guardrails`, `command-centre source hours cleanup` and `dependency detection`; the planned retrieval aliases also include guarded dry-run, readiness contract, source-change runtime intake readiness, runtime source-change hook, not implemented, not production enabled, finalised correction intake, review request creation, no correction execution, production enablement and non-goals.
 
 ## Source References
 
@@ -95,9 +98,7 @@ Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not
 
 ## Interpretation
 
-Coverage is not the blocker for promotion. The benchmark failures are answer-synthesis and term-coverage issues because coverage reported STRONG=11, WEAK=1 and MISSING=0.
-
-The weak `outstanding_hardening` group should be refined through ObjectTime / Source Truth retrieval-term hardening before promotion.
+Coverage is no longer a promotion blocker. The earlier weak `outstanding_hardening` group was a retrieval-term gap, not a corpus gap.
 
 ## Diagnostic-Only Guardrails
 

@@ -1201,6 +1201,31 @@ def test_objecttime_source_truth_plan_contains_expected_evidence_groups():
     }
 
 
+def test_objecttime_source_truth_outstanding_hardening_uses_readiness_and_guardrail_aliases():
+    group = next(
+        group
+        for group in OBJECTTIME_SOURCE_TRUTH_PLAN.evidence_groups
+        if group.group_id == "outstanding_hardening"
+    )
+
+    for term in (
+        "guarded dry-run",
+        "readiness contract",
+        "source-change runtime intake readiness",
+        "runtime source-change hook",
+        "not implemented",
+        "not production enabled",
+        "finalised correction intake",
+        "review request creation",
+        "no correction execution",
+        "production enablement",
+        "guardrails",
+        "non-goals",
+    ):
+        assert term in group.query_terms
+        assert term in group.required_terms_any
+
+
 def test_contacts_employee_appointments_question_detects_domain_plan():
     plan = detect_domain_retrieval_plan("How should Contacts and Employee Appointments work in Ezeas?")
 

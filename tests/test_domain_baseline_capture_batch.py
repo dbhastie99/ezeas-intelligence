@@ -379,7 +379,7 @@ def test_payroll_evidence_context_blocked_packs_are_diagnostic_only_not_runtime_
         assert "does not change workforce-platform" in combined
 
 
-def test_objecttime_source_truth_recaptured_pack_records_refinement_required_state():
+def test_objecttime_source_truth_recaptured_pack_records_promoted_state():
     metadata = OBJECTTIME_SOURCE_TRUTH_RECAPTURED_DOMAIN
     pack_path = BASELINE_ROOT / "objecttime_source_truth" / "v0_1"
     combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
@@ -392,31 +392,30 @@ def test_objecttime_source_truth_recaptured_pack_records_refinement_required_sta
     assert "DB readiness returned `READY`" in combined
     assert "Ready: yes" in combined
     assert "Selected ODBC driver: `ODBC Driver 17 for SQL Server`" in combined
-    assert "Result status: `RECAPTURED_REQUIRES_REFINEMENT`" in combined
-    assert "captured evidence with promotion withheld" in combined
+    assert "Result status: `PROMOTED_BASELINE_CAPTURED`" in combined
+    assert "captured evidence and promoted" in combined
     assert "Total: 12" in combined
-    assert "Passed: 8" in combined
-    assert "Failed: 4" in combined
+    assert "Passed: 12" in combined
+    assert "Failed: 0" in combined
     assert "Audit/chat rows created: false" in combined
-    assert "objecttime-payrun-inclusion" in combined
-    assert "objecttime-sourcetruth-vs-workedhours" in combined
-    assert "objecttime-current-effective-output" in combined
-    assert "objecttime-worker-story-source-truth" in combined
-    assert "`STRONG`: 11" in combined
-    assert "`WEAK`: 1" in combined
+    assert "`STRONG`: 12" in combined
+    assert "`WEAK`: 0" in combined
     assert "`MISSING`: 0" in combined
-    assert "Overall status: `NEEDS_REFINEMENT`" in combined
-    assert "`KEEP`: 11" in combined
-    assert "`IMPROVE_RETRIEVAL_TERMS`: 1" in combined
-    assert "`outstanding_hardening` -> `IMPROVE_RETRIEVAL_TERMS`" in combined
-    assert "benchmark failures are answer-synthesis/term-coverage issues, not corpus absence issues" in combined
-    assert "Final ledger status remains `BASELINE_REQUIRED`" in combined
-    assert "does not count as `BASELINE_ALREADY_EXISTS`" in combined
+    assert "Overall status: `GOOD`" in combined
+    assert "`KEEP`: 12" in combined
+    assert "`IMPROVE_RETRIEVAL_TERMS`: 0" in combined
+    assert "`outstanding_hardening` -> `KEEP`" in combined
+    assert "previous promotion blocker is resolved without adding corpus" in combined
+    assert "Final ledger status is `BASELINE_ALREADY_EXISTS`" in combined
     assert "Generated artefact committed: no" in combined
     assert "Code Evidence answer integration: no" in combined
     assert "DB readiness returned `DATABASE_CONNECTION_FAILED`" not in combined
     assert "Result status: `BLOCKED_DATABASE_CONNECTION`" not in combined
     assert "Benchmark result: not run" not in combined
+    assert "objecttime-payrun-inclusion" not in combined
+    assert "objecttime-sourcetruth-vs-workedhours" not in combined
+    assert "objecttime-current-effective-output" not in combined
+    assert "objecttime-worker-story-source-truth" not in combined
 
 
 def test_objecttime_source_truth_recaptured_pack_preserves_domain_boundaries():
@@ -937,10 +936,10 @@ def test_batch_baseline_packs_are_diagnostic_only_not_runtime_truth():
 def test_ledger_counts_remain_honest_for_captured_batch():
     ledger = _read(LEDGER_PATH)
 
-    assert "`BASELINE_REQUIRED`: 20" in ledger
-    assert "`BASELINE_ALREADY_EXISTS`: 11" in ledger
+    assert "`BASELINE_REQUIRED`: 19" in ledger
+    assert "`BASELINE_ALREADY_EXISTS`: 12" in ledger
     assert "`RUNBOOK_OUTSTANDING`: 0" in ledger
-    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History" in ledger
+    assert "Domains with baseline already existing: Worker Story; Payroll Bases & Totals; PayRun Admin Queue; Movement Review; Gross-to-Net; Annual Leave / Leave Management; Finalisation Readiness; Payroll Output; RateSource / Rate Story; Decision Story; Contact Payroll History; ObjectTime / Source Truth" in ledger
     assert "Annual Leave / Leave Management" in ledger
     assert "Movement Review now has a checked-in DB-backed baseline artefact pack" in ledger
     assert "Gross-to-Net now has a checked-in DB-backed baseline artefact pack" in ledger
@@ -984,7 +983,10 @@ def test_ledger_counts_remain_honest_for_captured_batch():
     assert "contact-payroll-history-retro-replay-correction" in ledger
     assert "corpus coverage 7 STRONG, 3 WEAK, 1 MISSING" in ledger
     assert "answer gap status NEEDS_REFINEMENT with 7 KEEP actions, 1 IMPROVE_SYNTHESIS action, 2 IMPROVE_RETRIEVAL_TERMS actions and 1 ADD_FORMAL_SOURCE_EVIDENCE_LATER action" in ledger
-    assert "| ObjectTime / Source Truth | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
+    assert "| ObjectTime / Source Truth | v0.4 | yes | yes | yes | yes | yes | yes | yes |" in ledger
+    assert "BASELINE_ALREADY_EXISTS | ObjectTime / Source Truth now has a checked-in DB-backed baseline artefact pack" in ledger
+    assert "corpus coverage 12 STRONG, 0 WEAK, 0 MISSING" in ledger
+    assert "answer gap status GOOD with 12 KEEP actions" in ledger
     assert "| Process Periods / PayRun Lifecycle | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
     assert "| Imports / Actuals | v0.4 | yes | yes | yes | yes | yes | yes | no |" in ledger
 
