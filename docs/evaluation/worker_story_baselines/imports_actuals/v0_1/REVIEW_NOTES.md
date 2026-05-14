@@ -14,6 +14,7 @@ This pack preserves the Imports / Actuals recaptured baseline result without pro
 - Confirm answer gap report is `NEEDS_REFINEMENT`.
 - Confirm formal source evidence is required before widening answer claims.
 - Confirm `FORMAL_EVIDENCE_GAP_PLAN.md` records the missing and weak formal evidence groups before any future promotion attempt.
+- Confirm `IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md` remains `NOT_REVIEWED` until doctrine accuracy, implementation-state accuracy and non-overclaiming review has passed.
 - Confirm generated JSON reports are transient and not committed.
 - Confirm final ledger status remains `BASELINE_REQUIRED`.
 - Confirm this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.

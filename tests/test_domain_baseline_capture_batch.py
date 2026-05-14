@@ -124,6 +124,10 @@ IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT = (
     Path("docs/evaluation/source_evidence_drafts/imports_actuals")
     / "IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md"
 )
+IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE = (
+    Path("docs/evaluation/source_evidence_drafts/imports_actuals")
+    / "IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md"
+)
 
 
 def _read(path: Path) -> str:
@@ -665,6 +669,27 @@ def test_imports_actuals_formal_source_evidence_draft_records_required_evidence_
     assert "Benchmark passes 11/11" in draft
     assert "Ledger promotion happens only after real command results support promotion" in draft
     assert "Imports / Actuals is not promoted" in draft
+
+
+def test_imports_actuals_formal_evidence_review_gate_blocks_ingestion_until_ready():
+    assert IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE.exists()
+
+    gate = _read(IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE)
+
+    assert "Current review status: `NOT_REVIEWED`" in gate
+    assert "Default review status: `NOT_REVIEWED`" in gate
+    assert "`REVIEWED_READY_FOR_INGESTION`" in gate
+    assert "Current review status: `REVIEWED_READY_FOR_INGESTION`" not in gate
+    assert "FORMAL_EVIDENCE_GAP_PLAN.md" in gate
+    assert "IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md" in gate
+    assert "`purpose_and_operator_meaning`" in gate
+    assert "`outstanding_hardening`" in gate
+    assert "`pay_code_and_rate_type_mapping`" in gate
+    assert "no corpus mutation" in gate
+    assert "no operational JSON ingestion" in gate
+    assert "no Code Evidence answer integration" in gate
+    assert "no ledger promotion" in gate
+    assert "future explicit ingestion slice after review readiness" in gate
 
 
 def test_contact_payroll_history_baseline_pack_records_captured_ready_results_with_failures():
