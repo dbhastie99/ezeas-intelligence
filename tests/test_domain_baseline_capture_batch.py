@@ -117,6 +117,9 @@ IMPORTS_ACTUALS_RECAPTURED_DOMAIN = {
     "scan": "scripts\\scan_imports_actuals_corpus_coverage.py",
     "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
 }
+IMPORTS_ACTUALS_FORMAL_EVIDENCE_GAP_PLAN = (
+    BASELINE_ROOT / "imports_actuals" / "v0_1" / "FORMAL_EVIDENCE_GAP_PLAN.md"
+)
 
 
 def _read(path: Path) -> str:
@@ -599,6 +602,34 @@ def test_imports_actuals_recaptured_pack_preserves_domain_boundaries():
         "Minerva baseline packs do not mutate operational payroll data",
     ):
         assert term in combined
+
+
+def test_imports_actuals_formal_evidence_gap_plan_records_required_gaps_and_guardrails():
+    assert IMPORTS_ACTUALS_FORMAL_EVIDENCE_GAP_PLAN.exists()
+
+    plan = _read(IMPORTS_ACTUALS_FORMAL_EVIDENCE_GAP_PLAN)
+
+    assert "Imports / Actuals remains `BASELINE_REQUIRED`" in plan
+    assert "cannot be promoted solely through answer-synthesis hardening" in plan
+    assert "DB readiness was not the blocker" in plan
+    assert "Benchmark: 11 total / 8 passed / 3 failed" in plan
+    assert "STRONG=9, WEAK=1, MISSING=2" in plan
+    assert "Answer gap: `NEEDS_REFINEMENT`" in plan
+    assert "9 KEEP, 1 IMPROVE_SYNTHESIS, 2 ADD_FORMAL_SOURCE_EVIDENCE_LATER" in plan
+    assert "`purpose_and_operator_meaning`" in plan
+    assert "`outstanding_hardening`" in plan
+    assert "`pay_code_and_rate_type_mapping`" in plan
+    assert "Missing formal source evidence groups" in plan
+    assert "Weak formal source evidence group" in plan
+    assert "Formal source evidence is added to the corpus through the governed ingestion process" in plan
+    assert "Coverage improves to no MISSING groups" in plan
+    assert "Benchmark passes 11/11" in plan
+    assert "Answer gap becomes GOOD or acceptable" in plan
+    assert "Ledger is promoted only after real command results support it" in plan
+    assert "no corpus mutation" in plan
+    assert "no operational JSON ingestion" in plan
+    assert "no Code Evidence answer integration" in plan
+    assert "no ledger promotion" in plan
 
 
 def test_contact_payroll_history_baseline_pack_records_captured_ready_results_with_failures():

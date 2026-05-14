@@ -13,6 +13,7 @@ This pack preserves the Imports / Actuals recaptured baseline result without pro
 - Confirm weak group is `pay_code_and_rate_type_mapping`.
 - Confirm answer gap report is `NEEDS_REFINEMENT`.
 - Confirm formal source evidence is required before widening answer claims.
+- Confirm `FORMAL_EVIDENCE_GAP_PLAN.md` records the missing and weak formal evidence groups before any future promotion attempt.
 - Confirm generated JSON reports are transient and not committed.
 - Confirm final ledger status remains `BASELINE_REQUIRED`.
 - Confirm this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
@@ -80,3 +81,5 @@ This slice did not implement:
 ## Follow-Up
 
 Add formal source evidence for `purpose_and_operator_meaning` and `outstanding_hardening`, tighten answer synthesis for `pay_code_and_rate_type_mapping`, and preserve the failed benchmark expectations until a documented refinement resolves them. Do not promote Imports / Actuals while benchmark failures and formal corpus gaps remain.
+
+Use `FORMAL_EVIDENCE_GAP_PLAN.md` as the checklist for future source evidence and promotion acceptance criteria. The plan is documentation-only and does not add corpus evidence, ingest operational JSON, connect Code Evidence or promote the ledger.
