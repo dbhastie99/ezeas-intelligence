@@ -118,6 +118,14 @@ IMPORTS_ACTUALS_RECAPTURED_DOMAIN = {
     "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
 }
 
+TAX_PAYG_RECAPTURED_DOMAIN = {
+    "name": "Tax / PAYG",
+    "runbook": "docs/TAX_PAYG_EVALUATION_RUNBOOK.md",
+    "manifest": "samples\\eval\\rich_answer_benchmark.tax_payg.json",
+    "scan": "scripts\\scan_tax_payg_corpus_coverage.py",
+    "gap": "scripts\\build_tax_payg_answer_gap_report.py",
+}
+
 COMPARISON_REMEDIATION_CAPTURED_DOMAIN = {
     "name": "Comparison / Remediation",
     "runbook": "docs/COMPARISON_REMEDIATION_EVALUATION_RUNBOOK.md",
@@ -474,6 +482,58 @@ def test_imports_actuals_recaptured_pack_records_unpromoted_refinement_state():
     assert "does not count as `BASELINE_ALREADY_EXISTS`" in combined
     assert "real formal-corpus gaps" in combined
     assert "Promotion cannot happen solely through synthesis hardening" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "DB readiness returned `DATABASE_CONNECTION_FAILED`" not in combined
+    assert "Result status: `BLOCKED_DATABASE_CONNECTION`" not in combined
+    assert "Benchmark result: not run" not in combined
+    assert "Baseline pack created: blocked pack only" not in combined
+    assert "Final ledger status is `BASELINE_ALREADY_EXISTS`" not in combined
+
+
+def test_tax_payg_recaptured_pack_records_unpromoted_refinement_state():
+    metadata = TAX_PAYG_RECAPTURED_DOMAIN
+    pack_path = BASELINE_ROOT / "tax_payg" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "DB readiness result: `READY`" in combined
+    assert "Result status: `RECAPTURED_BASELINE_REQUIRES_REFINEMENT`" in combined
+    assert "Result status: `COMPLETED_WITH_FAILURES`" in combined
+    assert "Total: 9" in combined
+    assert "Passed: 7" in combined
+    assert "Failed: 2" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "tax-payg-rich-answer" in combined
+    assert "tax-payg-minerva-not-calculate" in combined
+    assert "Evidence groups: 12" in combined
+    assert "`STRONG`: 10" in combined
+    assert "`WEAK`: 1" in combined
+    assert "`MISSING`: 1" in combined
+    assert "`purpose_and_operator_meaning`: MISSING" in combined
+    assert "`outstanding_hardening`: WEAK" in combined
+    assert "Indexed corpus: 5 active documents, 4583 chunks" in combined
+    assert "Overall status: `NEEDS_REFINEMENT`" in combined
+    assert "`LOW` / `KEEP` groups: 10" in combined
+    assert "`HIGH` / `ADD_FORMAL_SOURCE_EVIDENCE_LATER` groups: 1" in combined
+    assert "`MEDIUM` / `IMPROVE_RETRIEVAL_TERMS` groups: 1" in combined
+    assert "This is not a successful captured/promoted baseline" in combined
+    assert "It is not DB-blocked" in combined
+    assert "Final ledger status remains `BASELINE_REQUIRED`" in combined
+    assert "does not count as `BASELINE_ALREADY_EXISTS`" in combined
+    assert "real formal source-evidence gap" in combined
+    assert "Promotion cannot happen solely through synthesis hardening" in combined
+    assert "Minerva must explain Tax / PAYG but must not calculate PAYG withholding" in combined
+    assert "Deterministic services and tax providers own withholding calculation" in combined
+    assert "Tax/PAYG rates, thresholds, bands, offsets and formulas must be governed data/rule-pack/configuration" in combined
+    assert "PaymentDate and payroll context matter for Tax / PAYG selection" in combined
+    assert "no tax runtime changes" in combined
+    assert "no PAYG runtime changes" in combined
+    assert "no ledger promotion" in combined
     assert "Generated artefact committed: no" in combined
     assert "Code Evidence answer integration: no" in combined
     assert "DB readiness returned `DATABASE_CONNECTION_FAILED`" not in combined
@@ -1347,6 +1407,8 @@ def test_generated_json_reports_are_not_required_committed_baseline_artefacts():
         "artifacts/eval/process_period_payrun_lifecycle_answer_gap_report.json",
         "artifacts/eval/imports_actuals_corpus_coverage.json",
         "artifacts/eval/imports_actuals_answer_gap_report.json",
+        "artifacts/eval/tax_payg_corpus_coverage.json",
+        "artifacts/eval/tax_payg_answer_gap_report.json",
         "artifacts/eval/comparison_remediation_corpus_coverage.json",
         "artifacts/eval/comparison_remediation_answer_gap_report.json",
     ):
