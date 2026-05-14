@@ -120,6 +120,10 @@ IMPORTS_ACTUALS_RECAPTURED_DOMAIN = {
 IMPORTS_ACTUALS_FORMAL_EVIDENCE_GAP_PLAN = (
     BASELINE_ROOT / "imports_actuals" / "v0_1" / "FORMAL_EVIDENCE_GAP_PLAN.md"
 )
+IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT = (
+    Path("docs/evaluation/source_evidence_drafts/imports_actuals")
+    / "IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md"
+)
 
 
 def _read(path: Path) -> str:
@@ -630,6 +634,37 @@ def test_imports_actuals_formal_evidence_gap_plan_records_required_gaps_and_guar
     assert "no operational JSON ingestion" in plan
     assert "no Code Evidence answer integration" in plan
     assert "no ledger promotion" in plan
+
+
+def test_imports_actuals_formal_source_evidence_draft_records_required_evidence_and_guardrails():
+    assert IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT.exists()
+
+    draft = _read(IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT)
+
+    assert "not merely file upload or CSV parsing" in draft
+    assert "not calculated payroll truth" in draft
+    assert "`purpose_and_operator_meaning`: MISSING" in draft
+    assert "`outstanding_hardening`: MISSING" in draft
+    assert "`pay_code_and_rate_type_mapping`: WEAK" in draft
+    assert "pay code mapping" in draft
+    assert "RateType mapping" in draft
+    assert "imported actuals lane" in draft
+    assert "primary calculated lane" in draft
+    assert "comparator calculated lane" in draft
+    assert "actuals lane" in draft
+    assert "variance" in draft
+    assert "Worker Story" in draft
+    assert "Admin Queue" in draft
+    assert "Mapping issues must be visible as reviewable issues" in draft
+    assert "no operational JSON ingestion" in draft
+    assert "no Code Evidence answer integration" in draft
+    assert "no corpus mutation in this slice" in draft
+    assert "no ledger promotion in this slice" in draft
+    assert "Future Corpus-Ingestion Acceptance Criteria" in draft
+    assert "Coverage rerun shows no MISSING groups" in draft
+    assert "Benchmark passes 11/11" in draft
+    assert "Ledger promotion happens only after real command results support promotion" in draft
+    assert "Imports / Actuals is not promoted" in draft
 
 
 def test_contact_payroll_history_baseline_pack_records_captured_ready_results_with_failures():
