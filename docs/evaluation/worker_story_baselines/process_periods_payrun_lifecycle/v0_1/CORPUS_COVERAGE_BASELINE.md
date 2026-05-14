@@ -1,21 +1,23 @@
 # Process Periods / PayRun Lifecycle Corpus Coverage Baseline
 
-This file records intentional corpus coverage non-execution for the Process Periods / PayRun Lifecycle baseline pack. It is diagnostic-only and not operational truth.
+This file records the manually captured corpus coverage result for the Process Periods / PayRun Lifecycle baseline pack. It is diagnostic-only and not operational truth.
 
-## Commands Not Run
+## Commands
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py
-.\.venv\Scripts\python.exe scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py --json --output .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json
+python scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py
+python scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py --json --output .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json
 ```
 
-DB readiness returned `DATABASE_CONNECTION_FAILED`, so the coverage diagnostic was not run.
+DB readiness was `READY` in normal PowerShell before capture. Codex did not rerun these DB-backed commands.
+
+The generated JSON file `artifacts/eval/process_period_payrun_lifecycle_corpus_coverage.json` was produced as a transient evaluation artefact and must remain untracked.
 
 ## Scope
 
 The Process Periods / PayRun Lifecycle corpus coverage diagnostic reads the already indexed formal corpus and reports evidence group coverage. It does not ingest files, mutate corpus records, call a live LLM or change schema.
 
-Coverage should preserve evidence for:
+Coverage preserves evidence for:
 
 - `ProcessPeriod`;
 - `ProcessPeriodGroup`;
@@ -41,29 +43,50 @@ Coverage should preserve evidence for:
 - source truth impact on PayRun outcomes;
 - no runtime mutation guarantee.
 
-## Blocked Result Summary
+## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `COMPLETED_WITH_WEAK_GROUPS`
 
-- Domain: Process Periods / PayRun Lifecycle
-- Plan id: not evaluated
-- Evidence groups: not evaluated
-- `STRONG`: not evaluated
-- `WEAK`: not evaluated
-- `MISSING`: not evaluated
-- Coverage JSON generated: no
+- Plan/domain: `PROCESS_PERIOD_PAYRUN_LIFECYCLE` / Process Periods / PayRun Lifecycle
+- Evidence groups: 13
+- `STRONG`: 10
+- `WEAK`: 3
+- `MISSING`: 0
+- Indexed corpus: 5 active documents, 4583 chunks
+- Coverage JSON generated: yes
 - Generated artefact committed: no
-- Indexed corpus: not evaluated
 - Live LLM calls: no
 - Corpus mutation: no
 - Operational JSON ingestion: no
 - Code Evidence answer integration: no
 
-Corpus coverage result: not run.
+Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
 
-Baseline pack created: blocked pack only.
+## Coverage Groups
 
-Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+- `purpose_and_operator_meaning`: WEAK
+- `process_period_and_group_context`: STRONG
+- `open_not_open_closed_lifecycle`: STRONG
+- `close_rolls_forward`: WEAK
+- `payment_date_and_calendar_policy`: STRONG
+- `payrun_creation_and_admission`: STRONG
+- `run_type_and_run_purpose`: STRONG
+- `regular_supplementary_retro_distinction`: STRONG
+- `payrun_contact_lifecycle`: STRONG
+- `current_effective_output_and_finalisation`: STRONG
+- `payment_execution_and_period_close`: STRONG
+- `worker_story_admin_queue_and_movement_review_connection`: STRONG
+- `outstanding_hardening`: WEAK
+
+## Representative Weak Groups
+
+- `purpose_and_operator_meaning`: matched 8 chunks across 2 documents; representative term `ProcessPeriod`.
+- `close_rolls_forward`: matched 5 chunks across 1 document; representative term `close rolls forward`.
+- `outstanding_hardening`: matched 3 chunks across 1 document; representative term `payment execution`.
+
+## Interpretation
+
+There is no corpus absence finding for this recapture. The benchmark and answer-gap failures should be handled as answer-synthesis and retrieval-term refinement work before adding new corpus.
 
 ## Source References
 
@@ -71,10 +94,6 @@ Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not coun
 - Coverage service: `app/services/process_period_payrun_lifecycle_corpus_coverage_service.py`
 - Coverage script: `scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py`
 - Readiness check: `scripts/check_worker_story_baseline_db_readiness.py`
-
-## Interpretation
-
-No coverage conclusion exists for this slice. The next run must wait for readiness to be `READY` before running commands and must report Process Periods / PayRun Lifecycle evidence gaps from actual diagnostic output.
 
 ## Diagnostic-Only Guardrails
 

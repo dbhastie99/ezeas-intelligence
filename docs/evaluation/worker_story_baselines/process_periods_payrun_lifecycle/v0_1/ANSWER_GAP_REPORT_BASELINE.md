@@ -1,45 +1,55 @@
 # Process Periods / PayRun Lifecycle Answer Gap Report Baseline
 
-This file records intentional answer gap report non-execution for the Process Periods / PayRun Lifecycle baseline pack. It is diagnostic-only and not operational truth.
+This file records the manually captured answer gap report for the Process Periods / PayRun Lifecycle baseline pack. It is diagnostic-only and not operational truth.
 
-## Commands Not Run
+## Commands
 
 ```powershell
-.\.venv\Scripts\python.exe scripts\build_process_period_payrun_lifecycle_answer_gap_report.py --coverage-report .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json
-.\.venv\Scripts\python.exe scripts\build_process_period_payrun_lifecycle_answer_gap_report.py --coverage-report .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json --json --output .\artifacts\eval\process_period_payrun_lifecycle_answer_gap_report.json
+python scripts\build_process_period_payrun_lifecycle_answer_gap_report.py --coverage-report .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json
+python scripts\build_process_period_payrun_lifecycle_answer_gap_report.py --coverage-report .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json --json --output .\artifacts\eval\process_period_payrun_lifecycle_answer_gap_report.json
 ```
 
-DB readiness returned `DATABASE_CONNECTION_FAILED`, so no coverage JSON was produced and the answer gap report was not run.
+DB readiness was `READY` in normal PowerShell before capture. Codex did not rerun these DB-backed commands.
+
+The generated JSON file `artifacts/eval/process_period_payrun_lifecycle_answer_gap_report.json` was produced as a transient evaluation artefact and must remain untracked.
 
 ## Scope
 
-The answer gap report should consume `.\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json` after the coverage diagnostic has completed. That JSON did not exist from this blocked attempt.
+The answer gap report consumes `.\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json` after the coverage diagnostic has completed. The source coverage result has 10 STRONG, 3 WEAK and 0 MISSING evidence groups.
 
-## Blocked Result Summary
+## Captured Result Summary
 
-Result status: `BLOCKED_DATABASE_CONNECTION`
+Result status: `NEEDS_REFINEMENT`
 
-- Report type: not evaluated
-- Overall status: not evaluated
-- Source coverage plan: not evaluated
+- Report type: `PROCESS_PERIOD_PAYRUN_LIFECYCLE_ANSWER_GAP_REPORT`
+- Source coverage plan: `PROCESS_PERIOD_PAYRUN_LIFECYCLE`
+- Overall status: `NEEDS_REFINEMENT`
+- `LOW` / `KEEP` groups: 10
+- `MEDIUM` refinement groups: 3
 - Generated artefact committed: no
 - Live LLM calls: no
 - Corpus mutation: no
 - Operational JSON ingestion: no
 - Code Evidence answer integration: no
 
-Answer gap report: not run.
+Final ledger status remains `BASELINE_REQUIRED`; this recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
 
-Baseline pack created: blocked pack only.
+## Refinement Groups
 
-Recommended actions:
+- `purpose_and_operator_meaning`: WEAK -> `IMPROVE_SYNTHESIS`
+- `close_rolls_forward`: WEAK -> `IMPROVE_RETRIEVAL_TERMS`
+- `outstanding_hardening`: WEAK -> `IMPROVE_RETRIEVAL_TERMS`
 
-- `KEEP`: not evaluated
-- `IMPROVE_SYNTHESIS`: not evaluated
-- `IMPROVE_RETRIEVAL_TERMS`: not evaluated
-- `ADD_FORMAL_SOURCE_EVIDENCE_LATER`: not evaluated
+## Recommended Actions
 
-Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+- Refine Process Periods / PayRun Lifecycle retrieval terms for weak supporting groups before adding new corpus.
+- Tighten Process Periods / PayRun Lifecycle answer synthesis for weak core groups while keeping status caveats.
+
+## Interpretation
+
+This is a recaptured baseline result requiring refinement, not a promoted baseline. The answer gap is driven by weak supporting groups and synthesis coverage, not missing corpus evidence, because the source coverage report has 0 MISSING groups.
+
+Payment date and calendar policy remain governed context, dirty contacts require reprocessing before safe use, and finalised or protected runs require correction/review pathways rather than ordinary mutation.
 
 ## Source References
 
@@ -47,12 +57,6 @@ Final ledger status remains `BASELINE_REQUIRED`; this blocked pack does not coun
 - Gap service: `app/services/process_period_payrun_lifecycle_answer_gap_report_service.py`
 - Gap script: `scripts\build_process_period_payrun_lifecycle_answer_gap_report.py`
 - Required coverage JSON: `.\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json`
-
-## Interpretation
-
-No answer gap conclusion exists for this slice. Process Periods / PayRun Lifecycle must remain blocked until DB readiness is `READY` and actual benchmark, coverage and gap results are captured.
-
-Any future answer gap review must preserve that payment date and calendar policy are governed context, dirty contacts require reprocessing before safe use, and finalised or protected runs require correction/review pathways rather than ordinary mutation.
 
 ## Diagnostic-Only Guardrails
 

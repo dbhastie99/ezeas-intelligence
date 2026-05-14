@@ -1,6 +1,6 @@
 # Process Periods / PayRun Lifecycle Baseline Summary
 
-Slice name: Process Periods / PayRun Lifecycle Baseline Capture v0.1
+Slice name: Process Periods / PayRun Lifecycle Baseline Recapture Result Update v0.1
 
 Domain: Process Periods / PayRun Lifecycle
 
@@ -10,52 +10,68 @@ Source decision ledger: `docs/evaluation/worker_story_baselines/COMPLETED_DOMAIN
 
 Baseline policy: `docs/evaluation/worker_story_baselines/BASELINE_CAPTURE_POLICY.md`
 
-This blocked baseline pack is diagnostic-only and not operational truth. It records DB-readiness non-execution for Process Periods / PayRun Lifecycle and does not capture benchmark, corpus coverage or answer gap results.
+This pack records manually captured PowerShell evaluation output for Process Periods / PayRun Lifecycle. It is diagnostic-only and not operational truth. Captured evidence exists, but promotion is withheld because the benchmark failed 6 of 13 cases and the answer gap report status is `NEEDS_REFINEMENT`.
 
 ## Execution Context
 
-Attempted on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
+Recaptured on 2026-05-14 from `C:\Projects\ezeas-intelligence`.
 
-DB readiness returned `DATABASE_CONNECTION_FAILED`.
+DB readiness was confirmed in normal PowerShell before capture.
 
-- Readiness command: `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py`
-- Ready: no.
+- Readiness status: `READY`
+- Ready: yes.
+- Configuration source: `.env:MINERVA_DATABASE_URL`
+- Selected ODBC driver: `ODBC Driver 17 for SQL Server`
 - Required tables checked: `KnowledgeDocument`, `KnowledgeChunk`
 - Missing tables: none.
-- Configuration source reported: `.env:MINERVA_DATABASE_URL`
-- Dialect/driver reported: `mssql/pyodbc`
-- Selected ODBC driver reported: `ODBC Driver 18 for SQL Server`
-- Error class: `pyodbc.OperationalError`
-- Result status: `BLOCKED_DATABASE_CONNECTION`
+- Read-only guardrails remained in place.
 
-Because readiness was not `READY`, Process Periods / PayRun Lifecycle benchmark, corpus coverage and answer gap commands were not run. No generated JSON reports were produced for this Process Periods / PayRun Lifecycle attempt.
+Codex did not rerun DB-backed commands for this update. The manually captured PowerShell outputs are the source truth for this baseline result.
 
 ## Commands
 
 | Area | Command | Completed In v0.1 | Captured Result Summary |
 |---|---|---:|---|
-| DB readiness check | `.\.venv\Scripts\python.exe scripts\check_worker_story_baseline_db_readiness.py` | yes | `DATABASE_CONNECTION_FAILED`; ready: no. |
-| Process Periods / PayRun Lifecycle benchmark | `.\.venv\Scripts\python.exe scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.process_period_payrun_lifecycle.json` | no | Blocked by DB readiness. |
-| Corpus coverage diagnostic | `.\.venv\Scripts\python.exe scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py` | no | Blocked by DB readiness. |
-| Corpus coverage diagnostic JSON | `.\.venv\Scripts\python.exe scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py --json --output .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json` | no | Blocked by DB readiness; generated artefact committed: no. |
-| Answer gap report | `.\.venv\Scripts\python.exe scripts\build_process_period_payrun_lifecycle_answer_gap_report.py --coverage-report .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json` | no | Blocked by DB readiness. |
-| Answer gap report JSON | `.\.venv\Scripts\python.exe scripts\build_process_period_payrun_lifecycle_answer_gap_report.py --coverage-report .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json --json --output .\artifacts\eval\process_period_payrun_lifecycle_answer_gap_report.json` | no | Blocked by DB readiness; generated artefact committed: no. |
+| DB readiness check | `scripts\check_worker_story_baseline_db_readiness.py` | yes | `READY`; ready: yes. |
+| Process Periods / PayRun Lifecycle benchmark | `python scripts\run_golden_questions.py --manifest samples\eval\rich_answer_benchmark.process_period_payrun_lifecycle.json` | yes | 13 total, 7 passed, 6 failed; audit/chat rows created: false. |
+| Corpus coverage diagnostic | `python scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py` | yes | 13 groups; 10 STRONG, 3 WEAK, 0 MISSING. |
+| Corpus coverage diagnostic JSON | `python scripts\scan_process_period_payrun_lifecycle_corpus_coverage.py --json --output .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json` | yes | Generated transient JSON; committed: no. |
+| Answer gap report | `python scripts\build_process_period_payrun_lifecycle_answer_gap_report.py --coverage-report .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json` | yes | `NEEDS_REFINEMENT`; 10 LOW/KEEP groups and 3 MEDIUM refinement groups. |
+| Answer gap report JSON | `python scripts\build_process_period_payrun_lifecycle_answer_gap_report.py --coverage-report .\artifacts\eval\process_period_payrun_lifecycle_corpus_coverage.json --json --output .\artifacts\eval\process_period_payrun_lifecycle_answer_gap_report.json` | yes | Generated transient JSON; committed: no. |
 
-## Blocked Finding
+## Recaptured Result
 
-- Readiness status: `DATABASE_CONNECTION_FAILED`.
-- Result status: `BLOCKED_DATABASE_CONNECTION`.
-- Baseline pack created: blocked pack only.
-- Benchmark result: not run.
-- Corpus coverage result: not run.
-- Answer gap report: not run.
+- Result status: `RECAPTURED_REQUIRES_REFINEMENT`
+- Baseline promotion: withheld.
+- Benchmark result: 13 total, 7 passed, 6 failed.
+- Corpus coverage result: 13 groups; `STRONG`: 10, `WEAK`: 3, `MISSING`: 0.
+- Answer gap report: `NEEDS_REFINEMENT`.
 - Generated artefact committed: no.
 - Live LLM calls: no.
 - Corpus mutation: no.
 - Operational JSON ingestion: no.
 - Code Evidence answer integration: no.
 - Final ledger status remains `BASELINE_REQUIRED`.
-- This blocked pack does not count as `BASELINE_ALREADY_EXISTS`.
+- This recaptured result does not count as `BASELINE_ALREADY_EXISTS`.
+
+The failures are answer-synthesis and retrieval-term issues, not corpus absence issues, because coverage is 10 STRONG, 3 WEAK and 0 MISSING.
+
+## Failed Benchmark Cases
+
+1. `process-period-payrun-lifecycle-rich-answer`
+   - Question: How should Process Periods and PayRun Lifecycle work in Ezeas?
+   - Missing expected terms include `Process Periods / PayRun Lifecycle`, `ProcessPeriod`, `ProcessPeriodGroup`, governed payroll-period context, payment-event lifecycle evidence, `PaymentDate`, PayRun creation, PayRun admission, `RunType`, `RunPurpose`, `PayRunContact`, current-effective payroll output, finalisation readiness, payment execution, period close, Worker Story, PayRun Admin Queue and Movement Review.
+2. `process-period-closed-dominates-open`
+   - Missing expected terms include `closed`, `dominates open`, `closed dominates open`, `ProcessPeriod`, period lifecycle and closed-period truth.
+3. `process-period-close-rolls-forward`
+   - Missing expected terms include `close rolls forward`, roll forward, period close, open next period, create next period and implemented.
+4. `process-period-paymentdate`
+   - Missing expected terms include `PaymentDate`, payment date, tax/PAYG, payment context, calendar policy, governed, derived and not hardcoded.
+5. `process-period-payrun-creation-admission`
+   - Missing expected terms include PayRun creation, PayRun admission, `ProcessPeriod`, process-period context, worker inclusion, payment event and admission is not processing.
+   - No source snippet or matched phrase contained expected terms PayRun creation, PayRun admission or admission is not processing.
+6. `process-period-admission-not-processing`
+   - Missing expected terms include admission, processing, admission is not processing, worker inclusion, `PayRunContact` and processing state.
 
 ## Domain Boundary To Preserve
 
@@ -63,10 +79,10 @@ Process Periods / PayRun Lifecycle provides operational payroll context for pay 
 
 It is not merely a date range or run list domain. It is also not runtime ProcessPeriod, PayRun, payment execution or finalisation truth.
 
-The next captured run must preserve these boundaries:
+The next refinement slice must preserve these boundaries:
 
 - `PaymentDate` belongs on `ProcessPeriod`.
-- Default or derived payment-date policy belongs on `ProcessPeriodGroup` or an equivalent governed policy, not hardcoded logic.
+- Default payment-date derivation policy belongs on `ProcessPeriodGroup` or an equivalent governed policy, not hardcoded logic.
 - Payroll calendar and payroll-year definitions must be governed and configurable, not hardcoded.
 - Pay frequency support must ultimately include `DAILY`, `WEEKLY`, `FORTNIGHTLY`, `MONTHLY` and `QUARTERLY` where relevant.
 - Unsupported frequencies or incomplete provider coverage must be surfaced honestly.
@@ -79,28 +95,21 @@ The next captured run must preserve these boundaries:
 
 This pack does not implement or claim:
 
-- operational JSON ingestion;
-- Code Evidence answer integration;
-- live LLM calls;
-- corpus mutation;
-- DB or schema migration;
-- endpoint or UI changes;
-- workforce-platform changes;
-- PayRun runtime changes;
-- ProcessPeriod runtime changes;
-- dirty runtime calls;
-- finalised correction intake creation;
-- review request creation;
-- correction execution;
-- retro or replay execution;
-- supplementary execution;
-- adjustment execution;
-- payment or remittance execution;
-- finalisation execution.
+- no DB writes;
+- no migrations;
+- no corpus mutation;
+- no operational JSON ingestion;
+- no Code Evidence answer integration;
+- no live LLM calls;
+- no endpoint/UI/workforce-platform/runtime changes;
+- no PayRun runtime changes;
+- no ProcessPeriod runtime changes;
+- no dirty runtime calls;
+- no correction/review/payment/finalisation execution.
 
 ## Guardrails
 
-This blocked pack:
+This recaptured baseline result:
 
 - does not mutate corpus;
 - does not change routing;
@@ -118,4 +127,4 @@ This blocked pack:
 
 ## Recommended Next Slice
 
-Fix SQL Server connectivity or credentials so the readiness check returns `READY` before running commands. Then rerun the Process Periods / PayRun Lifecycle benchmark, corpus coverage diagnostic and answer gap report before moving this domain to `BASELINE_ALREADY_EXISTS`.
+Refine Process Periods / PayRun Lifecycle retrieval terms for weak supporting groups before adding new corpus, and tighten answer synthesis for weak core groups while keeping status caveats. Promotion remains withheld until benchmark and answer-gap results satisfy the baseline promotion criteria.

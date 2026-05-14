@@ -93,13 +93,6 @@ CONTACT_PAYROLL_HISTORY_CAPTURED_DOMAIN = {
 }
 
 PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {
-    "process_periods_payrun_lifecycle": {
-        "name": "Process Periods / PayRun Lifecycle",
-        "runbook": "docs/PROCESS_PERIOD_PAYRUN_LIFECYCLE_EVALUATION_RUNBOOK.md",
-        "manifest": "samples\\eval\\rich_answer_benchmark.process_period_payrun_lifecycle.json",
-        "scan": "scripts\\scan_process_period_payrun_lifecycle_corpus_coverage.py",
-        "gap": "scripts\\build_process_period_payrun_lifecycle_answer_gap_report.py",
-    },
     "imports_actuals": {
         "name": "Imports / Actuals",
         "runbook": "docs/IMPORTS_ACTUALS_EVALUATION_RUNBOOK.md",
@@ -107,6 +100,14 @@ PAYROLL_EVIDENCE_CONTEXT_BLOCKED_DOMAINS = {
         "scan": "scripts\\scan_imports_actuals_corpus_coverage.py",
         "gap": "scripts\\build_imports_actuals_answer_gap_report.py",
     },
+}
+
+PROCESS_PERIODS_PAYRUN_LIFECYCLE_RECAPTURED_DOMAIN = {
+    "name": "Process Periods / PayRun Lifecycle",
+    "runbook": "docs/PROCESS_PERIOD_PAYRUN_LIFECYCLE_EVALUATION_RUNBOOK.md",
+    "manifest": "samples\\eval\\rich_answer_benchmark.process_period_payrun_lifecycle.json",
+    "scan": "scripts\\scan_process_period_payrun_lifecycle_corpus_coverage.py",
+    "gap": "scripts\\build_process_period_payrun_lifecycle_answer_gap_report.py",
 }
 
 OBJECTTIME_SOURCE_TRUTH_RECAPTURED_DOMAIN = {
@@ -359,6 +360,51 @@ def test_payroll_evidence_context_blocked_packs_record_non_execution_honestly():
         assert "READY` before running commands" in combined
         assert "Result status: `COMPLETED`" not in combined
         assert "Result status: `COMPLETED_WITH_FAILURES`" not in combined
+
+
+def test_process_periods_payrun_lifecycle_pack_records_recaptured_not_promoted_state():
+    metadata = PROCESS_PERIODS_PAYRUN_LIFECYCLE_RECAPTURED_DOMAIN
+    pack_path = BASELINE_ROOT / "process_periods_payrun_lifecycle" / "v0_1"
+    combined = "\n".join(_read(pack_path / file_name) for file_name in REQUIRED_FILES)
+
+    assert metadata["name"] in combined
+    assert metadata["runbook"] in combined
+    assert metadata["manifest"] in combined
+    assert metadata["scan"] in combined
+    assert metadata["gap"] in combined
+    assert "Readiness status: `READY`" in combined
+    assert "Result status: `RECAPTURED_REQUIRES_REFINEMENT`" in combined
+    assert "Result status: `COMPLETED_WITH_FAILURES`" in combined
+    assert "Total: 13" in combined
+    assert "Passed: 7" in combined
+    assert "Failed: 6" in combined
+    assert "Audit/chat rows created: false" in combined
+    assert "process-period-payrun-lifecycle-rich-answer" in combined
+    assert "process-period-closed-dominates-open" in combined
+    assert "process-period-close-rolls-forward" in combined
+    assert "process-period-paymentdate" in combined
+    assert "process-period-payrun-creation-admission" in combined
+    assert "process-period-admission-not-processing" in combined
+    assert "Evidence groups: 13" in combined
+    assert "`STRONG`: 10" in combined
+    assert "`WEAK`: 3" in combined
+    assert "`MISSING`: 0" in combined
+    assert "Indexed corpus: 5 active documents, 4583 chunks" in combined
+    assert "Overall status: `NEEDS_REFINEMENT`" in combined
+    assert "`LOW` / `KEEP` groups: 10" in combined
+    assert "`MEDIUM` refinement groups: 3" in combined
+    assert "`purpose_and_operator_meaning`: WEAK -> `IMPROVE_SYNTHESIS`" in combined
+    assert "`close_rolls_forward`: WEAK -> `IMPROVE_RETRIEVAL_TERMS`" in combined
+    assert "`outstanding_hardening`: WEAK -> `IMPROVE_RETRIEVAL_TERMS`" in combined
+    assert "Baseline promotion: withheld" in combined
+    assert "Final ledger status remains `BASELINE_REQUIRED`" in combined
+    assert "does not count as `BASELINE_ALREADY_EXISTS`" in combined
+    assert "not corpus absence issues" in combined
+    assert "Generated artefact committed: no" in combined
+    assert "Code Evidence answer integration: no" in combined
+    assert "DB readiness returned `DATABASE_CONNECTION_FAILED`" not in combined
+    assert "Result status: `BLOCKED_DATABASE_CONNECTION`" not in combined
+    assert "Benchmark result: not run" not in combined
 
 
 def test_payroll_evidence_context_blocked_packs_are_diagnostic_only_not_runtime_truth():
