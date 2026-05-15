@@ -171,12 +171,19 @@ FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md"
 )
+FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK.md"
+)
 SOURCE_EVIDENCE_DRAFTS_README = Path("docs/evaluation/source_evidence_drafts/README.md")
 FORMAL_EVIDENCE_CONTROL_README_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md"
 )
 FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_review_readiness_checklist_v0_1.md"
+)
+FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_review_status_transition_runbook_v0_1.md"
 )
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
@@ -1477,6 +1484,85 @@ def test_formal_evidence_review_readiness_checklist_records_required_gates():
         assert blocked_claim not in checklist
 
 
+def test_formal_evidence_review_status_transition_runbook_records_required_controls():
+    assert FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK.exists()
+
+    runbook = _read(FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK)
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/README.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+    ):
+        assert referenced_path in runbook
+
+    for status_heading in (
+        "### NOT_REVIEWED",
+        "### NEEDS_REVISION",
+        "### REVIEWED_READY_FOR_INGESTION",
+        "### SUPERSEDED",
+    ):
+        assert status_heading in runbook
+
+    for required_text in (
+        "A status transition from `NOT_REVIEWED` to `NEEDS_REVISION`, `REVIEWED_READY_FOR_INGESTION`, or `SUPERSEDED` requires a separate explicit review slice.",
+        "The filled decision record must include:",
+        "reviewer identity",
+        "review date",
+        "reviewer rationale",
+        "doctrine review outcome",
+        "implementation-state review outcome",
+        "evidence-gap review outcome",
+        "non-overclaiming review outcome",
+        "The reviewer must complete:",
+        "doctrine review",
+        "implementation-state review",
+        "evidence-gap review",
+        "non-overclaiming review",
+        "`NEEDS_REVISION` blocks governed ingestion and requires follow-up changes before review can proceed.",
+        "`SUPERSEDED` blocks governed ingestion and requires the superseded draft/gate/decision record not be used for governed ingestion planning.",
+    ):
+        assert required_text in runbook
+
+
+def test_formal_evidence_review_status_transition_runbook_preserves_blocked_states():
+    runbook = _read(FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK)
+
+    for required_text in (
+        "| Tax / PAYG | `BASELINE_REQUIRED` | `docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No |",
+        "| Imports / Actuals | `BASELINE_REQUIRED` | `docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No |",
+        "Tax / PAYG remains `BASELINE_REQUIRED`.",
+        "Imports / Actuals remains `BASELINE_REQUIRED`.",
+        "Governed ingestion permitted: No.",
+        "Recapture permitted: No.",
+        "Promotion permitted: No.",
+        "For Tax / PAYG, Minerva may explain Tax / PAYG doctrine, source evidence, implementation state, and known gaps, but must not calculate PAYG withholding.",
+        "For Imports / Actuals, Minerva must preserve that Imports / Actuals is not merely file upload or CSV parsing.",
+        "`REVIEWED_READY_FOR_INGESTION` permits planning a future governed ingestion slice only.",
+        "It does not mutate corpus.",
+        "It does not run recapture.",
+        "It does not promote a baseline.",
+        "It does not change runtime behaviour.",
+        "It does not change ledger counts.",
+    ):
+        assert required_text in runbook
+
+    for blocked_claim in (
+        "governed ingestion has occurred",
+        "corpus has been mutated",
+        "ledger has been promoted",
+        "Tax / PAYG is BASELINE_ALREADY_EXISTS",
+        "Tax / PAYG is `BASELINE_ALREADY_EXISTS`",
+        "Imports / Actuals is BASELINE_ALREADY_EXISTS",
+        "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
+    ):
+        assert blocked_claim not in runbook
+
+
 def test_formal_evidence_control_readme_prompt_is_preserved():
     assert FORMAL_EVIDENCE_CONTROL_README_PROMPT.exists()
 
@@ -1513,6 +1599,33 @@ def test_formal_evidence_review_readiness_checklist_prompt_is_preserved():
         "A checklist alone does not change review status.",
         "Tax / PAYG remains BASELINE_REQUIRED.",
         "Imports / Actuals remains BASELINE_REQUIRED.",
+    ):
+        assert required_text in prompt
+
+
+def test_formal_evidence_review_status_transition_runbook_prompt_is_preserved():
+    assert FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK_PROMPT.exists()
+
+    prompt = _read(FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Formal Evidence Review Status Transition Runbook v0.1",
+        "Mode: Documentation/control-runbook hardening only",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK.md",
+        "tests/test_domain_baseline_capture_batch.py",
+        "a separate explicit review slice",
+        "a filled decision record",
+        "reviewer identity",
+        "review date",
+        "reviewer rationale",
+        "doctrine review",
+        "implementation-state review",
+        "evidence-gap review",
+        "non-overclaiming review",
+        "`REVIEWED_READY_FOR_INGESTION` permits planning a future governed ingestion slice only",
+        "Do not change ledger counts.",
+        "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
+        "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
     ):
         assert required_text in prompt
 
