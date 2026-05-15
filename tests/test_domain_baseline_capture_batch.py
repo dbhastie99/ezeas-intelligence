@@ -155,6 +155,10 @@ IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE = (
     Path("docs/evaluation/source_evidence_drafts/imports_actuals")
     / "IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md"
 )
+FORMAL_EVIDENCE_REVIEW_GATE_INDEX = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md"
+)
 
 
 def _read(path: Path) -> str:
@@ -934,6 +938,27 @@ def test_tax_payg_formal_evidence_review_gate_blocks_ingestion_until_ready():
     assert "no ledger promotion" in gate
     assert "benchmark promotion" not in gate.lower()
     assert "runtime PAYG calculation has been implemented" not in gate
+
+
+def test_formal_evidence_review_gate_index_records_ingestion_guards():
+    assert FORMAL_EVIDENCE_REVIEW_GATE_INDEX.exists()
+
+    index = _read(FORMAL_EVIDENCE_REVIEW_GATE_INDEX)
+
+    assert "Imports / Actuals" in index
+    assert "Tax / PAYG" in index
+    assert "Tax / PAYG is not promoted and remains `BASELINE_REQUIRED`" in index
+    assert "Imports / Actuals is not promoted and remains `BASELINE_REQUIRED`" in index
+    assert "A review gate with `NOT_REVIEWED` blocks governed ingestion" in index
+    assert "Only `REVIEWED_READY_FOR_INGESTION` can permit a future governed ingestion slice" in index
+    assert "A formal source-evidence draft alone does not permit governed ingestion" in index
+    assert "Baseline promotion requires real benchmark, corpus coverage, and answer-gap evidence" in index
+    assert "| Tax / PAYG | `BASELINE_REQUIRED`" in index
+    assert "| Imports / Actuals | `BASELINE_REQUIRED`" in index
+    assert "| Tax / PAYG | `BASELINE_ALREADY_EXISTS`" not in index
+    assert "| Imports / Actuals | `BASELINE_ALREADY_EXISTS`" not in index
+    assert "Tax / PAYG is promoted" not in index
+    assert "Imports / Actuals is promoted" not in index
 
 
 def test_tax_payg_review_notes_reference_review_gate_and_preserve_not_promoted_state():
