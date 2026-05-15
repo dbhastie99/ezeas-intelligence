@@ -38,7 +38,7 @@ The register entry controls classification. Original filenames are metadata only
 
 Batch registration and triage are governed by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md`, `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md`, and `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`. Batch registration is metadata-level only. It does not ingest source content, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, change ledger counts, or make a source current truth. Most historical sources should first be batch-registered and triaged; only high-value/high-risk sources require the full Analytics Engine prototype/deep-review path.
 
-The first developer-log batch register placeholder is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It is an empty metadata-only register for future developer-log-like batches and does not add a source-register row by itself.
+The first developer-log batch register is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It contains the first controlled metadata-only batch row for the already registered Analytics Engine developer log and does not add a new source-register row by itself.
 
 ## 4. Source Register Table
 

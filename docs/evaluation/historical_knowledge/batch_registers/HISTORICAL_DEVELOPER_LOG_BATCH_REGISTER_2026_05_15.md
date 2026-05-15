@@ -6,19 +6,23 @@ Date: 15 May 2026
 
 ## 1. Purpose
 
-This document creates the first empty/placeholder batch register for historical developer-log-like materials under the Minerva historical knowledge model.
+This document creates the first developer-log batch register for historical developer-log-like materials under the Minerva historical knowledge model.
 
-It exists so future slices can register metadata for many historical developer logs, hardening logs, platform doctrine notes, and mixed log-doctrine sources without creating a full deep-review chain for every file.
+It exists so slices can register metadata for historical developer logs, hardening logs, platform doctrine notes, and mixed log-doctrine sources without creating a full deep-review chain for every file.
 
 No historical developer log content is ingested. No historical developer log content is parsed or extracted. No historical source content is ingested, parsed, or extracted by this batch register.
 
+This batch population is metadata-only. No historical source content is ingested, parsed, or extracted. The batch row does not permit Minerva current-truth answering and does not permit governed ingestion.
+
 ## 2. Scope
 
-This batch register covers future metadata-only registration of historical developer-log-like materials.
+This batch register covers metadata-only registration of historical developer-log-like materials.
 
-Adding a row later will register metadata only unless a separate review/backfill slice explicitly says otherwise. Ordinary developer logs can remain batch-registered until needed by a domain backfill, current-answer risk review, supersession review, or review-readiness process.
+Adding a row registers metadata only unless a separate review/backfill slice explicitly says otherwise. Ordinary developer logs can remain batch-registered until needed by a domain backfill, current-answer risk review, supersession review, or review-readiness process.
 
-High-risk/high-value sources can later be escalated into the full review chain. The Analytics Engine source remains the prototype/deep-review path, not the default for all logs.
+High-risk/high-value sources can be escalated into the full review chain. The Analytics Engine source remains the prototype/deep-review path, not the default for all logs. The Analytics source is already escalated to the full deep-review chain.
+
+Ordinary developer logs can later be added in batches without requiring the full deep-review chain unless triage escalates them.
 
 Future row intake must follow `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`.
 
@@ -28,7 +32,7 @@ Future row intake must follow `docs/evaluation/historical_knowledge/HISTORICAL_D
 | --- | --- |
 | Batch ID | `HIST-DEVLOG-BATCH-2026-05-15` |
 | Source family | Developer logs / hardening logs / platform doctrine / mixed log-doctrine sources |
-| Initial status | `EMPTY_PLACEHOLDER` |
+| Initial status | `FIRST_CONTROLLED_METADATA_ROW` |
 | Review status | `NOT_REVIEWED` |
 | Ingestion permitted | No |
 | Corpus mutation | No |
@@ -51,10 +55,13 @@ Minerva must not treat batch-registered sources as current truth unless later re
 
 ## 5. Batch Register Table
 
-This table is intentionally empty except for the header and separator. It is an empty/placeholder batch register.
+This table contains the first controlled metadata-only developer-log batch row. The row references the already registered Analytics Engine developer log and its deeper review artefacts.
+
+The batch row does not change review status. The batch row does not permit Minerva current-truth answering. The batch row does not permit governed ingestion.
 
 | Batch ID | Register ID | Source title | Original filename | Source folder | Registered source type | Source tier | Domain tags | Date or date range | Repository context | Related commits if known | Related control artefacts | Implementation-state classification | Review status | Ingestion permitted | Supersession risk | Evidence confidence | Backfill priority | Full review chain required | Full review chain reason | Suggested next action | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| HIST-DEVLOG-BATCH-2026-05-15 | HIST-ANALYTICS-2025-12-06-20 | Developer Log - Analytics Engine | Developer Log - Analytics Engine (5).docx | `docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md` | `DEVELOPER_LOG` - developer-authored historical analytics working material requiring review and implementation-state confirmation | Tier 2 | Analytics; Workforce Analytics DB; Golden Slice; ObjectTime; ProcessedRule; CalcInterpreterLine Replatform Review; Power BI; Reconciliation Reporting | 6 December 2025 to 20 December 2025 | Historical analytics server / workforce analytics context | unknown | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md`; `docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md`; `docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md`; `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md`; `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md`; `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE.md`; `docs/evaluation/historical_knowledge/review_execution_checklists/HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md`; `docs/evaluation/historical_knowledge/review_decision_records/HIST_ANALYTICS_2025_12_06_20_DECISION_RECORD_NOT_REVIEWED.md` | `UNCERTAIN_REQUIRES_REVIEW` - current implementation state requires code confirmation and is not fully current | `NOT_REVIEWED` | No | `ProcessedRule`-era analytics is partially superseded by the `CalcInterpreterLine` model | Medium/high for historical rationale; requires code confirmation for current implementation | High | Yes | Major analytics architecture source with supersession risk and current Minerva-answering implications | Perform explicit future review/cross-check using the existing review execution checklist and code cross-check plan. | Metadata-only batch row; source content not ingested. This row references the full deep-review chain already created for the Analytics source and does not change review status, permit governed ingestion, or permit Minerva current-truth answering. |
 
 ## 6. Triage Outcomes
 

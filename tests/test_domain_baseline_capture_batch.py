@@ -669,7 +669,7 @@ def test_historical_developer_log_batch_register_placeholder_controls():
     template = _read(HISTORICAL_BATCH_REGISTER_TEMPLATE)
 
     assert "HIST-DEVLOG-BATCH-2026-05-15" in batch_register
-    assert "`EMPTY_PLACEHOLDER`" in batch_register
+    assert "`FIRST_CONTROLLED_METADATA_ROW`" in batch_register
     assert "`NOT_REVIEWED`" in batch_register
     assert "| Ingestion permitted | No |" in batch_register
 
@@ -747,6 +747,39 @@ def test_historical_developer_log_batch_register_placeholder_controls():
     assert "does not change runtime behaviour" in batch_register
     assert "does not promote baselines" in batch_register
     assert "does not change ledger counts" in batch_register
+
+
+def test_historical_developer_log_batch_register_records_first_analytics_row():
+    batch_register = _read(HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+
+    for required_text in (
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "Developer Log - Analytics Engine (5).docx",
+        "`NOT_REVIEWED`",
+        "Ingestion permitted | No",
+        "High",
+        "| Yes | Major analytics architecture source with supersession risk and current Minerva-answering implications |",
+        "`ProcessedRule`-era analytics is partially superseded by the `CalcInterpreterLine` model",
+        "This batch population is metadata-only",
+        "No historical source content is ingested, parsed, or extracted",
+        "The batch row does not permit Minerva current-truth answering",
+        "The batch row does not permit governed ingestion",
+        "Ordinary developer logs can later be added in batches without requiring the full deep-review chain unless triage escalates them",
+        "The Analytics source is already escalated to the full deep-review chain",
+        "The batch row does not change review status",
+        "Metadata-only batch row; source content not ingested",
+    ):
+        assert required_text in batch_register
+
+    source_register_row = next(
+        line
+        for line in source_register.splitlines()
+        if line.startswith("| HIST-ANALYTICS-2025-12-06-20 |")
+    )
+    assert "`NOT_REVIEWED`" in source_register_row
+    assert "| No |" in source_register_row
 
 
 def test_batch_baseline_packs_exist_with_required_files():
