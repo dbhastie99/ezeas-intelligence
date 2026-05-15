@@ -163,6 +163,10 @@ FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md"
 )
+FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md"
+)
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
     / "TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md"
@@ -1248,6 +1252,47 @@ def test_imports_actuals_not_reviewed_decision_record_blocks_ingestion_recapture
     assert "governed ingestion has occurred" not in record
     assert "corpus has been mutated" not in record
     assert "ledger has been promoted" not in record
+
+
+def test_formal_evidence_review_decision_record_index_records_not_reviewed_decisions_and_guards():
+    assert FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.exists()
+
+    index = _read(FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX)
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md",
+    ):
+        assert referenced_path in index
+
+    for required_text in (
+        "| Tax / PAYG | `tax_payg` | `BASELINE_REQUIRED` | `NOT_REVIEWED` | `TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No | assign reviewer / doctrine review |",
+        "| Imports / Actuals | `imports_actuals` | `BASELINE_REQUIRED` | `NOT_REVIEWED` | `IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No | assign reviewer / doctrine review |",
+        "Tax / PAYG remains `BASELINE_REQUIRED` while its latest decision record is `NOT_REVIEWED`.",
+        "Imports / Actuals remains `BASELINE_REQUIRED` while its latest decision record is `NOT_REVIEWED`.",
+        "1. A filled decision record does not itself permit governed ingestion.",
+        "2. A `NOT_REVIEWED` decision record blocks governed ingestion.",
+        "3. A `NEEDS_REVISION` decision record blocks governed ingestion.",
+        "4. A `SUPERSEDED` decision record must not be used for governed ingestion.",
+        "5. Only `REVIEWED_READY_FOR_INGESTION` can permit planning a future governed ingestion slice.",
+        "6. `REVIEWED_READY_FOR_INGESTION` does not itself mutate corpus.",
+        "7. `REVIEWED_READY_FOR_INGESTION` does not itself run recapture.",
+        "8. `REVIEWED_READY_FOR_INGESTION` does not itself promote a baseline.",
+        "9. Baseline promotion requires real benchmark, corpus coverage, and answer-gap evidence after governed ingestion and recapture.",
+        "10. No domain is promoted merely because a decision record exists.",
+        "11. Minerva must not overstate review, ingestion, runtime, recapture, or promotion state.",
+    ):
+        assert required_text in index
+
+    assert "| Tax / PAYG | `tax_payg` | `BASELINE_ALREADY_EXISTS`" not in index
+    assert "| Imports / Actuals | `imports_actuals` | `BASELINE_ALREADY_EXISTS`" not in index
+    assert "governed ingestion has occurred" not in index
+    assert "corpus has been mutated" not in index
+    assert "ledger has been promoted" not in index
 
 
 def test_tax_payg_review_notes_reference_review_gate_and_preserve_not_promoted_state():
