@@ -22,6 +22,7 @@ This gate does not review, ingest, parse, extract, or approve the historical sou
 | Source folder / placeholder path | `docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md` |
 | Review-readiness record | `docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md` |
 | Review pack draft placeholder | `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md` |
+| Code/test/schema cross-check plan | `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md` |
 | Domain tags | Analytics; Workforce Analytics DB; Golden Slice; ObjectTime; ProcessedRule; CalcInterpreterLine Replatform Review; Power BI; Reconciliation Reporting |
 | Date or date range | 6 December 2025 to 20 December 2025 |
 | Repository context | Historical analytics server / workforce analytics context |
@@ -66,6 +67,8 @@ Future review must cross-check:
 - Commits related to analytics views/source facts if known.
 - Current `CalcInterpreterLine`, `PayrollBucketResult`, and reconciliation model direction.
 - Historical `ProcessedRule`-era claims and whether they are still valid, partially valid, superseded, or uncertain.
+
+The controlled cross-check plan is `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md`. Code/test/schema cross-check has not been performed in this slice.
 
 ## 6. Allowed Review Decisions
 

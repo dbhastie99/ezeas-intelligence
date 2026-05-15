@@ -22,6 +22,8 @@ Historical analytics review pack drafting uses `docs/evaluation/historical_knowl
 
 Historical analytics review decision gating uses `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md`. The gate must remain control-only until a future explicit review slice completes source review, code/test/schema cross-check, supersession assessment, and reviewer rationale.
 
+Historical analytics code/test/schema cross-check planning uses `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md`. The plan is control-only: code/test/schema cross-check has not been performed in this slice, and the Analytics Engine developer log remains `NOT_REVIEWED` with ingestion permitted `No`.
+
 ## 2. Implementation-State Classifications
 
 Use exactly one current classification for each candidate decision unless the review gate records why multiple states apply:
@@ -112,3 +114,5 @@ The Analytics Engine review-readiness record at `docs/evaluation/historical_know
 Review pack draft readiness does not mutate corpus, does not connect Code Evidence, does not call live LLM, does not change runtime behaviour, does not promote baselines, does not change ledger counts, does not perform ledger promotion, and does not perform historical ingestion.
 
 The Analytics Engine review decision gate at `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md` does not ingest historical content, does not parse or extract source content, does not create a backfill evidence pack, and does not permit governed ingestion while the source remains `NOT_REVIEWED`.
+
+The Analytics Engine code/test/schema cross-check plan at `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md` does not perform the cross-check, does not ingest historical content, does not parse or extract source content, does not create a backfill evidence pack, does not mutate corpus, does not connect Code Evidence, does not call live LLM, does not change runtime behaviour, does not promote baselines, does not change ledger counts, does not perform ledger promotion, and does not perform historical ingestion.

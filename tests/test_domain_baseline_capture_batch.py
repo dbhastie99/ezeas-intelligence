@@ -276,6 +276,11 @@ HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE = (
     / "review_decision_gates"
     / "HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md"
 )
+HISTORICAL_ANALYTICS_CODE_CROSSCHECK_PLAN = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "crosscheck_plans"
+    / "HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md"
+)
 HISTORICAL_REGISTERED_SOURCES_ROOT = (
     HISTORICAL_KNOWLEDGE_ROOT / "registered_sources"
 )
@@ -344,6 +349,9 @@ HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE_PROMPT = Path(
 )
 HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_analytics_review_decision_gate_v0_1.md"
+)
+HISTORICAL_ANALYTICS_CODE_CROSSCHECK_PLAN_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_analytics_code_crosscheck_plan_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -3084,6 +3092,140 @@ def test_historical_analytics_review_decision_gate_is_bounded():
         assert boundary_text in combined
 
 
+def test_historical_analytics_code_crosscheck_plan_is_control_only():
+    assert HISTORICAL_ANALYTICS_CODE_CROSSCHECK_PLAN.exists()
+
+    plan = _read(HISTORICAL_ANALYTICS_CODE_CROSSCHECK_PLAN)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    gate = _read(HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+    review_readiness_record = _read(HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD)
+    review_pack_placeholder = _read(HISTORICAL_ANALYTICS_REVIEW_PACK_DRAFT_PLACEHOLDER)
+    plan_path = (
+        "docs/evaluation/historical_knowledge/crosscheck_plans/"
+        "HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md"
+    )
+
+    for required_section in (
+        "## 1. Purpose",
+        "## 2. Source Register Details",
+        "## 3. Current Review Status",
+        "## 4. Cross-Check Scope",
+        "## 5. Repositories to Check",
+        "## 6. Code Areas to Check",
+        "## 7. Schema / Database Objects to Check",
+        "## 8. Analytics View Claims to Check",
+        "## 9. ProcessedRule-Era Claims to Validate",
+        "## 10. CalcInterpreterLine Replatform Claims to Validate",
+        "## 11. Reconciliation Reporting Claims to Validate",
+        "## 12. Evidence / Story Reporting Claims to Validate",
+        "## 13. Expected Classifications",
+        "## 14. Required Outputs",
+        "## 15. Non-Goals",
+        "## 16. Follow-Up Actions",
+    ):
+        assert required_section in plan
+
+    for required_text in (
+        "`HIST-ANALYTICS-2025-12-06-20`",
+        "Developer Log - Analytics Engine",
+        "Review status | `NOT_REVIEWED`",
+        "Ingestion permitted | No",
+        "Code/test/schema cross-check has not been performed in this slice.",
+        "historical source material, not current final truth",
+        "ProcessedRule-era analytics must not be treated as current canonical calculation fact without review.",
+        "`CalcInterpreterLine` is the current target canonical processed payroll calculation fact.",
+        "still valid",
+        "partially valid",
+        "superseded",
+        "backlog/doctrine",
+        "implemented-and-tested",
+        "implemented-not-fully-tested",
+        "uncertain",
+    ):
+        assert required_text in plan
+
+    for repository in (
+        "`workforce-platform`",
+        "`ezeas-analytics`",
+        "`ezeas-intelligence` only for historical/register/control context, not analytics runtime truth",
+        "`award-configurator-v1` only if award-build analytics/evidence references are relevant",
+    ):
+        assert repository in plan
+
+    for code_area in (
+        "`CalcInterpreterLine`",
+        "`PayrollBucketResult`",
+        "Reconciliation",
+        "`ObjectTime`",
+        "`PayRun`",
+        "`ProcessPeriod`",
+        "`RateType`",
+        "`AwardRateType`",
+    ):
+        assert code_area in plan
+
+    for analytics_claim in (
+        "`vw_FactObjectTime`",
+        "`vw_FactProcessedRule`",
+        "`vw_GS_RosterVsActual`",
+        "`workforce_analytics_local`",
+        "`workforce_analytics_dev`",
+        "BI handover claims",
+        "`AwardRateType` ordinary/hourly filtering",
+        "`ObjectType` Work/Schedule mapping",
+        "`ScheduledObjectTimeId` mapping",
+        "`ProcessPeriod` grain",
+    ):
+        assert analytics_claim in plan
+
+    for expected_output in (
+        "Cross-check findings table",
+        "Claim classification table",
+        "Source-to-code evidence map",
+        "Superseded claims list",
+        "Still-valid doctrine list",
+        "Current analytics replatform implications",
+        "Minerva-safe answering boundaries",
+        "Recommendation for whether to create a reviewed historical backfill evidence pack",
+    ):
+        assert expected_output in plan
+
+    assert plan_path in "\n".join(
+        (
+            source_register,
+            gate,
+            control_index,
+            backfill_process,
+            review_readiness_record,
+            review_pack_placeholder,
+        )
+    )
+
+    combined = "\n".join(
+        (
+            plan,
+            source_register,
+            gate,
+            control_index,
+            backfill_process,
+            review_readiness_record,
+            review_pack_placeholder,
+        )
+    )
+    for boundary_text in (
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM call",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no historical ingestion",
+    ):
+        assert boundary_text in combined
+
+
 def test_historical_source_review_readiness_lists_controlled_values():
     combined = "\n".join(
         _read(path)
@@ -3902,6 +4044,28 @@ def test_historical_analytics_review_decision_gate_prompt_is_preserved():
         "REVIEWED_READY_FOR_BACKFILL_DRAFT",
         "REVIEWED_READY_FOR_GOVERNED_INGESTION",
         "Do not review the Analytics Engine source yet.",
+        "git diff --check",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_analytics_code_crosscheck_plan_prompt_is_preserved():
+    assert HISTORICAL_ANALYTICS_CODE_CROSSCHECK_PLAN_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_ANALYTICS_CODE_CROSSCHECK_PLAN_PROMPT)
+
+    for required_text in (
+        "Minerva Historical Analytics Code Cross-Check Plan v0.1",
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md",
+        "Review status: `NOT_REVIEWED`",
+        "Ingestion permitted: No",
+        "Code/test/schema cross-check has not been performed in this slice.",
+        "source remains historical source material, not current final truth",
+        "ProcessedRule-era analytics must not be treated as current canonical calculation fact without review.",
+        "`CalcInterpreterLine` is the current target canonical processed payroll calculation fact.",
+        "python -m pytest tests/test_domain_baseline_capture_batch.py -q",
         "git diff --check",
     ):
         assert required_text in prompt

@@ -24,6 +24,7 @@ No Minerva ingestion is permitted.
 | Review status | `NOT_REVIEWED` |
 | Ingestion permitted | No |
 | Review decision gate | `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md` |
+| Code/test/schema cross-check plan | `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md` |
 
 ## 3. Historical Analytics Boundary
 
@@ -34,6 +35,8 @@ No Minerva ingestion is permitted.
 The future review must separate still-valid analytics doctrine from superseded `ProcessedRule`-era implementation assumptions.
 
 The future review must cross-check against current `workforce-platform` / `ezeas-analytics` code, tests, schema, SQL views, and commits.
+
+The controlled future cross-check plan is `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md`. Code/test/schema cross-check has not been performed in this slice.
 
 The future review must not claim that old `vw_FactProcessedRule` or `vw_GS_RosterVsActual` are current canonical analytics facts unless current code/schema review proves that current state.
 
