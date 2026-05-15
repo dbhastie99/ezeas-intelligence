@@ -159,6 +159,10 @@ FORMAL_EVIDENCE_REVIEW_GATE_INDEX = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md"
 )
+FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md"
+)
 
 
 def _read(path: Path) -> str:
@@ -959,6 +963,43 @@ def test_formal_evidence_review_gate_index_records_ingestion_guards():
     assert "| Imports / Actuals | `BASELINE_ALREADY_EXISTS`" not in index
     assert "Tax / PAYG is promoted" not in index
     assert "Imports / Actuals is promoted" not in index
+
+
+def test_formal_evidence_review_decision_record_template_records_review_decision_guards():
+    assert FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.exists()
+
+    template = _read(FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE)
+
+    assert "`NOT_REVIEWED`" in template
+    assert "`NEEDS_REVISION`" in template
+    assert "`REVIEWED_READY_FOR_INGESTION`" in template
+    assert "`SUPERSEDED`" in template
+    assert "A formal source-evidence draft alone does not permit governed ingestion" in template
+    assert "A review gate with `NOT_REVIEWED` blocks governed ingestion" in template
+    assert "A review gate with `NEEDS_REVISION` blocks governed ingestion" in template
+    assert "Only `REVIEWED_READY_FOR_INGESTION` can permit a future governed ingestion slice" in template
+    assert "`REVIEWED_READY_FOR_INGESTION` does not itself mutate corpus" in template
+    assert "`REVIEWED_READY_FOR_INGESTION` does not itself promote a baseline" in template
+    assert "Baseline promotion requires real benchmark, corpus coverage, and answer-gap evidence" in template
+    assert "No domain is promoted merely because a review decision exists" in template
+    assert "Minerva must not overstate review, ingestion, runtime, or promotion state" in template
+    assert "Reviewer name:" in template
+    assert "Review date:" in template
+    assert "Reviewer rationale:" in template
+    assert "Reviewed source artefacts:" in template
+    assert "Required follow-up actions:" in template
+    assert "Whether governed ingestion is permitted:" in template
+    assert "Whether recapture is permitted:" in template
+    assert "Whether promotion is permitted:" in template
+    assert "Imports / Actuals" in template
+    assert "Tax / PAYG" in template
+    assert "These examples are placeholders for future completed decision records. They do not mark either domain as reviewed or ready." in template
+    assert "Governed ingestion permitted: No unless `REVIEWED_READY_FOR_INGESTION`" in template
+    assert "Promotion permitted: No" in template
+    assert "Imports / Actuals is not merely file upload or CSV parsing" in template
+    assert "Minerva may explain Tax / PAYG but must not calculate PAYG withholding" in template
+    assert "Imports / Actuals remains `BASELINE_ALREADY_EXISTS`" not in template
+    assert "Tax / PAYG remains `BASELINE_ALREADY_EXISTS`" not in template
 
 
 def test_tax_payg_review_notes_reference_review_gate_and_preserve_not_promoted_state():
