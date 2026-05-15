@@ -36,6 +36,7 @@ Future row intake must follow `docs/evaluation/historical_knowledge/HISTORICAL_D
 | Source family | Developer logs / hardening logs / platform doctrine / mixed log-doctrine sources |
 | Initial status | `FIRST_CONTROLLED_METADATA_ROW` |
 | Review status | `NOT_REVIEWED` |
+| Review queue status | `TRIAGED_NOT_READY_FOR_REVIEW` in `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE.md` |
 | Ingestion permitted | No |
 | Corpus mutation | No |
 | Full source extraction performed | No |
@@ -60,6 +61,8 @@ Minerva must not treat batch-registered sources as current truth unless later re
 This table contains the first controlled metadata-only developer-log batch row. The row references the already registered Analytics Engine developer log and its deeper review artefacts.
 
 The batch row does not change review status. The batch row does not permit Minerva current-truth answering. The batch row does not permit governed ingestion.
+
+The corresponding review queue entry records queue-control status only. It does not change source facts, does not promote the source to current truth, does not permit ingestion, and does not permit answer use.
 
 | Batch ID | Register ID | Source title | Original filename | Source folder | Registered source type | Source tier | Domain tags | Date or date range | Repository context | Related commits if known | Related control artefacts | Implementation-state classification | Review status | Ingestion permitted | Supersession risk | Evidence confidence | Backfill priority | Full review chain required | Full review chain reason | Suggested next action | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |

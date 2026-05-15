@@ -26,7 +26,15 @@ Ingestion permitted defaults to No for every listed batch unless a separate expl
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | HIST-DEVLOG-BATCH-2026-05-15 | `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md` | Developer logs / hardening logs / platform doctrine / mixed log-doctrine sources | `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCTRINE`, `MIXED_LOG_DOCTRINE`, `OTHER_REQUIRES_REVIEW` | 6 December 2025 to 20 December 2025 for the initial Analytics row; future rows may use their own source dates or ranges | `ACTIVE_METADATA_ONLY` | 1 | `NOT_REVIEWED` | No | No | Metadata-only first developer-log-like batch. The listed Analytics Engine row remains unreviewed, non-ingested, not current truth, and governed by the source register and existing review controls. |
 
-## 4. Batch Status Definitions
+## 4. Registration Navigation Versus Review Control
+
+This batch register index is a registration/navigation surface. It helps Minerva and developers discover which batch registers exist, how many metadata rows they contain, and the batch-level governance boundary.
+
+`docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE.md` is the review-control surface. It records which registered historical sources are eligible for future deep review, which are blocked, and why.
+
+Listing a batch here does not place a source into review. Queueing a source in the review queue does not ingest source content, make the source current truth, or permit answer use.
+
+## 5. Batch Status Definitions
 
 | Batch status | Meaning |
 | --- | --- |
@@ -37,7 +45,7 @@ Ingestion permitted defaults to No for every listed batch unless a separate expl
 | `CLOSED_SUPERSEDED` | Batch register is closed because another register or control artefact supersedes it. Historical trace remains. |
 | `CLOSED_MIGRATED` | Batch register is closed because its metadata has migrated to a newer governed register or index. Historical trace remains. |
 
-## 5. Source Family Coverage
+## 6. Source Family Coverage
 
 Planned future batch families include:
 
@@ -51,7 +59,7 @@ Planned future batch families include:
 
 Each family still requires register-driven source classification. Batch family labels, source folders, and filenames are discovery aids only.
 
-## 6. Discovery Rules
+## 7. Discovery Rules
 
 Minerva and Codex should use this index to find historical batch registers before proposing historical review, backfill, or ingestion work.
 
@@ -61,7 +69,7 @@ Batch register paths, source family labels, source folders, original filenames, 
 
 Future batch registers must be added to this index with batch status, row count, review status, ingestion permission, corpus mutation status, and notes before they are used by a backfill workflow.
 
-## 7. Review and Ingestion Boundaries
+## 8. Review and Ingestion Boundaries
 
 Listing a batch does not ingest source content.
 
@@ -77,7 +85,7 @@ This index does not perform or approve review approval, governed ingestion, hist
 
 For audit searchability: no corpus mutation, no ingestion, no Code Evidence integration, no live LLM, no runtime change, no baseline promotion, no ledger promotion, no review approval, no governed ingestion, no historical ingestion, no recapture, no benchmark execution, no corpus coverage execution, no answer-gap execution, and no generated artefact changes occur in this slice.
 
-## 8. Non-Goals
+## 9. Non-Goals
 
 This slice does not:
 
@@ -111,7 +119,7 @@ This slice does not:
 - perform ledger promotion
 - create generated artefacts
 
-## 9. Future Batch Workflow
+## 10. Future Batch Workflow
 
 Future batch-register creation or population requires a separate explicit slice.
 

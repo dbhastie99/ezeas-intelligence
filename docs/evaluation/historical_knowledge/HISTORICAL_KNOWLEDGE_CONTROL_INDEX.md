@@ -27,6 +27,9 @@ Use these durable controls together:
 | Historical batch registration and triage model | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md` |
 | Historical batch register template | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md` |
 | Historical batch triage process | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md` |
+| Historical batch review queue | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE.md` |
+| Historical batch review readiness rules | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_READINESS_RULES.md` |
+| Historical batch review queue entry template | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.md` |
 | Historical developer-log batch intake guidance | `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md` |
 | Historical developer-log batch register | `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
@@ -78,6 +81,8 @@ Most historical sources should first be batch-registered and triaged using `docs
 The historical batch register index is discovery/governance metadata only. Listing a batch does not ingest source content, does not make sources current truth, does not mutate corpus, and does not permit governed ingestion. Minerva must not treat batch-listed sources as current truth unless later reviewed/backfilled/governed.
 
 The first developer-log batch register is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It contains the first controlled metadata-only batch row for the already registered Analytics Engine developer log. It does not ingest, parse, extract, review, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, promote ledger state, change review status, permit governed ingestion, or permit Minerva to treat batch-registered sources as current truth.
+
+The historical batch review queue is `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE.md`. It is the review-control surface after metadata-only registration and triage. The review readiness rules are `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_READINESS_RULES.md`, and the reusable queue entry template is `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.md`. These artefacts record queue state and blockers only; they do not ingest source content, review source content, promote current truth, or permit answer use.
 
 Developer-log batch intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`. That guidance states that adding a file to a registered folder is not ingestion, adding a batch row is metadata registration only, original filename is metadata only, register entries drive classification rather than filenames, ingestion permitted defaults to No, review status defaults to `NOT_REVIEWED`, implementation-state classification defaults to `UNCERTAIN_REQUIRES_REVIEW` unless strong evidence exists, ordinary logs can remain batch-registered until needed, and Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed.
 

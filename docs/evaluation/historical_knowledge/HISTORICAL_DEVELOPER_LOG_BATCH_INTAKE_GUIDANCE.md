@@ -24,6 +24,8 @@ Ordinary logs can remain batch-registered until needed. Full review chain is req
 
 Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed.
 
+Developer-log batches should be added to the historical batch review queue only after metadata registration is complete. Queueing a source records review-readiness control state or blockers; it does not authorise ingestion, current-truth use, or Minerva answer use.
+
 ## 3. Intake Inputs
 
 Operators may use metadata available from controlled placement context, source register context, batch planning notes, repository context, date ranges, and stable source labels.
@@ -149,6 +151,8 @@ Escalate to full review-readiness, decision-gate, code/test/schema cross-check, 
 - Source covers high-risk payroll/source-truth/tax/imports/reconciliation/deduction/leave/worker-story/analytics/award-configurator/finalised-correction domains.
 
 Full review chain is required only for high-value/high-risk sources. Batch registration remains acceptable for ordinary logs until a later controlled slice needs them.
+
+After metadata registration is complete, use `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE.md` and `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_READINESS_RULES.md` to decide whether a developer-log source is blocked, triaged but not ready, or ready for a future deep review. Queueing does not authorise ingestion or current-truth use.
 
 ## 13. Quality Checks Before Commit
 

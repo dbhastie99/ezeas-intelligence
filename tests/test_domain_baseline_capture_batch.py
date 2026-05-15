@@ -262,6 +262,15 @@ HISTORICAL_BATCH_REGISTER_TEMPLATE = (
 HISTORICAL_BATCH_TRIAGE_PROCESS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_TRIAGE_PROCESS.md"
 )
+HISTORICAL_BATCH_REVIEW_QUEUE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REVIEW_QUEUE.md"
+)
+HISTORICAL_BATCH_REVIEW_READINESS_RULES = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REVIEW_READINESS_RULES.md"
+)
+HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -414,6 +423,9 @@ HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT = Path(
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_developer_log_batch_intake_guidance_v0_1.md"
 )
+HISTORICAL_BATCH_REVIEW_QUEUE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_batch_review_queue_v0_1.md"
+)
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
     / "developer_logs"
@@ -450,12 +462,123 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REGISTER_INDEX.exists()
     assert HISTORICAL_BATCH_REGISTER_TEMPLATE.exists()
     assert HISTORICAL_BATCH_TRIAGE_PROCESS.exists()
+    assert HISTORICAL_BATCH_REVIEW_QUEUE.exists()
+    assert HISTORICAL_BATCH_REVIEW_READINESS_RULES.exists()
+    assert HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.exists()
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
     assert HISTORICAL_BATCH_REGISTER_INDEX_PROMPT.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE_PROMPT.exists()
+    assert HISTORICAL_BATCH_REVIEW_QUEUE_PROMPT.exists()
+
+
+def test_historical_batch_review_queue_defines_status_model_and_analytics_entry():
+    queue = _read(HISTORICAL_BATCH_REVIEW_QUEUE)
+
+    for status in (
+        "REGISTERED_NOT_TRIAGED",
+        "TRIAGED_NOT_READY_FOR_REVIEW",
+        "READY_FOR_DEEP_REVIEW",
+        "REVIEW_IN_PROGRESS",
+        "REVIEW_COMPLETE_NOT_INGESTED",
+        "BLOCKED_NEEDS_SOURCE_FILES",
+        "BLOCKED_NEEDS_REPOSITORY_CROSS_CHECK",
+        "BLOCKED_SUPERSEDED_OR_DUPLICATE",
+        "DO_NOT_REVIEW_ARCHIVAL_ONLY",
+    ):
+        assert status in queue
+
+    for required_text in (
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "HIST-DEVLOG-BATCH-2026-05-15",
+        "Existing batch-registered Analytics Engine developer log remains historical, `NOT_REVIEWED`, not current truth, not ingested, and not answerable",
+        "The current Analytics Engine developer log queue entry remains not current truth",
+        "Ingestion remains `No` for all queue entries",
+        "does not permit answer use until a separate governed ingestion/backfill decision exists",
+        "Queueing this source only records future review control state",
+    ):
+        assert required_text in queue
+
+    row = next(
+        line
+        for line in queue.splitlines()
+        if line.startswith("| HBQ-2026-05-16-001 |")
+    )
+    assert "| No | No |" in row
+    assert "`TRIAGED_NOT_READY_FOR_REVIEW`" in row
+
+
+def test_historical_batch_review_readiness_rules_require_control_metadata():
+    rules = _read(HISTORICAL_BATCH_REVIEW_READINESS_RULES)
+
+    for rule in (
+        "SOURCE_ID_EXISTS",
+        "SOURCE_LOCATION_OR_ATTACHMENT_REFERENCE_EXISTS",
+        "SOURCE_TYPE_IDENTIFIED",
+        "REPOSITORY_DOMAIN_RELEVANCE_IDENTIFIED",
+        "DATE_OR_APPROXIMATE_DATE_RECORDED",
+        "CURRENT_TRUTH_RISK_ASSESSED",
+        "DUPLICATE_SUPERSESSION_RISK_ASSESSED",
+        "CROSS_CHECK_REPOSITORIES_IDENTIFIED",
+        "EXPECTED_REVIEW_OUTPUTS_IDENTIFIED",
+        "INGESTION_REMAINS_NO_BEFORE_REVIEW",
+        "ANSWERABILITY_REMAINS_NO_BEFORE_REVIEW",
+    ):
+        assert rule in rules
+
+    for required_text in (
+        "A stable source id exists",
+        "source location or attachment reference exists",
+        "source type is identified",
+        "Repository relevance and domain relevance are identified",
+        "source date, date range, or approximate controlled date is recorded",
+        "current truth is assessed",
+        "Duplicate and supersession risk is assessed",
+        "Required cross-check repositories",
+        "Expected review outputs are identified",
+        "Ingestion remains `No` before review",
+        "Answerability remains `No` before review",
+        "`READY_FOR_DEEP_REVIEW` does not mean ingested",
+        "`READY_FOR_DEEP_REVIEW` does not mean current truth",
+        "`READY_FOR_DEEP_REVIEW` does not mean Minerva may answer from it",
+        "`REVIEW_COMPLETE_NOT_INGESTED` still does not permit answer use until a separate governed ingestion/backfill decision exists",
+    ):
+        assert required_text in rules
+
+
+def test_historical_batch_review_queue_entry_template_includes_required_fields():
+    template = _read(HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE)
+
+    for field in (
+        "QueueEntryId",
+        "SourceId",
+        "SourceTitle",
+        "SourceType",
+        "SourceDate",
+        "RegisteredBatchId",
+        "RepositoryContext",
+        "DomainContext",
+        "QueueStatus",
+        "ReviewPriority",
+        "CurrentTruthRisk",
+        "IngestionPermitted",
+        "AnswerUsePermitted",
+        "RequiredCrossChecks",
+        "RequiredReviewOutputs",
+        "Blockers",
+        "Notes",
+        "LastReviewedUtc",
+        "Reviewer",
+        "DecisionRecordLink",
+    ):
+        assert f"| {field} |" in template
+
+    assert "| IngestionPermitted | No |" in template
+    assert "| AnswerUsePermitted | No |" in template
+    assert "historical source remains not current truth" in template
 
 
 def test_historical_batch_registration_model_controls_default_path_and_truth_boundary():
@@ -471,6 +594,8 @@ def test_historical_batch_registration_model_controls_default_path_and_truth_bou
     assert "`Ingestion permitted` defaults to `No`" in model
     assert "Only high-value/high-risk sources graduate to the full review-readiness / decision-gate / cross-check path" in model
     assert "Minerva must not treat batch-registered sources as current truth unless those sources are later reviewed, backfilled, and governed" in model
+    assert "the next governed stage is the historical batch review queue" in model
+    assert "Queueing a source does not ingest source content, does not make the source current truth, and does not permit answer use" in model
 
 
 def test_historical_batch_register_index_controls_discovery_and_existing_batch():
@@ -523,6 +648,8 @@ def test_historical_batch_register_index_controls_discovery_and_existing_batch()
 
     for required_text in (
         "The batch register index is discovery/governance metadata only",
+        "This batch register index is a registration/navigation surface",
+        "HISTORICAL_BATCH_REVIEW_QUEUE.md` is the review-control surface",
         "Listing a batch does not ingest source content",
         "Listing a batch does not make sources current truth",
         "Ingestion permitted defaults to No",
@@ -540,6 +667,9 @@ def test_historical_batch_register_index_preserves_no_mutation_boundaries():
             HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
             HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL,
             HISTORICAL_BATCH_REGISTER_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_QUEUE,
+            HISTORICAL_BATCH_REVIEW_READINESS_RULES,
+            HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE,
             HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE,
             HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER,
         )
@@ -640,6 +770,9 @@ def test_historical_batch_controls_are_referenced_by_existing_process_docs():
 
     assert "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md" in control_index
     assert "HISTORICAL_BATCH_TRIAGE_PROCESS.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_QUEUE.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_READINESS_RULES.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.md" in control_index
     assert "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md" in control_index
     assert "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md" in backfill_process
     assert "HISTORICAL_BATCH_TRIAGE_PROCESS.md" in backfill_process
@@ -704,6 +837,9 @@ def test_historical_developer_log_batch_intake_guidance_controls_defaults_and_sc
     assert "Source contains conflicting claims" in guidance
     assert "payroll/source-truth/tax/imports/reconciliation/deduction/leave/worker-story/analytics/award-configurator/finalised-correction domains" in guidance
     assert "Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed" in guidance
+    assert "Developer-log batches should be added to the historical batch review queue only after metadata registration is complete" in guidance
+    assert "Queueing a source records review-readiness control state or blockers; it does not authorise ingestion, current-truth use, or Minerva answer use" in guidance
+    assert "Queueing does not authorise ingestion or current-truth use" in guidance
 
     assert "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md" in control_index
     assert "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md" in batch_register
@@ -744,6 +880,9 @@ def test_historical_batch_controls_preserve_non_ingestion_boundaries():
             HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL,
             HISTORICAL_BATCH_REGISTER_TEMPLATE,
             HISTORICAL_BATCH_TRIAGE_PROCESS,
+            HISTORICAL_BATCH_REVIEW_QUEUE,
+            HISTORICAL_BATCH_REVIEW_READINESS_RULES,
+            HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE,
         )
     )
 
@@ -771,6 +910,7 @@ def test_historical_developer_log_batch_register_placeholder_controls():
     assert "HIST-DEVLOG-BATCH-2026-05-15" in batch_register
     assert "`FIRST_CONTROLLED_METADATA_ROW`" in batch_register
     assert "`NOT_REVIEWED`" in batch_register
+    assert "| Review queue status | `TRIAGED_NOT_READY_FOR_REVIEW` in `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE.md` |" in batch_register
     assert "| Ingestion permitted | No |" in batch_register
 
     for column in (
@@ -826,6 +966,8 @@ def test_historical_developer_log_batch_register_placeholder_controls():
     assert "The Analytics Engine source remains the prototype/deep-review path, not the default for all logs" in batch_register
     assert "No historical source content is ingested, parsed, or extracted" in batch_register
     assert "Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed" in batch_register
+    assert "The corresponding review queue entry records queue-control status only" in batch_register
+    assert "does not promote the source to current truth, does not permit ingestion, and does not permit answer use" in batch_register
 
     assert "HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md" in control_index
     assert "HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md" in model
@@ -866,6 +1008,8 @@ def test_historical_developer_log_batch_register_records_first_analytics_row():
         "No historical source content is ingested, parsed, or extracted",
         "The batch row does not permit Minerva current-truth answering",
         "The batch row does not permit governed ingestion",
+        "The corresponding review queue entry records queue-control status only",
+        "does not promote the source to current truth, does not permit ingestion, and does not permit answer use",
         "Ordinary developer logs can later be added in batches without requiring the full deep-review chain unless triage escalates them",
         "The Analytics source is already escalated to the full deep-review chain",
         "The batch row does not change review status",
@@ -880,6 +1024,70 @@ def test_historical_developer_log_batch_register_records_first_analytics_row():
     )
     assert "`NOT_REVIEWED`" in source_register_row
     assert "| No |" in source_register_row
+
+
+def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
+    changed = subprocess.run(
+        ["git", "diff", "--name-only", "HEAD"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [line.strip() for line in changed.stdout.splitlines() if line.strip()]
+
+    for changed_file in changed_files:
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+        assert "migrations" not in changed_file.lower()
+        assert "endpoint" not in changed_file.lower()
+        normalized = changed_file.lower().replace("\\", "/")
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+
+    for changed_file in changed_files:
+        if changed_file.endswith(".py"):
+            assert changed_file == "tests/test_domain_baseline_capture_batch.py"
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_BATCH_REVIEW_QUEUE,
+            HISTORICAL_BATCH_REVIEW_READINESS_RULES,
+            HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE,
+            HISTORICAL_BATCH_REGISTER_INDEX,
+            HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL,
+            HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE,
+            HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+        )
+    )
+
+    for prohibited_change in (
+        "does not ingest source content",
+        "does not mutate corpus",
+        "does not connect Code Evidence",
+        "does not call live LLM",
+        "does not implement DB writes",
+        "schema migrations",
+        "endpoint changes",
+        "UI changes",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+        "does not make the source current truth",
+        "does not permit answer use",
+    ):
+        assert prohibited_change in combined
 
 
 def test_batch_baseline_packs_exist_with_required_files():

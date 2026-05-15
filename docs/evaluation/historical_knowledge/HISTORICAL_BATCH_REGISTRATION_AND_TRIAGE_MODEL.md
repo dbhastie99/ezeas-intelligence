@@ -12,11 +12,13 @@ The full Analytics Engine chain is the prototype/deep-review path, not the defau
 
 The full deep-review path remains appropriate for high-value or high-risk sources. Most historical sources should first be batch-registered and triaged.
 
-The first developer-log batch register placeholder is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It is empty, metadata-only, and intended for future batch registration of developer logs, hardening logs, platform doctrine, and mixed log-doctrine sources.
+The first developer-log batch register is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It is metadata-only and intended for controlled batch registration of developer logs, hardening logs, platform doctrine, and mixed log-doctrine sources.
 
 The master batch register index is `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md`. It is discovery/governance metadata only; listing a batch does not ingest source content and does not make sources current truth.
 
 Developer-log-like batch intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`.
+
+After metadata-only registration and triage, the next governed stage is the historical batch review queue at `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE.md`. The queue records review readiness or blockers only. Queueing a source does not ingest source content, does not make the source current truth, and does not permit answer use.
 
 ## 2. Batch Registration Principle
 
@@ -63,6 +65,8 @@ Ordinary developer logs, hardening notes, doctrine files, chats, continuance pro
 
 Many sources can be grouped by domain/date range rather than creating separate deep-review artefacts for every file. A grouped batch can preserve source-level metadata while deferring individual deep-review artefacts until a source becomes high-value, high-risk, disputed, or needed for governed backfill.
 
+The review queue is the governed handoff between batch registration/triage and any future deep review. A source must satisfy `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_READINESS_RULES.md` before it can be marked `READY_FOR_DEEP_REVIEW`.
+
 ## 6. Boundaries
 
 Batch registration does not ingest source content.
@@ -86,6 +90,9 @@ Batch registration does not implement DB writes, migrations, endpoint changes, U
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_READINESS_RULES.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`
 - `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md`
