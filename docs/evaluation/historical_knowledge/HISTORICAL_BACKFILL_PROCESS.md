@@ -16,7 +16,7 @@ Registration validation is governed by `docs/evaluation/historical_knowledge/HIS
 
 The registered source folder root is `docs/evaluation/historical_knowledge/registered_sources/`. Placing a file under that root does not register, review, ingest, or promote the source; a source-register entry is still required.
 
-Review readiness is governed by `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` and recorded with `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`. Review readiness is required before creating a historical backfill evidence pack.
+Review readiness is governed by `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` and recorded with `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`. Filled review-readiness records are stored under `docs/evaluation/historical_knowledge/review_readiness_records/`. Review readiness is required before creating a historical backfill evidence pack.
 
 ## 2. Implementation-State Classifications
 
@@ -103,4 +103,4 @@ This slice does not ingest any historical documents, does not parse actual devel
 
 This process does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does not mark any domain `BASELINE_ALREADY_EXISTS`.
 
-This review-readiness slice creates templates/process only and does not review, ingest, parse, or consume any historical source. The Analytics Engine developer log remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice.
+The Analytics Engine review-readiness record at `docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md` is a control record only and does not review, ingest, parse, or consume any historical source. The Analytics Engine developer log remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice.

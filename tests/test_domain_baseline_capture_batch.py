@@ -256,6 +256,11 @@ HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE = (
 HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md"
 )
+HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "review_readiness_records"
+    / "HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md"
+)
 HISTORICAL_REGISTERED_SOURCES_ROOT = (
     HISTORICAL_KNOWLEDGE_ROOT / "registered_sources"
 )
@@ -315,6 +320,9 @@ HISTORICAL_ANALYTICS_LOG_REGISTER_PLACEMENT_PROMPT = Path(
 )
 HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_source_review_readiness_template_v0_1.md"
+)
+HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_analytics_source_review_readiness_record_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -2827,6 +2835,80 @@ def test_historical_source_review_readiness_process_records_required_rules():
         assert required_text in process
 
 
+def test_historical_analytics_review_readiness_record_is_filled_and_bounded():
+    assert HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD.exists()
+
+    record = _read(HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+    record_path = (
+        "docs/evaluation/historical_knowledge/review_readiness_records/"
+        "HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md"
+    )
+
+    for required_text in (
+        "This is a review-readiness record only",
+        "`HIST-ANALYTICS-2025-12-06-20`",
+        "Developer Log - Analytics Engine",
+        "Developer Log - Analytics Engine (5).docx",
+        "`DEVELOPER_LOG` - developer-authored historical analytics working material requiring review and implementation-state confirmation",
+        "Tier 2",
+        "docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md",
+        "Analytics; Workforce Analytics DB; Golden Slice; ObjectTime; ProcessedRule; CalcInterpreterLine Replatform Review; Power BI; Reconciliation Reporting",
+        "6 December 2025 to 20 December 2025",
+        "Historical analytics server / workforce analytics context",
+        "unknown",
+        "`HISTORICAL_SOURCE_REGISTER.md`; `HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md`",
+        "not assigned",
+        "not recorded",
+        "Review status before review | `NOT_REVIEWED`",
+        "Target review status | `NOT_REVIEWED`",
+        "`UNCERTAIN_REQUIRES_REVIEW` - current implementation state requires code confirmation and is not fully current",
+        "Target implementation-state classification | not changed",
+        "ProcessedRule-era analytics partially superseded by CalcInterpreterLine model",
+        "Medium/high for historical rationale; requires code confirmation for current implementation",
+        "Ingestion permitted before review | No",
+        "Target ingestion permitted | No",
+        "Metadata-level summary only",
+        "Candidate decisions extracted | not extracted in this slice",
+        "Candidate doctrine extracted | not extracted in this slice",
+        "Candidate backlog items extracted | not extracted in this slice",
+        "Candidate implemented-state claims | not extracted in this slice",
+        "Code/test/commit cross-check required | Yes",
+        "Code/test/commit cross-check result | not performed",
+        "suspected due to CalcInterpreterLine replatform, not reviewed",
+        "Current truth classification | not current final truth",
+        "Minerva must not answer from this source as current truth until reviewed/backfilled/governed.",
+        "future analytics replatform planning pack candidate",
+        "Reviewer rationale | not reviewed",
+        "The source has not been reviewed.",
+        "The full historical source has not been ingested.",
+        "No source content was parsed or extracted in this slice.",
+        "This source remains historical source material, not current final truth.",
+        "`ProcessedRule`-era analytics requires review before being used as current truth.",
+        "`CalcInterpreterLine` is the current target calculation fact source.",
+        "Future review must cross-check this source against current code, tests, schema, view definitions, commits, and analytics architecture docs.",
+    ):
+        assert required_text in record
+
+    assert record_path in source_register
+    assert record_path in control_index
+    assert record_path in backfill_process
+
+    combined = "\n".join((record, source_register, control_index, backfill_process))
+    for required_text in (
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM call",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no historical ingestion",
+    ):
+        assert required_text in combined
+
+
 def test_historical_source_review_readiness_lists_controlled_values():
     combined = "\n".join(
         _read(path)
@@ -3554,6 +3636,48 @@ def test_historical_source_review_readiness_template_prompt_is_preserved():
         "does not promote baselines",
         "does not change ledger counts",
         "ledger promotion",
+        "git diff --check",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_analytics_review_readiness_record_prompt_is_preserved():
+    assert HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Historical Analytics Source Review Readiness Record v0.1",
+        "Mode: Documentation/control-record creation only",
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "Developer Log - Analytics Engine (5).docx",
+        "docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md",
+        "Tier 2",
+        "`NOT_REVIEWED`",
+        "Ingestion permitted before review: No",
+        "Code/test/commit cross-check required: Yes",
+        "Code/test/commit cross-check result: not performed",
+        "The full historical source has not been ingested",
+        "No source content was parsed or extracted",
+        "`ProcessedRule`-era analytics requires review",
+        "`CalcInterpreterLine` is the current target calculation fact source",
+        "Minerva must not answer from this source as current truth until reviewed/backfilled/governed",
+        "Do not ingest the full developer log",
+        "Do not parse or extract source content",
+        "Do not review the Analytics Engine source yet",
+        "Do not mutate corpus",
+        "Code Evidence integration",
+        "live LLM calls",
+        "runtime changes",
+        "review approval",
+        "governed ingestion",
+        "historical ingestion",
+        "recapture",
+        "benchmark execution",
+        "corpus coverage execution",
+        "answer-gap execution",
+        "ledger update",
         "git diff --check",
     ):
         assert required_text in prompt

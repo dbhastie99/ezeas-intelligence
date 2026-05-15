@@ -26,6 +26,7 @@ Use these durable controls together:
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
 | Historical source review-readiness template | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md` |
 | Historical source review-readiness process | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` |
+| First analytics review-readiness record | `docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md` |
 | First analytics inventory batch | `docs/evaluation/historical_knowledge/inventory_batches/HISTORICAL_SOURCE_INVENTORY_BATCH_2026_05_15_ANALYTICS.md` |
 
 ## 3. Source Authority Summary
@@ -91,7 +92,7 @@ The first inventory/registering batch is recorded at `docs/evaluation/historical
 
 The first analytics registered-source placement placeholder exists at `docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md`. Folder placement alone is not ingestion; the register entry controls classification; the original filename is metadata only; and the full historical document has not been ingested.
 
-The Analytics Engine developer log remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice completes review readiness. This slice creates review-readiness templates/process only and does not review, ingest, parse, or consume that source.
+The Analytics Engine developer log remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice completes source review. The first filled review-readiness record is `docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md`; it is a review-readiness record only and does not review, ingest, parse, or consume that source.
 
 This slice does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does not mark any domain `BASELINE_ALREADY_EXISTS`.
 
