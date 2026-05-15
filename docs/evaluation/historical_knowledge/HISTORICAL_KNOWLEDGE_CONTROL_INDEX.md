@@ -19,6 +19,7 @@ Use these durable controls together:
 | Historical knowledge control index | `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md` |
 | Historical knowledge gap register | `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md` |
 | Historical source tiering model | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md` |
+| Historical register-driven source classification | `docs/evaluation/historical_knowledge/HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
 
 ## 3. Source Authority Summary
@@ -35,13 +36,23 @@ Developer logs and doctrine documents are valuable but may include planned, part
 
 Code/tests must be used to confirm implemented behaviour, but code alone may not explain why.
 
-## 4. Backfill Scope
+## 4. Register-Driven Source Classification
+
+Source classification is register-driven, not filename-driven.
+
+Registered folders and source-register entries are the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
+
+The register assigns source class and starting reliability tier. A registered source does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking against code/tests/commits/logs/doctrine where relevant have been completed.
+
+A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCTRINE`, `MIXED_LOG_DOCTRINE`, `CHAT_OR_CONTINUANCE`, `CODE_EVIDENCE`, `TEST_EVIDENCE`, `PROMPT_FILE`, `BASELINE_PACK`, `AWARD_BUILD_CONTROL`, or `OTHER_REQUIRES_REVIEW` even if the filename does not contain those exact words.
+
+## 5. Backfill Scope
 
 Historical backfill must be domain-scoped. A future slice must identify source material, register provenance, classify source tier, extract candidate decisions, cross-check evidence, classify implementation state, create a curated backfill evidence pack, add a review gate, and only later consider governed ingestion.
 
 This index does not grant permission for ingestion or promotion.
 
-## 5. Initial Priority Domains
+## 6. Initial Priority Domains
 
 Future historical backfill should start with these priority domains:
 
@@ -58,23 +69,25 @@ Future historical backfill should start with these priority domains:
 
 Tax / PAYG and Imports / Actuals remain governed by the formal evidence control model and remain `BASELINE_REQUIRED` and `NOT_REVIEWED` until their separate formal review path changes.
 
-## 6. Current Permission State
+## 7. Current Permission State
 
 This slice does not consume historical chats, does not ingest developer logs, does not ingest doctrine documents, does not ingest code, does not mutate corpus, does not run live LLM, does not connect Code Evidence, does not change runtime behaviour, does not promote baselines, and does not change ledger counts.
 
 This slice does not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, or generated artefact creation.
 
+This slice does not ingest any historical documents, does not parse actual developer logs, does not parse doctrine documents, does not parse chats, does not connect Code Evidence, does not promote baselines, and does not perform ledger promotion.
+
 This slice does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does not mark any domain `BASELINE_ALREADY_EXISTS`.
 
-## 7. How Minerva Should Use This Index
+## 8. How Minerva Should Use This Index
 
 Minerva should use this index as the starting point for historical knowledge control state.
 
 Minerva must preserve that pre-control-model historical knowledge is incomplete and unapproved. Minerva must not treat historical chats, continuance prompts, developer logs, hardening logs, doctrine, code, tests, or commits as governed historical corpus merely because they exist.
 
-## 8. How Codex Should Use This Index
+## 9. How Codex Should Use This Index
 
-Future Codex slices must read this index, the gap register, the source tiering model, and the backfill process before creating any historical backfill evidence pack or proposing historical ingestion.
+Future Codex slices must read this index, the gap register, the source tiering model, the register-driven source classification model, and the backfill process before creating any historical backfill evidence pack or proposing historical ingestion.
 
 Any future historical ingestion, governed ingestion, review approval, recapture, promotion, ledger update, runtime change, endpoint change, UI change, Code Evidence connection, live LLM call, DB write, migration, benchmark execution, corpus coverage execution, answer-gap execution, or generated artefact creation requires a separate explicit slice.
 

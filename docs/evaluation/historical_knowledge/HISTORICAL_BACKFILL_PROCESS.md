@@ -10,6 +10,8 @@ This process defines the domain-scoped historical knowledge backfill workflow fo
 
 Pre-control-model historical knowledge is incomplete and not yet captured to the same durable standard as the new formal-evidence model.
 
+Source classification is register-driven, not filename-driven. Registered folders and source-register entries are the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
+
 ## 2. Implementation-State Classifications
 
 Use exactly one current classification for each candidate decision unless the review gate records why multiple states apply:
@@ -24,10 +26,35 @@ Use exactly one current classification for each candidate decision unless the re
 | `SUPERSEDED` | Later source material, code, tests, commits, or doctrine replace the candidate decision. |
 | `UNCERTAIN_REQUIRES_REVIEW` | Evidence conflicts, provenance is insufficient, or implementation state cannot be classified without further review. |
 
-## 3. Domain-Scoped Backfill Workflow
+## 3. Register Fields
+
+The register assigns source class and starting reliability tier. A registered source does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking have been completed.
+
+Required register fields are:
+
+- Source title
+- Original filename
+- Source folder
+- Registered source type
+- Source tier
+- Domain tags
+- Date or date range
+- Repository context
+- Related commits if known
+- Related control artefacts
+- Implementation-state classification
+- Review status
+- Ingestion permitted
+- Supersession status
+- Evidence confidence
+- Notes
+
+A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCTRINE`, `MIXED_LOG_DOCTRINE`, `CHAT_OR_CONTINUANCE`, `CODE_EVIDENCE`, `TEST_EVIDENCE`, `PROMPT_FILE`, `BASELINE_PACK`, `AWARD_BUILD_CONTROL`, or `OTHER_REQUIRES_REVIEW` even if the filename does not contain those exact words.
+
+## 4. Domain-Scoped Backfill Workflow
 
 1. Identify historical source material for one domain.
-2. Register source provenance, including file path, date where available, author/reviewer where available, and source type.
+2. Register source provenance, including original filename as metadata, source folder, date where available, author/reviewer where available, registered source type, and source tier.
 3. Classify source tier using `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md`.
 4. Extract candidate decisions without treating them as final truth.
 5. Cross-check against code/tests/logs/doctrine/commits.
@@ -36,13 +63,13 @@ Use exactly one current classification for each candidate decision unless the re
 8. Add a review gate that records reviewer, date, rationale, unresolved conflicts, and approval/blocked status.
 9. Only later consider governed ingestion in a separate explicit slice.
 
-## 4. Historical Chat Handling
+## 5. Historical Chat Handling
 
 Historical chats and continuance prompts are raw source material, not final truth.
 
 Historical chats must not be ingested directly as truth. They must be cross-checked against logs, doctrine, code, tests, and commits before any candidate decision can be classified.
 
-## 5. Priority Domains
+## 6. Priority Domains
 
 Future historical backfill should prioritize:
 
@@ -59,10 +86,12 @@ Future historical backfill should prioritize:
 
 Tax / PAYG and Imports / Actuals remain governed by the formal evidence control model and remain `BASELINE_REQUIRED` and `NOT_REVIEWED` until their separate formal review path changes.
 
-## 6. Slice Boundaries
+## 7. Slice Boundaries
 
 This slice does not consume historical chats, does not ingest developer logs, does not ingest doctrine documents, does not ingest code, does not mutate corpus, does not run live LLM, does not connect Code Evidence, does not change runtime behaviour, does not promote baselines, and does not change ledger counts.
 
 This slice does not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, or generated artefact creation.
+
+This slice does not ingest any historical documents, does not parse actual developer logs, does not parse doctrine documents, does not parse chats, does not connect Code Evidence, does not promote baselines, and does not perform ledger promotion.
 
 This process does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does not mark any domain `BASELINE_ALREADY_EXISTS`.

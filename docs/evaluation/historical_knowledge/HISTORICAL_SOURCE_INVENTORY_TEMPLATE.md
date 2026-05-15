@@ -8,6 +8,8 @@ Date: 15 May 2026
 
 This template defines the safe inventory fields for historical source documents before any future domain-scoped historical backfill review.
 
+Source classification is register-driven, not filename-driven. Registered folders and source-register entries are the durable discovery mechanism. Original filename is metadata and may be a hint only. Hardcoded individual document names must not be used as the primary source classification mechanism.
+
 Inventory alone does not mutate corpus, does not ingest sources, does not connect Code Evidence, does not run live LLM, does not change runtime behaviour, does not promote baselines, and does not change ledger counts.
 
 This template must not be filled with historical material until a separate explicit slice permits source inventory work.
@@ -46,29 +48,33 @@ Use exactly one current implementation-state classification unless a later revie
 | Field | Required handling |
 | --- | --- |
 | Source title | Record the document title or stable source identifier. |
-| Source type | Record code, test, commit, developer log, hardening log, doctrine, chat, continuance prompt, or other controlled source type. |
-| Source tier | Record Tier 1, Tier 2, or Tier 3 under `HISTORICAL_SOURCE_TIERING_MODEL.md`. |
+| Original filename | Record the original filename as metadata only; it may be a hint but must not drive classification. |
+| Source folder | Record the registered source folder used for durable discovery. |
+| Registered source type | Record `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCTRINE`, `MIXED_LOG_DOCTRINE`, `CHAT_OR_CONTINUANCE`, `CODE_EVIDENCE`, `TEST_EVIDENCE`, `PROMPT_FILE`, `BASELINE_PACK`, `AWARD_BUILD_CONTROL`, or `OTHER_REQUIRES_REVIEW`. |
+| Source tier | Record the starting reliability tier assigned by the register and `HISTORICAL_SOURCE_TIERING_MODEL.md`. |
+| Domain tags | Record controlled domain tags relevant to the source. |
 | Date or date range | Record the source date, commit date, prompt date, log date, or best-known range. |
-| Repository/domain | Record repository, product area, and domain if known. |
+| Repository context | Record repository, product area, branch/context, and domain if known. |
 | Related commits if known | Record commit hashes or leave `unknown`; do not infer implementation from commit references alone. |
-| Related developer log or doctrine reference | Record known linked log/doctrine references or leave `unknown`. |
+| Related control artefacts | Record linked prompts, control documents, review gates, inventories, doctrine, logs, or leave `unknown`. |
 | Implementation-state classification | Use one of the classifications in this template. |
+| Review status | Record review status. A registered source can remain `NOT_REVIEWED` and must not be relied on as platform truth. |
+| Ingestion permitted | Record `No`; inventory does not permit ingestion. |
+| Supersession status | Record current, superseded, partially superseded, or unknown with reason. |
 | Evidence confidence | Record high, medium, low, or unknown with reason. |
-| Supersession risk | Record high, medium, low, or unknown with reason. |
-| Backlog/doctrine/runtime distinction | Identify whether the source appears to describe backlog intent, doctrine/rationale, runtime implementation, or uncertain state. |
-| Review required | Always record `yes` unless a future approved review gate says otherwise. |
-| Ingestion permitted | Record `no`; inventory does not permit ingestion. |
 | Notes | Record limited provenance notes only, not extracted historical claims. |
 
 ## 6. Blank Inventory Table
 
-| Source title | Source type | Source tier | Date or date range | Repository/domain | Related commits if known | Related developer log or doctrine reference | Implementation-state classification | Evidence confidence | Supersession risk | Backlog/doctrine/runtime distinction | Review required | Ingestion permitted | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Source title | Original filename | Source folder | Registered source type | Source tier | Domain tags | Date or date range | Repository context | Related commits if known | Related control artefacts | Implementation-state classification | Review status | Ingestion permitted | Supersession status | Evidence confidence | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 
 ## 7. Boundaries
 
 This template does not consume historical chats, does not ingest developer logs, does not ingest doctrine documents, does not ingest code, does not mutate corpus, does not run live LLM, does not connect Code Evidence, does not change runtime behaviour, does not promote baselines, and does not change ledger counts.
 
 This template does not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, or generated artefact creation.
+
+This template does not ingest any historical documents, does not parse actual developer logs, does not parse doctrine documents, does not parse chats, does not connect Code Evidence, does not promote baselines, and does not perform ledger promotion.
 
 Tax / PAYG and Imports / Actuals remain `BASELINE_REQUIRED` and `NOT_REVIEWED` until their separate formal review path changes.

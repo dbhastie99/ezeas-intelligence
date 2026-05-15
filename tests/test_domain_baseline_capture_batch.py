@@ -238,6 +238,9 @@ HISTORICAL_KNOWLEDGE_GAP_REGISTER = (
 HISTORICAL_SOURCE_TIERING_MODEL = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_TIERING_MODEL.md"
 )
+HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md"
+)
 HISTORICAL_BACKFILL_PROCESS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BACKFILL_PROCESS.md"
 )
@@ -258,6 +261,9 @@ HISTORICAL_CODE_EVIDENCE_INVENTORY_TEMPLATE = (
 )
 HISTORICAL_SOURCE_INVENTORY_TEMPLATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_source_inventory_template_v0_1.md"
+)
+HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_register_driven_source_classification_v0_1.md"
 )
 FORMAL_EVIDENCE_CONTROL_INDEX_README_LINK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_readme_link_v0_1.md"
@@ -2229,6 +2235,7 @@ def test_historical_knowledge_control_files_exist_and_are_linked():
         HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
         HISTORICAL_KNOWLEDGE_GAP_REGISTER,
         HISTORICAL_SOURCE_TIERING_MODEL,
+        HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION,
         HISTORICAL_BACKFILL_PROCESS,
     ):
         assert path.exists()
@@ -2238,9 +2245,83 @@ def test_historical_knowledge_control_files_exist_and_are_linked():
     for referenced_path in (
         "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md",
     ):
         assert referenced_path in index
+
+
+def test_historical_register_driven_source_classification_model_is_defined():
+    classification_model = _read(HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION)
+
+    for required_text in (
+        "source classification is register-driven, not filename-driven",
+        "Registered folders and source-register entries as the durable discovery mechanism",
+        "Individual filenames are metadata and may be hints only",
+        "Hardcoded individual document names must not be used as the primary source classification mechanism",
+        "The register assigns source class and starting reliability tier",
+        "does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking",
+        "Historical chats and continuance prompts are raw historical source material, not final truth",
+        "Developer logs, hardening logs, and platform doctrine are curated decision/rationale sources requiring review",
+        "Code and tests are highest authority for implemented state",
+        "Chats may contain valuable context, but must not be ingested directly as truth",
+    ):
+        assert required_text in classification_model
+
+    for source_type in (
+        "DEVELOPER_LOG",
+        "HARDENING_LOG",
+        "PLATFORM_DOCTRINE",
+        "MIXED_LOG_DOCTRINE",
+        "CHAT_OR_CONTINUANCE",
+        "CODE_EVIDENCE",
+        "TEST_EVIDENCE",
+        "PROMPT_FILE",
+        "BASELINE_PACK",
+        "AWARD_BUILD_CONTROL",
+        "OTHER_REQUIRES_REVIEW",
+    ):
+        assert source_type in classification_model
+
+    for register_field in (
+        "Source title",
+        "Original filename",
+        "Source folder",
+        "Registered source type",
+        "Source tier",
+        "Domain tags",
+        "Date or date range",
+        "Repository context",
+        "Related commits if known",
+        "Related control artefacts",
+        "Implementation-state classification",
+        "Review status",
+        "Ingestion permitted",
+        "Supersession status",
+        "Evidence confidence",
+        "Notes",
+    ):
+        assert register_field in classification_model
+
+    for classification in (
+        "IMPLEMENTED_AND_TESTED",
+        "IMPLEMENTED_NOT_FULLY_TESTED",
+        "DOCUMENTED_DOCTRINE",
+        "DOCUMENTED_BACKLOG",
+        "PLANNED_NOT_IMPLEMENTED",
+        "SUPERSEDED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+    ):
+        assert classification in classification_model
+
+    for example_text in (
+        "`DEVELOPER_LOG`",
+        "`NOT_REVIEWED`",
+        "`UNCERTAIN_REQUIRES_REVIEW`",
+        "Ingestion permitted",
+        "This example is registered, but it is not platform truth",
+    ):
+        assert example_text in classification_model
 
 
 def test_historical_knowledge_gap_register_records_incomplete_pre_control_state():
@@ -2305,6 +2386,7 @@ def test_historical_knowledge_documents_preserve_non_ingestion_boundaries():
             HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
             HISTORICAL_KNOWLEDGE_GAP_REGISTER,
             HISTORICAL_SOURCE_TIERING_MODEL,
+            HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION,
             HISTORICAL_BACKFILL_PROCESS,
         )
     )
@@ -2320,6 +2402,11 @@ def test_historical_knowledge_documents_preserve_non_ingestion_boundaries():
         "does not change runtime behaviour",
         "does not promote baselines",
         "does not change ledger counts",
+        "does not ingest any historical documents",
+        "does not parse actual developer logs",
+        "does not parse doctrine documents",
+        "does not parse chats",
+        "does not perform ledger promotion",
         "does not implement DB writes",
         "does not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, or generated artefact creation",
         "does not mark any domain `REVIEWED_READY_FOR_INGESTION`",
@@ -2378,18 +2465,20 @@ def test_historical_source_inventory_templates_exist_and_reference_controls():
 def test_historical_source_inventory_templates_define_required_fields_and_classifications():
     required_fields = (
         "Source title",
-        "Source type",
+        "Original filename",
+        "Source folder",
+        "Registered source type",
         "Source tier",
+        "Domain tags",
         "Date or date range",
-        "Repository/domain",
+        "Repository context",
         "Related commits if known",
-        "Related developer log or doctrine reference",
+        "Related control artefacts",
         "Implementation-state classification",
-        "Evidence confidence",
-        "Supersession risk",
-        "Backlog/doctrine/runtime distinction",
-        "Review required",
+        "Review status",
         "Ingestion permitted",
+        "Supersession status",
+        "Evidence confidence",
         "Notes",
     )
     classifications = (
@@ -2484,6 +2573,11 @@ def test_historical_source_inventory_templates_preserve_non_mutation_boundaries(
         "answer-gap execution",
         "ledger update",
         "generated artefact creation",
+        "does not ingest any historical documents",
+        "does not parse actual developer logs",
+        "does not parse doctrine documents",
+        "does not parse chats",
+        "does not perform ledger promotion",
     ):
         assert required_text in combined
     assert "remain `BASELINE_REQUIRED` and `NOT_REVIEWED`" in combined
@@ -2837,6 +2931,50 @@ def test_historical_source_inventory_template_prompt_is_preserved():
         "does not change runtime behaviour",
         "does not promote baselines",
         "does not change ledger counts",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_register_driven_source_classification_prompt_is_preserved():
+    assert HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Historical Register-Driven Source Classification v0.1",
+        "Mode: Documentation/control-model hardening only",
+        "source classification is register-driven, not filename-driven",
+        "Registered folders and source-register entries are the durable discovery mechanism",
+        "Individual filenames are metadata and may be hints only",
+        "Hardcoded individual document names must not be used as the primary source classification mechanism",
+        "The register assigns source class and starting reliability tier",
+        "does not become final truth until review status, implementation-state classification",
+        "DEVELOPER_LOG",
+        "MIXED_LOG_DOCTRINE",
+        "OTHER_REQUIRES_REVIEW",
+        "Source title",
+        "Original filename",
+        "Source folder",
+        "Registered source type",
+        "Source tier",
+        "Domain tags",
+        "Repository context",
+        "Related control artefacts",
+        "Review status",
+        "Supersession status",
+        "IMPLEMENTED_AND_TESTED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+        "does not ingest any historical documents",
+        "does not parse actual developer logs",
+        "does not parse doctrine documents",
+        "does not parse chats",
+        "does not mutate corpus",
+        "does not connect Code Evidence",
+        "does not run live LLM",
+        "does not change runtime behaviour",
+        "does not promote baselines",
+        "does not change ledger counts",
+        "git diff --check",
     ):
         assert required_text in prompt
 
