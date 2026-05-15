@@ -1002,6 +1002,156 @@ def test_formal_evidence_review_decision_record_template_records_review_decision
     assert "Tax / PAYG remains `BASELINE_ALREADY_EXISTS`" not in template
 
 
+def test_formal_evidence_review_decision_record_template_has_required_sections():
+    template = _read(FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE)
+
+    for section in (
+        "## 1. Review Decision Record Header",
+        "## 2. Domain and Baseline Status",
+        "## 3. Source Artefacts Reviewed",
+        "## 4. Review Gate Status Before Decision",
+        "## 5. Review Decision",
+        "## 6. Allowed Decision Statuses",
+        "## 7. Doctrine Review Findings",
+        "## 8. Implementation-State Review Findings",
+        "## 9. Evidence-Gap Coverage Findings",
+        "## 10. Non-Overclaiming Review",
+        "## 11. Ingestion Decision",
+        "## 12. Recapture Decision",
+        "## 13. Promotion Decision",
+        "## 14. Reviewer Details",
+        "## 15. Required Follow-Up Actions",
+        "## 16. Minerva Answering Implications",
+        "## 17. Non-Goals / Explicitly Not Changed",
+        "## Domain Example Placeholders",
+        "### Imports / Actuals",
+        "### Tax / PAYG",
+    ):
+        assert section in template
+
+
+def test_formal_evidence_review_decision_record_template_has_required_fillable_fields():
+    template = _read(FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE)
+
+    for field in (
+        "Decision record title: `<domain name> Formal Evidence Review Decision Record <version>`",
+        "Decision record version: `<version>`",
+        "Domain name: `<domain name>`",
+        "Domain slug: `<domain slug>`",
+        "Review date: `<YYYY-MM-DD>`",
+        "Reviewer name: `<reviewer name>`",
+        "Reviewer rationale: `<brief rationale for the selected decision status>`",
+        "Baseline status before review: `<BASELINE_REQUIRED | BASELINE_ALREADY_EXISTS | other recorded status>`",
+        "Review gate file path: `<docs/evaluation/source_evidence_drafts/.../..._FORMAL_EVIDENCE_REVIEW_GATE_...md>`",
+        "Formal evidence gap plan path: `<docs/evaluation/worker_story_baselines/.../FORMAL_EVIDENCE_GAP_PLAN.md>`",
+        "Formal source-evidence draft path: `<docs/evaluation/source_evidence_drafts/.../..._FORMAL_SOURCE_EVIDENCE_DRAFT_...md>`",
+        "Reviewed source artefacts: `<list every artefact reviewed>`",
+        "Current review status before decision: `<NOT_REVIEWED | NEEDS_REVISION | REVIEWED_READY_FOR_INGESTION | SUPERSEDED>`",
+        "Governed ingestion permitted before decision: `<Yes | No>`",
+        "Recapture permitted before decision: `<Yes | No>`",
+        "Promotion permitted before decision: `<Yes | No>`",
+        "Selected decision status: `<NOT_REVIEWED | NEEDS_REVISION | REVIEWED_READY_FOR_INGESTION | SUPERSEDED>`",
+        "Doctrine review outcome: `<pass | needs revision | not reviewed | superseded, with detail>`",
+        "Implementation-state review outcome: `<pass | needs revision | not reviewed | superseded, with detail>`",
+        "Evidence-gap review outcome: `<pass | needs revision | not reviewed | superseded, with detail>`",
+        "Non-overclaiming review outcome: `<pass | needs revision | not reviewed | superseded, with detail>`",
+        "Whether governed ingestion is permitted: `<Yes | No>`",
+        "Whether recapture is permitted: `<Yes | No>`",
+        "Whether promotion is permitted: `<Yes | No>`",
+        "Required promotion evidence: `real benchmark, corpus coverage, and answer-gap evidence after governed ingestion and recapture`",
+        "Minerva may say: `<allowed answer implication>`",
+        "Minerva must not say: `<blocked answer implication>`",
+    ):
+        assert field in template
+
+
+def test_formal_evidence_review_decision_record_template_lists_allowed_statuses_and_rules_explicitly():
+    template = _read(FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE)
+
+    assert "The selected decision status must be exactly one of:" in template
+    for status in (
+        "`NOT_REVIEWED`",
+        "`NEEDS_REVISION`",
+        "`REVIEWED_READY_FOR_INGESTION`",
+        "`SUPERSEDED`",
+    ):
+        assert status in template
+
+    for rule in (
+        "1. A formal source-evidence draft alone does not permit governed ingestion.",
+        "2. A review gate with `NOT_REVIEWED` blocks governed ingestion.",
+        "3. A review gate with `NEEDS_REVISION` blocks governed ingestion.",
+        "4. A `SUPERSEDED` draft/gate must not be used for governed ingestion.",
+        "5. Only `REVIEWED_READY_FOR_INGESTION` can permit a future governed ingestion slice.",
+        "6. `REVIEWED_READY_FOR_INGESTION` does not itself mutate corpus.",
+        "7. `REVIEWED_READY_FOR_INGESTION` does not itself promote a baseline.",
+        "8. Baseline promotion requires real benchmark, corpus coverage, and answer-gap evidence after governed ingestion and recapture.",
+        "9. No domain is promoted merely because a review decision exists.",
+        "10. Minerva must not overstate review, ingestion, runtime, or promotion state.",
+    ):
+        assert rule in template
+
+
+def test_formal_evidence_review_decision_record_template_preserves_examples_and_non_goals():
+    template = _read(FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE)
+
+    for required_text in (
+        "These examples are placeholders for future completed decision records. They do not mark either domain as reviewed or ready.",
+        "Domain name: `Imports / Actuals`",
+        "Domain slug: `imports_actuals`",
+        "Example current review status before decision: `NOT_REVIEWED`",
+        "Example selected decision status: `<NOT_REVIEWED | NEEDS_REVISION | SUPERSEDED, unless a future reviewer explicitly selects REVIEWED_READY_FOR_INGESTION>`",
+        "Note: Imports / Actuals is not merely file upload or CSV parsing.",
+        "Domain name: `Tax / PAYG`",
+        "Domain slug: `tax_payg`",
+        "Note: Minerva may explain Tax / PAYG but must not calculate PAYG withholding.",
+        "It does not change completed-domain ledger counts.",
+    ):
+        assert required_text in template
+
+    for non_goal in (
+        "DB writes",
+        "migrations",
+        "corpus mutation",
+        "operational JSON ingestion",
+        "Code Evidence integration",
+        "live LLM calls",
+        "benchmark recapture",
+        "baseline promotion",
+        "ledger promotion",
+        "endpoint changes",
+        "UI changes",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "payroll runtime changes",
+        "tax runtime changes",
+    ):
+        assert f"- {non_goal}" in template
+
+
+def test_formal_evidence_review_decision_record_template_does_not_overclaim_approval_ingestion_or_promotion():
+    template = _read(FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE)
+
+    assert "Do not treat draft text, chat agreement or file existence as review approval." in template
+    assert "Governed ingestion is permitted only when the selected decision status is `REVIEWED_READY_FOR_INGESTION`" in template
+    assert "this decision record only permits a future governed ingestion slice; it does not perform ingestion or mutate corpus" in template
+    assert "Recapture must not be treated as permitted merely because a draft exists or because a review decision exists" in template
+    assert "No domain is promoted merely because a review decision exists" in template
+    assert "It must not describe a formal source-evidence draft as ingested corpus evidence unless a later governed ingestion artefact records that fact" in template
+
+    for overclaim in (
+        "Current review status: `REVIEWED_READY_FOR_INGESTION`",
+        "Example current review status before decision: `REVIEWED_READY_FOR_INGESTION`",
+        "Governed ingestion permitted: Yes",
+        "Promotion permitted: Yes",
+        "baseline has been promoted",
+        "ledger has been promoted",
+        "corpus evidence has been ingested",
+        "review approval is implied",
+    ):
+        assert overclaim not in template
+
+
 def test_tax_payg_review_notes_reference_review_gate_and_preserve_not_promoted_state():
     notes_path = BASELINE_ROOT / "tax_payg" / "v0_1" / "REVIEW_NOTES.md"
     notes = _read(notes_path)
