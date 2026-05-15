@@ -14,6 +14,7 @@ This pack preserves the Tax / PAYG recaptured baseline result without promoting 
 - Confirm answer gap report is `NEEDS_REFINEMENT`.
 - Confirm formal source evidence is required before widening answer claims.
 - Confirm `FORMAL_EVIDENCE_GAP_PLAN.md` records the required future evidence, acceptance criteria and non-goals before any promotion attempt.
+- Confirm `docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md` records current review status `NOT_REVIEWED`, blocks governed corpus ingestion until `REVIEWED_READY_FOR_INGESTION`, and preserves Tax / PAYG as `BASELINE_REQUIRED`.
 - Confirm the `tax-payg-minerva-not-calculate` benchmark failure is preserved as a source-evidence/matched-phrase retrieval issue even though `deterministic_tax_boundary` is STRONG.
 - Confirm generated JSON reports are transient and not committed.
 - Confirm final ledger status remains `BASELINE_REQUIRED`.
@@ -98,4 +99,4 @@ This slice did not implement:
 
 Add formal source evidence for `purpose_and_operator_meaning`, refine retrieval terms for `outstanding_hardening`, and preserve the failed benchmark expectations until a documented refinement resolves them. Do not promote Tax / PAYG while benchmark failures and the formal corpus gap remain.
 
-Use `FORMAL_EVIDENCE_GAP_PLAN.md` as the review gate for any future source-evidence slice. The plan does not add source evidence, mutate corpus, ingest operational JSON, connect Code Evidence or promote the ledger.
+Use `FORMAL_EVIDENCE_GAP_PLAN.md` as the gap plan for any future source-evidence slice. Use `docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md` as the formal evidence review gate before any governed ingestion slice can use the Tax / PAYG draft. The current review status is `NOT_REVIEWED`; governed corpus ingestion remains blocked until the gate is marked `REVIEWED_READY_FOR_INGESTION`. The plan and gate do not add source evidence, mutate corpus, ingest operational JSON, connect Code Evidence or promote the ledger.

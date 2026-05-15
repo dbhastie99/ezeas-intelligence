@@ -147,6 +147,10 @@ TAX_PAYG_FORMAL_SOURCE_EVIDENCE_DRAFT = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
     / "TAX_PAYG_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md"
 )
+TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE = (
+    Path("docs/evaluation/source_evidence_drafts/tax_payg")
+    / "TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md"
+)
 IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE = (
     Path("docs/evaluation/source_evidence_drafts/imports_actuals")
     / "IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md"
@@ -896,6 +900,52 @@ def test_imports_actuals_formal_evidence_review_gate_blocks_ingestion_until_read
     assert "no Code Evidence answer integration" in gate
     assert "no ledger promotion" in gate
     assert "future explicit ingestion slice after review readiness" in gate
+
+
+def test_tax_payg_formal_evidence_review_gate_blocks_ingestion_until_ready():
+    assert TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE.exists()
+
+    gate = _read(TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE)
+
+    assert "Review gate version: v0.1" in gate
+    assert "Current review status: `NOT_REVIEWED`" in gate
+    assert "Default review status: `NOT_REVIEWED`" in gate
+    assert "`NOT_REVIEWED`" in gate
+    assert "`NEEDS_REVISION`" in gate
+    assert "`REVIEWED_READY_FOR_INGESTION`" in gate
+    assert "`SUPERSEDED`" in gate
+    assert "Current review status: `REVIEWED_READY_FOR_INGESTION`" not in gate
+    assert "FORMAL_EVIDENCE_GAP_PLAN.md" in gate
+    assert "TAX_PAYG_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md" in gate
+    assert "governed corpus ingestion is blocked" in gate
+    assert "Governed ingestion must not happen until this review gate is marked `REVIEWED_READY_FOR_INGESTION`" in gate
+    assert "Status is `REVIEWED_READY_FOR_INGESTION`" in gate
+    assert "Tax / PAYG remains `BASELINE_REQUIRED`" in gate
+    assert "The formal source-evidence draft is not enough by itself to permit ingestion" in gate
+    assert "Minerva must not calculate PAYG withholding" in gate
+    assert "control artefact, not a runtime feature" in gate
+    assert "`purpose_and_operator_meaning`" in gate
+    assert "`outstanding_hardening`" in gate
+    assert "no corpus mutation" in gate
+    assert "no operational JSON ingestion" in gate
+    assert "no Code Evidence answer integration" in gate
+    assert "no benchmark recapture" in gate
+    assert "no baseline promotion" in gate
+    assert "no ledger promotion" in gate
+    assert "benchmark promotion" not in gate.lower()
+    assert "runtime PAYG calculation has been implemented" not in gate
+
+
+def test_tax_payg_review_notes_reference_review_gate_and_preserve_not_promoted_state():
+    notes_path = BASELINE_ROOT / "tax_payg" / "v0_1" / "REVIEW_NOTES.md"
+    notes = _read(notes_path)
+
+    assert "TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md" in notes
+    assert "current review status `NOT_REVIEWED`" in notes
+    assert "governed corpus ingestion remains blocked until the gate is marked `REVIEWED_READY_FOR_INGESTION`" in notes
+    assert "Tax / PAYG as `BASELINE_REQUIRED`" in notes
+    assert "Do not promote Tax / PAYG" in notes
+    assert "no ledger promotion" in notes
 
 
 def test_contact_payroll_history_baseline_pack_records_captured_ready_results_with_failures():
