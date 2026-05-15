@@ -223,6 +223,9 @@ FORMAL_EVIDENCE_CONTROL_INDEX_PROMPT = Path(
 FORMAL_EVIDENCE_CONTROL_INDEX_README_LINK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_readme_link_v0_1.md"
 )
+FORMAL_EVIDENCE_CONTROL_INDEX_ROOT_README_LINK_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_root_readme_link_v0_1.md"
+)
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
     / "TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md"
@@ -2033,6 +2036,28 @@ def test_source_evidence_readme_links_control_index_as_master_starting_point():
         assert required_text in readme
 
 
+def test_root_readme_links_control_index_as_master_starting_point():
+    readme = _read(Path("README.md"))
+
+    for required_text in (
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md",
+        "master starting point/control index",
+        "formal evidence review gates",
+        "decision records",
+        "readiness checklists",
+        "status transitions",
+        "governed ingestion planning",
+        "recapture planning",
+        "promotion planning",
+        "promotion execution guardrails",
+        "Tax / PAYG and Imports / Actuals remain `BASELINE_REQUIRED` and `NOT_REVIEWED`",
+        "governed ingestion permitted: No",
+        "recapture permitted: No",
+        "promotion permitted: No",
+    ):
+        assert required_text in readme
+
+
 def test_formal_evidence_control_readme_prompt_is_preserved():
     assert FORMAL_EVIDENCE_CONTROL_README_PROMPT.exists()
 
@@ -2277,6 +2302,39 @@ def test_formal_evidence_control_index_readme_link_prompt_is_preserved():
         "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md",
         "master starting point/control index",
         "review gates",
+        "decision records",
+        "readiness checklists",
+        "status transitions",
+        "governed ingestion planning",
+        "recapture planning",
+        "promotion planning",
+        "promotion execution guardrails",
+        "Tax / PAYG",
+        "Imports / Actuals",
+        "baseline status: `BASELINE_REQUIRED`",
+        "decision status: `NOT_REVIEWED`",
+        "governed ingestion permitted: No",
+        "recapture permitted: No",
+        "promotion permitted: No",
+        "Do not change ledger counts.",
+        "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
+        "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
+    ):
+        assert required_text in prompt
+
+
+def test_formal_evidence_control_index_root_readme_link_prompt_is_preserved():
+    assert FORMAL_EVIDENCE_CONTROL_INDEX_ROOT_README_LINK_PROMPT.exists()
+
+    prompt = _read(FORMAL_EVIDENCE_CONTROL_INDEX_ROOT_README_LINK_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Formal Evidence Control Index Root README Link v0.1",
+        "Mode: Documentation/navigation hardening only",
+        "README.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md",
+        "master starting point/control index",
+        "formal evidence review gates",
         "decision records",
         "readiness checklists",
         "status transitions",
