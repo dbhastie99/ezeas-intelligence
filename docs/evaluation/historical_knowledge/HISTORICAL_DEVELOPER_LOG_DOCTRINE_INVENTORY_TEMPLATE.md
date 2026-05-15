@@ -1,0 +1,70 @@
+# Historical Developer Log and Doctrine Inventory Template
+
+Version: v0.1
+
+Date: 15 May 2026
+
+## 1. Purpose
+
+This template inventories developer logs, hardening logs, and doctrine documents as curated decision/rationale sources requiring review and implementation-state classification.
+
+Developer logs and doctrine may include planned, partial, superseded, or backlog work. They must not be treated as implemented runtime truth without cross-checking code, tests, commits, and current doctrine.
+
+Inventory alone does not mutate corpus, does not ingest sources, does not connect Code Evidence, does not run live LLM, does not change runtime behaviour, does not promote baselines, and does not change ledger counts.
+
+## 2. Control References
+
+Use this template with:
+
+- `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md`
+
+## 3. Source Tier Rules
+
+Developer logs, hardening logs, and platform doctrine are Tier 2 curated decision/rationale sources requiring review and implementation-state classification.
+
+Tier 2 material can explain rationale, accepted doctrine, or intended backlog, but it does not override Tier 1 code and tests for implemented state. Chats and continuance prompts remain Tier 3 raw historical source material, not final truth.
+
+## 4. Implementation-State Classifications
+
+Use exactly one current implementation-state classification unless a later review gate records why multiple states apply:
+
+- `IMPLEMENTED_AND_TESTED`
+- `IMPLEMENTED_NOT_FULLY_TESTED`
+- `DOCUMENTED_DOCTRINE`
+- `DOCUMENTED_BACKLOG`
+- `PLANNED_NOT_IMPLEMENTED`
+- `SUPERSEDED`
+- `UNCERTAIN_REQUIRES_REVIEW`
+
+## 5. Inventory Fields
+
+| Field | Required handling |
+| --- | --- |
+| Source title | Record the log or doctrine title. |
+| Source type | Record developer log, hardening log, doctrine, or related curated rationale source. |
+| Source tier | Record Tier 2 unless a reviewed exception is documented. |
+| Date or date range | Record log date, doctrine date, or best-known range. |
+| Repository/domain | Record repository, product area, and domain if known. |
+| Related commits if known | Record commit hashes or leave `unknown`; commits require separate review. |
+| Related developer log or doctrine reference | Record the related log, hardening log, or doctrine reference. |
+| Implementation-state classification | Use one of the classifications in this template after review. |
+| Evidence confidence | Record high, medium, low, or unknown with reason. |
+| Supersession risk | Record high, medium, low, or unknown with reason. |
+| Backlog/doctrine/runtime distinction | Identify backlog intent, documented doctrine, runtime implementation claim, or uncertain state. |
+| Review required | Always record `yes` unless a future approved review gate says otherwise. |
+| Ingestion permitted | Record `no`; inventory does not permit ingestion. |
+| Notes | Record limited provenance notes only, not extracted historical claims. |
+
+## 6. Blank Inventory Table
+
+| Source title | Source type | Source tier | Date or date range | Repository/domain | Related commits if known | Related developer log or doctrine reference | Implementation-state classification | Evidence confidence | Supersession risk | Backlog/doctrine/runtime distinction | Review required | Ingestion permitted | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+
+## 7. Boundaries
+
+This template does not consume historical chats, does not ingest developer logs, does not ingest doctrine documents, does not ingest code, does not mutate corpus, does not run live LLM, does not connect Code Evidence, does not change runtime behaviour, does not promote baselines, and does not change ledger counts.
+
+This template does not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, or generated artefact creation.
