@@ -10,6 +10,8 @@ This README is the operator-facing control guide for Minerva formal evidence art
 
 It explains what each artefact is for, how an evidence gap moves through review and possible promotion, what remains blocked while records are `NOT_REVIEWED`, and how Minerva and future Codex slices should use durable repository files instead of chat-only instructions.
 
+Start future formal evidence control work from `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md`. It is the master starting point/control index for review gates, decision records, readiness checklists, status transitions, governed ingestion planning, recapture planning, promotion planning, and promotion execution guardrails. This README gives operator context; the control index is the master map.
+
 The current completed-domain ledger state remains:
 
 - `BASELINE_REQUIRED`: 17
@@ -26,6 +28,7 @@ This README covers the formal evidence control model for source-evidence drafts,
 
 Current source-evidence control artefacts:
 
+- `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md`
 - `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md`
 - `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md`
 - `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md`
