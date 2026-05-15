@@ -23,6 +23,7 @@ No Minerva ingestion is permitted.
 | Source tier | Tier 2 |
 | Review status | `NOT_REVIEWED` |
 | Ingestion permitted | No |
+| Review decision gate | `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md` |
 
 ## 3. Historical Analytics Boundary
 
@@ -45,3 +46,5 @@ Review pack draft readiness does not mutate corpus, does not connect Code Eviden
 This placeholder does not implement DB writes, migrations, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, ezeas-analytics changes, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, or generated artefact creation.
 
 Minerva must not answer from the analytics source as current truth until reviewed/backfilled/governed.
+
+The review decision gate at `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md` must be satisfied before this placeholder can become a future curated backfill evidence pack draft.

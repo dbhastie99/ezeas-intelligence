@@ -271,6 +271,11 @@ HISTORICAL_ANALYTICS_REVIEW_PACK_DRAFT_PLACEHOLDER = (
     / "review_pack_templates"
     / "HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md"
 )
+HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "review_decision_gates"
+    / "HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md"
+)
 HISTORICAL_REGISTERED_SOURCES_ROOT = (
     HISTORICAL_KNOWLEDGE_ROOT / "registered_sources"
 )
@@ -336,6 +341,9 @@ HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD_PROMPT = Path(
 )
 HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_analytics_review_pack_template_v0_1.md"
+)
+HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_analytics_review_decision_gate_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -3027,6 +3035,55 @@ def test_historical_analytics_review_pack_template_and_placeholder_are_bounded()
         assert required_text in combined
 
 
+def test_historical_analytics_review_decision_gate_is_bounded():
+    assert HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE.exists()
+
+    gate = _read(HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    review_readiness_record = _read(HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD)
+    review_pack_placeholder = _read(HISTORICAL_ANALYTICS_REVIEW_PACK_DRAFT_PLACEHOLDER)
+    gate_path = (
+        "docs/evaluation/historical_knowledge/review_decision_gates/"
+        "HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md"
+    )
+
+    for required_text in (
+        "`HIST-ANALYTICS-2025-12-06-20`",
+        "Developer Log - Analytics Engine",
+        "Review status | `NOT_REVIEWED`",
+        "Ingestion permitted | No",
+        "Current truth classification | not current final truth",
+        "Code/test/schema cross-check | required but not performed",
+        "`REMAIN_NOT_REVIEWED`",
+        "`NEEDS_SOURCE_REVIEW`",
+        "`REVIEWED_READY_FOR_BACKFILL_DRAFT`",
+        "`REVIEWED_READY_FOR_GOVERNED_INGESTION`",
+        "`SUPERSEDED`",
+        "`REVIEWED_READY_FOR_BACKFILL_DRAFT` permits creating a curated backfill evidence pack draft only, not governed ingestion.",
+        "`REVIEWED_READY_FOR_GOVERNED_INGESTION` can only be considered after source review, code/test/schema cross-check, supersession assessment, and reviewer rationale are complete.",
+        "Minerva must not answer from this source as current truth while the gate remains `NOT_REVIEWED`.",
+        "`ProcessedRule`-era analytics must not be presented as the current canonical calculation fact source unless future review proves it remains valid.",
+        "`CalcInterpreterLine` remains the current target canonical calculation fact source unless future platform evidence changes that.",
+        "No corpus mutation, no Code Evidence integration, no live LLM call, no runtime change, no baseline promotion, no ledger promotion, and no historical ingestion occur in this gate.",
+    ):
+        assert required_text in gate
+
+    assert gate_path in source_register
+    assert gate_path in "\n".join((review_readiness_record, review_pack_placeholder))
+
+    combined = "\n".join((gate, source_register, review_readiness_record, review_pack_placeholder))
+    for boundary_text in (
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM call",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no historical ingestion",
+    ):
+        assert boundary_text in combined
+
+
 def test_historical_source_review_readiness_lists_controlled_values():
     combined = "\n".join(
         _read(path)
@@ -3826,6 +3883,24 @@ def test_historical_analytics_review_pack_template_prompt_is_preserved():
         "Review pack draft readiness does not promote baselines or change ledger counts.",
         "Do not ingest the full developer log.",
         "Do not parse or extract source content.",
+        "Do not review the Analytics Engine source yet.",
+        "git diff --check",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_analytics_review_decision_gate_prompt_is_preserved():
+    assert HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE_PROMPT)
+
+    for required_text in (
+        "Minerva Historical Analytics Review Decision Gate v0.1",
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md",
+        "REVIEWED_READY_FOR_BACKFILL_DRAFT",
+        "REVIEWED_READY_FOR_GOVERNED_INGESTION",
         "Do not review the Analytics Engine source yet.",
         "git diff --check",
     ):

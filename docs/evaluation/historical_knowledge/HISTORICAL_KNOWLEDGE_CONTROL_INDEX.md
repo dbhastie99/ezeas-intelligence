@@ -29,6 +29,7 @@ Use these durable controls together:
 | First analytics review-readiness record | `docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md` |
 | Historical analytics review pack template | `docs/evaluation/historical_knowledge/review_pack_templates/HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md` |
 | First analytics review pack draft placeholder | `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md` |
+| First analytics review decision gate | `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md` |
 | First analytics inventory batch | `docs/evaluation/historical_knowledge/inventory_batches/HISTORICAL_SOURCE_INVENTORY_BATCH_2026_05_15_ANALYTICS.md` |
 
 ## 3. Source Authority Summary
@@ -97,6 +98,8 @@ The first analytics registered-source placement placeholder exists at `docs/eval
 The Analytics Engine developer log remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice completes source review. The first filled review-readiness record is `docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md`; it is a review-readiness record only and does not review, ingest, parse, or consume that source.
 
 The historical analytics review pack template is `docs/evaluation/historical_knowledge/review_pack_templates/HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md`. The first Analytics Engine review pack draft placeholder is `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md`. Review pack draft readiness does not review the source, does not extract source content, does not perform code/test/schema cross-checking, does not mutate corpus, does not connect Code Evidence, does not call live LLM, does not change runtime behaviour, does not promote baselines, does not change ledger counts, does not perform ledger promotion, and does not perform historical ingestion.
+
+The first Analytics Engine review decision gate is `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md`. It is a control gate only and does not review, ingest, parse, extract, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, change ledger counts, perform ledger promotion, or perform historical ingestion.
 
 This slice does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does not mark any domain `BASELINE_ALREADY_EXISTS`.
 

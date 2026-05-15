@@ -20,6 +20,8 @@ Review readiness is governed by `docs/evaluation/historical_knowledge/HISTORICAL
 
 Historical analytics review pack drafting uses `docs/evaluation/historical_knowledge/review_pack_templates/HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md`. The first Analytics Engine draft placeholder is `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md`; it is a placeholder only and does not review, ingest, parse, extract, cross-check, or promote the source.
 
+Historical analytics review decision gating uses `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md`. The gate must remain control-only until a future explicit review slice completes source review, code/test/schema cross-check, supersession assessment, and reviewer rationale.
+
 ## 2. Implementation-State Classifications
 
 Use exactly one current classification for each candidate decision unless the review gate records why multiple states apply:
@@ -108,3 +110,5 @@ This process does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does no
 The Analytics Engine review-readiness record at `docs/evaluation/historical_knowledge/review_readiness_records/HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md` is a control record only and does not review, ingest, parse, or consume any historical source. The Analytics Engine developer log remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice.
 
 Review pack draft readiness does not mutate corpus, does not connect Code Evidence, does not call live LLM, does not change runtime behaviour, does not promote baselines, does not change ledger counts, does not perform ledger promotion, and does not perform historical ingestion.
+
+The Analytics Engine review decision gate at `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md` does not ingest historical content, does not parse or extract source content, does not create a backfill evidence pack, and does not permit governed ingestion while the source remains `NOT_REVIEWED`.
