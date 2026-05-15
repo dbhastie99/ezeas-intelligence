@@ -23,6 +23,9 @@ Use these durable controls together:
 | First analytics registered-source placeholder | `docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md` |
 | Historical source tiering model | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md` |
 | Historical register-driven source classification | `docs/evaluation/historical_knowledge/HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md` |
+| Historical batch registration and triage model | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md` |
+| Historical batch register template | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md` |
+| Historical batch triage process | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
 | Historical source review-readiness template | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md` |
 | Historical source review-readiness process | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` |
@@ -66,6 +69,8 @@ The register assigns source class and starting reliability tier. A registered so
 A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCTRINE`, `MIXED_LOG_DOCTRINE`, `CHAT_OR_CONTINUANCE`, `CODE_EVIDENCE`, `TEST_EVIDENCE`, `PROMPT_FILE`, `BASELINE_PACK`, `AWARD_BUILD_CONTROL`, or `OTHER_REQUIRES_REVIEW` even if the filename does not contain those exact words.
 
 ## 5. Backfill Scope
+
+Most historical sources should first be batch-registered and triaged using `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md` and `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`. The full Analytics Engine chain is the prototype/deep-review path, not the default path for every source.
 
 Historical backfill must be domain-scoped. A future slice must identify source material, register provenance, classify source tier, complete review readiness using `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` and `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`, extract candidate decisions, cross-check evidence, classify implementation state, create a curated backfill evidence pack, add a review gate, and only later consider governed ingestion.
 

@@ -138,6 +138,8 @@ If ingestion permission is absent or ambiguous, treat it as `No`.
 
 ## 11. Backfill Workflow Integration
 
+Batch registration validation uses `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md` and `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md` before ordinary historical sources are escalated. Batch entries remain metadata-level only, do not ingest source content, and keep `Ingestion permitted` as `No` by default.
+
 Before a backfill draft relies on a historical source, validate the corresponding register entry against this runbook.
 
 Backfill work may identify candidate source material, but reliance requires a register entry, review status, implementation-state classification, ingestion permission, supersession status, and provenance fields.

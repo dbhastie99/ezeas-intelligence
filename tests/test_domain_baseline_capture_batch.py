@@ -250,6 +250,15 @@ HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION = (
 HISTORICAL_BACKFILL_PROCESS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BACKFILL_PROCESS.md"
 )
+HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md"
+)
+HISTORICAL_BATCH_REGISTER_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REGISTER_TEMPLATE.md"
+)
+HISTORICAL_BATCH_TRIAGE_PROCESS = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_TRIAGE_PROCESS.md"
+)
 HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md"
 )
@@ -382,6 +391,9 @@ HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST_PROMPT = Path(
 HISTORICAL_ANALYTICS_NOT_REVIEWED_DECISION_RECORD_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_analytics_not_reviewed_decision_record_v0_1.md"
 )
+HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_batch_registration_and_triage_model_v0_1.md"
+)
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
     / "developer_logs"
@@ -411,6 +423,133 @@ IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
 
 def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
+
+
+def test_historical_batch_registration_and_triage_docs_exist():
+    assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.exists()
+    assert HISTORICAL_BATCH_REGISTER_TEMPLATE.exists()
+    assert HISTORICAL_BATCH_TRIAGE_PROCESS.exists()
+    assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
+
+
+def test_historical_batch_registration_model_controls_default_path_and_truth_boundary():
+    model = _read(HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL)
+
+    assert "full Analytics Engine chain is the prototype/deep-review path, not the default path for every historical source" in model
+    assert "Most historical sources should first be batch-registered and triaged" in model
+    assert "Batch registration is metadata-level only" in model
+    assert "Batch triage does not ingest historical content" in model
+    assert "Batch triage does not make a source current truth" in model
+    assert "source register remains the governing classification point" in model
+    assert "Registered folders and filenames are aids only; the register entry controls classification" in model
+    assert "`Ingestion permitted` defaults to `No`" in model
+    assert "Only high-value/high-risk sources graduate to the full review-readiness / decision-gate / cross-check path" in model
+    assert "Minerva must not treat batch-registered sources as current truth unless those sources are later reviewed, backfilled, and governed" in model
+
+
+def test_historical_batch_register_template_includes_required_columns():
+    template = _read(HISTORICAL_BATCH_REGISTER_TEMPLATE)
+
+    for column in (
+        "Batch ID",
+        "Register ID",
+        "Source title",
+        "Original filename",
+        "Source folder",
+        "Registered source type",
+        "Source tier",
+        "Domain tags",
+        "Date or date range",
+        "Repository context",
+        "Related commits if known",
+        "Related control artefacts",
+        "Implementation-state classification",
+        "Review status",
+        "Ingestion permitted",
+        "Supersession risk",
+        "Evidence confidence",
+        "Backfill priority",
+        "Full review chain required",
+        "Full review chain reason",
+        "Suggested next action",
+        "Notes",
+    ):
+        assert f"| {column} |" in template or f"| {column} " in template
+
+
+def test_historical_batch_triage_process_lists_outcomes_and_escalation_criteria():
+    process = _read(HISTORICAL_BATCH_TRIAGE_PROCESS)
+
+    for outcome in (
+        "REGISTER_ONLY",
+        "REGISTER_AND_MONITOR",
+        "NEEDS_DOMAIN_REVIEW",
+        "NEEDS_CODE_CROSSCHECK",
+        "NEEDS_FULL_REVIEW_CHAIN",
+        "SUPERSEDED_HISTORICAL_ONLY",
+        "DUPLICATE_OR_COVERED_BY_EXISTING_SOURCE",
+        "UNCERTAIN_REQUIRES_REVIEW",
+    ):
+        assert outcome in process
+
+    for criterion in (
+        "Source contains major architecture decisions",
+        "Source may be superseded by later platform changes",
+        "Source will influence current Minerva answers",
+        "payroll calculation",
+        "ObjectTime source truth",
+        "tax",
+        "imports/actuals",
+        "reconciliation",
+        "deductions/obligations",
+        "leave",
+        "worker story",
+        "analytics",
+        "award configurator",
+        "finalised correction",
+        "Source contains conflicting claims",
+        "Source contains implementation claims requiring code/test/schema confirmation",
+    ):
+        assert criterion in process
+
+    assert "Ordinary developer logs can remain batch-registered until needed" in process
+    assert "Many sources can be grouped by domain/date range" in process
+
+
+def test_historical_batch_controls_are_referenced_by_existing_process_docs():
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+
+    assert "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md" in control_index
+    assert "HISTORICAL_BATCH_TRIAGE_PROCESS.md" in control_index
+    assert "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md" in backfill_process
+    assert "HISTORICAL_BATCH_TRIAGE_PROCESS.md" in backfill_process
+    assert "batch-registered and triaged" in backfill_process
+
+
+def test_historical_batch_controls_preserve_non_ingestion_boundaries():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL,
+            HISTORICAL_BATCH_REGISTER_TEMPLATE,
+            HISTORICAL_BATCH_TRIAGE_PROCESS,
+        )
+    )
+
+    for boundary in (
+        "does not mutate corpus",
+        "does not ingest source content",
+        "does not connect Code Evidence",
+        "does not call live LLM",
+        "does not change runtime behaviour",
+        "does not promote baselines",
+        "does not change ledger counts",
+        "does not perform ledger promotion",
+    ):
+        assert boundary in combined
+
+    assert "Minerva must not treat batch-registered sources as current truth unless" in combined
 
 
 def test_batch_baseline_packs_exist_with_required_files():

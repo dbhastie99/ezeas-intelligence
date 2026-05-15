@@ -16,6 +16,8 @@ Registration validation is governed by `docs/evaluation/historical_knowledge/HIS
 
 The registered source folder root is `docs/evaluation/historical_knowledge/registered_sources/`. Placing a file under that root does not register, review, ingest, or promote the source; a source-register entry is still required.
 
+Most historical sources should first be batch-registered and triaged using `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md`, `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md`, and `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`. Batch registration is metadata-level only and does not ingest source content, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, change ledger counts, or make a source current truth.
+
 Review readiness is governed by `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` and recorded with `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`. Filled review-readiness records are stored under `docs/evaluation/historical_knowledge/review_readiness_records/`. Review readiness is required before creating a historical backfill evidence pack.
 
 Historical analytics review pack drafting uses `docs/evaluation/historical_knowledge/review_pack_templates/HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md`. The first Analytics Engine draft placeholder is `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md`; it is a placeholder only and does not review, ingest, parse, extract, cross-check, or promote the source.
@@ -74,7 +76,7 @@ A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCT
 1. Identify historical source material for one domain.
 2. Register source provenance in `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md`, including original filename as metadata, source folder, date where available, author/reviewer where available, registered source type, and source tier.
 3. Classify source tier using `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md`.
-4. Complete source review readiness before any historical backfill evidence pack is created.
+4. Batch-triage ordinary sources first; only high-value/high-risk sources graduate to full source review readiness before any historical backfill evidence pack is created.
 5. Extract candidate decisions without treating them as final truth.
 6. Cross-check against code/tests/logs/doctrine/commits.
 7. Classify implementation state using the classifications in this process.

@@ -12,6 +12,8 @@ A registered source is not final truth merely because it exists in the register.
 
 Review readiness is required before creating a historical backfill evidence pack.
 
+Most historical sources should first be batch-registered and triaged using `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md` and `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`. The full Analytics Engine chain is the prototype/deep-review path, not the default path for every source. Only high-value/high-risk sources graduate from batch triage to this review-readiness process.
+
 This slice creates templates/process only and does not review, ingest, parse, or consume any historical source.
 
 ## 2. Required Inputs

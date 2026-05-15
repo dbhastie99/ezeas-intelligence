@@ -36,6 +36,8 @@ Inventory/registering a source does not itself permit ingestion. Folder placemen
 
 The register entry controls classification. Original filenames are metadata only. A placeholder path records registered placement; it does not mean the full historical document has been ingested.
 
+Batch registration and triage are governed by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md`, `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md`, and `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`. Batch registration is metadata-level only. It does not ingest source content, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, change ledger counts, or make a source current truth. Most historical sources should first be batch-registered and triaged; only high-value/high-risk sources require the full Analytics Engine prototype/deep-review path.
+
 ## 4. Source Register Table
 
 The first populated row is metadata-only. The source remains external/user-provided until a future controlled source-placement or backfill slice.
