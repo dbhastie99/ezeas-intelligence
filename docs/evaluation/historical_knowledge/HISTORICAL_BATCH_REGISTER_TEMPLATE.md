@@ -12,6 +12,8 @@ Batch registration does not ingest source content, does not mutate corpus, does 
 
 Minerva must not treat batch-registered sources as current truth unless later reviewed, backfilled, and governed.
 
+The first concrete placeholder that uses this template is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. That developer-log batch register is empty and records metadata only; it does not ingest, parse, extract, or review historical developer-log content.
+
 ## 2. Required Columns
 
 | Column | Required handling |

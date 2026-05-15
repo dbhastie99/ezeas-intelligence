@@ -259,6 +259,11 @@ HISTORICAL_BATCH_REGISTER_TEMPLATE = (
 HISTORICAL_BATCH_TRIAGE_PROCESS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_TRIAGE_PROCESS.md"
 )
+HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "batch_registers"
+    / "HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md"
+)
 HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md"
 )
@@ -394,6 +399,9 @@ HISTORICAL_ANALYTICS_NOT_REVIEWED_DECISION_RECORD_PROMPT = Path(
 HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_batch_registration_and_triage_model_v0_1.md"
 )
+HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_developer_log_batch_register_v0_1.md"
+)
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
     / "developer_logs"
@@ -430,6 +438,8 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REGISTER_TEMPLATE.exists()
     assert HISTORICAL_BATCH_TRIAGE_PROCESS.exists()
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
+    assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER.exists()
+    assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT.exists()
 
 
 def test_historical_batch_registration_model_controls_default_path_and_truth_boundary():
@@ -550,6 +560,93 @@ def test_historical_batch_controls_preserve_non_ingestion_boundaries():
         assert boundary in combined
 
     assert "Minerva must not treat batch-registered sources as current truth unless" in combined
+
+
+def test_historical_developer_log_batch_register_placeholder_controls():
+    batch_register = _read(HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    model = _read(HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL)
+    template = _read(HISTORICAL_BATCH_REGISTER_TEMPLATE)
+
+    assert "HIST-DEVLOG-BATCH-2026-05-15" in batch_register
+    assert "`EMPTY_PLACEHOLDER`" in batch_register
+    assert "`NOT_REVIEWED`" in batch_register
+    assert "| Ingestion permitted | No |" in batch_register
+
+    for column in (
+        "Batch ID",
+        "Register ID",
+        "Source title",
+        "Original filename",
+        "Source folder",
+        "Registered source type",
+        "Source tier",
+        "Domain tags",
+        "Date or date range",
+        "Repository context",
+        "Related commits if known",
+        "Related control artefacts",
+        "Implementation-state classification",
+        "Review status",
+        "Ingestion permitted",
+        "Supersession risk",
+        "Evidence confidence",
+        "Backfill priority",
+        "Full review chain required",
+        "Full review chain reason",
+        "Suggested next action",
+        "Notes",
+    ):
+        assert f"| {column} " in batch_register
+
+    for outcome in (
+        "REGISTER_ONLY",
+        "REGISTER_AND_MONITOR",
+        "NEEDS_DOMAIN_REVIEW",
+        "NEEDS_CODE_CROSSCHECK",
+        "NEEDS_FULL_REVIEW_CHAIN",
+        "SUPERSEDED_HISTORICAL_ONLY",
+        "DUPLICATE_OR_COVERED_BY_EXISTING_SOURCE",
+        "UNCERTAIN_REQUIRES_REVIEW",
+    ):
+        assert outcome in batch_register
+
+    for criterion in (
+        "major architecture decisions",
+        "superseded by later platform changes",
+        "influence current Minerva answers",
+        "payroll, source-truth, tax, imports, reconciliation, deduction, leave, worker-story, analytics, award-configurator, or finalised-correction domains",
+        "conflicting claims",
+        "implementation claims requiring code/test/schema confirmation",
+    ):
+        assert criterion in batch_register
+
+    assert "Source classification remains register-driven, not filename-driven" in batch_register
+    assert "Ordinary developer logs can remain batch-registered until needed" in batch_register
+    assert "The Analytics Engine source remains the prototype/deep-review path, not the default for all logs" in batch_register
+    assert "No historical source content is ingested, parsed, or extracted" in batch_register
+    assert "Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed" in batch_register
+
+    assert "HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md" in control_index
+    assert "HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md" in model
+    assert "HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md" in template
+
+    combined = "\n".join((batch_register, control_index, model, template))
+    for boundary in (
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+    ):
+        assert boundary in combined
+
+    assert "does not connect Code Evidence" in batch_register
+    assert "does not call live LLM" in batch_register
+    assert "does not change runtime behaviour" in batch_register
+    assert "does not promote baselines" in batch_register
+    assert "does not change ledger counts" in batch_register
 
 
 def test_batch_baseline_packs_exist_with_required_files():

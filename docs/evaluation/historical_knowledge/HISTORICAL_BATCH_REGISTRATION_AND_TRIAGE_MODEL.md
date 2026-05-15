@@ -12,6 +12,8 @@ The full Analytics Engine chain is the prototype/deep-review path, not the defau
 
 The full deep-review path remains appropriate for high-value or high-risk sources. Most historical sources should first be batch-registered and triaged.
 
+The first developer-log batch register placeholder is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It is empty, metadata-only, and intended for future batch registration of developer logs, hardening logs, platform doctrine, and mixed log-doctrine sources.
+
 ## 2. Batch Registration Principle
 
 Batch registration is metadata-level only.
@@ -75,6 +77,7 @@ Batch registration does not implement DB writes, migrations, endpoint changes, U
 
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`
+- `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md`
