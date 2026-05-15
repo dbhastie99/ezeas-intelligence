@@ -291,6 +291,11 @@ HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER = (
     / "crosscheck_findings_templates"
     / "HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md"
 )
+HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "review_execution_checklists"
+    / "HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md"
+)
 HISTORICAL_REGISTERED_SOURCES_ROOT = (
     HISTORICAL_KNOWLEDGE_ROOT / "registered_sources"
 )
@@ -365,6 +370,9 @@ HISTORICAL_ANALYTICS_CODE_CROSSCHECK_PLAN_PROMPT = Path(
 )
 HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_analytics_crosscheck_findings_template_v0_1.md"
+)
+HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_analytics_review_execution_checklist_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -3383,6 +3391,92 @@ def test_historical_analytics_crosscheck_findings_template_and_placeholder_are_c
         assert required_text in placeholder
 
 
+def test_historical_analytics_review_execution_checklist_is_control_only():
+    assert HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST.exists()
+
+    checklist = _read(HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    gate = _read(HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+    checklist_path = (
+        "docs/evaluation/historical_knowledge/review_execution_checklists/"
+        "HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md"
+    )
+
+    for required_section in (
+        "## 1. Purpose",
+        "## 2. Source Register Details",
+        "## 3. Current Status Before Review",
+        "## 4. Reviewer Preconditions",
+        "## 5. Source Material Handling Checklist",
+        "## 6. Code/Test/Schema Cross-Check Checklist",
+        "## 7. Historical Claim Classification Checklist",
+        "## 8. Supersession and Current-Truth Checklist",
+        "## 9. Minerva Answering Boundary Checklist",
+        "## 10. Review Decision Checklist",
+        "## 11. Backfill Evidence Pack Checklist",
+        "## 12. Non-Goals",
+        "## 13. Completion Criteria",
+        "## 14. Follow-Up Actions",
+    ):
+        assert required_section in checklist
+
+    for required_text in (
+        "`HIST-ANALYTICS-2025-12-06-20`",
+        "Review status before review | Reviewer confirms review status before review is `NOT_REVIEWED`.",
+        "Ingestion permitted before review | Reviewer confirms ingestion permitted before review is No.",
+        "the full source document is available to the reviewer but not ingested",
+        "the source is treated as historical source material, not current truth",
+        "Separate `ProcessedRule`-era claims from still-valid doctrine.",
+        "`CalcInterpreterLine` remains the current target canonical processed payroll calculation fact unless current code/schema review proves otherwise.",
+        "Check current `workforce-platform` code/tests",
+        "Check current `ezeas-analytics` docs/code/tests",
+        "Check database schema/view definitions where available",
+        "Classify historical claims using the findings template classifications.",
+        "Record Minerva-safe answering boundaries per claim.",
+        "Any recommendation for `REVIEWED_READY_FOR_BACKFILL_DRAFT` is supported by reviewer rationale and cross-check evidence.",
+        "Any recommendation for `REVIEWED_READY_FOR_GOVERNED_INGESTION` is supported by reviewer rationale, cross-check evidence",
+        "no review decision alone mutates corpus or permits current-truth answers without the downstream governed path",
+        "Completing this checklist is required before changing the review decision gate.",
+        "Completing this checklist does not itself ingest source content.",
+        "Completing this checklist does not mutate corpus.",
+        "Completing this checklist does not connect Code Evidence.",
+        "Completing this checklist does not call live LLM.",
+        "Completing this checklist does not change runtime behaviour.",
+        "Completing this checklist does not promote baselines or change ledger counts.",
+        "Completing this checklist does not change the current `NOT_REVIEWED` status unless a separate review decision record/update slice performs that change.",
+    ):
+        assert required_text in checklist
+
+    for classification in (
+        "STILL_VALID_IMPLEMENTED_AND_TESTED",
+        "STILL_VALID_DOCTRINE",
+        "PARTIALLY_VALID_REQUIRES_UPDATE",
+        "SUPERSEDED_BY_CALCINTERPRETERLINE_MODEL",
+        "SUPERSEDED_BY_CURRENT_SCHEMA",
+        "HISTORICAL_CONTEXT_ONLY",
+        "BACKLOG_OR_PLANNED_NOT_IMPLEMENTED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+        "NOT_SUPPORTED_BY_CURRENT_CODE",
+    ):
+        assert classification in checklist
+
+    assert checklist_path in "\n".join((source_register, gate))
+
+    combined = "\n".join((checklist, source_register, gate, control_index, backfill_process))
+    for boundary_text in (
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM call",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no historical ingestion",
+    ):
+        assert boundary_text in combined
+
+
 def test_historical_source_review_readiness_lists_controlled_values():
     combined = "\n".join(
         _read(path)
@@ -4242,6 +4336,40 @@ def test_historical_analytics_crosscheck_findings_template_prompt_is_preserved()
         "This slice must not perform the cross-check",
         "ProcessedRule-era analytics claims require current code/test/schema confirmation before being treated as current.",
         "`CalcInterpreterLine` is the current target canonical processed payroll calculation fact.",
+        "python -m pytest tests/test_domain_baseline_capture_batch.py -q",
+        "git diff --check",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_analytics_review_execution_checklist_prompt_is_preserved():
+    assert HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST_PROMPT)
+
+    for required_text in (
+        "Minerva Historical Analytics Review Execution Checklist v0.1",
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "docs/evaluation/historical_knowledge/review_execution_checklists/HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md",
+        "Review status before review is `NOT_REVIEWED`",
+        "Ingestion permitted before review is No",
+        "The full source document is available to the reviewer but not ingested.",
+        "ProcessedRule-era claims are separated from still-valid doctrine.",
+        "`CalcInterpreterLine` remains the current target canonical processed payroll calculation fact unless current code/schema review proves otherwise.",
+        "Current workforce-platform code/tests are checked.",
+        "Current ezeas-analytics docs/code/tests are checked.",
+        "Database schema/view definitions are checked where available.",
+        "Historical claims are classified using the findings template classifications.",
+        "Minerva-safe answering boundaries are recorded per claim.",
+        "Completing the checklist does not itself ingest source content.",
+        "Completing the checklist does not mutate corpus.",
+        "Completing the checklist does not call live LLM.",
+        "Completing the checklist does not change runtime behaviour.",
+        "Completing the checklist does not promote baselines or change ledger counts.",
+        "Completing the checklist does not change the current `NOT_REVIEWED` status unless a separate review decision record/update slice performs that change.",
+        "Do not perform the code/test/schema cross-check.",
+        "Do not review the Analytics Engine source yet.",
         "python -m pytest tests/test_domain_baseline_capture_batch.py -q",
         "git diff --check",
     ):

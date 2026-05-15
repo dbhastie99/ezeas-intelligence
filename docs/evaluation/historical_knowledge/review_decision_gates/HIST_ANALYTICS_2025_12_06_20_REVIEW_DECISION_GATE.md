@@ -25,6 +25,7 @@ This gate does not review, ingest, parse, extract, or approve the historical sou
 | Code/test/schema cross-check plan | `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md` |
 | Cross-check findings template | `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE.md` |
 | Cross-check findings draft placeholder | `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md` |
+| Review execution checklist | `docs/evaluation/historical_knowledge/review_execution_checklists/HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md` |
 | Domain tags | Analytics; Workforce Analytics DB; Golden Slice; ObjectTime; ProcessedRule; CalcInterpreterLine Replatform Review; Power BI; Reconciliation Reporting |
 | Date or date range | 6 December 2025 to 20 December 2025 |
 | Repository context | Historical analytics server / workforce analytics context |
@@ -55,6 +56,7 @@ Before this source can support any future backfill evidence pack decision, a fut
 - Review source content under historical knowledge controls.
 - Separate historical rationale, doctrine, backlog, implemented-state claims, superseded claims, and uncertain claims.
 - Complete the required code/test/schema cross-check.
+- Complete `docs/evaluation/historical_knowledge/review_execution_checklists/HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md`.
 - Complete a supersession assessment against the current analytics direction.
 - Record reviewer rationale and unresolved conflicts.
 - Keep ingestion permitted No unless a later governed ingestion slice changes that state.
@@ -94,6 +96,7 @@ Allowed review decisions are:
 - No decision in this gate mutates corpus by itself.
 - No decision in this gate promotes a baseline by itself.
 - No decision in this gate changes runtime behaviour.
+- No decision in this gate permits current-truth answers without the downstream governed path.
 
 ## 8. Minerva Answering Boundaries
 

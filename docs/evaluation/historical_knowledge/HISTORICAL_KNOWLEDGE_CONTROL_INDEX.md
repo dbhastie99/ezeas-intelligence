@@ -33,6 +33,7 @@ Use these durable controls together:
 | First analytics code/test/schema cross-check plan | `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md` |
 | Historical analytics cross-check findings template | `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE.md` |
 | First analytics cross-check findings draft placeholder | `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md` |
+| First analytics review execution checklist | `docs/evaluation/historical_knowledge/review_execution_checklists/HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md` |
 | First analytics inventory batch | `docs/evaluation/historical_knowledge/inventory_batches/HISTORICAL_SOURCE_INVENTORY_BATCH_2026_05_15_ANALYTICS.md` |
 
 ## 3. Source Authority Summary
@@ -107,6 +108,8 @@ The first Analytics Engine review decision gate is `docs/evaluation/historical_k
 The first Analytics Engine code/test/schema cross-check plan is `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md`. It is a planning artefact only; code/test/schema cross-check has not been performed in this slice. It does not parse the developer log, ingest historical content, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, change ledger counts, perform ledger promotion, perform historical ingestion, or approve review.
 
 The historical analytics cross-check findings template is `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE.md`. The first Analytics Engine findings draft placeholder is `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md`. Findings template creation does not perform the cross-check, does not parse or extract source content, does not mutate corpus, does not connect Code Evidence, does not call live LLM, does not change runtime behaviour, does not promote baselines, does not change ledger counts, does not perform ledger promotion, does not perform historical ingestion, and does not permit Minerva ingestion.
+
+The first Analytics Engine review execution checklist is `docs/evaluation/historical_knowledge/review_execution_checklists/HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md`. Completing that checklist is required before changing the review decision gate, but checklist creation or completion does not ingest source content, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, change ledger counts, perform ledger promotion, perform historical ingestion, or change the current `NOT_REVIEWED` status unless a separate review decision record/update slice performs that change.
 
 This slice does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does not mark any domain `BASELINE_ALREADY_EXISTS`.
 
