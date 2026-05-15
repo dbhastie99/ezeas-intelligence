@@ -261,6 +261,16 @@ HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD = (
     / "review_readiness_records"
     / "HIST_ANALYTICS_2025_12_06_20_REVIEW_READINESS_RECORD.md"
 )
+HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "review_pack_templates"
+    / "HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md"
+)
+HISTORICAL_ANALYTICS_REVIEW_PACK_DRAFT_PLACEHOLDER = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "review_pack_templates"
+    / "HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md"
+)
 HISTORICAL_REGISTERED_SOURCES_ROOT = (
     HISTORICAL_KNOWLEDGE_ROOT / "registered_sources"
 )
@@ -323,6 +333,9 @@ HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE_PROMPT = Path(
 )
 HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_analytics_source_review_readiness_record_v0_1.md"
+)
+HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_analytics_review_pack_template_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -2909,6 +2922,111 @@ def test_historical_analytics_review_readiness_record_is_filled_and_bounded():
         assert required_text in combined
 
 
+def test_historical_analytics_review_pack_template_and_placeholder_are_bounded():
+    assert HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.exists()
+    assert HISTORICAL_ANALYTICS_REVIEW_PACK_DRAFT_PLACEHOLDER.exists()
+
+    template = _read(HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE)
+    placeholder = _read(HISTORICAL_ANALYTICS_REVIEW_PACK_DRAFT_PLACEHOLDER)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    review_readiness_record = _read(HISTORICAL_ANALYTICS_REVIEW_READINESS_RECORD)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+
+    for required_section in (
+        "## 1. Purpose",
+        "## 2. Source Register Details",
+        "## 3. Source Material Boundary",
+        "## 4. Review Preconditions",
+        "## 5. Historical Architecture Summary",
+        "## 6. Still-Valid Decisions",
+        "## 7. Superseded or At-Risk Decisions",
+        "## 8. Current Code/Test/Schema Cross-Check",
+        "## 9. Current Truth Classification",
+        "## 10. Analytics Replatform Implications",
+        "## 11. Minerva Answering Implications",
+        "## 12. Backfill Evidence Pack Recommendation",
+        "## 13. Ingestion Decision",
+        "## 14. Non-Goals",
+        "## 15. Required Follow-Up Actions",
+    ):
+        assert required_section in template
+
+    for required_field in (
+        "Register ID",
+        "Source title",
+        "Original filename",
+        "Registered source type",
+        "Source tier",
+        "Review status",
+        "Ingestion permitted",
+        "Reviewer",
+        "Review date",
+        "Historical domain tags",
+        "Source summary",
+        "Historical implemented-state claims",
+        "Historical doctrine claims",
+        "Historical backlog/future-state claims",
+        "Supersession risk",
+        "Code/test/schema cross-check required",
+        "Code/test/schema cross-check result",
+        "Current implementation classification",
+        "Current doctrine classification",
+        "Current backlog classification",
+        "Minerva-safe answer boundaries",
+        "Backfill recommendation",
+        "Reviewer rationale",
+        "Follow-up actions",
+    ):
+        assert required_field in template
+
+    for required_text in (
+        "`HIST-ANALYTICS-2025-12-06-20`",
+        "Developer Log - Analytics Engine",
+        "The Analytics Engine source has not yet been reviewed.",
+        "No source content has been extracted in this slice.",
+        "No code/test/schema cross-check has been performed.",
+        "No Minerva ingestion is permitted.",
+        "`ProcessedRule`-era analytics is historical and requires review.",
+        "`CalcInterpreterLine` is the current target calculation fact source.",
+        "must not claim that old `vw_FactProcessedRule` or `vw_GS_RosterVsActual` are current canonical analytics facts unless current code/schema review proves that current state.",
+    ):
+        assert required_text in placeholder
+
+    assert (
+        "docs/evaluation/historical_knowledge/review_pack_templates/"
+        "HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md"
+        in "\n".join((control_index, backfill_process))
+    )
+    assert (
+        "docs/evaluation/historical_knowledge/review_pack_templates/"
+        "HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md"
+        in "\n".join((source_register, review_readiness_record))
+    )
+
+    combined = "\n".join(
+        (
+            template,
+            placeholder,
+            source_register,
+            review_readiness_record,
+            control_index,
+            backfill_process,
+        )
+    )
+    for required_text in (
+        "does not mutate corpus",
+        "does not connect Code Evidence",
+        "does not call live LLM",
+        "does not change runtime behaviour",
+        "does not promote baselines",
+        "does not perform ledger promotion",
+        "does not perform historical ingestion",
+        "does not ingest the source",
+    ):
+        assert required_text in combined
+
+
 def test_historical_source_review_readiness_lists_controlled_values():
     combined = "\n".join(
         _read(path)
@@ -3678,6 +3796,37 @@ def test_historical_analytics_review_readiness_record_prompt_is_preserved():
         "corpus coverage execution",
         "answer-gap execution",
         "ledger update",
+        "git diff --check",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_analytics_review_pack_template_prompt_is_preserved():
+    assert HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Historical Analytics Review Pack Template v0.1",
+        "Mode: Documentation/control-template creation only",
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "docs/evaluation/historical_knowledge/review_pack_templates/HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md",
+        "docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md",
+        "No source content has been extracted in this slice.",
+        "No code/test/schema cross-check has been performed.",
+        "No Minerva ingestion is permitted.",
+        "`ProcessedRule`-era analytics is historical and requires review.",
+        "`CalcInterpreterLine` is the current target calculation fact source.",
+        "must not claim that old `vw_FactProcessedRule` or `vw_GS_RosterVsActual` are current canonical analytics facts",
+        "Review pack draft readiness does not mutate corpus.",
+        "Review pack draft readiness does not connect Code Evidence.",
+        "Review pack draft readiness does not call live LLM.",
+        "Review pack draft readiness does not change runtime behaviour.",
+        "Review pack draft readiness does not promote baselines or change ledger counts.",
+        "Do not ingest the full developer log.",
+        "Do not parse or extract source content.",
+        "Do not review the Analytics Engine source yet.",
         "git diff --check",
     ):
         assert required_text in prompt

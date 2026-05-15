@@ -26,7 +26,7 @@ This source remains historical source material, not current final truth.
 | Date or date range | 6 December 2025 to 20 December 2025 |
 | Repository context | Historical analytics server / workforce analytics context |
 | Related commits if known | unknown |
-| Related control artefacts | `HISTORICAL_SOURCE_REGISTER.md`; `HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` |
+| Related control artefacts | `HISTORICAL_SOURCE_REGISTER.md`; `HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md`; `docs/evaluation/historical_knowledge/review_pack_templates/HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md`; `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md` |
 
 ## 3. Review Control State
 
@@ -82,3 +82,5 @@ Future review must cross-check this source against current code, tests, schema, 
 This slice performs no corpus mutation, no Code Evidence integration, no live LLM call, no runtime change, no baseline promotion, no ledger promotion, and no historical ingestion.
 
 This record does not ingest historical chats, does not ingest the full developer log, does not parse or extract source content, does not ingest doctrine documents, does not ingest code, does not review the Analytics Engine source, does not implement DB writes, migrations, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, ezeas-analytics changes, runtime changes, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, ledger promotion, or generated artefact creation.
+
+The review pack draft placeholder is `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md`. It is a placeholder only; it does not extract source content, does not perform code/test/schema cross-checking, does not permit Minerva ingestion, and does not claim that old `vw_FactProcessedRule` or `vw_GS_RosterVsActual` are current canonical analytics facts.
