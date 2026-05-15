@@ -39,6 +39,7 @@ Use these durable repository controls together:
 | Recapture planning | `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK.md` |
 | Promotion planning | `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_PROMOTION_PLANNING_RUNBOOK.md` |
 | Promotion execution guardrail | `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL.md` |
+| Formal evidence control model closeout/state summary | `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT_2026_05_15.md` |
 | Tax / PAYG current decision record | `docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` |
 | Imports / Actuals current decision record | `docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` |
 
@@ -109,6 +110,8 @@ Future Codex slices should check this control index before changing formal evide
 
 Future Codex slices must also read the lower-level artefacts listed in the Control Artefact Map before changing any controlled state.
 
+Future Minerva/Codex work should start at this control index and use `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT_2026_05_15.md` as the closeout/state summary to understand what was created, why it exists, what remains blocked, and what future slices are allowed or forbidden to do.
+
 Any future status change must update the relevant decision record and index files in a separate explicit slice with focused tests. Any future governed ingestion, recapture, promotion, or ledger update must be explicitly scoped and must not be inferred from this index.
 
 ## 9. Non-Goals
@@ -156,3 +159,5 @@ It does not change completed-domain ledger counts. It does not mark any domain a
 9. Run any possible explicit promotion slice only after final preflight and explicit user approval.
 
 This slice prompt is preserved at `docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_v0_1.md`.
+
+This closeout-link slice prompt is preserved at `docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_model_index_closeout_link_v0_1.md`.
