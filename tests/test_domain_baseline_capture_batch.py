@@ -276,6 +276,11 @@ HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE = (
     / "review_decision_gates"
     / "HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md"
 )
+HISTORICAL_ANALYTICS_DECISION_RECORD_NOT_REVIEWED = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "review_decision_records"
+    / "HIST_ANALYTICS_2025_12_06_20_DECISION_RECORD_NOT_REVIEWED.md"
+)
 HISTORICAL_ANALYTICS_CODE_CROSSCHECK_PLAN = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "crosscheck_plans"
@@ -373,6 +378,9 @@ HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE_PROMPT = Path(
 )
 HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_analytics_review_execution_checklist_v0_1.md"
+)
+HISTORICAL_ANALYTICS_NOT_REVIEWED_DECISION_RECORD_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_analytics_not_reviewed_decision_record_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -2957,6 +2965,80 @@ def test_historical_analytics_review_readiness_record_is_filled_and_bounded():
         "no historical ingestion",
     ):
         assert required_text in combined
+
+
+def test_historical_analytics_not_reviewed_decision_record_is_bounded():
+    assert HISTORICAL_ANALYTICS_DECISION_RECORD_NOT_REVIEWED.exists()
+    assert HISTORICAL_ANALYTICS_NOT_REVIEWED_DECISION_RECORD_PROMPT.exists()
+
+    record = _read(HISTORICAL_ANALYTICS_DECISION_RECORD_NOT_REVIEWED)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    decision_gate = _read(HISTORICAL_ANALYTICS_REVIEW_DECISION_GATE)
+    checklist = _read(HISTORICAL_ANALYTICS_REVIEW_EXECUTION_CHECKLIST)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+    decision_record_path = (
+        "docs/evaluation/historical_knowledge/review_decision_records/"
+        "HIST_ANALYTICS_2025_12_06_20_DECISION_RECORD_NOT_REVIEWED.md"
+    )
+
+    for required_text in (
+        "Register ID | `HIST-ANALYTICS-2025-12-06-20`",
+        "Source title | Developer Log - Analytics Engine",
+        "Decision status | `NOT_REVIEWED`",
+        "Review status | `NOT_REVIEWED`",
+        "Ingestion permitted | No",
+        "Backfill evidence pack permitted | No",
+        "Governed ingestion permitted | No",
+        "Current truth answering permitted | No",
+        "Code/test/schema cross-check completed | No",
+        "Source content extracted | No",
+        "Historical source ingested | No",
+        "ProcessedRule-era analytics remains historical pending review.",
+        "CalcInterpreterLine remains the current target canonical processed payroll calculation fact.",
+        "Minerva must not use the source to answer current analytics implementation questions.",
+        "Minerva must not claim `vw_FactProcessedRule` or `vw_GS_RosterVsActual` are current canonical analytics facts based on this source.",
+        "The source has not yet been formally reviewed.",
+        "The source has not been cross-checked against current workforce-platform code/tests/schema.",
+        "The source has not been cross-checked against current ezeas-analytics architecture/code/tests.",
+        "Therefore, Minerva must not treat the source as current platform truth.",
+    ):
+        assert required_text in record
+
+    assert decision_record_path in source_register
+    assert decision_record_path in decision_gate or decision_record_path in checklist
+    assert decision_record_path in control_index
+    assert decision_record_path in backfill_process
+
+    combined = "\n".join(
+        (record, source_register, decision_gate, checklist, control_index, backfill_process)
+    )
+    for boundary_text in (
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM call",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no historical ingestion",
+    ):
+        assert boundary_text in combined
+
+    for non_goal in (
+        "perform review",
+        "perform code/test/schema cross-check",
+        "parse or extract the developer log",
+        "ingest historical content",
+        "create a backfill evidence pack",
+        "permit governed ingestion",
+        "mutate corpus",
+        "connect Code Evidence",
+        "call live LLM",
+        "change runtime behaviour",
+        "promote baseline",
+        "change ledger counts",
+    ):
+        assert non_goal in record
 
 
 def test_historical_analytics_review_pack_template_and_placeholder_are_bounded():
