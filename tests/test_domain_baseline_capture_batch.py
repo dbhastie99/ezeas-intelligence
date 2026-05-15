@@ -199,6 +199,10 @@ FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT_2026_05_15.md"
 )
+FORMAL_EVIDENCE_CURRENT_STATE_SUMMARY = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_CURRENT_STATE_SUMMARY_2026_05_15.md"
+)
 SOURCE_EVIDENCE_DRAFTS_README = Path("docs/evaluation/source_evidence_drafts/README.md")
 FORMAL_EVIDENCE_CONTROL_README_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md"
@@ -224,6 +228,22 @@ FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL_PROMPT = Path(
 FORMAL_EVIDENCE_CONTROL_INDEX_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_v0_1.md"
 )
+HISTORICAL_KNOWLEDGE_ROOT = Path("docs/evaluation/historical_knowledge")
+HISTORICAL_KNOWLEDGE_CONTROL_INDEX = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md"
+)
+HISTORICAL_KNOWLEDGE_GAP_REGISTER = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_KNOWLEDGE_GAP_REGISTER.md"
+)
+HISTORICAL_SOURCE_TIERING_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_TIERING_MODEL.md"
+)
+HISTORICAL_BACKFILL_PROCESS = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BACKFILL_PROCESS.md"
+)
+HISTORICAL_KNOWLEDGE_CONTROL_INDEX_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_knowledge_control_index_v0_1.md"
+)
 FORMAL_EVIDENCE_CONTROL_INDEX_README_LINK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_readme_link_v0_1.md"
 )
@@ -232,6 +252,9 @@ FORMAL_EVIDENCE_CONTROL_INDEX_ROOT_README_LINK_PROMPT = Path(
 )
 FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_model_closeout_v0_1.md"
+)
+FORMAL_EVIDENCE_CURRENT_STATE_SUMMARY_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_current_state_summary_v0_1.md"
 )
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
@@ -1521,6 +1544,86 @@ def test_formal_evidence_control_model_closeout_records_non_operational_boundari
         assert blocked_claim not in closeout
 
 
+def test_formal_evidence_current_state_summary_records_blocked_operator_state():
+    assert FORMAL_EVIDENCE_CURRENT_STATE_SUMMARY.exists()
+    assert FORMAL_EVIDENCE_CURRENT_STATE_SUMMARY_PROMPT.exists()
+
+    summary = _read(FORMAL_EVIDENCE_CURRENT_STATE_SUMMARY)
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT_2026_05_15.md",
+        "docs/codex_prompts/2026-05-15_minerva_formal_evidence_current_state_summary_v0_1.md",
+    ):
+        assert referenced_path in summary
+
+    for required_text in (
+        "## Current Controlled Domains",
+        "| Domain | Baseline status | Review status | Governed ingestion permitted | Recapture permitted | Promotion permitted | Promotion execution permitted |",
+        "| Tax / PAYG | `BASELINE_REQUIRED` | `NOT_REVIEWED` | No | No | No | No |",
+        "| Imports / Actuals | `BASELINE_REQUIRED` | `NOT_REVIEWED` | No | No | No | No |",
+        "Tax / PAYG remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Imports / Actuals remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Governed ingestion permitted: No.",
+        "Recapture permitted: No.",
+        "Promotion permitted: No.",
+        "Promotion execution permitted: No.",
+        "Minerva may explain Tax / PAYG doctrine, evidence, implementation state, and current gaps, but must not calculate PAYG withholding.",
+        "Imports / Actuals is not merely file upload or CSV parsing.",
+    ):
+        assert required_text in summary
+
+
+def test_formal_evidence_current_state_summary_records_boundaries_and_next_actions():
+    summary = _read(FORMAL_EVIDENCE_CURRENT_STATE_SUMMARY)
+
+    for boundary in (
+        "No review approval occurred.",
+        "No governed ingestion occurred.",
+        "No corpus mutation occurred.",
+        "No recapture occurred.",
+        "No benchmark run occurred.",
+        "No corpus coverage run occurred.",
+        "No answer-gap run occurred.",
+        "No promotion occurred.",
+        "No ledger update occurred.",
+        "No runtime change occurred.",
+        "No endpoint change occurred.",
+        "No UI change occurred.",
+        "No workforce-platform change occurred.",
+        "No award-configurator-v1 change occurred.",
+        "No DB write, migration, Code Evidence integration, live LLM call, generated artefact creation, ledger promotion, or baseline promotion was performed.",
+    ):
+        assert boundary in summary
+
+    for required_text in (
+        "## Next Allowed Actions",
+        "Future work may assign a reviewer.",
+        "Future work may perform an explicit review slice.",
+        "Future work may create `NEEDS_REVISION` or `REVIEWED_READY_FOR_INGESTION` decision records.",
+        "Future work may plan governed ingestion only after review readiness and the required review decision state exist.",
+        "Future work must not skip gates.",
+        "## Blocked Actions",
+        "Corpus ingestion remains blocked for Tax / PAYG and Imports / Actuals.",
+        "Recapture remains blocked for Tax / PAYG and Imports / Actuals.",
+        "Promotion remains blocked for Tax / PAYG and Imports / Actuals.",
+        "Ledger changes remain blocked for Tax / PAYG and Imports / Actuals.",
+    ):
+        assert required_text in summary
+
+    for blocked_claim in (
+        "governed ingestion has occurred",
+        "recapture has occurred",
+        "promotion has occurred",
+        "ledger has been promoted",
+        "Tax / PAYG is `BASELINE_ALREADY_EXISTS`",
+        "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
+        "Tax / PAYG is BASELINE_ALREADY_EXISTS",
+        "Imports / Actuals is BASELINE_ALREADY_EXISTS",
+    ):
+        assert blocked_claim not in summary
+
+
 def test_formal_evidence_review_readiness_checklist_records_required_gates():
     assert FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.exists()
 
@@ -2106,6 +2209,138 @@ def test_formal_evidence_control_index_preserves_current_blocks_and_boundaries()
         assert blocked_claim not in index
 
 
+def test_historical_knowledge_control_files_exist_and_are_linked():
+    for path in (
+        HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+        HISTORICAL_KNOWLEDGE_GAP_REGISTER,
+        HISTORICAL_SOURCE_TIERING_MODEL,
+        HISTORICAL_BACKFILL_PROCESS,
+    ):
+        assert path.exists()
+
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    for referenced_path in (
+        "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md",
+    ):
+        assert referenced_path in index
+
+
+def test_historical_knowledge_gap_register_records_incomplete_pre_control_state():
+    gap_register = _read(HISTORICAL_KNOWLEDGE_GAP_REGISTER)
+
+    for required_text in (
+        "pre-control-model historical knowledge is incomplete",
+        "not yet captured to the same durable standard as the new formal-evidence model",
+        "does not mean historical knowledge has been reviewed, backfilled, ingested, or promoted",
+    ):
+        assert required_text in gap_register
+
+
+def test_historical_source_tiering_model_defines_three_source_tiers():
+    tiering_model = _read(HISTORICAL_SOURCE_TIERING_MODEL)
+
+    for required_text in (
+        "| Tier 1 | Code and tests | Highest authority for implemented state |",
+        "| Tier 2 | Developer logs, hardening logs, and platform doctrine | Curated decision/rationale sources requiring review |",
+        "| Tier 3 | Historical chats and continuance prompts | Raw historical source material, not final truth |",
+        "Historical chats must not be ingested directly as truth.",
+        "Developer logs and doctrine documents are valuable but may include planned, partial, superseded, or backlog work",
+        "Code/tests must be used to confirm implemented behaviour, but code alone may not explain why.",
+    ):
+        assert required_text in tiering_model
+
+
+def test_historical_backfill_process_records_classifications_and_chat_boundary():
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+
+    for classification in (
+        "IMPLEMENTED_AND_TESTED",
+        "IMPLEMENTED_NOT_FULLY_TESTED",
+        "DOCUMENTED_DOCTRINE",
+        "DOCUMENTED_BACKLOG",
+        "PLANNED_NOT_IMPLEMENTED",
+        "SUPERSEDED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+    ):
+        assert classification in backfill_process
+
+    for required_text in (
+        "Identify historical source material",
+        "Register source provenance",
+        "Classify source tier",
+        "Extract candidate decisions",
+        "Cross-check against code/tests/logs/doctrine/commits",
+        "Classify implementation state",
+        "Create a curated backfill evidence pack",
+        "Add a review gate",
+        "Only later consider governed ingestion",
+        "Historical chats and continuance prompts are raw source material, not final truth.",
+        "Historical chats must not be ingested directly as truth.",
+    ):
+        assert required_text in backfill_process
+
+
+def test_historical_knowledge_documents_preserve_non_ingestion_boundaries():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_KNOWLEDGE_GAP_REGISTER,
+            HISTORICAL_SOURCE_TIERING_MODEL,
+            HISTORICAL_BACKFILL_PROCESS,
+        )
+    )
+
+    for required_text in (
+        "does not consume historical chats",
+        "does not ingest developer logs",
+        "does not ingest doctrine documents",
+        "does not ingest code",
+        "does not mutate corpus",
+        "does not run live LLM",
+        "does not connect Code Evidence",
+        "does not change runtime behaviour",
+        "does not promote baselines",
+        "does not change ledger counts",
+        "does not implement DB writes",
+        "does not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, or generated artefact creation",
+        "does not mark any domain `REVIEWED_READY_FOR_INGESTION`",
+        "does not mark any domain `BASELINE_ALREADY_EXISTS`",
+    ):
+        assert required_text in combined
+
+
+def test_historical_knowledge_priority_domains_are_listed():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_KNOWLEDGE_GAP_REGISTER,
+            HISTORICAL_BACKFILL_PROCESS,
+        )
+    )
+
+    for priority_domain in (
+        "Worker Story",
+        "ObjectTime / Source Truth",
+        "Process Periods / PayRun Lifecycle",
+        "Payroll Buckets / Bases / Totals",
+        "Deductions and Obligations",
+        "Tax / PAYG",
+        "Imports / Actuals",
+        "Leave Workflow / Annual Leave",
+        "Award Configurator",
+        "Asphalt Award Build",
+    ):
+        assert priority_domain in combined
+
+    assert "Tax / PAYG and Imports / Actuals remain governed by the formal evidence control model" in combined
+    assert "remain `BASELINE_REQUIRED` and `NOT_REVIEWED`" in combined
+
+
 def test_source_evidence_readme_links_control_index_as_master_starting_point():
     readme = _read(SOURCE_EVIDENCE_DRAFTS_README)
 
@@ -2380,6 +2615,39 @@ def test_formal_evidence_control_index_prompt_is_preserved():
         "Do not change ledger counts.",
         "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
         "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_knowledge_control_index_prompt_is_preserved():
+    assert HISTORICAL_KNOWLEDGE_CONTROL_INDEX_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Historical Knowledge Control Index v0.1",
+        "Mode: Documentation/control-model hardening only",
+        "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md",
+        "pre-control-model historical knowledge is incomplete",
+        "Tier 1 code and tests as highest authority for implemented state",
+        "Tier 2 developer logs, hardening logs, and platform doctrine",
+        "Tier 3 historical chats and continuance prompts",
+        "Historical chats must not be ingested directly as truth",
+        "IMPLEMENTED_AND_TESTED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+        "Only later consider governed ingestion",
+        "does not mutate corpus",
+        "does not run live LLM",
+        "does not connect Code Evidence",
+        "does not change runtime behaviour",
+        "does not promote baselines",
+        "does not change ledger counts",
+        "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
+        "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
+        "Tax / PAYG and Imports / Actuals remain governed by the formal evidence control model",
     ):
         assert required_text in prompt
 
