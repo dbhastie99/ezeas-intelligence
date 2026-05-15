@@ -26,7 +26,7 @@ This source remains historical source material, not current final truth.
 | Date or date range | 6 December 2025 to 20 December 2025 |
 | Repository context | Historical analytics server / workforce analytics context |
 | Related commits if known | unknown |
-| Related control artefacts | `HISTORICAL_SOURCE_REGISTER.md`; `HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md`; `docs/evaluation/historical_knowledge/review_pack_templates/HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md`; `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md`; `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md`; `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md` |
+| Related control artefacts | `HISTORICAL_SOURCE_REGISTER.md`; `HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`; `HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md`; `docs/evaluation/historical_knowledge/review_pack_templates/HISTORICAL_ANALYTICS_REVIEW_PACK_TEMPLATE.md`; `docs/evaluation/historical_knowledge/review_pack_templates/HIST_ANALYTICS_2025_12_06_20_REVIEW_PACK_DRAFT_PLACEHOLDER.md`; `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md`; `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md`; `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE.md`; `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md` |
 
 ## 3. Review Control State
 
@@ -70,6 +70,8 @@ This source remains historical source material, not current final truth.
 Future review must cross-check this source against current code, tests, schema, view definitions, commits, and analytics architecture docs.
 
 The controlled future code/test/schema cross-check plan is `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md`. Code/test/schema cross-check has not been performed in this slice.
+
+The future cross-check findings must be recorded using `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE.md`. The current draft placeholder is `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md`; it records no findings and permits no Minerva ingestion.
 
 ## 6. Recommendation
 

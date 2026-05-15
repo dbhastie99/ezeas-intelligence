@@ -24,6 +24,8 @@ Historical analytics review decision gating uses `docs/evaluation/historical_kno
 
 Historical analytics code/test/schema cross-check planning uses `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md`. The plan is control-only: code/test/schema cross-check has not been performed in this slice, and the Analytics Engine developer log remains `NOT_REVIEWED` with ingestion permitted `No`.
 
+Historical analytics cross-check findings must be recorded using `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE.md`. The first Analytics Engine findings draft placeholder is `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md`; it is a placeholder only and records that no code/test/schema evidence has been reviewed, no historical source content has been parsed or extracted, no findings have been made, and no Minerva ingestion is permitted.
+
 ## 2. Implementation-State Classifications
 
 Use exactly one current classification for each candidate decision unless the review gate records why multiple states apply:
@@ -116,3 +118,5 @@ Review pack draft readiness does not mutate corpus, does not connect Code Eviden
 The Analytics Engine review decision gate at `docs/evaluation/historical_knowledge/review_decision_gates/HIST_ANALYTICS_2025_12_06_20_REVIEW_DECISION_GATE.md` does not ingest historical content, does not parse or extract source content, does not create a backfill evidence pack, and does not permit governed ingestion while the source remains `NOT_REVIEWED`.
 
 The Analytics Engine code/test/schema cross-check plan at `docs/evaluation/historical_knowledge/crosscheck_plans/HIST_ANALYTICS_2025_12_06_20_CODE_CROSSCHECK_PLAN.md` does not perform the cross-check, does not ingest historical content, does not parse or extract source content, does not create a backfill evidence pack, does not mutate corpus, does not connect Code Evidence, does not call live LLM, does not change runtime behaviour, does not promote baselines, does not change ledger counts, does not perform ledger promotion, and does not perform historical ingestion.
+
+The Analytics Engine cross-check findings template and draft placeholder at `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HISTORICAL_ANALYTICS_CROSSCHECK_FINDINGS_TEMPLATE.md` and `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md` do not perform the cross-check, ingest historical content, parse or extract source content, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, change ledger counts, perform ledger promotion, perform historical ingestion, or permit governed ingestion.
