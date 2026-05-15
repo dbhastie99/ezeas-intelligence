@@ -163,6 +163,10 @@ FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md"
 )
+TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
+    Path("docs/evaluation/source_evidence_drafts/tax_payg")
+    / "TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md"
+)
 
 
 def _read(path: Path) -> str:
@@ -1150,6 +1154,50 @@ def test_formal_evidence_review_decision_record_template_does_not_overclaim_appr
         "review approval is implied",
     ):
         assert overclaim not in template
+
+
+def test_tax_payg_not_reviewed_decision_record_blocks_ingestion_recapture_and_promotion():
+    assert TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED.exists()
+
+    record = _read(TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED)
+
+    for referenced_path in (
+        "docs/evaluation/worker_story_baselines/tax_payg/v0_1/FORMAL_EVIDENCE_GAP_PLAN.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md",
+    ):
+        assert referenced_path in record
+
+    for required_text in (
+        "Domain name: `Tax / PAYG`",
+        "Domain slug: `tax_payg`",
+        "Baseline status before review: `BASELINE_REQUIRED`",
+        "Review gate status before decision: `NOT_REVIEWED`",
+        "Selected decision status: `NOT_REVIEWED`",
+        "Reviewer name: not assigned",
+        "Review date: not recorded",
+        "Doctrine review outcome: not reviewed",
+        "Implementation-state review outcome: not reviewed",
+        "Evidence-gap review outcome: not reviewed",
+        "Non-overclaiming review outcome: not reviewed",
+        "Governed ingestion permitted: No",
+        "Recapture permitted: No",
+        "Promotion permitted: No",
+        "Minerva must not calculate PAYG withholding",
+        "Tax / PAYG remains `BASELINE_REQUIRED`",
+        "No Tax / PAYG corpus mutation has occurred in this slice",
+        "No Tax / PAYG benchmark recapture has occurred in this slice",
+        "No Tax / PAYG ledger promotion occurred in this slice",
+    ):
+        assert required_text in record
+
+    assert "Selected decision status: `REVIEWED_READY_FOR_INGESTION`" not in record
+    assert "Tax / PAYG is `BASELINE_ALREADY_EXISTS`" not in record
+    assert "governed ingestion has occurred" not in record
+    assert "corpus has been mutated" not in record
+    assert "ledger has been promoted" not in record
 
 
 def test_tax_payg_review_notes_reference_review_gate_and_preserve_not_promoted_state():
