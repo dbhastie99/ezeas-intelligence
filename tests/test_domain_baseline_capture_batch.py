@@ -187,6 +187,10 @@ FORMAL_EVIDENCE_PROMOTION_PLANNING_RUNBOOK = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_PROMOTION_PLANNING_RUNBOOK.md"
 )
+FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL.md"
+)
 SOURCE_EVIDENCE_DRAFTS_README = Path("docs/evaluation/source_evidence_drafts/README.md")
 FORMAL_EVIDENCE_CONTROL_README_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md"
@@ -205,6 +209,9 @@ FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK_PROMPT = Path(
 )
 FORMAL_EVIDENCE_PROMOTION_PLANNING_RUNBOOK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_promotion_planning_runbook_v0_1.md"
+)
+FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_promotion_execution_guardrail_v0_1.md"
 )
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
@@ -1821,6 +1828,91 @@ def test_formal_evidence_promotion_planning_runbook_preserves_blocked_states():
         assert blocked_claim not in runbook
 
 
+def test_formal_evidence_promotion_execution_guardrail_records_required_controls():
+    assert FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL.exists()
+
+    guardrail = _read(FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL)
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/README.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_GOVERNED_INGESTION_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_PROMOTION_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+    ):
+        assert referenced_path in guardrail
+
+    for preflight_requirement in (
+        "Latest decision record selected status is `REVIEWED_READY_FOR_INGESTION`.",
+        "Governed ingestion slice completed.",
+        "Corpus mutation evidence recorded.",
+        "Recapture slice completed.",
+        "Benchmark results recorded.",
+        "Corpus coverage results recorded.",
+        "Answer-gap results recorded.",
+        "Benchmark pass/failure status accepted.",
+        "No unresolved `MISSING` evidence groups unless accepted with written rationale.",
+        "Answer-gap `GOOD` or accepted under documented policy.",
+        "Generated artefact policy satisfied.",
+        "Reviewer identity/date/rationale recorded.",
+        "Ledger update diff planned.",
+        "Rollback/supersession notes preserved.",
+        "Explicit user approval for ledger promotion.",
+    ):
+        assert preflight_requirement in guardrail
+
+    for required_text in (
+        "Current Tax / PAYG and Imports / Actuals records are `NOT_REVIEWED`, so promotion execution is currently blocked for both domains.",
+        "Actual promotion must be a separate explicit execution slice after this final preflight passes.",
+        "This guardrail alone does not mutate corpus.",
+        "This guardrail alone does not run benchmark.",
+        "This guardrail alone does not run corpus coverage.",
+        "This guardrail alone does not run answer-gap reporting.",
+        "This guardrail alone does not promote a baseline.",
+        "This guardrail alone does not change runtime behaviour.",
+        "This guardrail alone does not change ledger counts.",
+        "This guardrail alone does not permit Minerva to answer as if promotion has happened.",
+        "For Tax / PAYG, Minerva may explain Tax / PAYG doctrine, source evidence, implementation state, and known gaps, but must not calculate PAYG withholding.",
+        "For Imports / Actuals, Minerva must preserve that Imports / Actuals is not merely file upload or CSV parsing.",
+    ):
+        assert required_text in guardrail
+
+
+def test_formal_evidence_promotion_execution_guardrail_preserves_blocked_states():
+    guardrail = _read(FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL)
+
+    for required_text in (
+        "| Tax / PAYG | `BASELINE_REQUIRED` | `docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No |",
+        "| Imports / Actuals | `BASELINE_REQUIRED` | `docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No |",
+        "Tax / PAYG remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Imports / Actuals remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Governed ingestion permitted: No.",
+        "Recapture permitted: No.",
+        "Promotion permitted: No.",
+        "It does not change completed-domain ledger counts.",
+        "It does not mark Tax / PAYG or Imports / Actuals as `REVIEWED_READY_FOR_INGESTION`.",
+        "It does not mark Tax / PAYG or Imports / Actuals as `BASELINE_ALREADY_EXISTS`.",
+    ):
+        assert required_text in guardrail
+
+    for blocked_claim in (
+        "promotion has occurred",
+        "benchmark has passed",
+        "corpus coverage has passed",
+        "answer gap is GOOD",
+        "ledger has been promoted",
+        "Tax / PAYG is BASELINE_ALREADY_EXISTS",
+        "Tax / PAYG is `BASELINE_ALREADY_EXISTS`",
+        "Imports / Actuals is BASELINE_ALREADY_EXISTS",
+        "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
+    ):
+        assert blocked_claim not in guardrail
+
+
 def test_formal_evidence_control_readme_prompt_is_preserved():
     assert FORMAL_EVIDENCE_CONTROL_README_PROMPT.exists()
 
@@ -1970,6 +2062,42 @@ def test_formal_evidence_promotion_planning_runbook_prompt_is_preserved():
         "generated artefact policy satisfied",
         "ledger update plan documented",
         "rollback/supersession notes preserved",
+        "does not run benchmark",
+        "does not run corpus coverage",
+        "does not run answer-gap reporting",
+        "does not promote a baseline",
+        "Do not change ledger counts.",
+        "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
+        "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
+    ):
+        assert required_text in prompt
+
+
+def test_formal_evidence_promotion_execution_guardrail_prompt_is_preserved():
+    assert FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL_PROMPT.exists()
+
+    prompt = _read(FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Formal Evidence Promotion Execution Guardrail v0.1",
+        "Mode: Documentation/control-guardrail hardening only",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL.md",
+        "tests/test_domain_baseline_capture_batch.py",
+        "latest decision record selected status `REVIEWED_READY_FOR_INGESTION`",
+        "governed ingestion slice completed",
+        "corpus mutation evidence recorded",
+        "recapture slice completed",
+        "benchmark results recorded",
+        "corpus coverage results recorded",
+        "answer-gap results recorded",
+        "benchmark pass/failure status accepted",
+        "no unresolved `MISSING` evidence groups unless accepted with written rationale",
+        "answer-gap `GOOD` or accepted under documented policy",
+        "generated artefact policy satisfied",
+        "reviewer identity/date/rationale recorded",
+        "ledger update diff planned",
+        "rollback/supersession notes preserved",
+        "explicit user approval for ledger promotion",
         "does not run benchmark",
         "does not run corpus coverage",
         "does not run answer-gap reporting",
