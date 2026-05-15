@@ -191,6 +191,10 @@ FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL.md"
 )
+FORMAL_EVIDENCE_CONTROL_INDEX = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_CONTROL_INDEX.md"
+)
 SOURCE_EVIDENCE_DRAFTS_README = Path("docs/evaluation/source_evidence_drafts/README.md")
 FORMAL_EVIDENCE_CONTROL_README_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md"
@@ -212,6 +216,9 @@ FORMAL_EVIDENCE_PROMOTION_PLANNING_RUNBOOK_PROMPT = Path(
 )
 FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_promotion_execution_guardrail_v0_1.md"
+)
+FORMAL_EVIDENCE_CONTROL_INDEX_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_v0_1.md"
 )
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
@@ -1913,6 +1920,93 @@ def test_formal_evidence_promotion_execution_guardrail_preserves_blocked_states(
         assert blocked_claim not in guardrail
 
 
+def test_formal_evidence_control_index_records_master_navigation_and_lifecycle():
+    assert FORMAL_EVIDENCE_CONTROL_INDEX.exists()
+
+    index = _read(FORMAL_EVIDENCE_CONTROL_INDEX)
+
+    for section in (
+        "## 1. Purpose",
+        "## 2. Scope",
+        "## 3. Control Artefact Map",
+        "## 4. Formal Evidence Lifecycle",
+        "## 5. Current Controlled Domains",
+        "## 6. Current Permission State",
+        "## 7. How Minerva Should Use This Index",
+        "## 8. How Codex Should Use This Index",
+        "## 9. Non-Goals",
+        "## 10. Follow-Up Workflow",
+    ):
+        assert section in index
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/README.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_GOVERNED_INGESTION_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_PROMOTION_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+    ):
+        assert referenced_path in index
+
+    for lifecycle_step in (
+        "evidence gap identified",
+        "-> formal evidence gap plan",
+        "-> formal source-evidence draft",
+        "-> formal evidence review gate",
+        "-> review-gate index",
+        "-> decision record template",
+        "-> filled decision record",
+        "-> decision-record index",
+        "-> review readiness checklist",
+        "-> status transition runbook",
+        "-> governed ingestion planning",
+        "-> recapture planning",
+        "-> promotion planning",
+        "-> promotion execution guardrail",
+        "-> possible explicit promotion slice only after final preflight",
+    ):
+        assert lifecycle_step in index
+
+
+def test_formal_evidence_control_index_preserves_current_blocks_and_boundaries():
+    index = _read(FORMAL_EVIDENCE_CONTROL_INDEX)
+
+    for required_text in (
+        "| Tax / PAYG | `BASELINE_REQUIRED` | `docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No | No |",
+        "| Imports / Actuals | `BASELINE_REQUIRED` | `docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No | No |",
+        "Tax / PAYG remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Imports / Actuals remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Governed ingestion permitted: No.",
+        "Recapture permitted: No.",
+        "Promotion permitted: No.",
+        "Promotion execution permitted: No.",
+        "No control artefact by itself mutates corpus, runs benchmark, runs corpus coverage, runs answer-gap reporting, changes runtime behaviour, changes ledger counts, or promotes a baseline.",
+        "For Tax / PAYG, Minerva may explain Tax / PAYG doctrine, source evidence, implementation state, and known gaps, but must not calculate PAYG withholding.",
+        "For Imports / Actuals, Minerva must preserve that Imports / Actuals is not merely file upload or CSV parsing.",
+        "Future Codex slices should check this control index before changing formal evidence status, ingestion, recapture, promotion, or ledger state.",
+    ):
+        assert required_text in index
+
+    for blocked_claim in (
+        "governed ingestion has occurred",
+        "recapture has occurred",
+        "promotion has occurred",
+        "ledger has been promoted",
+        "Tax / PAYG is BASELINE_ALREADY_EXISTS",
+        "Tax / PAYG is `BASELINE_ALREADY_EXISTS`",
+        "Imports / Actuals is BASELINE_ALREADY_EXISTS",
+        "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
+    ):
+        assert blocked_claim not in index
+
+
 def test_formal_evidence_control_readme_prompt_is_preserved():
     assert FORMAL_EVIDENCE_CONTROL_README_PROMPT.exists()
 
@@ -2102,6 +2196,43 @@ def test_formal_evidence_promotion_execution_guardrail_prompt_is_preserved():
         "does not run corpus coverage",
         "does not run answer-gap reporting",
         "does not promote a baseline",
+        "Do not change ledger counts.",
+        "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
+        "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
+    ):
+        assert required_text in prompt
+
+
+def test_formal_evidence_control_index_prompt_is_preserved():
+    assert FORMAL_EVIDENCE_CONTROL_INDEX_PROMPT.exists()
+
+    prompt = _read(FORMAL_EVIDENCE_CONTROL_INDEX_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Formal Evidence Control Index v0.1",
+        "Mode: Documentation/control-index hardening only",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md",
+        "tests/test_domain_baseline_capture_batch.py",
+        "evidence gap identified",
+        "-> formal evidence gap plan",
+        "-> formal source-evidence draft",
+        "-> formal evidence review gate",
+        "-> review-gate index",
+        "-> decision record template",
+        "-> filled decision record",
+        "-> decision-record index",
+        "-> review readiness checklist",
+        "-> status transition runbook",
+        "-> governed ingestion planning",
+        "-> recapture planning",
+        "-> promotion planning",
+        "-> promotion execution guardrail",
+        "-> possible explicit promotion slice only after final preflight",
+        "governed ingestion permitted: No",
+        "recapture permitted: No",
+        "promotion permitted: No",
+        "promotion execution permitted: No",
+        "no control artefact by itself mutates corpus, runs benchmark, runs corpus coverage, runs answer-gap reporting, changes runtime, changes ledger counts, or promotes a baseline",
         "Do not change ledger counts.",
         "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
         "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
