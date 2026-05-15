@@ -253,6 +253,9 @@ HISTORICAL_BACKFILL_PROCESS = (
 HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md"
 )
+HISTORICAL_BATCH_REGISTER_INDEX = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REGISTER_INDEX.md"
+)
 HISTORICAL_BATCH_REGISTER_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REGISTER_TEMPLATE.md"
 )
@@ -402,6 +405,9 @@ HISTORICAL_ANALYTICS_NOT_REVIEWED_DECISION_RECORD_PROMPT = Path(
 HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_batch_registration_and_triage_model_v0_1.md"
 )
+HISTORICAL_BATCH_REGISTER_INDEX_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_batch_register_index_v0_1.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_developer_log_batch_register_v0_1.md"
 )
@@ -441,10 +447,12 @@ def _read(path: Path) -> str:
 
 def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.exists()
+    assert HISTORICAL_BATCH_REGISTER_INDEX.exists()
     assert HISTORICAL_BATCH_REGISTER_TEMPLATE.exists()
     assert HISTORICAL_BATCH_TRIAGE_PROCESS.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.exists()
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
+    assert HISTORICAL_BATCH_REGISTER_INDEX_PROMPT.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE_PROMPT.exists()
@@ -463,6 +471,98 @@ def test_historical_batch_registration_model_controls_default_path_and_truth_bou
     assert "`Ingestion permitted` defaults to `No`" in model
     assert "Only high-value/high-risk sources graduate to the full review-readiness / decision-gate / cross-check path" in model
     assert "Minerva must not treat batch-registered sources as current truth unless those sources are later reviewed, backfilled, and governed" in model
+
+
+def test_historical_batch_register_index_controls_discovery_and_existing_batch():
+    index = _read(HISTORICAL_BATCH_REGISTER_INDEX)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    batch_register = _read(HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER)
+
+    assert "HISTORICAL_BATCH_REGISTER_INDEX.md" in control_index
+    assert "HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md" in index
+    assert "HIST-DEVLOG-BATCH-2026-05-15" in index
+    assert "| HIST-DEVLOG-BATCH-2026-05-15 |" in index
+    assert "| `NOT_REVIEWED` | No | No |" in index
+    assert "This batch register is indexed by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md`" in batch_register
+
+    for column in (
+        "Batch ID",
+        "Batch register path",
+        "Source family",
+        "Source types covered",
+        "Date or date range",
+        "Batch status",
+        "Row count",
+        "Review status",
+        "Ingestion permitted",
+        "Corpus mutation status",
+        "Notes",
+    ):
+        assert f"| {column} " in index
+
+    for status in (
+        "EMPTY_PLACEHOLDER",
+        "ACTIVE_METADATA_ONLY",
+        "TRIAGE_IN_PROGRESS",
+        "TRIAGE_COMPLETE",
+        "CLOSED_SUPERSEDED",
+        "CLOSED_MIGRATED",
+    ):
+        assert status in index
+
+    for source_family in (
+        "developer logs / hardening logs / doctrine / mixed log-doctrine",
+        "chat and continuance prompts",
+        "code evidence summaries",
+        "test evidence summaries",
+        "award build control sources",
+        "baseline packs",
+        "other requires review",
+    ):
+        assert source_family in index
+
+    for required_text in (
+        "The batch register index is discovery/governance metadata only",
+        "Listing a batch does not ingest source content",
+        "Listing a batch does not make sources current truth",
+        "Ingestion permitted defaults to No",
+        "Minerva must not treat batch-listed sources as current truth unless later reviewed/backfilled/governed",
+        "Source classification remains register-driven, not filename-driven",
+    ):
+        assert required_text in index
+
+
+def test_historical_batch_register_index_preserves_no_mutation_boundaries():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_BATCH_REGISTER_INDEX,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL,
+            HISTORICAL_BATCH_REGISTER_TEMPLATE,
+            HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE,
+            HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER,
+        )
+    )
+
+    for boundary in (
+        "no corpus mutation",
+        "no ingestion",
+        "no Code Evidence integration",
+        "no live LLM",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no review approval",
+        "no governed ingestion",
+        "no historical ingestion",
+        "no recapture",
+        "no benchmark execution",
+        "no corpus coverage execution",
+        "no answer-gap execution",
+        "no generated artefact",
+    ):
+        assert boundary in combined
 
 
 def test_historical_batch_register_template_includes_required_columns():

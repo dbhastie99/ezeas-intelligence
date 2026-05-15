@@ -16,6 +16,8 @@ Adding a file to a registered folder is not ingestion. Adding a batch row is met
 
 Use this guidance with `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md` and the historical batch model.
 
+Use `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md` as the master discovery/governance index for batch registers. Listing a batch in that index is metadata only; it does not ingest source content and does not make sources current truth.
+
 The intended path is ordinary batch registration and triage first. The Analytics Engine source has demonstrated the full deep-review path, but that path is not the default for ordinary developer-log-like materials.
 
 Ordinary logs can remain batch-registered until needed. Full review chain is required only for high-value/high-risk sources.

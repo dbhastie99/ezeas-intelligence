@@ -23,6 +23,7 @@ Use these durable controls together:
 | First analytics registered-source placeholder | `docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md` |
 | Historical source tiering model | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md` |
 | Historical register-driven source classification | `docs/evaluation/historical_knowledge/HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md` |
+| Historical batch register index | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md` |
 | Historical batch registration and triage model | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md` |
 | Historical batch register template | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md` |
 | Historical batch triage process | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md` |
@@ -72,7 +73,9 @@ A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCT
 
 ## 5. Backfill Scope
 
-Most historical sources should first be batch-registered and triaged using `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md`, `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`, and `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`. The full Analytics Engine chain is the prototype/deep-review path, not the default path for every source.
+Most historical sources should first be batch-registered and triaged using `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md`, `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md`, `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`, and `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`. The full Analytics Engine chain is the prototype/deep-review path, not the default path for every source.
+
+The historical batch register index is discovery/governance metadata only. Listing a batch does not ingest source content, does not make sources current truth, does not mutate corpus, and does not permit governed ingestion. Minerva must not treat batch-listed sources as current truth unless later reviewed/backfilled/governed.
 
 The first developer-log batch register is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It contains the first controlled metadata-only batch row for the already registered Analytics Engine developer log. It does not ingest, parse, extract, review, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, promote ledger state, change review status, permit governed ingestion, or permit Minerva to treat batch-registered sources as current truth.
 

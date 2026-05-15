@@ -14,6 +14,8 @@ The full deep-review path remains appropriate for high-value or high-risk source
 
 The first developer-log batch register placeholder is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It is empty, metadata-only, and intended for future batch registration of developer logs, hardening logs, platform doctrine, and mixed log-doctrine sources.
 
+The master batch register index is `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md`. It is discovery/governance metadata only; listing a batch does not ingest source content and does not make sources current truth.
+
 Developer-log-like batch intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`.
 
 ## 2. Batch Registration Principle
@@ -82,6 +84,7 @@ Batch registration does not implement DB writes, migrations, endpoint changes, U
 ## 7. Related Artefacts
 
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`
 - `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`

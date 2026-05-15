@@ -18,6 +18,8 @@ This batch population is metadata-only. No historical source content is ingested
 
 This batch register covers metadata-only registration of historical developer-log-like materials.
 
+This batch register is indexed by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md`.
+
 Adding a row registers metadata only unless a separate review/backfill slice explicitly says otherwise. Ordinary developer logs can remain batch-registered until needed by a domain backfill, current-answer risk review, supersession review, or review-readiness process.
 
 High-risk/high-value sources can be escalated into the full review chain. The Analytics Engine source remains the prototype/deep-review path, not the default for all logs. The Analytics source is already escalated to the full deep-review chain.

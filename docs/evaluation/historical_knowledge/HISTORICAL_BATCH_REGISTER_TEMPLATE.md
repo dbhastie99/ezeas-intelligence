@@ -14,6 +14,8 @@ Minerva must not treat batch-registered sources as current truth unless later re
 
 The first concrete placeholder that uses this template is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. That developer-log batch register is empty and records metadata only; it does not ingest, parse, extract, or review historical developer-log content.
 
+Every batch register should also be discoverable through `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_INDEX.md`. Index listing is discovery/governance metadata only; it does not ingest source content, make sources current truth, mutate corpus, or permit governed ingestion.
+
 Developer-log-like batch row intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`.
 
 ## 2. Required Columns
