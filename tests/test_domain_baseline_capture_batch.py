@@ -244,6 +244,21 @@ HISTORICAL_BACKFILL_PROCESS = (
 HISTORICAL_KNOWLEDGE_CONTROL_INDEX_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_knowledge_control_index_v0_1.md"
 )
+HISTORICAL_SOURCE_INVENTORY_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_INVENTORY_TEMPLATE.md"
+)
+HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE.md"
+)
+HISTORICAL_CHAT_CONTINUANCE_INVENTORY_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_CONTINUANCE_INVENTORY_TEMPLATE.md"
+)
+HISTORICAL_CODE_EVIDENCE_INVENTORY_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CODE_EVIDENCE_INVENTORY_TEMPLATE.md"
+)
+HISTORICAL_SOURCE_INVENTORY_TEMPLATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_source_inventory_template_v0_1.md"
+)
 FORMAL_EVIDENCE_CONTROL_INDEX_README_LINK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_readme_link_v0_1.md"
 )
@@ -2338,6 +2353,139 @@ def test_historical_knowledge_priority_domains_are_listed():
         assert priority_domain in combined
 
     assert "Tax / PAYG and Imports / Actuals remain governed by the formal evidence control model" in combined
+
+
+def test_historical_source_inventory_templates_exist_and_reference_controls():
+    for path in (
+        HISTORICAL_SOURCE_INVENTORY_TEMPLATE,
+        HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE,
+        HISTORICAL_CHAT_CONTINUANCE_INVENTORY_TEMPLATE,
+        HISTORICAL_CODE_EVIDENCE_INVENTORY_TEMPLATE,
+    ):
+        assert path.exists()
+
+        template = _read(path)
+
+        for referenced_path in (
+            "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md",
+            "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md",
+            "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md",
+            "docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md",
+        ):
+            assert referenced_path in template
+
+
+def test_historical_source_inventory_templates_define_required_fields_and_classifications():
+    required_fields = (
+        "Source title",
+        "Source type",
+        "Source tier",
+        "Date or date range",
+        "Repository/domain",
+        "Related commits if known",
+        "Related developer log or doctrine reference",
+        "Implementation-state classification",
+        "Evidence confidence",
+        "Supersession risk",
+        "Backlog/doctrine/runtime distinction",
+        "Review required",
+        "Ingestion permitted",
+        "Notes",
+    )
+    classifications = (
+        "IMPLEMENTED_AND_TESTED",
+        "IMPLEMENTED_NOT_FULLY_TESTED",
+        "DOCUMENTED_DOCTRINE",
+        "DOCUMENTED_BACKLOG",
+        "PLANNED_NOT_IMPLEMENTED",
+        "SUPERSEDED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+    )
+
+    for path in (
+        HISTORICAL_SOURCE_INVENTORY_TEMPLATE,
+        HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE,
+        HISTORICAL_CHAT_CONTINUANCE_INVENTORY_TEMPLATE,
+        HISTORICAL_CODE_EVIDENCE_INVENTORY_TEMPLATE,
+    ):
+        template = _read(path)
+
+        for required_field in required_fields:
+            assert required_field in template
+
+        for classification in classifications:
+            assert classification in template
+
+
+def test_historical_source_inventory_templates_preserve_tier_rules():
+    general_template = _read(HISTORICAL_SOURCE_INVENTORY_TEMPLATE)
+    log_doctrine_template = _read(HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE)
+    chat_template = _read(HISTORICAL_CHAT_CONTINUANCE_INVENTORY_TEMPLATE)
+    code_template = _read(HISTORICAL_CODE_EVIDENCE_INVENTORY_TEMPLATE)
+
+    for required_text in (
+        "Tier 1 code and tests are the highest authority for implemented state",
+        "Tier 2 developer logs, hardening logs, and platform doctrine are curated decision/rationale sources requiring review",
+        "Tier 3 historical chats and continuance prompts are raw historical source material, not final truth",
+    ):
+        assert required_text in general_template
+
+    for required_text in (
+        "curated decision/rationale sources requiring review and implementation-state classification",
+        "may include planned, partial, superseded, or backlog work",
+        "does not override Tier 1 code and tests for implemented state",
+    ):
+        assert required_text in log_doctrine_template
+
+    for required_text in (
+        "raw historical source material, not final truth",
+        "require cross-check against code/tests/logs/doctrine/commits",
+        "must not be ingested directly as truth",
+    ):
+        assert required_text in chat_template
+
+    for required_text in (
+        "highest authority for implemented state",
+        "code alone may not explain why",
+        "does not automatically explain rationale",
+    ):
+        assert required_text in code_template
+
+
+def test_historical_source_inventory_templates_preserve_non_mutation_boundaries():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_SOURCE_INVENTORY_TEMPLATE,
+            HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE,
+            HISTORICAL_CHAT_CONTINUANCE_INVENTORY_TEMPLATE,
+            HISTORICAL_CODE_EVIDENCE_INVENTORY_TEMPLATE,
+        )
+    )
+
+    for required_text in (
+        "does not mutate corpus",
+        "does not ingest sources",
+        "does not connect Code Evidence",
+        "does not run live LLM",
+        "does not change runtime behaviour",
+        "does not promote baselines",
+        "does not change ledger counts",
+        "does not consume historical chats",
+        "does not ingest developer logs",
+        "does not ingest doctrine documents",
+        "does not ingest code",
+        "historical ingestion",
+        "review approval",
+        "governed ingestion",
+        "recapture",
+        "benchmark execution",
+        "corpus coverage execution",
+        "answer-gap execution",
+        "ledger update",
+        "generated artefact creation",
+    ):
+        assert required_text in combined
     assert "remain `BASELINE_REQUIRED` and `NOT_REVIEWED`" in combined
 
 
@@ -2648,6 +2796,47 @@ def test_historical_knowledge_control_index_prompt_is_preserved():
         "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
         "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
         "Tax / PAYG and Imports / Actuals remain governed by the formal evidence control model",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_source_inventory_template_prompt_is_preserved():
+    assert HISTORICAL_SOURCE_INVENTORY_TEMPLATE_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_SOURCE_INVENTORY_TEMPLATE_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Historical Source Inventory Template v0.1",
+        "Mode: Documentation/control-model hardening only",
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_INVENTORY_TEMPLATE.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_CHAT_CONTINUANCE_INVENTORY_TEMPLATE.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_CODE_EVIDENCE_INVENTORY_TEMPLATE.md",
+        "Source title",
+        "Source type",
+        "Source tier",
+        "Date or date range",
+        "Repository/domain",
+        "Related commits if known",
+        "Related developer log or doctrine reference",
+        "Implementation-state classification",
+        "Evidence confidence",
+        "Supersession risk",
+        "Backlog/doctrine/runtime distinction",
+        "Review required",
+        "Ingestion permitted",
+        "IMPLEMENTED_AND_TESTED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+        "curated decision/rationale sources requiring review",
+        "raw historical source material, not final truth",
+        "code/tests as highest authority for implemented state",
+        "does not mutate corpus",
+        "does not ingest sources",
+        "does not connect Code Evidence",
+        "does not run live LLM",
+        "does not change runtime behaviour",
+        "does not promote baselines",
+        "does not change ledger counts",
     ):
         assert required_text in prompt
 
