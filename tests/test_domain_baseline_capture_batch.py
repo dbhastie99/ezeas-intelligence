@@ -167,9 +167,16 @@ FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md"
 )
+FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md"
+)
 SOURCE_EVIDENCE_DRAFTS_README = Path("docs/evaluation/source_evidence_drafts/README.md")
 FORMAL_EVIDENCE_CONTROL_README_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md"
+)
+FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_review_readiness_checklist_v0_1.md"
 )
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
@@ -1376,6 +1383,100 @@ def test_source_evidence_drafts_readme_records_formal_evidence_control_model():
         assert blocked_claim not in readme
 
 
+def test_formal_evidence_review_readiness_checklist_records_required_gates():
+    assert FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.exists()
+
+    checklist = _read(FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST)
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/README.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+    ):
+        assert referenced_path in checklist
+
+    for section in (
+        "## 1. Purpose",
+        "## 2. Scope",
+        "## 3. Reviewer Preconditions",
+        "## 4. Source Artefact Checklist",
+        "## 5. Doctrine Review Checklist",
+        "## 6. Implementation-State Review Checklist",
+        "## 7. Evidence-Gap Coverage Checklist",
+        "## 8. Non-Overclaiming Checklist",
+        "## 9. Decision Status Guidance",
+        "## 10. Ingestion Readiness Gate",
+        "## 11. Recapture Readiness Gate",
+        "## 12. Promotion Readiness Gate",
+        "## 13. Domain-Specific Notes",
+        "## 14. Minerva Answering Guidance",
+        "## 15. Non-Goals",
+        "## 16. Follow-Up Actions",
+    ):
+        assert section in checklist
+
+    for precondition in (
+        "Correct domain and slug.",
+        "Current baseline status.",
+        "Current review gate status.",
+        "Latest decision record.",
+        "Source-evidence draft under review.",
+        "Formal evidence gap plan.",
+        "Review-gate index entry.",
+        "Decision-record index entry.",
+        "No newer superseding artefact exists.",
+    ):
+        assert precondition in checklist
+
+    for required_text in (
+        "Use when no formal review has occurred.",
+        "Use when the draft has been reviewed and is not safe for governed ingestion.",
+        "Use only when doctrine review, implementation-state review, evidence-gap coverage review, and non-overclaiming review are all acceptable.",
+        "Use when the draft/gate/decision record has been replaced and must not be used for governed ingestion.",
+        "A checklist alone does not change review status.",
+        "A checklist alone does not permit governed ingestion.",
+        "A checklist alone does not mutate corpus.",
+        "A checklist alone does not run recapture.",
+        "A checklist alone does not promote a baseline.",
+        "`REVIEWED_READY_FOR_INGESTION` permits planning a future governed ingestion slice only.",
+        "Governed ingestion must be a separate explicit slice.",
+        "Recapture must happen only after governed ingestion.",
+        "Promotion requires benchmark, corpus coverage, answer-gap evidence, and ledger update.",
+        "Minerva must not overstate checklist completion as review approval, ingestion, recapture, or promotion.",
+        "Tax / PAYG remains `BASELINE_REQUIRED`.",
+        "Imports / Actuals remains `BASELINE_REQUIRED`.",
+        "Minerva may explain Tax / PAYG but must not calculate PAYG withholding.",
+        "Deterministic services, tax providers, and governed rule packs own PAYG withholding calculation.",
+        "Imports / Actuals is not merely file upload or CSV parsing.",
+        "Imported actuals are not the same as calculated payroll truth.",
+        "Pay code and RateType mapping must remain evidence-bearing and reviewable.",
+        "| Tax / PAYG | `BASELINE_REQUIRED` | `NOT_REVIEWED` | No | No | No |",
+        "| Imports / Actuals | `BASELINE_REQUIRED` | `NOT_REVIEWED` | No | No | No |",
+        "generated artefact commits",
+    ):
+        assert required_text in checklist
+
+    assert "### NOT_REVIEWED" in checklist
+    assert "### NEEDS_REVISION" in checklist
+    assert "### REVIEWED_READY_FOR_INGESTION" in checklist
+    assert "### SUPERSEDED" in checklist
+    assert checklist.count("Governed ingestion permitted: No.") == 2
+    assert checklist.count("Recapture permitted: No.") == 2
+    assert checklist.count("Promotion permitted: No.") == 2
+
+    for blocked_claim in (
+        "Tax / PAYG is `BASELINE_ALREADY_EXISTS`",
+        "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
+        "governed ingestion has occurred",
+        "corpus has been mutated",
+        "ledger has been promoted",
+    ):
+        assert blocked_claim not in checklist
+
+
 def test_formal_evidence_control_readme_prompt_is_preserved():
     assert FORMAL_EVIDENCE_CONTROL_README_PROMPT.exists()
 
@@ -1392,6 +1493,26 @@ def test_formal_evidence_control_readme_prompt_is_preserved():
         "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md",
         "→ REVIEWED_READY_FOR_INGESTION only after explicit review",
         "→ possible ledger promotion",
+    ):
+        assert required_text in prompt
+
+
+def test_formal_evidence_review_readiness_checklist_prompt_is_preserved():
+    assert FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST_PROMPT.exists()
+
+    prompt = _read(FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Formal Evidence Review Readiness Checklist v0.1",
+        "Mode: Documentation/control-checklist hardening only",
+        "Do not approve DB writes, migrations, corpus mutation, live LLM calls, endpoint changes, runtime changes, generated artefact commits, ledger promotion, review approval, recapture, or governed ingestion.",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md",
+        "tests/test_domain_baseline_capture_batch.py",
+        "docs/codex_prompts/2026-05-15_minerva_formal_evidence_review_readiness_checklist_v0_1.md",
+        "`FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md` exists.",
+        "A checklist alone does not change review status.",
+        "Tax / PAYG remains BASELINE_REQUIRED.",
+        "Imports / Actuals remains BASELINE_REQUIRED.",
     ):
         assert required_text in prompt
 
