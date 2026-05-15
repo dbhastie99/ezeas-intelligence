@@ -14,7 +14,7 @@ It defines the source-register skeleton and the first controlled source inventor
 
 This skeleton covers the register schema, controlled source types, review statuses, implementation-state classifications, ingestion permission rules, and future population workflow.
 
-This register now contains the first controlled inventory entry. No historical source is ingested by this skeleton slice. No historical source is ingested by this inventory slice.
+This register now contains the first controlled inventory entry and first controlled registered-source placement placeholder. No historical source is ingested by this skeleton slice. No historical source is ingested by this inventory slice. No historical source is ingested by this placement slice.
 
 ## 3. Register-Driven Classification Rule
 
@@ -30,7 +30,9 @@ Hardcoded individual document names must not be used as the primary classificati
 
 The register assigns source class and starting reliability tier. A registered source does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking against code/tests/commits/logs/doctrine where relevant have been completed.
 
-Inventory/registering a source does not itself permit ingestion.
+Inventory/registering a source does not itself permit ingestion. Folder placement alone is not ingestion.
+
+The register entry controls classification. Original filenames are metadata only. A placeholder path records registered placement; it does not mean the full historical document has been ingested.
 
 ## 4. Source Register Table
 
@@ -38,7 +40,7 @@ The first populated row is metadata-only. The source remains external/user-provi
 
 | Register ID | Source title | Original filename | Source folder | Registered source type | Source tier | Domain tags | Date or date range | Repository context | Related commits if known | Related control artefacts | Implementation-state classification | Review status | Ingestion permitted | Supersession status | Evidence confidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| HIST-ANALYTICS-2025-12-06-20 | Developer Log - Analytics Engine | Developer Log - Analytics Engine (5).docx | `docs/evaluation/historical_knowledge/registered_sources/developer_logs/` | `DEVELOPER_LOG` - developer-authored historical analytics working material requiring review and implementation-state confirmation | Tier 2 | Analytics; Workforce Analytics DB; Golden Slice; ObjectTime; ProcessedRule; CalcInterpreterLine Replatform Review; Power BI; Reconciliation Reporting | 6 December 2025 to 20 December 2025 | Historical analytics server / workforce analytics context | unknown | `HISTORICAL_SOURCE_TIERING_MODEL.md`; `HISTORICAL_BACKFILL_PROCESS.md`; `HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md`; `HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md` | `UNCERTAIN_REQUIRES_REVIEW` - current implementation state requires code confirmation and is not fully current | `NOT_REVIEWED` | No | `PARTIALLY_SUPERSEDED_BY_CALCINTERPRETERLINE_MODEL` - supersession risk because `CalcInterpreterLine` is the current target calculation fact source | Medium/high for historical rationale; requires code confirmation for current implementation | Metadata-level registration only. `ProcessedRule`-era analytics must be reviewed before use as current truth; `CalcInterpreterLine` is the current target calculation fact source for processed payroll analytics. |
+| HIST-ANALYTICS-2025-12-06-20 | Developer Log - Analytics Engine | Developer Log - Analytics Engine (5).docx | `docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md` | `DEVELOPER_LOG` - developer-authored historical analytics working material requiring review and implementation-state confirmation | Tier 2 | Analytics; Workforce Analytics DB; Golden Slice; ObjectTime; ProcessedRule; CalcInterpreterLine Replatform Review; Power BI; Reconciliation Reporting | 6 December 2025 to 20 December 2025 | Historical analytics server / workforce analytics context | unknown | `HISTORICAL_SOURCE_TIERING_MODEL.md`; `HISTORICAL_BACKFILL_PROCESS.md`; `HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md`; `HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md` | `UNCERTAIN_REQUIRES_REVIEW` - current implementation state requires code confirmation and is not fully current | `NOT_REVIEWED` | No | `PARTIALLY_SUPERSEDED_BY_CALCINTERPRETERLINE_MODEL` - supersession risk because `CalcInterpreterLine` is the current target calculation fact source | Medium/high for historical rationale; requires code confirmation for current implementation | Metadata-level registration and placeholder placement only. Folder placement alone is not ingestion. The full historical document has not been ingested. Register entry controls classification; original filename is metadata only. `ProcessedRule`-era analytics requires review before being treated as current; `CalcInterpreterLine` is the current target calculation fact source for processed payroll analytics. Future analytics backfill must cross-check against current code, tests, database views, schema/scripts, and commits. |
 
 ## 5. Required Register Fields
 
@@ -122,13 +124,13 @@ Inventory/registering a source does not itself permit ingestion.
 
 `Ingestion permitted` must remain `No` for all sources until a separate explicit governed ingestion slice changes that state after review status, implementation-state classification, supersession status, and relevant cross-checking are complete.
 
-No historical source is ingested by this skeleton slice. No historical source is ingested by this inventory slice.
+No historical source is ingested by this skeleton slice. No historical source is ingested by this inventory slice. No historical source is ingested by this placement slice.
 
 ## 11. Non-Goals
 
-This skeleton and first inventory row do not ingest historical chats, do not ingest developer logs, do not ingest doctrine documents, do not ingest code, do not mutate corpus, do not connect Code Evidence, do not run live LLM, do not change runtime behaviour, do not promote baselines, and do not change ledger counts.
+This skeleton, first inventory row, and first placement placeholder do not ingest historical chats, do not ingest developer logs, do not ingest doctrine documents, do not ingest code, do not mutate corpus, do not connect Code Evidence, do not run live LLM, do not change runtime behaviour, do not promote baselines, and do not change ledger counts.
 
-This skeleton does not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, ledger promotion, or generated artefact creation.
+This skeleton and placement slice do not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, ledger promotion, or generated artefact creation.
 
 The Analytics Engine developer log registered as `HIST-ANALYTICS-2025-12-06-20` is source material, not current final truth. It is intended to support later analytics replatform planning and must not be used for direct Minerva ingestion without a separate governed slice.
 

@@ -304,6 +304,14 @@ HISTORICAL_SOURCE_REGISTER_FIRST_INVENTORY_BATCH_PROMPT = Path(
 HISTORICAL_SOURCE_FOLDER_STRUCTURE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_source_folder_structure_v0_1.md"
 )
+HISTORICAL_ANALYTICS_LOG_REGISTER_PLACEMENT_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_analytics_log_register_placement_v0_1.md"
+)
+HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
+    HISTORICAL_REGISTERED_SOURCES_ROOT
+    / "developer_logs"
+    / "HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md"
+)
 FORMAL_EVIDENCE_CONTROL_INDEX_README_LINK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_readme_link_v0_1.md"
 )
@@ -2503,6 +2511,69 @@ def test_historical_analytics_inventory_batch_records_non_ingestion_boundaries()
         assert boundary_text in combined
 
 
+def test_historical_analytics_source_placeholder_records_registered_metadata():
+    assert HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER.exists()
+
+    placeholder = _read(HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER)
+
+    for required_text in (
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "Developer Log - Analytics Engine (5).docx",
+        "`DEVELOPER_LOG`",
+        "Tier 2",
+        "`NOT_REVIEWED`",
+        "Ingestion permitted | No",
+        "Analytics",
+        "ProcessedRule",
+        "CalcInterpreterLine",
+        "Power BI",
+        "Folder placement alone is not ingestion",
+        "The full historical document has not been ingested",
+        "`ProcessedRule`-era analytics requires review before being treated as current",
+        "`CalcInterpreterLine` is the current target calculation fact source",
+    ):
+        assert required_text in placeholder
+
+
+def test_historical_analytics_placeholder_is_registered_and_non_ingesting():
+    placeholder_path = (
+        "docs/evaluation/historical_knowledge/registered_sources/developer_logs/"
+        "HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md"
+    )
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    placeholder = _read(HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER)
+    combined = "\n".join((source_register, control_index, placeholder))
+
+    assert placeholder_path in source_register
+    assert placeholder_path in control_index
+    assert "`NOT_REVIEWED`" in source_register
+    assert "| No |" in source_register
+
+    for required_text in (
+        "Folder placement alone is not ingestion",
+        "The register entry controls classification",
+        "The original filename is metadata only",
+        "The full historical document has not been ingested",
+        "`ProcessedRule`-era analytics requires review before being treated as current",
+        "`CalcInterpreterLine` is the current target calculation fact source",
+        "Future analytics backfill must cross-check this source against current code, tests, database views, schema/scripts, and commits",
+    ):
+        assert required_text in combined
+
+    for boundary_text in (
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM call",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no historical ingestion",
+    ):
+        assert boundary_text in combined
+
+
 def test_historical_source_register_validation_runbook_is_defined():
     assert HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.exists()
 
@@ -3267,6 +3338,41 @@ def test_historical_register_driven_source_classification_prompt_is_preserved():
         "does not promote baselines",
         "does not change ledger counts",
         "git diff --check",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_analytics_log_register_placement_prompt_is_preserved():
+    assert HISTORICAL_ANALYTICS_LOG_REGISTER_PLACEMENT_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_ANALYTICS_LOG_REGISTER_PLACEMENT_PROMPT)
+
+    for required_text in (
+        "# Minerva Historical Analytics Log Register Placement v0.1",
+        "registered-source placement placeholder",
+        "does not ingest the full historical document content",
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "Developer Log - Analytics Engine (5).docx",
+        "docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md",
+        "`DEVELOPER_LOG`, matching the register",
+        "Tier 2",
+        "`NOT_REVIEWED`",
+        "Ingestion permitted: No",
+        "folder placement alone is not ingestion",
+        "register entry controls classification",
+        "original filename is metadata only",
+        "the full historical document has not been ingested",
+        "`ProcessedRule`-era analytics requires review before being treated as current",
+        "`CalcInterpreterLine` is the current target calculation fact source",
+        "future analytics backfill must cross-check against current code, tests, database views, schema/scripts, and commits",
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM call",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no historical ingestion",
     ):
         assert required_text in prompt
 
