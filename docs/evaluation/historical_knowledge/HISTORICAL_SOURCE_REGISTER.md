@@ -30,6 +30,8 @@ Hardcoded individual document names must not be used as the primary classificati
 
 The register assigns source class and starting reliability tier. A registered source does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking against code/tests/commits/logs/doctrine where relevant have been completed.
 
+Review readiness is required before a registered source can support a curated historical backfill evidence pack. Use `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` and `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md` for that step.
+
 Inventory/registering a source does not itself permit ingestion. Folder placement alone is not ingestion.
 
 The register entry controls classification. Original filenames are metadata only. A placeholder path records registered placement; it does not mean the full historical document has been ingested.
@@ -126,6 +128,8 @@ Inventory/registering a source does not itself permit ingestion.
 
 No historical source is ingested by this skeleton slice. No historical source is ingested by this inventory slice. No historical source is ingested by this placement slice.
 
+No historical source is reviewed, ingested, parsed, or consumed by the review-readiness template/process slice. The Analytics Engine developer log registered as `HIST-ANALYTICS-2025-12-06-20` remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice.
+
 ## 11. Non-Goals
 
 This skeleton, first inventory row, and first placement placeholder do not ingest historical chats, do not ingest developer logs, do not ingest doctrine documents, do not ingest code, do not mutate corpus, do not connect Code Evidence, do not run live LLM, do not change runtime behaviour, do not promote baselines, and do not change ledger counts.
@@ -143,4 +147,5 @@ Future population requires a separate explicit slice.
 3. Add placeholder or reviewed register rows only within the approved source scope.
 4. Assign registered source type, source tier, review status, implementation-state classification, supersession status, evidence confidence, and ingestion permission.
 5. Cross-check source claims against code/tests/commits/logs/doctrine where relevant.
-6. Keep ingestion permission as `No` unless a later explicit governed ingestion slice permits ingestion.
+6. Complete review readiness using `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` before creating any historical backfill evidence pack.
+7. Keep ingestion permission as `No` unless a later explicit governed ingestion slice permits ingestion.

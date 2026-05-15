@@ -250,6 +250,12 @@ HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION = (
 HISTORICAL_BACKFILL_PROCESS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BACKFILL_PROCESS.md"
 )
+HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md"
+)
+HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md"
+)
 HISTORICAL_REGISTERED_SOURCES_ROOT = (
     HISTORICAL_KNOWLEDGE_ROOT / "registered_sources"
 )
@@ -306,6 +312,9 @@ HISTORICAL_SOURCE_FOLDER_STRUCTURE_PROMPT = Path(
 )
 HISTORICAL_ANALYTICS_LOG_REGISTER_PLACEMENT_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_analytics_log_register_placement_v0_1.md"
+)
+HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_source_review_readiness_template_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -2742,6 +2751,150 @@ def test_historical_backfill_process_records_classifications_and_chat_boundary()
         assert required_text in backfill_process
 
 
+def test_historical_source_review_readiness_template_and_process_are_defined():
+    assert HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.exists()
+    assert HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.exists()
+
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+
+    for referenced_path in (
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md",
+    ):
+        assert referenced_path in control_index
+        assert referenced_path in backfill_process
+        assert referenced_path in source_register
+
+    assert "Review readiness is required before creating a historical backfill evidence pack" in backfill_process
+    assert "Review readiness is required before a registered source can support a curated historical backfill evidence pack" in source_register
+
+
+def test_historical_source_review_readiness_template_includes_required_fields():
+    template = _read(HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE)
+
+    for required_field in (
+        "Register ID",
+        "Source title",
+        "Original filename",
+        "Registered source type",
+        "Source tier",
+        "Source folder",
+        "Domain tags",
+        "Date or date range",
+        "Repository context",
+        "Related commits if known",
+        "Related control artefacts",
+        "Review owner",
+        "Review date",
+        "Review status before review",
+        "Target review status",
+        "Implementation-state classification before review",
+        "Target implementation-state classification",
+        "Supersession status",
+        "Evidence confidence",
+        "Ingestion permitted before review",
+        "Target ingestion permitted",
+        "Source summary",
+        "Candidate decisions extracted",
+        "Candidate doctrine extracted",
+        "Candidate backlog items extracted",
+        "Candidate implemented-state claims",
+        "Code/test/commit cross-check required",
+        "Code/test/commit cross-check result",
+        "Superseded or conflicting claims",
+        "Current truth classification",
+        "Minerva answering implication",
+        "Backfill evidence pack recommendation",
+        "Reviewer rationale",
+        "Required follow-up actions",
+    ):
+        assert required_field in template
+
+
+def test_historical_source_review_readiness_process_records_required_rules():
+    process = _read(HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS)
+
+    for required_text in (
+        "A registered source is not final truth merely because it exists in the register.",
+        "Review readiness is required before creating a historical backfill evidence pack.",
+        "The review must distinguish implemented behaviour, doctrine, backlog, planned-not-implemented work, superseded work, and uncertain claims.",
+        "Historical chats and continuance prompts require cross-checking and are raw source material, not final truth.",
+        "Code/tests are strongest for implemented state but may not explain decision rationale.",
+        "The Analytics Engine developer log registered as `HIST-ANALYTICS-2025-12-06-20` remains `NOT_REVIEWED` and ingestion permitted `No`.",
+    ):
+        assert required_text in process
+
+
+def test_historical_source_review_readiness_lists_controlled_values():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE,
+            HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS,
+        )
+    )
+
+    for review_status in (
+        "NOT_REVIEWED",
+        "NEEDS_REVIEW",
+        "REVIEWED_READY_FOR_BACKFILL_DRAFT",
+        "REVIEWED_READY_FOR_GOVERNED_INGESTION",
+        "SUPERSEDED",
+    ):
+        assert review_status in combined
+
+    for classification in (
+        "IMPLEMENTED_AND_TESTED",
+        "IMPLEMENTED_NOT_FULLY_TESTED",
+        "DOCUMENTED_DOCTRINE",
+        "DOCUMENTED_BACKLOG",
+        "PLANNED_NOT_IMPLEMENTED",
+        "SUPERSEDED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+    ):
+        assert classification in combined
+
+
+def test_historical_source_review_readiness_preserves_non_mutation_boundaries():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE,
+            HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_BACKFILL_PROCESS,
+            HISTORICAL_SOURCE_REGISTER,
+        )
+    )
+
+    for required_text in (
+        "creates templates/process only and does not review, ingest, parse, or consume any historical source",
+        "does not mutate corpus",
+        "does not ingest the source",
+        "does not run Code Evidence integration",
+        "does not call live LLM",
+        "does not change runtime",
+        "does not promote baselines",
+        "does not change ledger counts",
+        "does not perform ledger promotion",
+        "does not implement DB writes",
+        "migrations",
+        "endpoint changes",
+        "UI changes",
+        "review approval",
+        "governed ingestion",
+        "historical ingestion",
+        "recapture",
+        "benchmark execution",
+        "corpus coverage execution",
+        "answer-gap execution",
+        "generated artefact creation",
+    ):
+        assert required_text in combined
+
+
 def test_historical_knowledge_documents_preserve_non_ingestion_boundaries():
     combined = "\n".join(
         _read(path)
@@ -3373,6 +3526,35 @@ def test_historical_analytics_log_register_placement_prompt_is_preserved():
         "no baseline promotion",
         "no ledger promotion",
         "no historical ingestion",
+    ):
+        assert required_text in prompt
+
+
+def test_historical_source_review_readiness_template_prompt_is_preserved():
+    assert HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE_PROMPT.exists()
+
+    prompt = _read(HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Historical Source Review Readiness Template v0.1",
+        "Mode: Documentation/control-model hardening only",
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md",
+        "Review readiness is required before creating a historical backfill evidence pack.",
+        "A registered source is not final truth merely because it exists in the register.",
+        "Historical chats and continuance prompts require cross-checking and are raw source material, not final truth.",
+        "Code/tests are strongest for implemented state but may not explain decision rationale.",
+        "The Analytics Engine developer log remains NOT_REVIEWED and ingestion permitted No until a future explicit review slice.",
+        "REVIEWED_READY_FOR_BACKFILL_DRAFT",
+        "REVIEWED_READY_FOR_GOVERNED_INGESTION",
+        "UNCERTAIN_REQUIRES_REVIEW",
+        "does not mutate corpus",
+        "does not run Code Evidence integration",
+        "does not call live LLM",
+        "does not promote baselines",
+        "does not change ledger counts",
+        "ledger promotion",
+        "git diff --check",
     ):
         assert required_text in prompt
 

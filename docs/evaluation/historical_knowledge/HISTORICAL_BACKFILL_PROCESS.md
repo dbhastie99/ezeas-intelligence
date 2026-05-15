@@ -16,6 +16,8 @@ Registration validation is governed by `docs/evaluation/historical_knowledge/HIS
 
 The registered source folder root is `docs/evaluation/historical_knowledge/registered_sources/`. Placing a file under that root does not register, review, ingest, or promote the source; a source-register entry is still required.
 
+Review readiness is governed by `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` and recorded with `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`. Review readiness is required before creating a historical backfill evidence pack.
+
 ## 2. Implementation-State Classifications
 
 Use exactly one current classification for each candidate decision unless the review gate records why multiple states apply:
@@ -60,12 +62,13 @@ A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCT
 1. Identify historical source material for one domain.
 2. Register source provenance in `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md`, including original filename as metadata, source folder, date where available, author/reviewer where available, registered source type, and source tier.
 3. Classify source tier using `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md`.
-4. Extract candidate decisions without treating them as final truth.
-5. Cross-check against code/tests/logs/doctrine/commits.
-6. Classify implementation state using the classifications in this process.
-7. Create a curated backfill evidence pack for the domain.
-8. Add a review gate that records reviewer, date, rationale, unresolved conflicts, and approval/blocked status.
-9. Only later consider governed ingestion in a separate explicit slice.
+4. Complete source review readiness before any historical backfill evidence pack is created.
+5. Extract candidate decisions without treating them as final truth.
+6. Cross-check against code/tests/logs/doctrine/commits.
+7. Classify implementation state using the classifications in this process.
+8. Create a curated backfill evidence pack for the domain.
+9. Add a review gate that records reviewer, date, rationale, unresolved conflicts, and approval/blocked status.
+10. Only later consider governed ingestion in a separate explicit slice.
 
 ## 5. Historical Chat Handling
 
@@ -99,3 +102,5 @@ This slice does not implement DB writes, migrations, corpus mutation, Code Evide
 This slice does not ingest any historical documents, does not parse actual developer logs, does not parse doctrine documents, does not parse chats, does not connect Code Evidence, does not promote baselines, and does not perform ledger promotion.
 
 This process does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does not mark any domain `BASELINE_ALREADY_EXISTS`.
+
+This review-readiness slice creates templates/process only and does not review, ingest, parse, or consume any historical source. The Analytics Engine developer log remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice.

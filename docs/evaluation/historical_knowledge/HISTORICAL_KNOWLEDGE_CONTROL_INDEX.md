@@ -24,6 +24,8 @@ Use these durable controls together:
 | Historical source tiering model | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md` |
 | Historical register-driven source classification | `docs/evaluation/historical_knowledge/HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
+| Historical source review-readiness template | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md` |
+| Historical source review-readiness process | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` |
 | First analytics inventory batch | `docs/evaluation/historical_knowledge/inventory_batches/HISTORICAL_SOURCE_INVENTORY_BATCH_2026_05_15_ANALYTICS.md` |
 
 ## 3. Source Authority Summary
@@ -56,7 +58,7 @@ A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCT
 
 ## 5. Backfill Scope
 
-Historical backfill must be domain-scoped. A future slice must identify source material, register provenance, classify source tier, extract candidate decisions, cross-check evidence, classify implementation state, create a curated backfill evidence pack, add a review gate, and only later consider governed ingestion.
+Historical backfill must be domain-scoped. A future slice must identify source material, register provenance, classify source tier, complete review readiness using `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` and `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`, extract candidate decisions, cross-check evidence, classify implementation state, create a curated backfill evidence pack, add a review gate, and only later consider governed ingestion.
 
 This index does not grant permission for ingestion or promotion.
 
@@ -89,6 +91,8 @@ The first inventory/registering batch is recorded at `docs/evaluation/historical
 
 The first analytics registered-source placement placeholder exists at `docs/evaluation/historical_knowledge/registered_sources/developer_logs/HIST_ANALYTICS_2025_12_06_20_SOURCE_PLACEHOLDER.md`. Folder placement alone is not ingestion; the register entry controls classification; the original filename is metadata only; and the full historical document has not been ingested.
 
+The Analytics Engine developer log remains `NOT_REVIEWED` and ingestion permitted `No` until a future explicit review slice completes review readiness. This slice creates review-readiness templates/process only and does not review, ingest, parse, or consume that source.
+
 This slice does not mark any domain `REVIEWED_READY_FOR_INGESTION`. It does not mark any domain `BASELINE_ALREADY_EXISTS`.
 
 ## 8. How Minerva Should Use This Index
@@ -99,7 +103,7 @@ Minerva must preserve that pre-control-model historical knowledge is incomplete 
 
 ## 9. How Codex Should Use This Index
 
-Future Codex slices must read this index, the gap register, the source register, the source tiering model, the register-driven source classification model, and the backfill process before creating any historical backfill evidence pack or proposing historical ingestion.
+Future Codex slices must read this index, the gap register, the source register, the source tiering model, the register-driven source classification model, the review-readiness process/template, and the backfill process before creating any historical backfill evidence pack or proposing historical ingestion.
 
 Any future historical ingestion, governed ingestion, review approval, recapture, promotion, ledger update, runtime change, endpoint change, UI change, Code Evidence connection, live LLM call, DB write, migration, benchmark execution, corpus coverage execution, answer-gap execution, or generated artefact creation requires a separate explicit slice.
 
