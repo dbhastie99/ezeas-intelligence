@@ -235,6 +235,9 @@ HISTORICAL_KNOWLEDGE_CONTROL_INDEX = (
 HISTORICAL_KNOWLEDGE_GAP_REGISTER = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_KNOWLEDGE_GAP_REGISTER.md"
 )
+HISTORICAL_SOURCE_REGISTER = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_REGISTER.md"
+)
 HISTORICAL_SOURCE_TIERING_MODEL = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_TIERING_MODEL.md"
 )
@@ -264,6 +267,9 @@ HISTORICAL_SOURCE_INVENTORY_TEMPLATE_PROMPT = Path(
 )
 HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_register_driven_source_classification_v0_1.md"
+)
+HISTORICAL_SOURCE_REGISTER_SKELETON_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_source_register_skeleton_v0_1.md"
 )
 FORMAL_EVIDENCE_CONTROL_INDEX_README_LINK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_readme_link_v0_1.md"
@@ -2234,6 +2240,7 @@ def test_historical_knowledge_control_files_exist_and_are_linked():
     for path in (
         HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
         HISTORICAL_KNOWLEDGE_GAP_REGISTER,
+        HISTORICAL_SOURCE_REGISTER,
         HISTORICAL_SOURCE_TIERING_MODEL,
         HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION,
         HISTORICAL_BACKFILL_PROCESS,
@@ -2244,6 +2251,7 @@ def test_historical_knowledge_control_files_exist_and_are_linked():
 
     for referenced_path in (
         "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md",
@@ -2322,6 +2330,91 @@ def test_historical_register_driven_source_classification_model_is_defined():
         "This example is registered, but it is not platform truth",
     ):
         assert example_text in classification_model
+
+
+def test_historical_source_register_skeleton_is_defined():
+    assert HISTORICAL_SOURCE_REGISTER.exists()
+
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    backfill_process = _read(HISTORICAL_BACKFILL_PROCESS)
+    inventory_template = _read(HISTORICAL_SOURCE_INVENTORY_TEMPLATE)
+
+    assert "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md" in control_index
+    assert "source classification is register-driven, not filename-driven" in source_register
+    assert "Filenames are metadata and hints only" in source_register
+    assert "Inventory/registering a source does not itself permit ingestion" in source_register
+    assert "No historical source is ingested by this skeleton slice" in source_register
+    assert (
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md"
+        in backfill_process + inventory_template
+    )
+
+    required_columns = (
+        "Register ID",
+        "Source title",
+        "Original filename",
+        "Source folder",
+        "Registered source type",
+        "Source tier",
+        "Domain tags",
+        "Date or date range",
+        "Repository context",
+        "Related commits if known",
+        "Related control artefacts",
+        "Implementation-state classification",
+        "Review status",
+        "Ingestion permitted",
+        "Supersession status",
+        "Evidence confidence",
+        "Notes",
+    )
+    table_header = (
+        "| Register ID | Source title | Original filename | Source folder | "
+        "Registered source type | Source tier | Domain tags | Date or date range | "
+        "Repository context | Related commits if known | Related control artefacts | "
+        "Implementation-state classification | Review status | Ingestion permitted | "
+        "Supersession status | Evidence confidence | Notes |"
+    )
+    assert table_header in source_register
+
+    for required_column in required_columns:
+        assert required_column in source_register
+
+    for source_type in (
+        "DEVELOPER_LOG",
+        "HARDENING_LOG",
+        "PLATFORM_DOCTRINE",
+        "MIXED_LOG_DOCTRINE",
+        "CHAT_OR_CONTINUANCE",
+        "CODE_EVIDENCE",
+        "TEST_EVIDENCE",
+        "PROMPT_FILE",
+        "BASELINE_PACK",
+        "AWARD_BUILD_CONTROL",
+        "OTHER_REQUIRES_REVIEW",
+    ):
+        assert source_type in source_register
+
+    for classification in (
+        "IMPLEMENTED_AND_TESTED",
+        "IMPLEMENTED_NOT_FULLY_TESTED",
+        "DOCUMENTED_DOCTRINE",
+        "DOCUMENTED_BACKLOG",
+        "PLANNED_NOT_IMPLEMENTED",
+        "SUPERSEDED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+    ):
+        assert classification in source_register
+
+    for review_status in (
+        "NOT_REVIEWED",
+        "NEEDS_REVIEW",
+        "REVIEWED_READY_FOR_BACKFILL_DRAFT",
+        "REVIEWED_READY_FOR_GOVERNED_INGESTION",
+        "SUPERSEDED",
+    ):
+        assert review_status in source_register
 
 
 def test_historical_knowledge_gap_register_records_incomplete_pre_control_state():

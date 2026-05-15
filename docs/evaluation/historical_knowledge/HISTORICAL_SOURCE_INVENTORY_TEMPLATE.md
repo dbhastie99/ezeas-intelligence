@@ -8,7 +8,7 @@ Date: 15 May 2026
 
 This template defines the safe inventory fields for historical source documents before any future domain-scoped historical backfill review.
 
-Source classification is register-driven, not filename-driven. Registered folders and source-register entries are the durable discovery mechanism. Original filename is metadata and may be a hint only. Hardcoded individual document names must not be used as the primary source classification mechanism.
+Source classification is register-driven, not filename-driven. `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` is the durable register that controls historical source discovery and classification. Registered folders and source-register entries are the durable discovery mechanism. Original filename is metadata and may be a hint only. Hardcoded individual document names must not be used as the primary source classification mechanism.
 
 Inventory alone does not mutate corpus, does not ingest sources, does not connect Code Evidence, does not run live LLM, does not change runtime behaviour, does not promote baselines, and does not change ledger counts.
 
@@ -20,6 +20,7 @@ Use this template with:
 
 - `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md`
 

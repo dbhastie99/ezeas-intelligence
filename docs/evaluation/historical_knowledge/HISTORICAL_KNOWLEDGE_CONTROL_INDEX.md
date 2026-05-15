@@ -18,6 +18,7 @@ Use these durable controls together:
 | --- | --- |
 | Historical knowledge control index | `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md` |
 | Historical knowledge gap register | `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md` |
+| Historical source register | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` |
 | Historical source tiering model | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md` |
 | Historical register-driven source classification | `docs/evaluation/historical_knowledge/HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
@@ -39,6 +40,8 @@ Code/tests must be used to confirm implemented behaviour, but code alone may not
 ## 4. Register-Driven Source Classification
 
 Source classification is register-driven, not filename-driven.
+
+`docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` is the durable register that controls historical source discovery and classification.
 
 Registered folders and source-register entries are the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
 
@@ -87,7 +90,7 @@ Minerva must preserve that pre-control-model historical knowledge is incomplete 
 
 ## 9. How Codex Should Use This Index
 
-Future Codex slices must read this index, the gap register, the source tiering model, the register-driven source classification model, and the backfill process before creating any historical backfill evidence pack or proposing historical ingestion.
+Future Codex slices must read this index, the gap register, the source register, the source tiering model, the register-driven source classification model, and the backfill process before creating any historical backfill evidence pack or proposing historical ingestion.
 
 Any future historical ingestion, governed ingestion, review approval, recapture, promotion, ledger update, runtime change, endpoint change, UI change, Code Evidence connection, live LLM call, DB write, migration, benchmark execution, corpus coverage execution, answer-gap execution, or generated artefact creation requires a separate explicit slice.
 

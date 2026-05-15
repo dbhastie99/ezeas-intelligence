@@ -8,7 +8,7 @@ Date: 15 May 2026
 
 This model locks in the Minerva historical knowledge rule that source classification is register-driven, not filename-driven.
 
-Minerva follows registered source folders and source-register entries as the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
+Minerva follows registered source folders and source-register entries in `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` as the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
 
 Registered folders and source-register entries are the durable discovery mechanism.
 
@@ -18,7 +18,7 @@ A document does not need to be named Developer Log, Hardening Log, Doctrine, Con
 
 ## 2. Classification Rule
 
-The register assigns source class and starting reliability tier. The filename is retained as provenance metadata, not as the governing classifier.
+The register assigns source class and starting reliability tier. `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` is the durable register that controls those assignments. The filename is retained as provenance metadata, not as the governing classifier.
 
 A document can be classified as one of the controlled source types even if the filename does not contain those exact words:
 

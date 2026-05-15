@@ -10,7 +10,7 @@ This process defines the domain-scoped historical knowledge backfill workflow fo
 
 Pre-control-model historical knowledge is incomplete and not yet captured to the same durable standard as the new formal-evidence model.
 
-Source classification is register-driven, not filename-driven. Registered folders and source-register entries are the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
+Source classification is register-driven, not filename-driven. `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` is the durable register that controls historical source discovery and classification. Registered folders and source-register entries are the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
 
 ## 2. Implementation-State Classifications
 
@@ -28,7 +28,7 @@ Use exactly one current classification for each candidate decision unless the re
 
 ## 3. Register Fields
 
-The register assigns source class and starting reliability tier. A registered source does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking have been completed.
+`docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` assigns source class and starting reliability tier. A registered source does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking have been completed.
 
 Required register fields are:
 
@@ -54,7 +54,7 @@ A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCT
 ## 4. Domain-Scoped Backfill Workflow
 
 1. Identify historical source material for one domain.
-2. Register source provenance, including original filename as metadata, source folder, date where available, author/reviewer where available, registered source type, and source tier.
+2. Register source provenance in `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md`, including original filename as metadata, source folder, date where available, author/reviewer where available, registered source type, and source tier.
 3. Classify source tier using `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md`.
 4. Extract candidate decisions without treating them as final truth.
 5. Cross-check against code/tests/logs/doctrine/commits.
