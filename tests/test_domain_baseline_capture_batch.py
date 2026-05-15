@@ -195,6 +195,10 @@ FORMAL_EVIDENCE_CONTROL_INDEX = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_CONTROL_INDEX.md"
 )
+FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT_2026_05_15.md"
+)
 SOURCE_EVIDENCE_DRAFTS_README = Path("docs/evaluation/source_evidence_drafts/README.md")
 FORMAL_EVIDENCE_CONTROL_README_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md"
@@ -225,6 +229,9 @@ FORMAL_EVIDENCE_CONTROL_INDEX_README_LINK_PROMPT = Path(
 )
 FORMAL_EVIDENCE_CONTROL_INDEX_ROOT_README_LINK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_root_readme_link_v0_1.md"
+)
+FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_model_closeout_v0_1.md"
 )
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
@@ -1429,6 +1436,89 @@ def test_source_evidence_drafts_readme_records_formal_evidence_control_model():
         "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
     ):
         assert blocked_claim not in readme
+
+
+def test_formal_evidence_control_model_closeout_records_current_control_state():
+    assert FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT.exists()
+    assert FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT_PROMPT.exists()
+
+    closeout = _read(FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT)
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/README.md",
+        "README.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_GOVERNED_INGESTION_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_PROMOTION_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_PROMOTION_EXECUTION_GUARDRAIL.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_model_closeout_v0_1.md",
+    ):
+        assert referenced_path in closeout
+
+    for required_text in (
+        "stop relying on brittle chat history or copied Word documents",
+        "Prompts, decisions, source evidence controls, review gates, permission state, and follow-up status are preserved as durable repository artefacts.",
+        "Repository artefacts, not chat memory, are the durable source of truth for prompts, decisions, evidence controls, gates, and review state.",
+        "| Tax / PAYG | `BASELINE_REQUIRED` | `NOT_REVIEWED` | No | No | No | No |",
+        "| Imports / Actuals | `BASELINE_REQUIRED` | `NOT_REVIEWED` | No | No | No | No |",
+        "Tax / PAYG remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Imports / Actuals remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Governed ingestion permitted: No.",
+        "Recapture permitted: No.",
+        "Promotion permitted: No.",
+        "Promotion execution permitted: No.",
+        "Future Codex and Minerva slices should begin at `docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_CONTROL_INDEX.md`",
+        "Future slices should preserve prompt files under `docs/codex_prompts/`",
+        "Tax / PAYG remains blocked until explicit review is performed in a separate future slice.",
+        "Imports / Actuals remains blocked until explicit review is performed in a separate future slice.",
+        "A possible `REVIEWED_READY_FOR_INGESTION` transition, governed ingestion, recapture, and possible promotion must each be performed only in separately scoped future slices",
+    ):
+        assert required_text in closeout
+
+
+def test_formal_evidence_control_model_closeout_records_non_operational_boundaries():
+    closeout = _read(FORMAL_EVIDENCE_CONTROL_MODEL_CLOSEOUT)
+
+    for boundary in (
+        "No corpus mutation occurred.",
+        "No Code Evidence integration occurred.",
+        "No live LLM call occurred.",
+        "No benchmark recapture occurred.",
+        "No corpus coverage run occurred.",
+        "No answer-gap run occurred.",
+        "No runtime change occurred.",
+        "No UI change occurred.",
+        "No endpoint change occurred.",
+        "No workforce-platform change occurred.",
+        "No award-configurator-v1 change occurred.",
+        "No review approval occurred.",
+        "No governed ingestion occurred.",
+        "No recapture occurred.",
+        "No promotion occurred.",
+        "No ledger update occurred.",
+        "No DB write, migration, benchmark execution, corpus coverage execution, answer-gap execution, generated artefact creation, ledger promotion, or baseline promotion was performed.",
+    ):
+        assert boundary in closeout
+
+    for blocked_claim in (
+        "governed ingestion has occurred",
+        "recapture has occurred",
+        "promotion has occurred",
+        "ledger has been promoted",
+        "Tax / PAYG is `BASELINE_ALREADY_EXISTS`",
+        "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
+        "Tax / PAYG is BASELINE_ALREADY_EXISTS",
+        "Imports / Actuals is BASELINE_ALREADY_EXISTS",
+    ):
+        assert blocked_claim not in closeout
 
 
 def test_formal_evidence_review_readiness_checklist_records_required_gates():
