@@ -179,6 +179,10 @@ FORMAL_EVIDENCE_GOVERNED_INGESTION_PLANNING_RUNBOOK = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_GOVERNED_INGESTION_PLANNING_RUNBOOK.md"
 )
+FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK = (
+    Path("docs/evaluation/source_evidence_drafts")
+    / "FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK.md"
+)
 SOURCE_EVIDENCE_DRAFTS_README = Path("docs/evaluation/source_evidence_drafts/README.md")
 FORMAL_EVIDENCE_CONTROL_README_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md"
@@ -191,6 +195,9 @@ FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK_PROMPT = Path(
 )
 FORMAL_EVIDENCE_GOVERNED_INGESTION_PLANNING_RUNBOOK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_governed_ingestion_planning_runbook_v0_1.md"
+)
+FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_recapture_planning_runbook_v0_1.md"
 )
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
@@ -1647,6 +1654,85 @@ def test_formal_evidence_governed_ingestion_planning_runbook_preserves_blocked_s
         assert blocked_claim not in runbook
 
 
+def test_formal_evidence_recapture_planning_runbook_records_required_controls():
+    assert FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK.exists()
+
+    runbook = _read(FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK)
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/README.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_READINESS_CHECKLIST.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_STATUS_TRANSITION_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_GOVERNED_INGESTION_PLANNING_RUNBOOK.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+    ):
+        assert referenced_path in runbook
+
+    for precondition in (
+        "Latest decision record selected status is `REVIEWED_READY_FOR_INGESTION`.",
+        "Separate governed ingestion slice completed.",
+        "Corpus mutation evidence recorded.",
+        "Ingested source artefacts identified.",
+        "Generated artefact policy documented.",
+        "Benchmark manifest identified.",
+        "Corpus coverage command identified.",
+        "Answer-gap command identified.",
+        "Expected evidence groups identified.",
+        "Regression guardrails documented.",
+        "Rollback/restore notes preserved.",
+    ):
+        assert precondition in runbook
+
+    for required_text in (
+        "Current Tax / PAYG and Imports / Actuals records are `NOT_REVIEWED`, so recapture is currently not permitted for either domain.",
+        "Actual recapture must be a separate explicit slice after governed ingestion evidence exists.",
+        "Recapture planning alone does not mutate corpus.",
+        "Recapture planning alone does not run benchmark.",
+        "Recapture planning alone does not run corpus coverage.",
+        "Recapture planning alone does not run answer-gap reporting.",
+        "Recapture planning alone does not promote a baseline.",
+        "Recapture planning alone does not change runtime behaviour.",
+        "Recapture planning alone does not change ledger counts.",
+        "Recapture planning alone does not permit Minerva to answer as if recapture has happened.",
+        "For Tax / PAYG, Minerva may explain Tax / PAYG doctrine, source evidence, implementation state, and known gaps, but must not calculate PAYG withholding.",
+        "For Imports / Actuals, Minerva must preserve that Imports / Actuals is not merely file upload or CSV parsing.",
+    ):
+        assert required_text in runbook
+
+
+def test_formal_evidence_recapture_planning_runbook_preserves_blocked_states():
+    runbook = _read(FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK)
+
+    for required_text in (
+        "| Tax / PAYG | `BASELINE_REQUIRED` | `docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No |",
+        "| Imports / Actuals | `BASELINE_REQUIRED` | `docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md` | `NOT_REVIEWED` | No | No | No |",
+        "Tax / PAYG remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Imports / Actuals remains `BASELINE_REQUIRED` and `NOT_REVIEWED`.",
+        "Governed ingestion permitted: No.",
+        "Recapture permitted: No.",
+        "Promotion permitted: No.",
+        "It does not change completed-domain ledger counts.",
+        "It does not mark Tax / PAYG or Imports / Actuals as `REVIEWED_READY_FOR_INGESTION`.",
+        "It does not mark Tax / PAYG or Imports / Actuals as `BASELINE_ALREADY_EXISTS`.",
+    ):
+        assert required_text in runbook
+
+    for blocked_claim in (
+        "recapture has occurred",
+        "benchmark has passed",
+        "corpus coverage has passed",
+        "answer gap is GOOD",
+        "ledger has been promoted",
+        "Tax / PAYG is BASELINE_ALREADY_EXISTS",
+        "Tax / PAYG is `BASELINE_ALREADY_EXISTS`",
+        "Imports / Actuals is BASELINE_ALREADY_EXISTS",
+        "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
+    ):
+        assert blocked_claim not in runbook
+
+
 def test_formal_evidence_control_readme_prompt_is_preserved():
     assert FORMAL_EVIDENCE_CONTROL_README_PROMPT.exists()
 
@@ -1736,6 +1822,37 @@ def test_formal_evidence_governed_ingestion_planning_runbook_prompt_is_preserved
         "generated artefact policy documented",
         "recapture plan documented",
         "tests planned before corpus mutation",
+        "Do not change ledger counts.",
+        "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
+        "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
+    ):
+        assert required_text in prompt
+
+
+def test_formal_evidence_recapture_planning_runbook_prompt_is_preserved():
+    assert FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK_PROMPT.exists()
+
+    prompt = _read(FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt - Minerva Formal Evidence Recapture Planning Runbook v0.1",
+        "Mode: Documentation/control-runbook hardening only",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_RECAPTURE_PLANNING_RUNBOOK.md",
+        "tests/test_domain_baseline_capture_batch.py",
+        "latest decision record selected status `REVIEWED_READY_FOR_INGESTION`",
+        "separate governed ingestion slice completed",
+        "corpus mutation evidence recorded",
+        "ingested source artefacts identified",
+        "generated artefact policy documented",
+        "benchmark manifest identified",
+        "corpus coverage command identified",
+        "answer-gap command identified",
+        "expected evidence groups identified",
+        "regression guardrails documented",
+        "rollback/restore notes preserved",
+        "does not run benchmark",
+        "does not run corpus coverage",
+        "does not run answer-gap reporting",
         "Do not change ledger counts.",
         "Do not mark any domain `REVIEWED_READY_FOR_INGESTION`.",
         "Do not mark any domain `BASELINE_ALREADY_EXISTS`.",
