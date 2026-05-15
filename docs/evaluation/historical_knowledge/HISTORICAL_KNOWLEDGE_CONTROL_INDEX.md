@@ -19,6 +19,7 @@ Use these durable controls together:
 | Historical knowledge control index | `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md` |
 | Historical knowledge gap register | `docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_GAP_REGISTER.md` |
 | Historical source register | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` |
+| Registered source folder root | `docs/evaluation/historical_knowledge/registered_sources/` |
 | Historical source tiering model | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md` |
 | Historical register-driven source classification | `docs/evaluation/historical_knowledge/HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
@@ -44,6 +45,8 @@ Source classification is register-driven, not filename-driven.
 `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` is the durable register that controls historical source discovery and classification.
 
 Registered folders and source-register entries are the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
+
+The registered source folder root is `docs/evaluation/historical_knowledge/registered_sources/`. Registered folders are discovery and classification aids only; a file placed there still requires a source-register entry and does not become final truth.
 
 The register assigns source class and starting reliability tier. A registered source does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking against code/tests/commits/logs/doctrine where relevant have been completed.
 

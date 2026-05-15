@@ -22,6 +22,8 @@ Source classification is register-driven, not filename-driven. The durable rule 
 
 Registered folders/register entries are the durable discovery mechanism for historical source discovery and classification. Filenames are metadata and hints only.
 
+The registered source folder root is `docs/evaluation/historical_knowledge/registered_sources/`. These folders are discovery and classification aids only; files placed there still require a row in this register before they are treated as registered historical sources.
+
 Hardcoded individual document names must not be used as the primary classification mechanism.
 
 The register assigns source class and starting reliability tier. A registered source does not become final truth until review status, implementation-state classification, supersession status, and relevant cross-checking against code/tests/commits/logs/doctrine where relevant have been completed.

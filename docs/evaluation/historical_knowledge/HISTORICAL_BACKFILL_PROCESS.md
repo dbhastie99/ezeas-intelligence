@@ -12,6 +12,8 @@ Pre-control-model historical knowledge is incomplete and not yet captured to the
 
 Source classification is register-driven, not filename-driven. `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` is the durable register that controls historical source discovery and classification. Registered folders and source-register entries are the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
 
+The registered source folder root is `docs/evaluation/historical_knowledge/registered_sources/`. Placing a file under that root does not register, review, ingest, or promote the source; a source-register entry is still required.
+
 ## 2. Implementation-State Classifications
 
 Use exactly one current classification for each candidate decision unless the review gate records why multiple states apply:

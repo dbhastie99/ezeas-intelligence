@@ -247,6 +247,22 @@ HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION = (
 HISTORICAL_BACKFILL_PROCESS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BACKFILL_PROCESS.md"
 )
+HISTORICAL_REGISTERED_SOURCES_ROOT = (
+    HISTORICAL_KNOWLEDGE_ROOT / "registered_sources"
+)
+HISTORICAL_REGISTERED_SOURCE_FOLDERS = {
+    "developer_logs": "DEVELOPER_LOG",
+    "hardening_logs": "HARDENING_LOG",
+    "platform_doctrine": "PLATFORM_DOCTRINE",
+    "mixed_log_doctrine": "MIXED_LOG_DOCTRINE",
+    "chat_continuance": "CHAT_OR_CONTINUANCE",
+    "code_evidence": "CODE_EVIDENCE",
+    "test_evidence": "TEST_EVIDENCE",
+    "prompt_files": "PROMPT_FILE",
+    "baseline_packs": "BASELINE_PACK",
+    "award_build_control": "AWARD_BUILD_CONTROL",
+    "other_requires_review": "OTHER_REQUIRES_REVIEW",
+}
 HISTORICAL_KNOWLEDGE_CONTROL_INDEX_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_knowledge_control_index_v0_1.md"
 )
@@ -270,6 +286,9 @@ HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION_PROMPT = Path(
 )
 HISTORICAL_SOURCE_REGISTER_SKELETON_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_source_register_skeleton_v0_1.md"
+)
+HISTORICAL_SOURCE_FOLDER_STRUCTURE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_source_folder_structure_v0_1.md"
 )
 FORMAL_EVIDENCE_CONTROL_INDEX_README_LINK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_index_readme_link_v0_1.md"
@@ -2415,6 +2434,43 @@ def test_historical_source_register_skeleton_is_defined():
         "SUPERSEDED",
     ):
         assert review_status in source_register
+
+
+def test_historical_registered_source_folder_structure_is_defined():
+    root_readme_path = HISTORICAL_REGISTERED_SOURCES_ROOT / "README.md"
+    assert root_readme_path.exists()
+
+    root_readme = _read(root_readme_path)
+
+    for required_text in (
+        "Registered folders are a discovery and classification aid, not automatic truth.",
+        "still requires a source register entry",
+        "Filenames are metadata and hints only.",
+        "Source classification remains register-driven",
+        "No historical source is ingested merely by placing it in a folder.",
+        "No corpus mutation",
+    ):
+        assert required_text in root_readme
+
+    for folder_name, source_type in HISTORICAL_REGISTERED_SOURCE_FOLDERS.items():
+        folder_path = HISTORICAL_REGISTERED_SOURCES_ROOT / folder_name
+        assert folder_path.exists()
+        assert (folder_path / "README.md").exists() or (folder_path / ".gitkeep").exists()
+
+        if (folder_path / "README.md").exists():
+            folder_readme = _read(folder_path / "README.md")
+            assert f"Intended source type: `{source_type}`." in folder_readme
+            assert "starting classification and reliability tier only" in folder_readme
+            assert "still require a `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` entry" in folder_readme
+            assert "Final reliance requires register entry, review status, implementation-state classification" in folder_readme
+
+    for path in (
+        HISTORICAL_SOURCE_REGISTER,
+        HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION,
+        HISTORICAL_BACKFILL_PROCESS,
+        HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+    ):
+        assert "docs/evaluation/historical_knowledge/registered_sources/" in _read(path)
 
 
 def test_historical_knowledge_gap_register_records_incomplete_pre_control_state():

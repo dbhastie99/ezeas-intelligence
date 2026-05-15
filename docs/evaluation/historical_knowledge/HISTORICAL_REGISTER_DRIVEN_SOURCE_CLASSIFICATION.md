@@ -10,6 +10,8 @@ This model locks in the Minerva historical knowledge rule that source classifica
 
 Minerva follows registered source folders and source-register entries in `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` as the durable discovery mechanism. Individual filenames are metadata and may be hints only. Hardcoded individual document names must not be used as the primary source classification mechanism.
 
+The registered source folder root is `docs/evaluation/historical_knowledge/registered_sources/`. These folders provide starting discovery and classification context only; source classification remains controlled by source-register entries.
+
 Registered folders and source-register entries are the durable discovery mechanism.
 
 Registered folders and source-register entries as the durable discovery mechanism are the stable way to discover historical sources.
