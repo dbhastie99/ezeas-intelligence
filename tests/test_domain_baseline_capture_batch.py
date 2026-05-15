@@ -271,6 +271,13 @@ HISTORICAL_BATCH_REVIEW_READINESS_RULES = (
 HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.md"
 )
+HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.md"
+)
+HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -426,6 +433,9 @@ HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE_PROMPT = Path(
 HISTORICAL_BATCH_REVIEW_QUEUE_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_batch_review_queue_v0_1.md"
 )
+HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_batch_review_candidate_selection_v0_1.md"
+)
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
     / "developer_logs"
@@ -465,6 +475,8 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REVIEW_QUEUE.exists()
     assert HISTORICAL_BATCH_REVIEW_READINESS_RULES.exists()
     assert HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.exists()
+    assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.exists()
+    assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.exists()
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
     assert HISTORICAL_BATCH_REGISTER_INDEX_PROMPT.exists()
@@ -472,6 +484,7 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE_PROMPT.exists()
     assert HISTORICAL_BATCH_REVIEW_QUEUE_PROMPT.exists()
+    assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_PROMPT.exists()
 
 
 def test_historical_batch_review_queue_defines_status_model_and_analytics_entry():
@@ -499,6 +512,8 @@ def test_historical_batch_review_queue_defines_status_model_and_analytics_entry(
         "Ingestion remains `No` for all queue entries",
         "does not permit answer use until a separate governed ingestion/backfill decision exists",
         "Queueing this source only records future review control state",
+        "Queue membership does not itself select a source for review",
+        "Candidate selection is a separate governed control stage",
     ):
         assert required_text in queue
 
@@ -545,6 +560,8 @@ def test_historical_batch_review_readiness_rules_require_control_metadata():
         "`READY_FOR_DEEP_REVIEW` does not mean current truth",
         "`READY_FOR_DEEP_REVIEW` does not mean Minerva may answer from it",
         "`REVIEW_COMPLETE_NOT_INGESTED` still does not permit answer use until a separate governed ingestion/backfill decision exists",
+        "`READY_FOR_DEEP_REVIEW` only makes a source eligible for candidate selection",
+        "`READY_FOR_DEEP_REVIEW` does not start review, ingestion, answer use, or current-truth promotion",
     ):
         assert required_text in rules
 
@@ -562,6 +579,8 @@ def test_historical_batch_review_queue_entry_template_includes_required_fields()
         "RepositoryContext",
         "DomainContext",
         "QueueStatus",
+        "CandidateSelectionStatus",
+        "CandidateSelectionLink",
         "ReviewPriority",
         "CurrentTruthRisk",
         "IngestionPermitted",
@@ -578,7 +597,136 @@ def test_historical_batch_review_queue_entry_template_includes_required_fields()
 
     assert "| IngestionPermitted | No |" in template
     assert "| AnswerUsePermitted | No |" in template
+    assert "| CandidateSelectionStatus | `NOT_SELECTED` |" in template
     assert "historical source remains not current truth" in template
+    assert "candidate selection is optional and governed separately" in template
+
+
+def test_historical_batch_review_candidate_selection_model_is_defined():
+    candidate_selection = _read(HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION)
+
+    for heading in (
+        "## 1. Purpose",
+        "## 2. Scope",
+        "## 3. Candidate Selection Status Model",
+        "## 4. Selection Criteria",
+        "## 5. Priority Model",
+        "## 6. Blocker Handling",
+        "## 7. Current Truth Risk Handling",
+        "## 8. Required Cross-Checks Before Review",
+        "## 9. Required Outputs Before Selection Can Advance",
+        "## 10. What Candidate Selection Does Not Mean",
+        "## 11. Current Truth Boundary",
+        "## 12. Ingestion Boundary",
+        "## 13. Developer Handoff",
+    ):
+        assert heading in candidate_selection
+
+    for status in (
+        "NOT_SELECTED",
+        "CANDIDATE_PROPOSED",
+        "CANDIDATE_SELECTED_FOR_REVIEW",
+        "CANDIDATE_BLOCKED",
+        "CANDIDATE_DEFERRED",
+        "CANDIDATE_REJECTED",
+        "CANDIDATE_SUPERSEDED",
+    ):
+        assert status in candidate_selection
+
+    for priority in ("HIGH", "MEDIUM", "LOW", "DO_NOT_REVIEW"):
+        assert priority in candidate_selection
+
+
+def test_historical_batch_review_candidate_selection_requires_selection_criteria():
+    candidate_selection = _read(HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION)
+
+    for required_text in (
+        "queue entry exists",
+        "queue status is `READY_FOR_DEEP_REVIEW` or equivalent reviewed readiness status",
+        "source id exists",
+        "repository relevance exists",
+        "domain relevance exists",
+        "current-truth risk is assessed",
+        "duplicate/supersession risk is assessed",
+        "required cross-check repositories are identified",
+        "expected review outputs are identified",
+        "ingestion remains `No`",
+        "answer use remains `No`",
+    ):
+        assert required_text in candidate_selection
+
+
+def test_historical_batch_review_candidate_selection_blockers_and_boundaries():
+    candidate_selection = _read(HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION)
+
+    for blocker in (
+        "MISSING_SOURCE_REFERENCE",
+        "MISSING_REPOSITORY_CONTEXT",
+        "MISSING_DOMAIN_CONTEXT",
+        "CURRENT_TRUTH_RISK_UNASSESSED",
+        "DUPLICATE_OR_SUPERSEDED_RISK_UNASSESSED",
+        "CROSS_CHECKS_NOT_IDENTIFIED",
+        "EXPECTED_OUTPUTS_NOT_DEFINED",
+        "SOURCE_NOT_READY_FOR_REVIEW",
+    ):
+        assert blocker in candidate_selection
+
+    for boundary in (
+        "Candidate selection does not ingest source content.",
+        "Candidate selection does not perform deep review.",
+        "Candidate selection does not promote current truth.",
+        "Candidate selection does not permit answer use.",
+        "Candidate selection does not mutate operational corpus.",
+        "Candidate selection does not create Code Evidence.",
+        "Candidate selection does not write to a database.",
+        "Candidate selection does not call a live LLM.",
+        "Candidate selection does not create schema migrations",
+        "change endpoints",
+        "change UI",
+        "change workforce-platform",
+        "change award-configurator-v1",
+        "change ezeas-analytics",
+    ):
+        assert boundary in candidate_selection
+
+
+def test_historical_batch_review_candidate_selection_template_includes_required_fields():
+    template = _read(HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE)
+
+    for field in (
+        "CandidateSelectionId",
+        "QueueEntryId",
+        "SourceId",
+        "SourceTitle",
+        "RegisteredBatchId",
+        "CandidateStatus",
+        "ReviewPriority",
+        "SelectionRationale",
+        "CurrentTruthRisk",
+        "DuplicateOrSupersessionRisk",
+        "RequiredCrossChecks",
+        "RequiredReviewOutputs",
+        "IngestionPermitted",
+        "AnswerUsePermitted",
+        "Blockers",
+        "SelectedBy",
+        "SelectedAtUtc",
+        "DecisionRecordLink",
+        "Notes",
+    ):
+        assert f"| {field} |" in template
+
+    assert "| IngestionPermitted | No |" in template
+    assert "| AnswerUsePermitted | No |" in template
+    assert "deep review has not started" in template
+
+
+def test_historical_batch_review_candidate_selection_is_linked_from_control_index():
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.md" in control_index
+    assert "Candidate selection is a separate control stage after queue readiness" in control_index
 
 
 def test_historical_batch_registration_model_controls_default_path_and_truth_boundary():
@@ -773,6 +921,8 @@ def test_historical_batch_controls_are_referenced_by_existing_process_docs():
     assert "HISTORICAL_BATCH_REVIEW_QUEUE.md" in control_index
     assert "HISTORICAL_BATCH_REVIEW_READINESS_RULES.md" in control_index
     assert "HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.md" in control_index
     assert "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md" in control_index
     assert "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md" in backfill_process
     assert "HISTORICAL_BATCH_TRIAGE_PROCESS.md" in backfill_process
@@ -883,6 +1033,8 @@ def test_historical_batch_controls_preserve_non_ingestion_boundaries():
             HISTORICAL_BATCH_REVIEW_QUEUE,
             HISTORICAL_BATCH_REVIEW_READINESS_RULES,
             HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION,
+            HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE,
         )
     )
 
@@ -1028,7 +1180,7 @@ def test_historical_developer_log_batch_register_records_first_analytics_row():
 
 def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
     changed = subprocess.run(
-        ["git", "diff", "--name-only", "HEAD"],
+        ["git", "status", "--short"],
         capture_output=True,
         text=True,
         check=False,
@@ -1040,7 +1192,11 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
     )
-    changed_files = [line.strip() for line in changed.stdout.splitlines() if line.strip()]
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
 
     for changed_file in changed_files:
         assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
@@ -1064,6 +1220,8 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
             HISTORICAL_BATCH_REVIEW_QUEUE,
             HISTORICAL_BATCH_REVIEW_READINESS_RULES,
             HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION,
+            HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE,
             HISTORICAL_BATCH_REGISTER_INDEX,
             HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL,
             HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE,

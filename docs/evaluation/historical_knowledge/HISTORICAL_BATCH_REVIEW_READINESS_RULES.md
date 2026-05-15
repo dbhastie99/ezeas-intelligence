@@ -40,7 +40,15 @@ A source may become `READY_FOR_DEEP_REVIEW` only when all rules are satisfied:
 
 `REVIEW_COMPLETE_NOT_INGESTED` still does not permit answer use until a separate governed ingestion/backfill decision exists.
 
-## 4. Status Transition Controls
+## 4. Candidate Selection Eligibility
+
+`READY_FOR_DEEP_REVIEW` only makes a source eligible for candidate selection under `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.md`.
+
+`READY_FOR_DEEP_REVIEW` does not start review, ingestion, answer use, or current-truth promotion.
+
+Candidate selection remains a separate governed control stage. It may identify a future review candidate, but it does not perform deep review, ingest source content, mutate operational corpus, create Code Evidence, write databases, call live LLM, or permit Minerva to answer from historical material.
+
+## 5. Status Transition Controls
 
 Only a future explicit review-control slice may move a source into `READY_FOR_DEEP_REVIEW`, `REVIEW_IN_PROGRESS`, or `REVIEW_COMPLETE_NOT_INGESTED`.
 
@@ -52,6 +60,6 @@ Any transition must preserve:
 - repository separation from workforce-platform, award-configurator-v1, and ezeas-analytics
 - the rule that historical sources are not current truth unless reviewed, cross-checked, backfilled, and governed
 
-## 5. Non-Goals
+## 6. Non-Goals
 
 These rules do not ingest source content, mutate corpus, connect Code Evidence, call live LLM, write databases, create schema migrations, change endpoints, change UI, change workforce-platform, change award-configurator-v1, change ezeas-analytics, promote current truth, or permit Minerva answer use from historical material.

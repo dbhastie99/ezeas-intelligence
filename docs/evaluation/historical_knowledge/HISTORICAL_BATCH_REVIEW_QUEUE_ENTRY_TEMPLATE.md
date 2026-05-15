@@ -19,6 +19,8 @@ Queue entries are control metadata only. They do not ingest source content, revi
 | RepositoryContext |  |
 | DomainContext |  |
 | QueueStatus |  |
+| CandidateSelectionStatus | `NOT_SELECTED` |
+| CandidateSelectionLink |  |
 | ReviewPriority |  |
 | CurrentTruthRisk |  |
 | IngestionPermitted | No |
@@ -37,3 +39,4 @@ Required defaults before governed ingestion/backfill approval:
 - `AnswerUsePermitted`: No
 - historical source remains not current truth
 - queue entry remains metadata-only control state
+- candidate selection is optional and governed separately through `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.md`
