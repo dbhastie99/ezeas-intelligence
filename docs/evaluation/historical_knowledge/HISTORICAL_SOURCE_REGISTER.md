@@ -8,13 +8,13 @@ Date: 15 May 2026
 
 This register is the durable Minerva control artefact for historical source discovery and classification.
 
-It defines the empty source-register skeleton that future domain-scoped historical backfill slices may populate after explicit approval. It does not register actual historical chats, developer logs, hardening logs, doctrine documents, prompts, code evidence, test evidence, baseline packs, award build controls, or any other historical source in this slice.
+It defines the source-register skeleton and the first controlled source inventory row. This slice registers one analytics developer log at metadata level only. It does not ingest actual historical chats, developer logs, hardening logs, doctrine documents, prompts, code evidence, test evidence, baseline packs, award build controls, or any other historical source content.
 
 ## 2. Scope
 
 This skeleton covers the register schema, controlled source types, review statuses, implementation-state classifications, ingestion permission rules, and future population workflow.
 
-The register is placeholder-only. No historical source is ingested by this skeleton slice.
+This register now contains the first controlled inventory entry. No historical source is ingested by this skeleton slice. No historical source is ingested by this inventory slice.
 
 ## 3. Register-Driven Classification Rule
 
@@ -34,10 +34,11 @@ Inventory/registering a source does not itself permit ingestion.
 
 ## 4. Source Register Table
 
-No source rows are populated in this skeleton slice.
+The first populated row is metadata-only. The source remains external/user-provided until a future controlled source-placement or backfill slice.
 
 | Register ID | Source title | Original filename | Source folder | Registered source type | Source tier | Domain tags | Date or date range | Repository context | Related commits if known | Related control artefacts | Implementation-state classification | Review status | Ingestion permitted | Supersession status | Evidence confidence | Notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| HIST-ANALYTICS-2025-12-06-20 | Developer Log - Analytics Engine | Developer Log - Analytics Engine (5).docx | `docs/evaluation/historical_knowledge/registered_sources/developer_logs/` | `DEVELOPER_LOG` - developer-authored historical analytics working material requiring review and implementation-state confirmation | Tier 2 | Analytics; Workforce Analytics DB; Golden Slice; ObjectTime; ProcessedRule; CalcInterpreterLine Replatform Review; Power BI; Reconciliation Reporting | 6 December 2025 to 20 December 2025 | Historical analytics server / workforce analytics context | unknown | `HISTORICAL_SOURCE_TIERING_MODEL.md`; `HISTORICAL_BACKFILL_PROCESS.md`; `HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION.md`; `HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md` | `UNCERTAIN_REQUIRES_REVIEW` - current implementation state requires code confirmation and is not fully current | `NOT_REVIEWED` | No | `PARTIALLY_SUPERSEDED_BY_CALCINTERPRETERLINE_MODEL` - supersession risk because `CalcInterpreterLine` is the current target calculation fact source | Medium/high for historical rationale; requires code confirmation for current implementation | Metadata-level registration only. `ProcessedRule`-era analytics must be reviewed before use as current truth; `CalcInterpreterLine` is the current target calculation fact source for processed payroll analytics. |
 
 ## 5. Required Register Fields
 
@@ -121,13 +122,15 @@ Inventory/registering a source does not itself permit ingestion.
 
 `Ingestion permitted` must remain `No` for all sources until a separate explicit governed ingestion slice changes that state after review status, implementation-state classification, supersession status, and relevant cross-checking are complete.
 
-No historical source is ingested by this skeleton slice.
+No historical source is ingested by this skeleton slice. No historical source is ingested by this inventory slice.
 
 ## 11. Non-Goals
 
-This skeleton does not populate real historical source rows, does not ingest historical chats, does not ingest developer logs, does not ingest doctrine documents, does not ingest code, does not mutate corpus, does not connect Code Evidence, does not run live LLM, does not change runtime behaviour, does not promote baselines, and does not change ledger counts.
+This skeleton and first inventory row do not ingest historical chats, do not ingest developer logs, do not ingest doctrine documents, do not ingest code, do not mutate corpus, do not connect Code Evidence, do not run live LLM, do not change runtime behaviour, do not promote baselines, and do not change ledger counts.
 
 This skeleton does not implement DB writes, migrations, corpus mutation, Code Evidence integration, live LLM calls, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, runtime changes, historical ingestion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution, promotion, ledger update, ledger promotion, or generated artefact creation.
+
+The Analytics Engine developer log registered as `HIST-ANALYTICS-2025-12-06-20` is source material, not current final truth. It is intended to support later analytics replatform planning and must not be used for direct Minerva ingestion without a separate governed slice.
 
 ## 12. Future Population Workflow
 

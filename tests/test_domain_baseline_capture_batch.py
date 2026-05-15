@@ -272,6 +272,11 @@ HISTORICAL_KNOWLEDGE_CONTROL_INDEX_PROMPT = Path(
 HISTORICAL_SOURCE_INVENTORY_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_INVENTORY_TEMPLATE.md"
 )
+HISTORICAL_ANALYTICS_INVENTORY_BATCH = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "inventory_batches"
+    / "HISTORICAL_SOURCE_INVENTORY_BATCH_2026_05_15_ANALYTICS.md"
+)
 HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_DOCTRINE_INVENTORY_TEMPLATE.md"
 )
@@ -292,6 +297,9 @@ HISTORICAL_SOURCE_REGISTER_SKELETON_PROMPT = Path(
 )
 HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_source_register_validation_runbook_v0_1.md"
+)
+HISTORICAL_SOURCE_REGISTER_FIRST_INVENTORY_BATCH_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_source_register_first_inventory_batch_v0_1.md"
 )
 HISTORICAL_SOURCE_FOLDER_STRUCTURE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_source_folder_structure_v0_1.md"
@@ -2440,6 +2448,59 @@ def test_historical_source_register_skeleton_is_defined():
         "SUPERSEDED",
     ):
         assert review_status in source_register
+
+
+def test_historical_source_register_records_first_analytics_inventory_source():
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+
+    for required_text in (
+        "HIST-ANALYTICS-2025-12-06-20",
+        "Developer Log - Analytics Engine",
+        "Developer Log - Analytics Engine (5).docx",
+        "Tier 2",
+        "`NOT_REVIEWED`",
+        "| No |",
+        "Analytics",
+        "ProcessedRule",
+        "CalcInterpreterLine",
+        "Power BI",
+        "current implementation state requires code confirmation",
+        "not fully current",
+        "PARTIALLY_SUPERSEDED_BY_CALCINTERPRETERLINE_MODEL",
+        "supersession risk because `CalcInterpreterLine` is the current target calculation fact source",
+    ):
+        assert required_text in source_register
+
+
+def test_historical_analytics_inventory_batch_records_non_ingestion_boundaries():
+    assert HISTORICAL_ANALYTICS_INVENTORY_BATCH.exists()
+
+    inventory_batch = _read(HISTORICAL_ANALYTICS_INVENTORY_BATCH)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    combined = "\n".join((inventory_batch, control_index, source_register))
+
+    for required_text in (
+        "No historical source content is ingested",
+        "registered as historical source material",
+        "not treated as current final truth",
+        "`ProcessedRule`-era analytics is historical and requires review",
+        "`CalcInterpreterLine` is the current target calculation fact source",
+        "cross-check this log against current code, tests, database views, and committed schema/scripts",
+        "later analytics replatform planning pack, not direct Minerva ingestion",
+    ):
+        assert required_text in inventory_batch
+
+    for boundary_text in (
+        "no corpus mutation",
+        "no Code Evidence integration",
+        "no live LLM call",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+        "no historical ingestion",
+    ):
+        assert boundary_text in combined
 
 
 def test_historical_source_register_validation_runbook_is_defined():
