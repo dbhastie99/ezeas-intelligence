@@ -238,6 +238,9 @@ HISTORICAL_KNOWLEDGE_GAP_REGISTER = (
 HISTORICAL_SOURCE_REGISTER = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_REGISTER.md"
 )
+HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md"
+)
 HISTORICAL_SOURCE_TIERING_MODEL = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_SOURCE_TIERING_MODEL.md"
 )
@@ -286,6 +289,9 @@ HISTORICAL_REGISTER_DRIVEN_SOURCE_CLASSIFICATION_PROMPT = Path(
 )
 HISTORICAL_SOURCE_REGISTER_SKELETON_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_source_register_skeleton_v0_1.md"
+)
+HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_source_register_validation_runbook_v0_1.md"
 )
 HISTORICAL_SOURCE_FOLDER_STRUCTURE_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_source_folder_structure_v0_1.md"
@@ -2434,6 +2440,82 @@ def test_historical_source_register_skeleton_is_defined():
         "SUPERSEDED",
     ):
         assert review_status in source_register
+
+
+def test_historical_source_register_validation_runbook_is_defined():
+    assert HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.exists()
+
+    validation_runbook = _read(HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK)
+    source_register = _read(HISTORICAL_SOURCE_REGISTER)
+    registered_sources_readme = _read(HISTORICAL_REGISTERED_SOURCES_ROOT / "README.md")
+
+    assert (
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md"
+        in source_register
+    )
+    assert (
+        "docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md"
+        in registered_sources_readme
+    )
+
+    for required_text in (
+        "folder placement alone is not registration",
+        "must have a corresponding `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` entry",
+        "Registered source type comes from the register entry, not the filename.",
+        "Original filename is metadata only.",
+        "UNREGISTERED_SOURCE_MATERIAL",
+        "must not be ingested, cited as final truth",
+        "`Ingestion permitted` defaults to `No`",
+        "does not ingest or parse real historical documents",
+        "This slice does not perform historical ingestion, corpus mutation, Code Evidence integration, live LLM call, runtime change, endpoint change, UI change",
+        "baseline promotion, ledger promotion, review approval, governed ingestion, recapture, benchmark execution, corpus coverage execution, answer-gap execution",
+        "generated artefact creation",
+    ):
+        assert required_text in validation_runbook
+
+    for register_field in (
+        "Source title",
+        "Original filename",
+        "Source folder",
+        "Registered source type",
+        "Source tier",
+        "Domain tags",
+        "Date or date range",
+        "Repository context",
+        "Implementation-state classification",
+        "Review status",
+        "Ingestion permitted",
+        "Supersession status",
+        "Evidence confidence",
+        "Notes",
+    ):
+        assert register_field in validation_runbook
+
+    for source_type in (
+        "DEVELOPER_LOG",
+        "HARDENING_LOG",
+        "PLATFORM_DOCTRINE",
+        "MIXED_LOG_DOCTRINE",
+        "CHAT_OR_CONTINUANCE",
+        "CODE_EVIDENCE",
+        "TEST_EVIDENCE",
+        "PROMPT_FILE",
+        "BASELINE_PACK",
+        "AWARD_BUILD_CONTROL",
+        "OTHER_REQUIRES_REVIEW",
+    ):
+        assert source_type in validation_runbook
+
+    for classification in (
+        "IMPLEMENTED_AND_TESTED",
+        "IMPLEMENTED_NOT_FULLY_TESTED",
+        "DOCUMENTED_DOCTRINE",
+        "DOCUMENTED_BACKLOG",
+        "PLANNED_NOT_IMPLEMENTED",
+        "SUPERSEDED",
+        "UNCERTAIN_REQUIRES_REVIEW",
+    ):
+        assert classification in validation_runbook
 
 
 def test_historical_registered_source_folder_structure_is_defined():

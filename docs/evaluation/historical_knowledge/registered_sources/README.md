@@ -6,6 +6,8 @@ Date: 15 May 2026
 
 This folder is the registered source folder root for Minerva historical knowledge controls: `docs/evaluation/historical_knowledge/registered_sources/`.
 
+Registration validation is governed by `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`.
+
 Registered folders are a discovery and classification aid, not automatic truth. A file placed in a registered folder still requires a source register entry in `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` before it is treated as a registered historical source.
 
 Filenames are metadata and hints only. Source classification remains register-driven through the source register, review status, implementation-state classification, supersession status, and relevant cross-checking.

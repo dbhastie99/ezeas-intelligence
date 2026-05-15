@@ -20,6 +20,8 @@ The register is placeholder-only. No historical source is ingested by this skele
 
 Source classification is register-driven, not filename-driven. The durable rule is that source classification is register-driven, not filename-driven.
 
+Registration validation is controlled by `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`.
+
 Registered folders/register entries are the durable discovery mechanism for historical source discovery and classification. Filenames are metadata and hints only.
 
 The registered source folder root is `docs/evaluation/historical_knowledge/registered_sources/`. These folders are discovery and classification aids only; files placed there still require a row in this register before they are treated as registered historical sources.
