@@ -278,6 +278,12 @@ HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.md"
 )
+HISTORICAL_BATCH_REVIEW_DECISION_RECORD = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md"
+)
+HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -436,6 +442,9 @@ HISTORICAL_BATCH_REVIEW_QUEUE_PROMPT = Path(
 HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_batch_review_candidate_selection_v0_1.md"
 )
+HISTORICAL_BATCH_REVIEW_DECISION_RECORD_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_batch_review_decision_record_v0_1.md"
+)
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
     / "developer_logs"
@@ -477,6 +486,8 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.exists()
     assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.exists()
     assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.exists()
+    assert HISTORICAL_BATCH_REVIEW_DECISION_RECORD.exists()
+    assert HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.exists()
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
     assert HISTORICAL_BATCH_REGISTER_INDEX_PROMPT.exists()
@@ -485,6 +496,7 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE_PROMPT.exists()
     assert HISTORICAL_BATCH_REVIEW_QUEUE_PROMPT.exists()
     assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_PROMPT.exists()
+    assert HISTORICAL_BATCH_REVIEW_DECISION_RECORD_PROMPT.exists()
 
 
 def test_historical_batch_review_queue_defines_status_model_and_analytics_entry():
@@ -615,10 +627,11 @@ def test_historical_batch_review_candidate_selection_model_is_defined():
         "## 7. Current Truth Risk Handling",
         "## 8. Required Cross-Checks Before Review",
         "## 9. Required Outputs Before Selection Can Advance",
-        "## 10. What Candidate Selection Does Not Mean",
-        "## 11. Current Truth Boundary",
-        "## 12. Ingestion Boundary",
-        "## 13. Developer Handoff",
+        "## 10. Decision Record Requirement Before Review",
+        "## 11. What Candidate Selection Does Not Mean",
+        "## 12. Current Truth Boundary",
+        "## 13. Ingestion Boundary",
+        "## 14. Developer Handoff",
     ):
         assert heading in candidate_selection
 
@@ -719,6 +732,8 @@ def test_historical_batch_review_candidate_selection_template_includes_required_
     assert "| IngestionPermitted | No |" in template
     assert "| AnswerUsePermitted | No |" in template
     assert "deep review has not started" in template
+    assert "DecisionRecordLink" in template
+    assert "required or planned before any future deep review starts" in template
 
 
 def test_historical_batch_review_candidate_selection_is_linked_from_control_index():
@@ -727,6 +742,204 @@ def test_historical_batch_review_candidate_selection_is_linked_from_control_inde
     assert "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.md" in control_index
     assert "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.md" in control_index
     assert "Candidate selection is a separate control stage after queue readiness" in control_index
+
+
+def test_historical_batch_review_decision_record_model_is_defined():
+    decision_record = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD)
+
+    for heading in (
+        "## 1. Purpose",
+        "## 2. Scope",
+        "## 3. Decision Record Status Model",
+        "## 4. Decision Types",
+        "## 5. Required Decision Fields",
+        "## 6. Pre-Review Decision Requirements",
+        "## 7. Review-Completion Decision Requirements",
+        "## 8. Ingestion Decision Boundary",
+        "## 9. Answer-Use Decision Boundary",
+        "## 10. Current-Truth Decision Boundary",
+        "## 11. Cross-Check Evidence Requirements",
+        "## 12. Blocker and Deferral Handling",
+        "## 13. What a Decision Record Does Not Mean",
+        "## 14. Developer Handoff",
+    ):
+        assert heading in decision_record
+
+    for status in (
+        "DECISION_RECORD_PLANNED",
+        "DECISION_RECORD_OPEN",
+        "DECISION_RECORD_BLOCKED",
+        "DECISION_RECORD_DEFERRED",
+        "DECISION_RECORD_REVIEW_COMPLETE_NOT_INGESTED",
+        "DECISION_RECORD_INGESTION_APPROVED_PENDING_BACKFILL",
+        "DECISION_RECORD_INGESTED_NOT_CURRENT_TRUTH",
+        "DECISION_RECORD_CURRENT_TRUTH_APPROVED",
+        "DECISION_RECORD_REJECTED",
+        "DECISION_RECORD_SUPERSEDED",
+    ):
+        assert status in decision_record
+
+    for decision_type in (
+        "SELECTION_DECISION",
+        "REVIEW_START_DECISION",
+        "REVIEW_COMPLETION_DECISION",
+        "INGESTION_DECISION",
+        "ANSWER_USE_DECISION",
+        "CURRENT_TRUTH_DECISION",
+        "SUPERSESSION_DECISION",
+        "REJECTION_DECISION",
+    ):
+        assert decision_type in decision_record
+
+
+def test_historical_batch_review_decision_record_requires_fields_and_pre_review_controls():
+    decision_record = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD)
+
+    for field in (
+        "DecisionRecordId",
+        "CandidateSelectionId",
+        "QueueEntryId",
+        "SourceId",
+        "SourceTitle",
+        "RegisteredBatchId",
+        "DecisionStatus",
+        "DecisionType",
+        "ReviewPriority",
+        "ReviewStartPermitted",
+        "ReviewCompleted",
+        "IngestionPermitted",
+        "AnswerUsePermitted",
+        "CurrentTruthPermitted",
+        "CrossChecksRequired",
+        "CrossChecksCompleted",
+        "EvidenceReviewed",
+        "FindingsRecordLink",
+        "BackfillRequired",
+        "OperationalCorpusMutationPermitted",
+        "CodeEvidenceIngestionPermitted",
+        "LiveLLMUsePermitted",
+        "DecisionRationale",
+        "Blockers",
+        "DecidedBy",
+        "DecidedAtUtc",
+        "Notes",
+    ):
+        assert f"| {field} |" in decision_record
+
+    for required_text in (
+        "candidate selection must exist",
+        "queue entry must exist",
+        "source id must exist",
+        "review start must be explicitly permitted before deep review begins",
+        "ingestion must remain No",
+        "answer use must remain No",
+        "current truth must remain No",
+        "operational corpus mutation must remain No",
+        "Code Evidence ingestion must remain No",
+        "live LLM use must remain No",
+    ):
+        assert required_text in decision_record
+
+
+def test_historical_batch_review_decision_record_boundaries_are_explicit():
+    decision_record = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD)
+
+    for required_text in (
+        "Review completion does not automatically permit ingestion",
+        "Review completion does not automatically permit answer use",
+        "Review completion does not automatically promote current truth",
+        "Findings must be captured separately",
+        "Cross-check evidence must be recorded before any ingestion/current-truth decision",
+        "Ingestion requires a separate explicit decision",
+        "Ingestion approval is not created by queueing, candidate selection, or review completion",
+        "Ingestion approval still does not automatically mean current truth",
+        "Answer-use permission requires explicit approval",
+        "Answer-use permission must be linked to ingestion/backfill and current-truth decision status",
+        "No `NOT_REVIEWED`, candidate-only, queued-only, or review-complete-not-ingested source may be used as current answer truth",
+        "Current-truth promotion requires explicit decision",
+        "Current-truth promotion requires completed cross-checks",
+        "Historical material must not override newer repository/source truth unless the decision record explains why",
+        "Current-truth status must be visible to Minerva retrieval/answer logic before any future answer-use integration",
+    ):
+        assert required_text in decision_record
+
+
+def test_historical_batch_review_decision_record_non_meanings_are_explicit():
+    decision_record = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD)
+
+    for required_text in (
+        "Creating a decision record does not ingest source content.",
+        "Creating a decision record does not perform deep review.",
+        "Creating a decision record does not promote current truth.",
+        "Creating a decision record does not permit answer use.",
+        "Creating a decision record does not mutate operational corpus.",
+        "Creating a decision record does not create Code Evidence.",
+        "Creating a decision record does not write to a database.",
+        "Creating a decision record does not call a live LLM.",
+    ):
+        assert required_text in decision_record
+
+
+def test_historical_batch_review_decision_record_template_defaults_are_conservative():
+    template = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE)
+
+    for field in (
+        "DecisionRecordId",
+        "CandidateSelectionId",
+        "QueueEntryId",
+        "SourceId",
+        "SourceTitle",
+        "RegisteredBatchId",
+        "DecisionStatus",
+        "DecisionType",
+        "ReviewPriority",
+        "ReviewStartPermitted",
+        "ReviewCompleted",
+        "IngestionPermitted",
+        "AnswerUsePermitted",
+        "CurrentTruthPermitted",
+        "CrossChecksRequired",
+        "CrossChecksCompleted",
+        "EvidenceReviewed",
+        "FindingsRecordLink",
+        "BackfillRequired",
+        "OperationalCorpusMutationPermitted",
+        "CodeEvidenceIngestionPermitted",
+        "LiveLLMUsePermitted",
+        "DecisionRationale",
+        "Blockers",
+        "DecidedBy",
+        "DecidedAtUtc",
+        "Notes",
+    ):
+        assert f"| {field} |" in template
+
+    for default in (
+        "| ReviewStartPermitted | No |",
+        "| ReviewCompleted | No |",
+        "| IngestionPermitted | No |",
+        "| AnswerUsePermitted | No |",
+        "| CurrentTruthPermitted | No |",
+        "| OperationalCorpusMutationPermitted | No |",
+        "| CodeEvidenceIngestionPermitted | No |",
+        "| LiveLLMUsePermitted | No |",
+    ):
+        assert default in template
+
+
+def test_historical_batch_review_decision_record_is_linked_from_control_chain():
+    candidate_selection = _read(HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION)
+    candidate_template = _read(HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE)
+    queue = _read(HISTORICAL_BATCH_REVIEW_QUEUE)
+    readiness_rules = _read(HISTORICAL_BATCH_REVIEW_READINESS_RULES)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert "Selected candidates require a decision record before any future deep review starts" in candidate_selection
+    assert "DecisionRecordLink" in candidate_template
+    assert "Queue entries and candidate selections flow into decision records before review execution" in queue
+    assert "`READY_FOR_DEEP_REVIEW` and `CANDIDATE_SELECTED_FOR_REVIEW` do not authorise review execution until a decision record permits review start" in readiness_rules
+    assert "HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md" in control_index
 
 
 def test_historical_batch_registration_model_controls_default_path_and_truth_boundary():
@@ -923,6 +1136,8 @@ def test_historical_batch_controls_are_referenced_by_existing_process_docs():
     assert "HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE.md" in control_index
     assert "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.md" in control_index
     assert "HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md" in control_index
+    assert "HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md" in control_index
     assert "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md" in control_index
     assert "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md" in backfill_process
     assert "HISTORICAL_BATCH_TRIAGE_PROCESS.md" in backfill_process
@@ -1035,6 +1250,8 @@ def test_historical_batch_controls_preserve_non_ingestion_boundaries():
             HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE,
             HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION,
             HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_DECISION_RECORD,
+            HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE,
         )
     )
 
@@ -1222,6 +1439,8 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
             HISTORICAL_BATCH_REVIEW_QUEUE_ENTRY_TEMPLATE,
             HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION,
             HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_DECISION_RECORD,
+            HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE,
             HISTORICAL_BATCH_REGISTER_INDEX,
             HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL,
             HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE,

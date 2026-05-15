@@ -52,7 +52,15 @@ Candidate selection is a separate governed control stage recorded through `docs/
 
 A queue entry can become eligible for candidate selection only after readiness controls are satisfied, but candidate selection still does not start deep review, ingest source content, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
 
-## 7. Blocker Categories
+## 7. Decision Record Handoff Before Review Execution
+
+Queue entries and candidate selections flow into decision records before review execution.
+
+The governed decision-record model is `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md`, with reusable records shaped by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md`.
+
+Queue status and candidate-selection status do not authorize review execution until a decision record explicitly permits review start. The decision record must preserve ingestion `No`, answer use `No`, current truth `No`, operational corpus mutation `No`, Code Evidence ingestion `No`, and live LLM use `No` unless a future governed decision explicitly changes the relevant permission.
+
+## 8. Blocker Categories
 
 Use these blocker categories consistently:
 
@@ -71,7 +79,7 @@ Use these blocker categories consistently:
 - `SUPERSEDED_OR_DUPLICATE_REQUIRES_RESOLUTION`
 - `ARCHIVAL_ONLY_NO_REVIEW_INTENT`
 
-## 8. Evidence Required Before Review Starts
+## 9. Evidence Required Before Review Starts
 
 Before a future deep review starts, the queue entry must identify:
 
@@ -82,10 +90,11 @@ Before a future deep review starts, the queue entry must identify:
 - current-truth risk and duplicate/supersession risk
 - required cross-check repositories or evidence surfaces
 - required review outputs and decision record target
+- linked or planned decision record
 - explicit `IngestionPermitted: No`
 - explicit `AnswerUsePermitted: No`
 
-## 9. What Review Queue Status Does Not Mean
+## 10. What Review Queue Status Does Not Mean
 
 Review queue status does not mean source content has been ingested.
 
@@ -97,19 +106,19 @@ Review queue status does not permit Minerva to answer from historical material.
 
 Review queue status does not approve governed ingestion, historical backfill, corpus mutation, Code Evidence ingestion, live LLM calls, database writes, schema migrations, endpoint changes, UI changes, workforce-platform changes, award-configurator-v1 changes, or ezeas-analytics changes.
 
-## 10. Current Truth Boundary
+## 11. Current Truth Boundary
 
 Historical sources are not current truth unless reviewed, cross-checked, backfilled, and governed through a separate explicit decision.
 
 The current Analytics Engine developer log queue entry remains not current truth. It remains `NOT_REVIEWED` in its decision record and batch register. This queue does not change that status.
 
-## 11. Ingestion Boundary
+## 12. Ingestion Boundary
 
 Ingestion remains `No` for all queue entries unless a future governed ingestion slice explicitly changes it.
 
 `READY_FOR_DEEP_REVIEW`, `REVIEW_IN_PROGRESS`, and `REVIEW_COMPLETE_NOT_INGESTED` do not authorize ingestion. `REVIEW_COMPLETE_NOT_INGESTED` still does not permit answer use until a separate governed ingestion/backfill decision exists.
 
-## 12. Developer Handoff
+## 13. Developer Handoff
 
 Future developers should use this queue to find controlled review candidates and blockers after metadata-only batch registration is complete.
 

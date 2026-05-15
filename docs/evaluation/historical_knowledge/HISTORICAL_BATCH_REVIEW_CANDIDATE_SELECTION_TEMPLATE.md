@@ -27,7 +27,7 @@ Candidate-selection records are metadata/control only. They do not ingest source
 | Blockers |  |
 | SelectedBy |  |
 | SelectedAtUtc |  |
-| DecisionRecordLink |  |
+| DecisionRecordLink | Planned before any future deep review starts |
 | Notes |  |
 
 Required defaults:
@@ -38,3 +38,4 @@ Required defaults:
 - historical source remains not current truth
 - candidate selection remains metadata-only control state
 - deep review has not started
+- `DecisionRecordLink` is required or planned before any future deep review starts

@@ -113,7 +113,17 @@ Expected review outputs may include:
 
 These outputs are expected future artefacts only. Candidate selection does not create reviewed source findings.
 
-## 10. What Candidate Selection Does Not Mean
+## 10. Decision Record Requirement Before Review
+
+Selected candidates require a decision record before any future deep review starts.
+
+The decision record must be created through `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md` and may use `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md`.
+
+`CANDIDATE_SELECTED_FOR_REVIEW` does not authorize review execution until the linked decision record explicitly permits review start with `ReviewStartPermitted: Yes`.
+
+The decision record must preserve ingestion `No`, answer use `No`, current truth `No`, operational corpus mutation `No`, Code Evidence ingestion `No`, and live LLM use `No` unless a future governed decision explicitly changes the relevant permission.
+
+## 11. What Candidate Selection Does Not Mean
 
 Candidate selection does not ingest source content.
 
@@ -133,7 +143,7 @@ Candidate selection does not call a live LLM.
 
 Candidate selection does not create schema migrations, change endpoints, change UI, change workforce-platform, change award-configurator-v1, change ezeas-analytics, or change runtime behaviour.
 
-## 11. Current Truth Boundary
+## 12. Current Truth Boundary
 
 Historical sources are not current truth unless reviewed, cross-checked, backfilled, and governed through a separate explicit decision.
 
@@ -141,7 +151,7 @@ A selected candidate remains historical source material. Selection only records 
 
 `NOT_REVIEWED` sources remain `NOT_REVIEWED` unless a future governed review decision explicitly changes that status.
 
-## 12. Ingestion Boundary
+## 13. Ingestion Boundary
 
 Ingestion remains `No` for candidate-selection records unless a future governed ingestion slice explicitly changes it.
 
@@ -149,7 +159,7 @@ Answer use remains `No` unless a future governed ingestion/backfill/current-trut
 
 Candidate selection cannot approve governed ingestion, historical backfill, current-truth promotion, or Minerva answer use.
 
-## 13. Developer Handoff
+## 14. Developer Handoff
 
 Future developers should use candidate-selection records to choose which review-ready queue entries should be proposed for a future deep-review slice.
 
