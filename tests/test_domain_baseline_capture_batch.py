@@ -167,6 +167,10 @@ TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
     / "TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md"
 )
+IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
+    Path("docs/evaluation/source_evidence_drafts/imports_actuals")
+    / "IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md"
+)
 
 
 def _read(path: Path) -> str:
@@ -1195,6 +1199,52 @@ def test_tax_payg_not_reviewed_decision_record_blocks_ingestion_recapture_and_pr
 
     assert "Selected decision status: `REVIEWED_READY_FOR_INGESTION`" not in record
     assert "Tax / PAYG is `BASELINE_ALREADY_EXISTS`" not in record
+    assert "governed ingestion has occurred" not in record
+    assert "corpus has been mutated" not in record
+    assert "ledger has been promoted" not in record
+
+
+def test_imports_actuals_not_reviewed_decision_record_blocks_ingestion_recapture_and_promotion():
+    assert IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED.exists()
+
+    record = _read(IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED)
+
+    for referenced_path in (
+        "docs/evaluation/worker_story_baselines/imports_actuals/v0_1/FORMAL_EVIDENCE_GAP_PLAN.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md",
+    ):
+        assert referenced_path in record
+
+    for required_text in (
+        "Domain name: `Imports / Actuals`",
+        "Domain slug: `imports_actuals`",
+        "Baseline status before review: `BASELINE_REQUIRED`",
+        "Review gate status before decision: `NOT_REVIEWED`",
+        "Selected decision status: `NOT_REVIEWED`",
+        "Reviewer name: not assigned",
+        "Review date: not recorded",
+        "Doctrine review outcome: not reviewed",
+        "Implementation-state review outcome: not reviewed",
+        "Evidence-gap review outcome: not reviewed",
+        "Non-overclaiming review outcome: not reviewed",
+        "Governed ingestion permitted: No",
+        "Recapture permitted: No",
+        "Promotion permitted: No",
+        "Imports / Actuals is not merely file upload or CSV parsing",
+        "Imported actuals are evidence for reconciliation and comparison; they are not the same as calculated payroll truth.",
+        "Pay code and RateType mapping must remain evidence-bearing and reviewable.",
+        "Imports / Actuals remains `BASELINE_REQUIRED`",
+        "No Imports / Actuals corpus mutation has occurred in this slice",
+        "No Imports / Actuals benchmark recapture has occurred in this slice",
+        "No Imports / Actuals ledger promotion occurred in this slice",
+    ):
+        assert required_text in record
+
+    assert "Selected decision status: `REVIEWED_READY_FOR_INGESTION`" not in record
+    assert "Imports / Actuals is `BASELINE_ALREADY_EXISTS`" not in record
     assert "governed ingestion has occurred" not in record
     assert "corpus has been mutated" not in record
     assert "ledger has been promoted" not in record
