@@ -167,6 +167,10 @@ FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX = (
     Path("docs/evaluation/source_evidence_drafts")
     / "FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md"
 )
+SOURCE_EVIDENCE_DRAFTS_README = Path("docs/evaluation/source_evidence_drafts/README.md")
+FORMAL_EVIDENCE_CONTROL_README_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md"
+)
 TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED = (
     Path("docs/evaluation/source_evidence_drafts/tax_payg")
     / "TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md"
@@ -1293,6 +1297,103 @@ def test_formal_evidence_review_decision_record_index_records_not_reviewed_decis
     assert "governed ingestion has occurred" not in index
     assert "corpus has been mutated" not in index
     assert "ledger has been promoted" not in index
+
+
+def test_source_evidence_drafts_readme_records_formal_evidence_control_model():
+    assert SOURCE_EVIDENCE_DRAFTS_README.exists()
+
+    readme = _read(SOURCE_EVIDENCE_DRAFTS_README)
+
+    for section in (
+        "## 1. Purpose",
+        "## 2. Scope",
+        "## 3. Formal Evidence Lifecycle",
+        "## 4. Artefact Types",
+        "## 5. Current Controlled Domains",
+        "## 6. Status and Permission Rules",
+        "## 7. Minerva Usage Guidance",
+        "## 8. Codex Prompt Preservation Workflow",
+        "## 9. Generated Artefact Policy",
+        "## 10. Non-Goals",
+        "## 11. Follow-Up Workflow",
+    ):
+        assert section in readme
+
+    for referenced_path in (
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_GATE_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_TEMPLATE.md",
+        "docs/evaluation/source_evidence_drafts/FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_INDEX.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/tax_payg/TAX_PAYG_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md",
+        "docs/evaluation/source_evidence_drafts/imports_actuals/IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_DECISION_RECORD_NOT_REVIEWED_v0_1.md",
+        "docs/codex_prompts/",
+    ):
+        assert referenced_path in readme
+
+    for lifecycle_step in (
+        "evidence gap identified",
+        "→ formal evidence gap plan",
+        "→ formal source-evidence draft",
+        "→ formal evidence review gate",
+        "→ review-gate index",
+        "→ formal evidence review decision record template",
+        "→ filled review decision record",
+        "→ decision-record index",
+        "→ REVIEWED_READY_FOR_INGESTION only after explicit review",
+        "→ separate governed ingestion slice",
+        "→ recapture",
+        "→ benchmark/corpus/answer-gap evidence",
+        "→ possible ledger promotion",
+    ):
+        assert lifecycle_step in readme
+
+    for required_text in (
+        "`BASELINE_REQUIRED`: 17",
+        "`BASELINE_ALREADY_EXISTS`: 14",
+        "`RUNBOOK_OUTSTANDING`: 0",
+        "`NEEDS_REVIEW`: 0",
+        "Tax / PAYG and Imports / Actuals remain `BASELINE_REQUIRED`.",
+        "Both domains have complete `NOT_REVIEWED` control chains.",
+        "A draft is not ingested corpus evidence and does not permit recapture or promotion.",
+        "A `NOT_REVIEWED` decision record is a durable block, not approval.",
+        "Only `REVIEWED_READY_FOR_INGESTION` can permit planning a separate governed ingestion slice.",
+        "Minerva must say that both domains remain `BASELINE_REQUIRED` while the latest decision records are `NOT_REVIEWED`.",
+        "repository artefacts, not chat, as the durable source of truth",
+        "Generated benchmark, corpus coverage, answer-gap, and evaluation JSON outputs are transient",
+        "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md",
+    ):
+        assert required_text in readme
+
+    for blocked_claim in (
+        "review approval has occurred",
+        "governed ingestion has occurred",
+        "corpus has been mutated",
+        "ledger has been promoted",
+        "Tax / PAYG is `BASELINE_ALREADY_EXISTS`",
+        "Imports / Actuals is `BASELINE_ALREADY_EXISTS`",
+    ):
+        assert blocked_claim not in readme
+
+
+def test_formal_evidence_control_readme_prompt_is_preserved():
+    assert FORMAL_EVIDENCE_CONTROL_README_PROMPT.exists()
+
+    prompt = _read(FORMAL_EVIDENCE_CONTROL_README_PROMPT)
+
+    for required_text in (
+        "# Codex Prompt — Minerva Formal Evidence Control README v0.1",
+        "Mode: Documentation/control-readme hardening only",
+        "Do not approve DB writes, migrations, corpus mutation, live LLM calls, endpoint changes, runtime changes, generated artefact commits, ledger promotion, review approval, recapture, or governed ingestion.",
+        "Both domains now have complete NOT_REVIEWED control chains.",
+        "Chat is not the durable source of truth.",
+        "docs/evaluation/source_evidence_drafts/README.md",
+        "tests/test_domain_baseline_capture_batch.py",
+        "docs/codex_prompts/2026-05-15_minerva_formal_evidence_control_readme_v0_1.md",
+        "→ REVIEWED_READY_FOR_INGESTION only after explicit review",
+        "→ possible ledger promotion",
+    ):
+        assert required_text in prompt
 
 
 def test_tax_payg_review_notes_reference_review_gate_and_preserve_not_promoted_state():
