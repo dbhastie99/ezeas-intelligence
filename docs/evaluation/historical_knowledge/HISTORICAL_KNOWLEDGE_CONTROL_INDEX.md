@@ -26,6 +26,7 @@ Use these durable controls together:
 | Historical batch registration and triage model | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md` |
 | Historical batch register template | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md` |
 | Historical batch triage process | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md` |
+| Historical developer-log batch intake guidance | `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md` |
 | Historical developer-log batch register placeholder | `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
 | Historical source review-readiness template | `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md` |
@@ -71,9 +72,11 @@ A document can be classified as `DEVELOPER_LOG`, `HARDENING_LOG`, `PLATFORM_DOCT
 
 ## 5. Backfill Scope
 
-Most historical sources should first be batch-registered and triaged using `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md` and `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`. The full Analytics Engine chain is the prototype/deep-review path, not the default path for every source.
+Most historical sources should first be batch-registered and triaged using `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md`, `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_TRIAGE_PROCESS.md`, and `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`. The full Analytics Engine chain is the prototype/deep-review path, not the default path for every source.
 
 The first developer-log batch register placeholder is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. It is an empty metadata-only batch register for future historical developer-log-like materials. It does not ingest, parse, extract, review, mutate corpus, connect Code Evidence, call live LLM, change runtime behaviour, promote baselines, promote ledger state, or permit Minerva to treat batch-registered sources as current truth.
+
+Developer-log batch intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`. That guidance states that adding a file to a registered folder is not ingestion, adding a batch row is metadata registration only, original filename is metadata only, register entries drive classification rather than filenames, ingestion permitted defaults to No, review status defaults to `NOT_REVIEWED`, implementation-state classification defaults to `UNCERTAIN_REQUIRES_REVIEW` unless strong evidence exists, ordinary logs can remain batch-registered until needed, and Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed.
 
 Historical backfill must be domain-scoped. A future slice must identify source material, register provenance, classify source tier, complete review readiness using `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_PROCESS.md` and `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REVIEW_READINESS_TEMPLATE.md`, extract candidate decisions, cross-check evidence, classify implementation state, create a curated backfill evidence pack, add a review gate, and only later consider governed ingestion.
 

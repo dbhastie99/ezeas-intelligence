@@ -259,6 +259,9 @@ HISTORICAL_BATCH_REGISTER_TEMPLATE = (
 HISTORICAL_BATCH_TRIAGE_PROCESS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_TRIAGE_PROCESS.md"
 )
+HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "batch_registers"
@@ -402,6 +405,9 @@ HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT = Path(
 HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT = Path(
     "docs/codex_prompts/2026-05-15_minerva_historical_developer_log_batch_register_v0_1.md"
 )
+HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-15_minerva_historical_developer_log_batch_intake_guidance_v0_1.md"
+)
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
     / "developer_logs"
@@ -437,9 +443,11 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.exists()
     assert HISTORICAL_BATCH_REGISTER_TEMPLATE.exists()
     assert HISTORICAL_BATCH_TRIAGE_PROCESS.exists()
+    assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.exists()
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_PROMPT.exists()
+    assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE_PROMPT.exists()
 
 
 def test_historical_batch_registration_model_controls_default_path_and_truth_boundary():
@@ -532,9 +540,101 @@ def test_historical_batch_controls_are_referenced_by_existing_process_docs():
 
     assert "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md" in control_index
     assert "HISTORICAL_BATCH_TRIAGE_PROCESS.md" in control_index
+    assert "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md" in control_index
     assert "HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md" in backfill_process
     assert "HISTORICAL_BATCH_TRIAGE_PROCESS.md" in backfill_process
     assert "batch-registered and triaged" in backfill_process
+
+
+def test_historical_developer_log_batch_intake_guidance_controls_defaults_and_scope():
+    guidance = _read(HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    batch_register = _read(HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER)
+
+    assert "Adding a file to a registered folder is not ingestion" in guidance
+    assert "Adding a batch row is metadata registration only" in guidance
+    assert "Original filename is metadata only" in guidance
+    assert "Register entries drive classification, not filenames" in guidance
+    assert "`Ingestion permitted` defaults to `No`" in guidance
+    assert "`Review status` defaults to `NOT_REVIEWED`" in guidance
+    assert (
+        "Implementation-state classification should default to `UNCERTAIN_REQUIRES_REVIEW` "
+        "unless the operator has strong evidence"
+    ) in guidance
+
+    for register_id_pattern in (
+        "HIST-DEVLOG-YYYY-MM-DD-NNN",
+        "HIST-HARDENING-YYYY-MM-DD-NNN",
+        "HIST-DOCTRINE-YYYY-MM-DD-NNN",
+        "HIST-MIXED-YYYY-MM-DD-NNN",
+    ):
+        assert register_id_pattern in guidance
+
+    for source_type in (
+        "DEVELOPER_LOG",
+        "HARDENING_LOG",
+        "PLATFORM_DOCTRINE",
+        "MIXED_LOG_DOCTRINE",
+        "OTHER_REQUIRES_REVIEW",
+    ):
+        assert source_type in guidance
+
+    for domain_tag in (
+        "Worker Story",
+        "ObjectTime / Source Truth",
+        "Process Periods / PayRun Lifecycle",
+        "Payroll Buckets / Bases / Totals",
+        "Deductions and Obligations",
+        "Tax / PAYG",
+        "Imports / Actuals",
+        "Leave Workflow / Annual Leave",
+        "Award Configurator",
+        "Analytics",
+        "Reconciliation",
+        "Finalised Correction / ObjectTime Route Guard",
+    ):
+        assert domain_tag in guidance
+
+    assert "Ordinary logs can remain batch-registered until needed" in guidance
+    assert "Full review chain is required only for high-value/high-risk sources" in guidance
+    assert "Source contains a major architecture decision" in guidance
+    assert "Source may affect current Minerva answers" in guidance
+    assert "implementation claims that need code/test/schema confirmation" in guidance
+    assert "Source may be superseded by later platform changes" in guidance
+    assert "Source contains conflicting claims" in guidance
+    assert "payroll/source-truth/tax/imports/reconciliation/deduction/leave/worker-story/analytics/award-configurator/finalised-correction domains" in guidance
+    assert "Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed" in guidance
+
+    assert "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md" in control_index
+    assert "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md" in batch_register
+
+    combined = "\n".join((guidance, control_index, batch_register))
+    for boundary in (
+        "no corpus mutation",
+        "no ingestion",
+        "no Code Evidence integration",
+        "no live LLM",
+        "no runtime change",
+        "no baseline promotion",
+        "no ledger promotion",
+    ):
+        assert boundary in combined
+
+    for non_goal in (
+        "ingest historical chats",
+        "ingest developer logs",
+        "ingest doctrine documents",
+        "ingest code",
+        "parse or extract historical source content",
+        "review historical sources",
+        "mutate corpus",
+        "connect Code Evidence",
+        "call live LLM",
+        "change runtime behaviour",
+        "change ledger counts",
+        "promote baselines",
+    ):
+        assert non_goal in guidance
 
 
 def test_historical_batch_controls_preserve_non_ingestion_boundaries():

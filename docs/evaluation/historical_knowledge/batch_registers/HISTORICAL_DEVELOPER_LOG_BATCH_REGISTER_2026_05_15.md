@@ -20,6 +20,8 @@ Adding a row later will register metadata only unless a separate review/backfill
 
 High-risk/high-value sources can later be escalated into the full review chain. The Analytics Engine source remains the prototype/deep-review path, not the default for all logs.
 
+Future row intake must follow `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`.
+
 ## 3. Batch Metadata
 
 | Field | Value |
@@ -40,6 +42,10 @@ Source classification remains register-driven, not filename-driven.
 `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md` remains the governing classification point. Filenames, source folders, and batch filenames may provide discovery hints, but they do not determine source type, source tier, review status, implementation-state classification, or ingestion permission.
 
 `Ingestion permitted` defaults to `No`.
+
+`Review status` defaults to `NOT_REVIEWED`.
+
+`Implementation-state classification` defaults to `UNCERTAIN_REQUIRES_REVIEW` unless the operator has strong evidence from the document/register context.
 
 Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed through the applicable historical knowledge control path.
 

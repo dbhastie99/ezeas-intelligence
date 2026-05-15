@@ -14,6 +14,8 @@ Minerva must not treat batch-registered sources as current truth unless later re
 
 The first concrete placeholder that uses this template is `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md`. That developer-log batch register is empty and records metadata only; it does not ingest, parse, extract, or review historical developer-log content.
 
+Developer-log-like batch row intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`.
+
 ## 2. Required Columns
 
 | Column | Required handling |
@@ -31,7 +33,7 @@ The first concrete placeholder that uses this template is `docs/evaluation/histo
 | Related commits if known | Commit hashes or `unknown`; commit references require later review. |
 | Related control artefacts | Related prompts, logs, templates, registers, gates, plans, or `unknown`. |
 | Implementation-state classification | Current metadata classification, usually `UNCERTAIN_REQUIRES_REVIEW` until reviewed. |
-| Review status | Current review status such as `NOT_REVIEWED`, `NEEDS_REVIEW`, or `SUPERSEDED`. |
+| Review status | Defaults to `NOT_REVIEWED` unless a separate review decision changes it. |
 | Ingestion permitted | Defaults to `No`; only a later explicit governed ingestion slice may change it. |
 | Supersession risk | Known or suspected supersession risk, or `unknown`. |
 | Evidence confidence | Confidence in provenance and metadata, not source-content truth. |

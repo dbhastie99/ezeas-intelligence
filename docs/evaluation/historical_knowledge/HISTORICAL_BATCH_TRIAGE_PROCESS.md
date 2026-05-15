@@ -18,6 +18,7 @@ Use:
 
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REGISTER_TEMPLATE.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_REGISTER_VALIDATION_RUNBOOK.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_SOURCE_TIERING_MODEL.md`
@@ -60,9 +61,11 @@ Many sources can be grouped by domain/date range rather than creating separate d
 1. Identify source metadata without parsing or extracting historical source content.
 2. Assign or propose source type, source tier, domain tags, review status, implementation-state classification, supersession risk, backfill priority, and whether a full review chain is required.
 3. Record `Ingestion permitted` as `No` unless a later explicit governed ingestion slice has already authorized a different state.
-4. Choose one triage outcome.
-5. Update the governing register or prepare a batch register entry for later register update.
-6. Escalate only high-value/high-risk sources to the full review-readiness / decision-gate / cross-check path.
+4. Record `Review status` as `NOT_REVIEWED` unless a later explicit review decision has already authorized a different state.
+5. Record `Implementation-state classification` as `UNCERTAIN_REQUIRES_REVIEW` unless the operator has strong evidence from the document/register context.
+6. Choose one triage outcome.
+7. Update the governing register or prepare a batch register entry for later register update.
+8. Escalate only high-value/high-risk sources to the full review-readiness / decision-gate / cross-check path.
 
 ## 7. Boundaries
 
