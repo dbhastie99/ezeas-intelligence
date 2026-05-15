@@ -143,6 +143,10 @@ IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT = (
     Path("docs/evaluation/source_evidence_drafts/imports_actuals")
     / "IMPORTS_ACTUALS_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md"
 )
+TAX_PAYG_FORMAL_SOURCE_EVIDENCE_DRAFT = (
+    Path("docs/evaluation/source_evidence_drafts/tax_payg")
+    / "TAX_PAYG_FORMAL_SOURCE_EVIDENCE_DRAFT_v0_1.md"
+)
 IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE = (
     Path("docs/evaluation/source_evidence_drafts/imports_actuals")
     / "IMPORTS_ACTUALS_FORMAL_EVIDENCE_REVIEW_GATE_v0_1.md"
@@ -834,6 +838,43 @@ def test_imports_actuals_formal_source_evidence_draft_records_required_evidence_
     assert "Benchmark passes 11/11" in draft
     assert "Ledger promotion happens only after real command results support promotion" in draft
     assert "Imports / Actuals is not promoted" in draft
+
+
+def test_tax_payg_formal_source_evidence_draft_records_required_evidence_and_guardrails():
+    assert TAX_PAYG_FORMAL_SOURCE_EVIDENCE_DRAFT.exists()
+
+    draft = _read(TAX_PAYG_FORMAL_SOURCE_EVIDENCE_DRAFT)
+
+    assert "not a generic calculator" in draft
+    assert "Minerva explains Tax / PAYG but does not calculate PAYG withholding" in draft
+    assert "`purpose_and_operator_meaning`: MISSING" in draft
+    assert "`outstanding_hardening`: WEAK" in draft
+    assert "governed withholding calculation evidence" in draft
+    assert "deterministic services" in draft
+    assert "tax providers" in draft
+    assert "TaxStory" in draft
+    assert "worker tax profile" in draft
+    assert "ProcessPeriod PaymentDate" in draft
+    assert "pay frequency" in draft
+    assert "taxable basis" in draft
+    assert "Payroll Bases & Totals" in draft
+    assert "finalised totals" in draft
+    assert "supplementary incremental PAYG" in draft
+    assert "same-period taxable earnings" in draft
+    assert "prior PAYG withheld" in draft
+    assert "Worker Story" in draft
+    assert "Admin Queue" in draft
+    assert "no operational JSON ingestion" in draft
+    assert "no Code Evidence answer integration" in draft
+    assert "no corpus mutation in this slice" in draft
+    assert "no ledger promotion in this slice" in draft
+    assert "Future Corpus-Ingestion Acceptance Criteria" in draft
+    assert "Coverage rerun shows no MISSING groups" in draft
+    assert "`outstanding_hardening` becomes STRONG or is documented accepted" in draft
+    assert "Benchmark passes 9/9" in draft
+    assert "Answer gap becomes GOOD or acceptable" in draft
+    assert "Ledger is promoted only after real command results support promotion" in draft
+    assert "Tax / PAYG is not promoted" in draft
 
 
 def test_imports_actuals_formal_evidence_review_gate_blocks_ingestion_until_ready():
