@@ -10,6 +10,11 @@ This document maps the dependencies that must be satisfied before a Minerva hist
 
 ## 2. Required Dependencies Before Chat Pilot
 
+- readiness checklist: `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.md`
+- go/no-go decision: `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_GO_NO_GO.md`
+- scope boundary: `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY.md`
+- blocker model: `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_BLOCKER_MODEL.md`
+- implementation entry criteria: `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA.md`
 - answer-use gate
 - retrieval eligibility gate
 - answer-mode contract

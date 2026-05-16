@@ -411,6 +411,22 @@ HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE = (
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
+HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.md"
+)
+HISTORICAL_CHAT_PILOT_GO_NO_GO = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_GO_NO_GO.md"
+)
+HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY.md"
+)
+HISTORICAL_CHAT_PILOT_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_BLOCKER_MODEL.md"
+)
+HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -601,6 +617,9 @@ HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT_PROMPT = Path(
 )
 HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_runtime_retrieval_answer_synthesis_gate_plan_v0_1.md"
+)
+HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_chat_pilot_readiness_checklist_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -3897,6 +3916,233 @@ def test_historical_runtime_gate_plan_docs_exist():
     assert HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN_PROMPT.exists()
 
 
+def test_historical_chat_pilot_readiness_docs_exist():
+    assert HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.exists()
+    assert HISTORICAL_CHAT_PILOT_GO_NO_GO.exists()
+    assert HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY.exists()
+    assert HISTORICAL_CHAT_PILOT_BLOCKER_MODEL.exists()
+    assert HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA.exists()
+    assert HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST_PROMPT.exists()
+
+
+def test_historical_chat_pilot_readiness_checklist_statuses_and_governance_chain():
+    checklist = _read(HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST)
+
+    for status in (
+        "CHAT_PILOT_READINESS_NOT_STARTED",
+        "CHAT_PILOT_READINESS_IN_PROGRESS",
+        "CHAT_PILOT_READINESS_BLOCKED",
+        "CHAT_PILOT_READINESS_DEFERRED",
+        "CHAT_PILOT_READY_FOR_IMPLEMENTATION_DESIGN",
+        "CHAT_PILOT_READY_FOR_READ_ONLY_PILOT_CANDIDATE",
+        "CHAT_PILOT_NOT_READY_RUNTIME_GATES_MISSING",
+        "CHAT_PILOT_NOT_READY_ANSWER_SAFETY_GAPS",
+        "CHAT_PILOT_REJECTED",
+        "CHAT_PILOT_SUPERSEDED",
+    ):
+        assert status in checklist
+
+    for governance_item in (
+        "source registration model exists",
+        "review queue exists",
+        "candidate selection exists",
+        "decision record exists",
+        "deep-review execution plan exists",
+        "findings classification exists",
+        "ingestion/backfill decision control exists",
+        "current-truth promotion control exists",
+        "answer-use permission gate exists",
+        "retrieval eligibility gate exists",
+        "answer-mode contract exists",
+        "citation/provenance answer contract exists",
+        "runtime retrieval / answer synthesis gate plan exists",
+        "runtime gate chain requirements exist",
+    ):
+        assert governance_item in checklist
+
+
+def test_historical_chat_pilot_readiness_runtime_answer_citation_refusal_scope_and_entry_rules():
+    checklist = _read(HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST)
+
+    for runtime_boundary in (
+        "retrieval runtime design is not implemented yet",
+        "answer synthesis runtime design is not implemented yet",
+        "citation rendering runtime design is not implemented yet",
+        "chat endpoint/UI is not implemented yet",
+        "live LLM usage is not approved",
+        "implementation design may be considered only after go/no-go decision",
+    ):
+        assert runtime_boundary in checklist
+
+    for answer_rule in (
+        "current-truth answers require current-truth promotion, answer-use permission, retrieval eligibility, answer mode, and citation/provenance",
+        "historical-context answers must be labelled historical",
+        "caveated answers must carry caveat",
+        "backlog/context answers must not be represented as implemented behaviour",
+        "doctrine/context answers must not be represented as runtime implementation evidence",
+        "refusal modes exist for insufficient governed evidence, missing gates, conflict, supersession, and missing provenance",
+    ):
+        assert answer_rule in checklist
+
+    for citation_field in (
+        "SourceId",
+        "SourceTitle",
+        "SourceDate",
+        "unknown-date marker",
+        "RepositoryContext",
+        "DomainContext",
+        "AnswerUsePermissionId",
+        "RetrievalEligibilityId",
+        "AnswerModeId",
+        "EvidenceScope",
+        "RetrievalMode",
+        "AnswerMode",
+        "RevocationPath",
+    ):
+        assert citation_field in checklist
+
+    for refusal_rule in (
+        "missing answer-use permission refuses",
+        "missing retrieval eligibility refuses",
+        "missing answer mode refuses",
+        "missing citation/provenance refuses",
+        "conflicted evidence refuses settled/current-truth answer",
+        "superseded evidence refuses current-truth answer",
+        "not-answerable evidence refuses",
+        "refusal must not fabricate citations",
+    ):
+        assert refusal_rule in checklist
+
+    for scope_rule in (
+        "pilot is internal only",
+        "pilot is read-only",
+        "pilot cannot mutate corpus",
+        "pilot cannot ingest source content",
+        "pilot cannot create Code Evidence",
+        "pilot cannot write DB",
+        "pilot cannot change workforce-platform, award-configurator-v1, or ezeas-analytics",
+        "pilot cannot answer from unapproved historical evidence",
+        "pilot must support refusal where governance gates are missing",
+    ):
+        assert scope_rule in checklist
+
+    for entry_rule in (
+        "go/no-go decision recorded",
+        "runtime implementation design is separately approved",
+        "endpoint/UI remains prohibited until later",
+    ):
+        assert entry_rule in checklist
+
+
+def test_historical_chat_pilot_readiness_stop_conditions_non_goals_and_progress():
+    checklist = _read(HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST)
+
+    for stop_condition in (
+        "live LLM call required",
+        "endpoint/UI required",
+        "retrieval runtime implementation required",
+        "answer synthesis runtime implementation required",
+        "citation rendering runtime required",
+        "source content ingestion required",
+        "corpus mutation required",
+        "Code Evidence ingestion required",
+        "DB write required",
+        "unapproved historical answer use required",
+        "conflict/supersession behaviour unresolved",
+        "citation/provenance behaviour unresolved",
+        "refusal behaviour unresolved",
+    ):
+        assert stop_condition in checklist
+
+    for non_goal in (
+        "chat pilot is implemented",
+        "chat endpoint exists",
+        "UI exists",
+        "live LLM can be called",
+        "retrieval runtime exists",
+        "answer synthesis runtime exists",
+        "citation rendering exists",
+        "historical evidence is answerable by default",
+        "Minerva is exposed for chat",
+    ):
+        assert non_goal in checklist
+
+    assert "Minerva has moved from runtime gate planning into chat pilot readiness control" in checklist
+    assert "Minerva remains pre-runtime and pre-chat" in checklist
+    assert "Estimated progress toward narrow safe internal chat pilot is about 81%" in checklist
+
+
+def test_historical_chat_pilot_go_no_go_scope_blockers_and_entry_criteria_are_complete():
+    go_no_go = _read(HISTORICAL_CHAT_PILOT_GO_NO_GO)
+    scope = _read(HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY)
+    blockers = _read(HISTORICAL_CHAT_PILOT_BLOCKER_MODEL)
+    entry = _read(HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA)
+
+    for status in (
+        "GO_FOR_RUNTIME_IMPLEMENTATION_DESIGN",
+        "GO_FOR_READ_ONLY_CHAT_PILOT_CANDIDATE_LATER",
+        "NO_GO_BLOCKED_BY_GOVERNANCE_GAP",
+        "NO_GO_BLOCKED_BY_RUNTIME_GATE_GAP",
+        "NO_GO_BLOCKED_BY_ANSWER_SAFETY_GAP",
+        "NO_GO_BLOCKED_BY_CITATION_PROVENANCE_GAP",
+        "NO_GO_BLOCKED_BY_REFUSAL_POLICY_GAP",
+        "NO_GO_BLOCKED_BY_CONFLICT_SUPERSESSION_GAP",
+    ):
+        assert status in go_no_go
+    assert "GO does not expose chat" in go_no_go
+    assert "GO does not permit live LLM call" in go_no_go
+    assert "GO does not permit endpoint/UI" in go_no_go
+    assert "GO only permits a future implementation design slice unless explicitly stated otherwise" in go_no_go
+
+    for boundary in (
+        "internal only",
+        "read-only",
+        "governed evidence only",
+        "refusal when gates are missing",
+        "no source mutation",
+        "no corpus mutation",
+        "no Code Evidence ingestion",
+        "no DB writes",
+        "no endpoint/UI in this slice",
+        "no live LLM in this slice",
+        "no cross-repo changes",
+    ):
+        assert boundary in scope
+
+    for blocker in (
+        "GOVERNANCE_CHAIN_INCOMPLETE",
+        "RUNTIME_GATE_PLAN_MISSING",
+        "ANSWER_USE_GATE_MISSING",
+        "RETRIEVAL_ELIGIBILITY_GATE_MISSING",
+        "ANSWER_MODE_CONTRACT_MISSING",
+        "CITATION_PROVENANCE_CONTRACT_MISSING",
+        "REFUSAL_POLICY_INCOMPLETE",
+        "CONFLICT_HANDLING_INCOMPLETE",
+        "SUPERSESSION_HANDLING_INCOMPLETE",
+        "LIVE_LLM_APPROVAL_MISSING",
+        "ENDPOINT_UI_APPROVAL_MISSING",
+        "RUNTIME_IMPLEMENTATION_DESIGN_MISSING",
+        "PILOT_AUDIT_LOGGING_PLAN_MISSING",
+    ):
+        assert blocker in blockers
+    assert "Blocker resolution does not itself expose chat or implement runtime behaviour" in blockers
+
+    for criterion in (
+        "go/no-go decision recorded",
+        "governance chain complete",
+        "runtime gate plan complete",
+        "answer-mode contract complete",
+        "citation/provenance contract complete",
+        "refusal policy complete",
+        "conflict/supersession handling complete",
+        "pilot scope boundary complete",
+        "no runtime implementation yet",
+        "no endpoint/UI yet",
+        "no live LLM yet",
+    ):
+        assert criterion in entry
+
+
 def test_historical_runtime_gate_plan_statuses_and_inputs_are_complete():
     plan = _read(HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN)
 
@@ -3999,6 +4245,8 @@ def test_historical_runtime_gate_plan_chat_boundary_stop_conditions_and_non_goal
     assert "This slice does not expose chat" in plan
     assert "pilot readiness approval" in plan
     assert "Chat pilot must be read-only initially" in plan
+    assert "This runtime gate plan flows into chat pilot readiness, not runtime implementation by itself" in plan
+    assert "The chat pilot readiness checklist, go/no-go decision, scope boundary, blocker model, and implementation entry criteria must be reviewed before any runtime implementation design slice is started" in plan
 
     for stop_condition in (
         "source content ingestion required",
@@ -4037,8 +4285,9 @@ def test_historical_runtime_gate_chain_blocker_template_and_chat_dependency_docs
     template = _read(HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE)
     dependency = _read(HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP)
 
-    assert "source registration -> review/candidate/decision -> findings/classification -> ingestion/backfill decision -> current-truth promotion where applicable -> answer-use permission -> retrieval eligibility -> answer mode -> citation/provenance -> runtime gate -> chat pilot" in chain
+    assert "source registration -> review/candidate/decision -> findings/classification -> ingestion/backfill decision -> current-truth promotion where applicable -> answer-use permission -> retrieval eligibility -> answer mode -> citation/provenance -> runtime gate -> chat pilot readiness -> runtime implementation design -> chat pilot" in chain
     assert "Missing links block chat readiness" in chain
+    assert "Chat pilot readiness is the final planning gate before runtime implementation design" in chain
 
     for blocker in (
         "MISSING_ANSWER_USE_GATE",
@@ -4072,6 +4321,8 @@ def test_historical_runtime_gate_chain_blocker_template_and_chat_dependency_docs
         "RetrievalRuntimeDesignReady",
         "AnswerSynthesisRuntimeDesignReady",
         "CitationRenderingDesignReady",
+        "ChatPilotReadinessDecisionLink",
+        "ChatPilotGoNoGoStatus",
         "ChatPilotReadinessApproved",
         "RuntimeImplementationPermitted",
         "LiveLLMUsePermitted",
@@ -4088,6 +4339,11 @@ def test_historical_runtime_gate_chain_blocker_template_and_chat_dependency_docs
     assert "`EndpointUIPermitted`: No" in template
 
     for dependency_name in (
+        "HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.md",
+        "HISTORICAL_CHAT_PILOT_GO_NO_GO.md",
+        "HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY.md",
+        "HISTORICAL_CHAT_PILOT_BLOCKER_MODEL.md",
+        "HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA.md",
         "answer-use gate",
         "retrieval eligibility gate",
         "answer-mode contract",
@@ -4120,14 +4376,29 @@ def test_historical_runtime_gate_plan_links_from_related_controls_and_index():
         "HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL.md",
         "HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE.md",
         "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md",
+        "HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.md",
+        "HISTORICAL_CHAT_PILOT_GO_NO_GO.md",
+        "HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY.md",
+        "HISTORICAL_CHAT_PILOT_BLOCKER_MODEL.md",
+        "HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA.md",
     ):
         assert linked_doc in index
+
+    for linked_doc in (
+        "HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN.md",
+        "HISTORICAL_RUNTIME_GATE_CHAIN_REQUIREMENTS.md",
+        "HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL.md",
+        "HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE.md",
+        "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md",
+    ):
         assert linked_doc in prompt
 
     assert "Citation/provenance must flow into the runtime gate plan before chat readiness" in citation
+    assert "Citation/provenance contract is a prerequisite for chat pilot readiness" in citation
     assert "Runtime gate planning records that the runtime gate and chat pilot readiness steps remain pre-runtime unless separately approved" in evidence_chain
     assert "Chat pilot readiness records pilot approval status before any chat exposure" in evidence_chain
     assert "Answer modes must be runtime-enforced before chat exposure" in answer_mode
+    assert "Answer modes are prerequisite to chat pilot readiness" in answer_mode
     assert "Retrieval eligibility must be runtime-enforced before chat exposure" in retrieval_gate
     assert "Answer-use permission must be runtime-enforced before chat exposure" in answer_use_gate
 
@@ -4179,6 +4450,11 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
             HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL,
             HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE,
             HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP,
+            HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST,
+            HISTORICAL_CHAT_PILOT_GO_NO_GO,
+            HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY,
+            HISTORICAL_CHAT_PILOT_BLOCKER_MODEL,
+            HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA,
             HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
             HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT,
             HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS,
@@ -4186,6 +4462,7 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
             HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE,
             HISTORICAL_ANSWER_USE_PERMISSION_GATE,
             HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN_PROMPT,
+            HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST_PROMPT,
         )
     )
 

@@ -27,6 +27,8 @@ It does not permit runtime implementation by default.
 | `RetrievalRuntimeDesignReady` | No |
 | `AnswerSynthesisRuntimeDesignReady` | No |
 | `CitationRenderingDesignReady` | No |
+| `ChatPilotReadinessDecisionLink` | TBD |
+| `ChatPilotGoNoGoStatus` | TBD |
 | `ChatPilotReadinessApproved` | No |
 | `RuntimeImplementationPermitted` | No |
 | `LiveLLMUsePermitted` | No |

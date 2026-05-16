@@ -164,7 +164,15 @@ That slice should decide whether the governance chain is ready to move into runt
 
 It must still not expose chat.
 
-## 15. Progress After This Slice
+## 15. Chat Pilot Readiness Flow
+
+This runtime gate plan flows into chat pilot readiness, not runtime implementation by itself.
+
+The chat pilot readiness checklist, go/no-go decision, scope boundary, blocker model, and implementation entry criteria must be reviewed before any runtime implementation design slice is started.
+
+A ready runtime gate plan does not implement runtime retrieval, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM usage, or chat exposure.
+
+## 16. Progress After This Slice
 
 Minerva has moved from citation/provenance answer readiness into runtime retrieval/answer synthesis gate planning.
 
@@ -172,7 +180,7 @@ Minerva remains pre-runtime and pre-chat.
 
 Estimated progress toward narrow safe internal chat pilot is about 77%.
 
-## 16. Developer Handoff
+## 17. Developer Handoff
 
 Future developers must treat this plan as a planning/control artefact only. Runtime implementation design must first prove that answer-use permission, retrieval eligibility, answer-mode enforcement, citation/provenance enforcement, refusal behaviour, conflict/supersession behaviour, audit/logging, and pilot readiness approval are all linked.
 

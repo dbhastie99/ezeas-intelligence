@@ -206,7 +206,15 @@ Answer modes must be runtime-enforced before chat exposure.
 
 Approved answer-mode controls are planning inputs only until a later runtime gate implementation design and pilot readiness approval exist.
 
-## 18. Blocker Handling
+## 18. Chat Pilot Readiness Prerequisite
+
+Answer modes are prerequisite to chat pilot readiness.
+
+Chat pilot readiness must not be approved unless current-truth, historical-context, caveated, backlog/context, doctrine/context, and refusal answer treatments are governed and linked to citation/provenance requirements.
+
+This prerequisite does not implement answer synthesis runtime, retrieval runtime, live LLM calls, endpoint/UI, or chat exposure.
+
+## 19. Blocker Handling
 
 Blocked decisions must record one or more blocker codes and the required resolution path:
 
@@ -230,7 +238,7 @@ Blocked decisions must record one or more blocker codes and the required resolut
 
 Resolving a blocker only permits reassessment of the answer-mode decision. It does not enable retrieval runtime, answer synthesis runtime, chat, live LLM calls, or answerability.
 
-## 19. What Answer Mode Contract Does Not Mean
+## 20. What Answer Mode Contract Does Not Mean
 
 Creating answer-mode docs does not expose chat.
 
@@ -256,7 +264,7 @@ Answer-mode contract does not create endpoint changes.
 
 Answer-mode contract does not create UI changes.
 
-## 20. Developer Handoff
+## 21. Developer Handoff
 
 Future developers must use this contract after answer-use permission and retrieval eligibility are recorded and before any answer synthesis runtime, citation/provenance answer contract, refusal policy hardening, pilot-readiness gate, or chat exposure.
 

@@ -12,7 +12,7 @@ This document defines the required governance chain that must exist before Miner
 
 The required chain is:
 
-source registration -> review/candidate/decision -> findings/classification -> ingestion/backfill decision -> current-truth promotion where applicable -> answer-use permission -> retrieval eligibility -> answer mode -> citation/provenance -> runtime gate -> chat pilot.
+source registration -> review/candidate/decision -> findings/classification -> ingestion/backfill decision -> current-truth promotion where applicable -> answer-use permission -> retrieval eligibility -> answer mode -> citation/provenance -> runtime gate -> chat pilot readiness -> runtime implementation design -> chat pilot.
 
 Missing links block chat readiness.
 
@@ -30,6 +30,7 @@ Each chain step must remain independently governed:
 - Answer mode determines the allowed answer treatment.
 - Citation/provenance determines required source traceability before chat-answer readiness.
 - Runtime gate determines future runtime enforcement design.
+- Chat pilot readiness is the final planning gate before runtime implementation design.
 - Chat pilot requires separate readiness approval.
 
 ## 4. Runtime Boundary

@@ -180,7 +180,15 @@ The governing runtime gate plan is `docs/evaluation/historical_knowledge/HISTORI
 
 Citation/provenance readiness is an input to runtime retrieval and answer synthesis gate planning only. It does not render citations at runtime, implement retrieval filtering, implement answer synthesis, permit live LLM calls, or expose chat.
 
-## 17. Blocker Handling
+## 17. Chat Pilot Readiness Prerequisite
+
+Citation/provenance contract is a prerequisite for chat pilot readiness.
+
+Chat pilot readiness must not be approved unless citation/provenance requirements, refusal handling for missing provenance, and revocation path requirements are present.
+
+This prerequisite does not render citations at runtime, implement retrieval filtering, implement answer synthesis, permit live LLM calls, or expose chat.
+
+## 18. Blocker Handling
 
 Blocked decisions must record one or more blocker codes and the required resolution path:
 
@@ -204,7 +212,7 @@ Blocked decisions must record one or more blocker codes and the required resolut
 
 Resolving a blocker only permits reassessment of citation/provenance readiness. It does not enable retrieval runtime, citation rendering, answer synthesis runtime, chat, live LLM calls, or answerability.
 
-## 18. What Citation / Provenance Contract Does Not Mean
+## 19. What Citation / Provenance Contract Does Not Mean
 
 Creating citation/provenance docs does not expose chat.
 
@@ -232,7 +240,7 @@ Citation/provenance contract does not create endpoint changes.
 
 Citation/provenance contract does not create UI changes.
 
-## 19. Developer Handoff
+## 20. Developer Handoff
 
 Future developers must use this contract after answer-use permission, retrieval eligibility, and answer mode are recorded and before any answer synthesis runtime, citation rendering runtime, pilot-readiness gate, or chat exposure.
 
