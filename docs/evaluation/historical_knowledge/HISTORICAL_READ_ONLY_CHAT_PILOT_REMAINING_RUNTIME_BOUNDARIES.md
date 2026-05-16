@@ -47,3 +47,9 @@ This boundary record does not authorise chat exposure, live LLM calls, final ans
 ## Endpoint/UI Implementation Gate Boundary
 
 `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE.md` is a controlled boundary after endpoint/UI design. It may decide whether a future minimal/internal/read-only/envelope-only endpoint/UI implementation candidate can be considered, but it does not create endpoint/UI, expose chat, call a live LLM, generate final answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, deploy production chat, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
+
+## Minimal Endpoint/UI Candidate Boundary
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE.md` creates an internal metadata/envelope candidate service only. It does not create endpoint/UI, register a global route, expose chat, call a live LLM, generate final answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, deploy production chat, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
+
+RouteRegisteredGlobally: No.

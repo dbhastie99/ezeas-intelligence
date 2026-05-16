@@ -36,3 +36,20 @@ Date: 16 May 2026
 - DecisionRationale: Existing endpoint/UI design controls are complete enough to permit consideration of a future minimal/internal/read-only/envelope-only implementation candidate. This decision does not itself create endpoint/UI or expose chat.
 - ApprovedBy: Not production approval; documentation-control slice only.
 - Notes: No live LLM, final answer generation, live retrieval, corpus query, database read/write, corpus mutation, source ingestion, Code Evidence ingestion, schema migration, production deployment, or cross-repo change is approved.
+
+## Minimal Candidate Decision Update
+
+- MinimalEndpointUiCandidateStatus: `IMPLEMENTED_INTERNAL_METADATA_ENVELOPE_ONLY`
+- MinimalCandidateControl: `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE.md`
+- MinimalCandidateService: `app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py`
+- EndpointCreatedThisSlice: No
+- RouteRegisteredGlobally: No
+- UICreatedThisSlice: No
+- ChatExposedThisSlice: No
+- LiveLLMCalledThisSlice: No
+- FinalAnswerGeneratedThisSlice: No
+- LiveRetrievalPerformedThisSlice: No
+- CorpusMutationPerformedThisSlice: No
+- DatabaseReadPerformedThisSlice: No
+- DatabaseWritePerformedThisSlice: No
+- DecisionRationale: Existing route registration is global and existing chat route behaviour uses database access, retrieval, LLM answer generation, and audit writes. The safe candidate is therefore an internal unmounted service/contract only.

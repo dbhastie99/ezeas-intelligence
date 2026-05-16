@@ -66,3 +66,7 @@ This contract design creates no endpoint, no route, no controller, and no API ha
 ## Implementation Gate Link
 
 This endpoint contract design flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE.md`. It does not flow directly into endpoint implementation. Any future endpoint candidate must remain minimal/internal/read-only/envelope-only unless separately approved.
+
+## Minimal Candidate Contract Update
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE.md` records the first internal candidate. `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_RESPONSE_CONTRACT.md` records the first internal candidate response contract. The candidate service consumes supplied metadata only, calls the in-memory orchestrator candidate only, and returns envelope/status output only. EndpointCreatedThisSlice: No. RouteRegisteredGlobally: No. No production app exposure, public endpoint, tenant/customer endpoint, live LLM, final answer generation, live retrieval, DB read/write, corpus query, or corpus mutation is introduced.

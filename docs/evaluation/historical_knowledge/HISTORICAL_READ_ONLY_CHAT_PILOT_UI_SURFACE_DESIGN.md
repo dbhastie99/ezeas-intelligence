@@ -31,3 +31,9 @@ No UI is created. This design does not add frontend components, routes, controll
 ## Implementation Gate Link
 
 This UI surface design flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE.md`. It does not flow directly into UI implementation. Any future UI candidate must visibly surface refusal, citation readiness, caveat, blocked gates, and no-runtime flags unless separately expanded by an explicit control slice.
+
+## Minimal Candidate UI Update
+
+No UI is created by `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE.md`. UICreatedThisSlice: No. Future UI must visibly display refusal/citation/caveat/runtime flags and must still not expose production chat unless separately approved.
+
+RouteRegisteredGlobally: No.

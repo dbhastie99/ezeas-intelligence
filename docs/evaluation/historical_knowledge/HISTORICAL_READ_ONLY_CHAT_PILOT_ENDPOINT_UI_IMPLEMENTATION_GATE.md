@@ -172,6 +172,10 @@ Preferred next Minerva slice should be historical read-only chat pilot minimal e
 
 Minerva has moved from endpoint/UI design into endpoint/UI implementation gate. Minerva remains pre-chat-exposure. Endpoint/UI/live LLM/final answer generation remain separate future decisions.
 
+## 19A. Minimal Candidate Follow-On
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE.md` records the approved follow-on candidate implementation slice. That slice creates an internal metadata/envelope candidate service only. EndpointCreatedThisSlice: No. RouteRegisteredGlobally: No. UICreatedThisSlice: No. ChatExposedThisSlice: No. The candidate remains no live LLM, no final answer generation, no live retrieval, no DB read/write, no corpus mutation, no source ingestion, and no production chat/public/tenant/customer exposure.
+
 ## 20. Developer Handoff
 
 Use this gate as a control artefact only. Do not create routes, endpoints, controllers, API handlers, UI, chat exposure, live LLM calls, final natural-language answer generation, live retrieval backend, vector search, corpus query, DB read/write, corpus mutation, source ingestion, Code Evidence ingestion, schema migrations, workforce-platform changes, award-configurator-v1 changes, or ezeas-analytics changes without a separate explicit approval slice.
