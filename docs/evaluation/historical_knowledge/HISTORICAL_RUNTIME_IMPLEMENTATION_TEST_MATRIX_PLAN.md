@@ -36,3 +36,11 @@ Future tests must prove that runtime retrieval, answer synthesis runtime, citati
 ## 4. Recommended Next Action
 
 The next slice should convert this plan into concrete tests before any runtime skeleton is implemented. If blockers are found, the next slice should remediate blockers instead.
+
+## 5. Link To Full Test Matrix
+
+The full runtime implementation test matrix is `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`.
+
+The full matrix is supported by `HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES.md`, `HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES.md`, `HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS.md`, and `HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL.md`.
+
+The full matrix remains documentation/control/test hardening only and does not implement runtime retrieval, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM calls, database writes, corpus mutation, or chat exposure.

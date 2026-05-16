@@ -426,6 +426,24 @@ HISTORICAL_RUNTIME_AUDIT_LOGGING_DESIGN = (
 HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md"
 )
+HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md"
+)
+HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES.md"
+)
+HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES.md"
+)
+HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS.md"
+)
+HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL.md"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -641,6 +659,9 @@ HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST_PROMPT = Path(
 )
 HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_runtime_implementation_design_pack_v0_1.md"
+)
+HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_runtime_implementation_test_matrix_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -4184,6 +4205,374 @@ def test_historical_runtime_implementation_design_docs_are_linked_from_control_i
         "Active runtime implementation test matrix plan",
     ):
         assert status_text in index
+
+
+def test_historical_runtime_implementation_test_matrix_docs_exist():
+    assert HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.exists()
+    assert HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES.exists()
+    assert HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES.exists()
+    assert HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS.exists()
+    assert HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL.exists()
+    assert HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PROMPT.exists()
+
+
+def test_historical_runtime_implementation_test_matrix_core_controls():
+    matrix = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX)
+
+    for status in (
+        "RUNTIME_TEST_MATRIX_NOT_STARTED",
+        "RUNTIME_TEST_MATRIX_DRAFTED",
+        "RUNTIME_TEST_MATRIX_BLOCKED",
+        "RUNTIME_TEST_MATRIX_DEFERRED",
+        "RUNTIME_TEST_MATRIX_READY_FOR_READ_ONLY_RETRIEVAL_SKELETON",
+        "RUNTIME_TEST_MATRIX_REQUIRES_DESIGN_REMEDIATION",
+        "RUNTIME_TEST_MATRIX_REJECTED",
+        "RUNTIME_TEST_MATRIX_SUPERSEDED",
+    ):
+        assert status in matrix
+
+    for upstream_doc in (
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK.md",
+        "HISTORICAL_RUNTIME_RETRIEVAL_GATE_DESIGN.md",
+        "HISTORICAL_RUNTIME_ANSWER_SYNTHESIS_GATE_DESIGN.md",
+        "HISTORICAL_RUNTIME_CITATION_REFUSAL_GATE_DESIGN.md",
+        "HISTORICAL_RUNTIME_AUDIT_LOGGING_DESIGN.md",
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md",
+        "HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA.md",
+        "HISTORICAL_ANSWER_USE_PERMISSION_GATE.md",
+        "HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md",
+        "HISTORICAL_ANSWER_MODE_CONTRACT.md",
+        "HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md",
+    ):
+        assert upstream_doc in matrix
+
+    for column in (
+        "TestCaseId",
+        "ScenarioGroup",
+        "SourceEvidenceState",
+        "AnswerUseState",
+        "RetrievalEligibilityState",
+        "AnswerModeState",
+        "CitationProvenanceState",
+        "ConflictStatus",
+        "SupersessionStatus",
+        "ExpectedGateOutcome",
+        "ExpectedAnswerMode",
+        "ExpectedRefusalReason",
+        "ExpectedCitationBehaviour",
+        "ExpectedAuditFields",
+        "RuntimeImplementationRequired",
+        "LiveLLMPermitted",
+        "CorpusMutationPermitted",
+        "DBWritePermitted",
+        "EndpointUIPermitted",
+        "Notes",
+    ):
+        assert column in matrix
+
+
+def test_historical_runtime_implementation_test_matrix_scenarios_are_complete():
+    matrix = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX)
+
+    for required_current_truth in (
+        "current-truth answer allowed in future runtime",
+        "current-truth promotion missing -> refusal",
+        "answer-use permission missing -> refusal",
+        "retrieval eligibility missing -> refusal",
+        "citation/provenance missing -> refusal",
+    ):
+        assert required_current_truth in matrix
+
+    for required_historical_context in (
+        "historical-context answer with historical label",
+        "historical-context evidence used for current truth -> refusal",
+        "historical source date unknown -> historical answer requires unknown-date marker or caveat",
+    ):
+        assert required_historical_context in matrix
+
+    for required_caveat in (
+        "caveated current-truth answer with approved caveat -> caveated answer",
+        "caveat required but caveat missing -> refusal",
+        "unresolved limitation without caveat -> refusal",
+    ):
+        assert required_caveat in matrix
+
+    for required_context_rule in (
+        "backlog context answer allowed only as planned/deferred/follow-up context",
+        "backlog item represented as implemented behaviour -> refusal",
+        "doctrine context answer allowed where approved",
+        "doctrine used as runtime implementation evidence without supporting implementation source -> refusal",
+    ):
+        assert required_context_rule in matrix
+
+
+def test_historical_runtime_implementation_test_matrix_refusal_conflict_citation_and_audit():
+    matrix = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX)
+
+    for refusal_case in (
+        "insufficient governed evidence",
+        "not answer-approved",
+        "retrieval not eligible",
+        "missing answer mode",
+        "missing citation/provenance",
+        "conflicted evidence",
+        "superseded evidence",
+        "not-answerable evidence",
+    ):
+        assert refusal_case in matrix
+
+    for conflict_case in (
+        "conflicted evidence refuses settled/current-truth answer",
+        "superseded evidence refuses current-truth answer",
+        "approved historical explanation for superseded evidence remains historical only",
+    ):
+        assert conflict_case in matrix
+
+    for citation_case in (
+        "citation fields present",
+        "SourceId missing -> refusal",
+        "SourceDate missing without unknown marker -> refusal or caveat",
+        "RevocationPath missing -> blocker/refusal",
+        "citation must not be fabricated",
+    ):
+        assert citation_case in matrix
+
+    for audit_field in (
+        "query/request context",
+        "retrieval mode",
+        "answer mode",
+        "evidence considered",
+        "evidence excluded",
+        "gate decision",
+        "refusal reason",
+        "citation/provenance status",
+        "caveat status",
+        "no mutation/no-write confirmation",
+    ):
+        assert audit_field in matrix
+
+
+def test_historical_runtime_implementation_test_matrix_boundaries_and_progress():
+    matrix = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX)
+
+    for assertion in (
+        "this slice does not implement runtime retrieval",
+        "this slice does not implement answer synthesis runtime",
+        "this slice does not implement citation rendering runtime",
+        "this slice does not expose chat",
+        "this slice does not call a live LLM",
+        "this slice does not create endpoint/UI",
+        "this slice does not mutate corpus",
+        "this slice does not write DB",
+    ):
+        assert assertion in matrix
+
+    for non_meaning in (
+        "runtime tests have been implemented",
+        "runtime retrieval exists",
+        "answer synthesis exists",
+        "citation rendering exists",
+        "chat exists",
+        "live LLM can be called",
+        "corpus can be mutated",
+        "endpoint/UI exists",
+    ):
+        assert non_meaning in matrix
+
+    assert "Preferred next Minerva slice should be historical read-only gated retrieval skeleton candidate v0.1 if this matrix is clean" in matrix
+    assert "That slice must be small, read-only, and must not expose chat or call live LLM" in matrix
+    assert "If blockers exist, next slice should remediate test matrix/design blockers" in matrix
+    assert "Minerva has moved from runtime implementation design into runtime implementation test-matrix readiness" in matrix
+    assert "Minerva remains pre-runtime and pre-chat" in matrix
+    assert "Estimated progress toward narrow safe internal chat pilot is about 88%" in matrix
+
+
+def test_historical_runtime_implementation_supporting_docs_are_complete():
+    fixtures = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES)
+    outcomes = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES)
+    assertions = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS)
+    blockers = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL)
+
+    for group in (
+        "Current-Truth Answer Scenarios",
+        "Historical-Context Answer Scenarios",
+        "Caveated Answer Scenarios",
+        "Backlog / Follow-Up Context Scenarios",
+        "Doctrine / Hardening Context Scenarios",
+        "Refusal Scenarios",
+        "Conflict / Supersession Scenarios",
+        "Citation / Provenance Scenarios",
+        "Audit / Logging Scenarios",
+    ):
+        assert group in fixtures
+    assert "Fixtures are documentation/test-planning only and do not create runtime data" in fixtures
+    assert "These fixtures do not create runtime data" in fixtures
+
+    for outcome in (
+        "allowed current-truth answer",
+        "allowed historical-context answer",
+        "allowed caveated answer",
+        "context-only answer",
+        "refusal insufficient governed evidence",
+        "refusal not answer-approved",
+        "refusal retrieval not eligible",
+        "refusal missing provenance",
+        "refusal conflicted",
+        "refusal superseded",
+    ):
+        assert outcome in outcomes
+
+    for no_runtime in (
+        "no retrieval runtime",
+        "no answer synthesis runtime",
+        "no citation rendering runtime",
+        "no chat exposure",
+        "no live LLM",
+        "no endpoint/UI",
+        "no corpus mutation",
+        "no Code Evidence ingestion",
+        "no DB write",
+    ):
+        assert no_runtime in assertions
+
+    for blocker in (
+        "TEST_MATRIX_INCOMPLETE",
+        "CURRENT_TRUTH_SCENARIOS_MISSING",
+        "HISTORICAL_CONTEXT_SCENARIOS_MISSING",
+        "CAVEATED_SCENARIOS_MISSING",
+        "REFUSAL_SCENARIOS_MISSING",
+        "CITATION_SCENARIOS_MISSING",
+        "AUDIT_SCENARIOS_MISSING",
+        "CONFLICT_SUPERSESSION_SCENARIOS_MISSING",
+        "RUNTIME_BOUNDARY_UNCLEAR",
+        "LIVE_LLM_BOUNDARY_UNCLEAR",
+        "ENDPOINT_UI_BOUNDARY_UNCLEAR",
+        "CORPUS_MUTATION_BOUNDARY_UNCLEAR",
+    ):
+        assert blocker in blockers
+    assert "Blocker resolution does not itself implement runtime retrieval, answer synthesis, citation rendering, live LLM, endpoint/UI, chat exposure, or answerability" in blockers
+
+
+def test_historical_runtime_implementation_test_matrix_links_from_design_controls():
+    design_pack = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK)
+    retrieval = _read(HISTORICAL_RUNTIME_RETRIEVAL_GATE_DESIGN)
+    answer = _read(HISTORICAL_RUNTIME_ANSWER_SYNTHESIS_GATE_DESIGN)
+    citation = _read(HISTORICAL_RUNTIME_CITATION_REFUSAL_GATE_DESIGN)
+    audit = _read(HISTORICAL_RUNTIME_AUDIT_LOGGING_DESIGN)
+    plan = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN)
+    entry = _read(HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert "This design flows into `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`, not runtime implementation directly" in design_pack
+    assert "Retrieval gate design must be tested through `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`" in retrieval
+    assert "Answer synthesis gate design must be tested through `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`" in answer
+    assert "Citation/refusal gate design must be tested through `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`" in citation
+    assert "Audit/logging design must be tested through the audit test scenarios in `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`" in audit
+    assert "The full runtime implementation test matrix is `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`" in plan
+
+    for entry_text in (
+        "RuntimeImplementationTestMatrixLink",
+        "TestMatrixStatus",
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md",
+    ):
+        assert entry_text in entry
+
+    for linked_doc in (
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md",
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES.md",
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES.md",
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS.md",
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL.md",
+    ):
+        assert linked_doc in index
+
+
+def test_historical_runtime_implementation_test_matrix_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "db" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "retrieval_runtime" not in normalized
+        assert "answer_synthesis" not in normalized or normalized.startswith("docs/")
+        assert "citation_rendering" not in normalized
+        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX,
+            HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES,
+            HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES,
+            HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS,
+            HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL,
+            HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK,
+            HISTORICAL_RUNTIME_RETRIEVAL_GATE_DESIGN,
+            HISTORICAL_RUNTIME_ANSWER_SYNTHESIS_GATE_DESIGN,
+            HISTORICAL_RUNTIME_CITATION_REFUSAL_GATE_DESIGN,
+            HISTORICAL_RUNTIME_AUDIT_LOGGING_DESIGN,
+            HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN,
+            HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No retrieval runtime changes",
+        "No answer synthesis runtime changes",
+        "No citation rendering runtime changes",
+        "No chat exposure",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No runtime answer-use permission activation",
+        "No runtime retrieval eligibility activation",
+        "does not implement runtime retrieval",
+        "does not implement answer synthesis runtime",
+        "does not implement citation rendering runtime",
+        "does not expose chat",
+        "does not call a live LLM",
+        "does not mutate corpus",
+    ):
+        assert required_boundary in combined
 
 
 def test_historical_chat_pilot_readiness_docs_exist():

@@ -75,6 +75,14 @@ The future citation/refusal gate should output:
 - `RendererPayload` or `RefusalPayload`;
 - `AuditSummary`.
 
-## 8. Boundary
+## 8. Link To Test Matrix Scenarios
+
+Citation/refusal gate design must be tested through `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`.
+
+The matrix scenarios must cover citation fields present, SourceId missing refusal, SourceDate missing without unknown marker refusal or caveat, RevocationPath missing blocker/refusal, missing citation/provenance refusal, required caveat missing refusal, conflicted evidence refusal, superseded evidence refusal, not-answerable evidence refusal, and the rule that citation must not be fabricated.
+
+The test matrix link does not implement citation rendering runtime or answer synthesis runtime.
+
+## 9. Boundary
 
 This document is design only. It does not implement citation rendering runtime, answer synthesis runtime, retrieval runtime, endpoint/UI, live LLM calls, database writes, corpus mutation, or chat exposure.

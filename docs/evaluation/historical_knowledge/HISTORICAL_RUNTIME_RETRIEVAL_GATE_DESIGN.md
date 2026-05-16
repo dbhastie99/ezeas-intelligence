@@ -94,6 +94,14 @@ The future retrieval gate should output:
 
 If retrieval is blocked, the gate must hand off refusal context instead of evidence content. The refusal handoff must identify the missing or blocked gate where known and must not fabricate citations.
 
-## 10. Boundary
+## 10. Link To Test Matrix Scenarios
+
+Retrieval gate design must be tested through `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`.
+
+The matrix scenarios must cover current-truth retrieval eligibility, historical-context retrieval eligibility, backlog/context retrieval constraints, doctrine/context retrieval constraints, missing retrieval eligibility refusal, conflict filtering, supersession filtering, missing provenance filtering, and not-answerable evidence exclusion.
+
+The test matrix link does not implement runtime retrieval or activate runtime retrieval eligibility.
+
+## 11. Boundary
 
 This document is design only. It does not implement runtime retrieval, retrieval filtering, endpoint/UI, live LLM calls, corpus mutation, database writes, or chat exposure.

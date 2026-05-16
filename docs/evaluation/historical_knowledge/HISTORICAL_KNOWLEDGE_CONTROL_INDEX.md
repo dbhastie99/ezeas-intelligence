@@ -80,6 +80,11 @@ Use these durable controls together:
 | Historical runtime citation/refusal gate design | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_CITATION_REFUSAL_GATE_DESIGN.md` |
 | Historical runtime audit/logging design | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_AUDIT_LOGGING_DESIGN.md` |
 | Historical runtime implementation test matrix plan | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md` |
+| Historical runtime implementation test matrix | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md` |
+| Historical runtime implementation scenario fixtures | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES.md` |
+| Historical runtime implementation expected outcomes | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES.md` |
+| Historical runtime implementation no-runtime assertions | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS.md` |
+| Historical runtime implementation blocker model | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL.md` |
 | Historical chat pilot readiness dependency map | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md` |
 | Historical chat pilot readiness checklist | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.md` |
 | Historical chat pilot go/no-go | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_GO_NO_GO.md` |
@@ -155,6 +160,11 @@ New findings classification control status:
 | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_CITATION_REFUSAL_GATE_DESIGN.md` | Active citation/refusal gate design; future provenance and refusal control only; no citation rendering runtime. |
 | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_AUDIT_LOGGING_DESIGN.md` | Active audit/logging design; future audit field planning only; no audit logging runtime or database writes. |
 | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md` | Active runtime implementation test matrix plan; planned test groups only; no runtime skeleton implementation. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md` | Active runtime implementation test matrix; planned scenarios and expected gate outcomes only; no runtime retrieval, answer synthesis, citation rendering, endpoint/UI, live LLM, corpus mutation, or chat exposure. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_SCENARIO_FIXTURES.md` | Active scenario fixtures; documentation/test-planning only; no runtime data creation. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES.md` | Active expected outcomes map; outcome planning only; no answerability activation. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS.md` | Active no-runtime assertions; preserves no retrieval runtime, answer synthesis runtime, citation rendering runtime, chat exposure, live LLM, endpoint/UI, corpus mutation, Code Evidence ingestion, or DB write. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL.md` | Active runtime implementation blocker model; blocker resolution does not implement runtime retrieval, answer synthesis, citation rendering, live LLM, endpoint/UI, chat exposure, or answerability. |
 
 ## 3. Source Authority Summary
 
@@ -306,3 +316,7 @@ The historical citation/provenance answer contract slice prompt is preserved at 
 The historical runtime retrieval / answer synthesis gate plan slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_runtime_retrieval_answer_synthesis_gate_plan_v0_1.md`.
 
 The historical chat pilot readiness checklist slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_chat_pilot_readiness_checklist_v0_1.md`.
+
+The historical runtime implementation design pack slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_runtime_implementation_design_pack_v0_1.md`.
+
+The historical runtime implementation test matrix slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_runtime_implementation_test_matrix_v0_1.md`.

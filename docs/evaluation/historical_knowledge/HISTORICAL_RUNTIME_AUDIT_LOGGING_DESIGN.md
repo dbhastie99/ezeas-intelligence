@@ -42,6 +42,14 @@ The future pilot must be read-only. It must not mutate operational corpus conten
 
 If audit persistence is later required, a separate approved audit sink and no-operational-mutation boundary must be designed first.
 
-## 5. Boundary
+## 5. Link To Test Matrix Scenarios
+
+Audit/logging design must be tested through the audit test scenarios in `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`.
+
+Audit test scenarios must cover query/request context, retrieval mode, answer mode, evidence considered, evidence excluded, gate decision, refusal reason, citation/provenance status, caveat status, and no mutation/no-write confirmation.
+
+The test matrix link does not implement audit logging runtime, database writes, or an audit persistence sink.
+
+## 6. Boundary
 
 This document is design only. It does not implement audit logging runtime, database writes, schema migrations, retrieval runtime, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM calls, or chat exposure.

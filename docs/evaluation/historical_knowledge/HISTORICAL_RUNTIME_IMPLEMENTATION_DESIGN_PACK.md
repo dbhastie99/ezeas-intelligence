@@ -93,7 +93,15 @@ The future pilot audit surface must remain read-only and must not write to opera
 - this slice does not create endpoint/UI;
 - this slice does not mutate corpus or evidence stores.
 
-## 12. Stop Conditions
+## 12. Flow To Test Matrix
+
+This design flows into `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`, not runtime implementation directly.
+
+The test matrix must convert retrieval gating, answer-use enforcement, answer-mode enforcement, citation/provenance enforcement, refusal behaviour, conflict/supersession handling, and audit/logging design into planned scenarios before any read-only skeleton candidate is considered.
+
+Passing through the test matrix does not itself implement retrieval runtime, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM calls, database writes, corpus mutation, or chat exposure.
+
+## 13. Stop Conditions
 
 - live LLM call required;
 - endpoint/UI required;
@@ -107,7 +115,7 @@ The future pilot audit surface must remain read-only and must not write to opera
 - unresolved refusal behaviour;
 - unresolved citation/provenance behaviour.
 
-## 13. What This Design Pack Does Not Mean
+## 14. What This Design Pack Does Not Mean
 
 - runtime retrieval has been implemented;
 - answer synthesis gating has been implemented;
@@ -118,7 +126,7 @@ The future pilot audit surface must remain read-only and must not write to opera
 - evidence has become answerable current truth;
 - endpoint or UI exists.
 
-## 14. Recommended Next Slice
+## 15. Recommended Next Slice
 
 Preferred next Minerva slice should be historical runtime implementation test matrix v0.1.
 
@@ -126,7 +134,7 @@ That slice should convert the runtime design into concrete tests before any runt
 
 If the design reveals blockers, the next slice should remediate blockers instead.
 
-## 15. Progress After This Slice
+## 16. Progress After This Slice
 
 Minerva has moved from chat pilot readiness control into runtime implementation design.
 
@@ -134,7 +142,7 @@ Minerva remains pre-runtime and pre-chat.
 
 Estimated progress toward narrow safe internal chat pilot is about 85%.
 
-## 16. Developer Handoff
+## 17. Developer Handoff
 
 Future developers must treat this design pack as a design/control artefact only. A later implementation test matrix must be approved before a read-only retrieval skeleton or pilot skeleton is considered.
 

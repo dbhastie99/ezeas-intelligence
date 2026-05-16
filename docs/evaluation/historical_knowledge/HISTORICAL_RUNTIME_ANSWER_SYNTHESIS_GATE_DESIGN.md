@@ -77,6 +77,14 @@ The future answer synthesis gate should output:
 - `RefusalReason`;
 - `DraftAnswerPayload` or `RefusalPayload`.
 
-## 9. Boundary
+## 9. Link To Test Matrix Scenarios
+
+Answer synthesis gate design must be tested through `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`.
+
+The matrix scenarios must cover current-truth answer mode, historical-context answer mode with historical label, caveated answer mode, backlog/context response, doctrine/context response, missing answer-use permission refusal, missing retrieval eligibility refusal, missing answer mode refusal, missing citation/provenance refusal, conflicted evidence refusal, superseded evidence refusal, and not-answerable evidence refusal.
+
+The test matrix link does not implement answer synthesis runtime, call a live LLM, or activate runtime answer-mode selection.
+
+## 10. Boundary
 
 This document is design only. It does not implement answer synthesis runtime, does not call a live LLM, does not implement retrieval runtime, does not render citations, does not create endpoint/UI, and does not expose chat.

@@ -28,6 +28,8 @@ Required links:
 
 - `RuntimeImplementationDesignPackLink`: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK.md`
 - `RuntimeImplementationTestMatrixPlanLink`: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md`
+- `RuntimeImplementationTestMatrixLink`: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`
+- `TestMatrixStatus`: `RUNTIME_TEST_MATRIX_READY_FOR_READ_ONLY_RETRIEVAL_SKELETON` only after the matrix is clean; otherwise `RUNTIME_TEST_MATRIX_DRAFTED` or blocked status applies.
 
 ## 3. Design Boundary
 
