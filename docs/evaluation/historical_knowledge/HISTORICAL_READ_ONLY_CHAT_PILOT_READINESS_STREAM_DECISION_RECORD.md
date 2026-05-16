@@ -14,8 +14,10 @@ This record captures the conservative stream-level closeout decision for the Min
 | --- | --- |
 | DecisionId | `HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT_DECISION_v0_1` |
 | DecisionStatus | `CLOSED_DEFERRED_PENDING_EXPOSURE_APPROVAL` |
+| FinalControlledReadinessStatus | `CONTROLLED_READINESS_COMPLETE_EXPOSURE_DEFERRED` |
 | DecisionDate | `2026-05-16` |
 | StreamClosed | Yes |
+| ControlledReadinessComplete | Yes |
 | ExplicitExposureApprovalPresent | No |
 | InternalExposureEnabledThisSlice | No |
 | ProductionChatExposedThisSlice | No |
@@ -32,3 +34,7 @@ This record captures the conservative stream-level closeout decision for the Min
 | DecisionRationale | Governance/design/candidate readiness is complete for current purposes, but exposure cannot proceed without explicit approval and runtime access/audit decisions. The stream is therefore closed/deferred with no runtime activation. |
 | ApprovedBy | Not approved |
 | Notes | Conservative default is No for approval, exposure, and runtime fields. This record does not expose chat or authorise production access. |
+
+## Final Index Linkage
+
+Final index/resume-map consolidation is recorded in `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md`.

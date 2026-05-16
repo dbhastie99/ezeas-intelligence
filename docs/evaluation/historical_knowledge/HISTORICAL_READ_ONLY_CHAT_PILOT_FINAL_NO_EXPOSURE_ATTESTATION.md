@@ -10,6 +10,8 @@ This final attestation records that the Minerva historical read-only chat pilot 
 
 ## Attestation
 
+Final boundary register: `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md`.
+
 - no internal exposure enabled;
 - no production chat exposure;
 - no public endpoint;

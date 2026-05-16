@@ -10,6 +10,8 @@ This document defines criteria required before any future Minerva historical rea
 
 ## Future Resume Criteria
 
+Final resume map: `HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md`.
+
 - explicit exposure approval supplied;
 - internal-only scope confirmed;
 - operator/developer-only access confirmed;

@@ -751,6 +751,19 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -1017,6 +1030,9 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT_PROMPT = Pat
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_readiness_stream_closeout_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX_RESUME_MAP_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_final_index_resume_map_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -8508,6 +8524,11 @@ def test_historical_read_only_chat_pilot_exposure_decision_gate_slice_introduces
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md",
+        "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_final_index_resume_map_v0_1.md",
         "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_readiness_stream_closeout_v0_1.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md",
         "tests/test_domain_baseline_capture_batch.py",
@@ -8848,6 +8869,11 @@ def test_historical_read_only_chat_pilot_internal_exposure_deferred_slice_introd
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md",
+        "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_final_index_resume_map_v0_1.md",
         "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_readiness_stream_closeout_v0_1.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md",
         "tests/test_domain_baseline_capture_batch.py",
@@ -9148,6 +9174,164 @@ def test_historical_read_only_chat_pilot_readiness_stream_closeout_updates_exist
         assert linked_doc in index
 
 
+def test_historical_read_only_chat_pilot_final_index_resume_map_docs_exist():
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX_RESUME_MAP_PROMPT.exists()
+
+
+def test_historical_read_only_chat_pilot_final_index_status_and_boundaries():
+    final_index = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX)
+
+    for required_text in (
+        "ReadOnlyChatPilotControlledReadinessStatus: CONTROLLED_READINESS_COMPLETE_EXPOSURE_DEFERRED",
+        "ControlledReadinessComplete: Yes",
+        "InternalExposureEnabled: No",
+        "ProductionChatExposed: No",
+        "PublicAccessEnabled: No",
+        "TenantCustomerAccessEnabled: No",
+        "GlobalRouteRegistered: No",
+        "LiveLLMCalled: No",
+        "FinalAnswerGenerated: No",
+        "LiveRetrievalPerformed: No",
+        "CorpusMutationPerformed: No",
+        "DatabaseReadPerformed: No",
+        "DatabaseWritePerformed: No",
+    ):
+        assert required_text in final_index
+
+    for blocked in (
+        "internal exposure",
+        "production chat exposure",
+        "public endpoint",
+        "tenant/customer endpoint",
+        "global route registration",
+        "live LLM calls",
+        "final natural-language answer generation",
+        "live retrieval backend",
+        "corpus/vector search",
+        "corpus mutation",
+        "source ingestion",
+        "Code Evidence ingestion",
+        "DB reads",
+        "DB writes",
+        "schema migrations",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+    ):
+        assert blocked in final_index
+
+
+def test_historical_read_only_chat_pilot_final_index_stream_artefact_groups():
+    final_index = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX)
+
+    for stream_area in (
+        "governance controls",
+        "retrieval skeleton",
+        "answer synthesis skeleton",
+        "citation/refusal skeleton",
+        "safety test pack",
+        "go/no-go closeout",
+        "orchestrator candidate",
+        "orchestrator closeout",
+        "endpoint/UI planning gate",
+        "endpoint/UI design pack",
+        "endpoint/UI implementation gate",
+        "minimal endpoint/UI implementation candidate",
+        "minimal endpoint/UI candidate closeout",
+        "exposure decision gate",
+        "internal exposure deferred closeout",
+        "readiness stream closeout",
+        "final index/resume map",
+    ):
+        assert stream_area in final_index
+
+
+def test_historical_read_only_chat_pilot_resume_map_triggers_and_non_authorisation():
+    resume_map = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP)
+
+    for required_mapping in (
+        "| Explicit internal exposure approval supplied | internal exposure candidate |",
+        "| Live LLM requested | LLM policy/safety gate |",
+        "| Final natural-language answer requested | final-answer generation gate |",
+        "| Public/tenant/customer exposure requested | production exposure gate |",
+        "| No approval supplied | remain deferred |",
+    ):
+        assert required_mapping in resume_map
+
+    assert "No trigger itself authorises exposure, LLM calls, final answers, DB access, corpus mutation, or production use" in resume_map
+
+
+def test_historical_read_only_chat_pilot_final_boundary_register():
+    register = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER)
+
+    for boundary in (
+        "no internal exposure",
+        "no production exposure",
+        "no public access",
+        "no tenant/customer access",
+        "no global route registration",
+        "no live LLM",
+        "no final answer",
+        "no live retrieval",
+        "no DB read/write",
+        "no corpus mutation",
+        "no cross-repo changes",
+    ):
+        assert boundary in register
+
+
+def test_historical_read_only_chat_pilot_final_status_summary():
+    status = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS)
+
+    for required_field in (
+        "| ControlledReadinessComplete | Yes |",
+        "| ExposureDeferred | Yes |",
+        "| ExplicitExposureApprovalPresent | No |",
+        "| InternalExposureEnabled | No |",
+        "| ProductionChatExposed | No |",
+        "| LiveLLMCalled | No |",
+        "| FinalAnswerGenerated | No |",
+        "| DBReadWritePerformed | No |",
+        "| CorpusMutationPerformed | No |",
+        "| ResumeRequiresExplicitApproval | Yes |",
+        "| NoExposureBoundaryPreserved | Yes |",
+    ):
+        assert required_field in status
+
+
+def test_historical_read_only_chat_pilot_final_index_updates_controls_and_closeout():
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT)
+    decision = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD)
+    inventory = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY)
+    resume_criteria = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA)
+    attestation = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION)
+
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md",
+        "2026-05-16_minerva_historical_read_only_chat_pilot_final_index_resume_map_v0_1.md",
+        "CONTROLLED_READINESS_COMPLETE_EXPOSURE_DEFERRED",
+        "complete/deferred",
+    ):
+        assert linked_doc in index
+
+    assert "Final Index And Resume Map" in closeout
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.md" in closeout
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md" in closeout
+    assert "FinalControlledReadinessStatus" in decision
+    assert "ControlledReadinessComplete" in decision
+    assert "final index/resume map" in inventory
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md" in resume_criteria
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md" in attestation
+
+
 def test_historical_read_only_chat_pilot_readiness_stream_slice_introduces_only_allowed_changes():
     changed = subprocess.run(
         ["git", "status", "--short"],
@@ -9191,6 +9375,10 @@ def test_historical_read_only_chat_pilot_readiness_stream_slice_introduces_only_
             HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY,
             HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA,
             HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER,
             HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES,
             HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
         )

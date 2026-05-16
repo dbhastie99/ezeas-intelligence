@@ -167,6 +167,18 @@ Internal exposure is deferred. Explicit exposure approval is absent. No internal
 - Minerva remains pre-production-chat-exposure.
 - No exposure was enabled.
 
-## 18. Developer Handoff
+## 18. Final Index And Resume Map
+
+The final controlled-readiness index is `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.md`.
+
+The final controlled-readiness status is `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS.md`.
+
+The final resume map is `HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md`.
+
+The final boundary register is `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md`.
+
+These final artefacts mark the read-only chat pilot controlled-readiness stream as complete/deferred. They do not enable internal exposure, production chat exposure, public/tenant/customer access, global route registration, live LLM calls, final natural-language answer generation, live retrieval, corpus mutation, DB read/write, source ingestion, Code Evidence ingestion, schema migration, or cross-repo changes.
+
+## 19. Developer Handoff
 
 Use this closeout as the durable stream-level closeout for the Minerva historical read-only chat pilot readiness stream. Do not expose chat, register global routes, create public or tenant/customer endpoints, create production UI, call live LLMs, generate final natural-language answers, connect live retrieval, query corpus/vector/database stores, read or write databases, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, or change workforce-platform, award-configurator-v1, or ezeas-analytics unless a future slice supplies explicit approval and satisfies resume criteria.

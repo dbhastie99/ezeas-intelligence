@@ -27,6 +27,7 @@ This inventory lists the complete Minerva historical read-only chat pilot readin
 | minimal endpoint/UI candidate closeout | `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md` | Complete; no production exposure |
 | exposure decision gate | `HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md` | Complete; exposure not approved |
 | internal exposure deferred closeout | `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT.md` | Complete/deferred; no exposure; no-runtime |
+| final index/resume map | `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_INDEX.md`; `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_STATUS.md`; `HISTORICAL_READ_ONLY_CHAT_PILOT_RESUME_MAP.md`; `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_BOUNDARY_REGISTER.md` | Complete; controlled-readiness complete/exposure deferred; no-runtime |
 
 ## Boundary Summary
 
