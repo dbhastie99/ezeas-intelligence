@@ -1,0 +1,29 @@
+{
+  "fixture_id": "safe_next_slice_recommendation",
+  "fixture_purpose": "Safe next-slice recommendation fixture that preserves recommendation text without authorising it.",
+  "input_metadata": {
+    "report_title": "Minerva Controlled Next-Slice Recommendation Golden Baseline",
+    "report_type": "NEXT_SLICE_RECOMMENDATION",
+    "report_scope": "Internal next-slice recommendation fixture only.",
+    "current_status": "Next-slice recommendation: Minerva remains controlled-readiness only.",
+    "evidence_inputs": ["controlled report assembler output", "publication gate output"],
+    "preferred_current_state_evidence": "Prefer final/current report metadata.",
+    "controlled_readiness_summary": "Next-slice recommendation: Minerva remains controlled-readiness only. No production, no deployment, runtime deferred, no chat exposure, no endpoint, no DB access, DB validation pending and not performed, no corpus mutation, no Code Evidence ingestion, no workforce-platform runtime integration, no ezeas-analytics runtime integration, live LLM use remains deferred, and no final natural-language answer generation.",
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "risks_and_unknowns": ["Recommendation text must not be treated as approval to implement runtime exposure."],
+    "recommended_next_slice": "Next-slice recommendation: add a deterministic controlled report fixture schema contract while keeping all runtime and exposure boundaries deferred.",
+    "developer_handoff": "Recommendation is advisory only and does not authorise runtime work."
+  },
+  "expected_publication_decision": "PUBLISH_CONTROLLED_EVALUATION_REPORT",
+  "expected_safe_for_controlled_evaluation_report": true,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": [],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "RUNTIME_DEFERRED", "CHAT_EXPOSURE_DEFERRED", "ENDPOINT_EXPOSURE_DEFERRED", "FINAL_ANSWER_GENERATION_DEFERRED", "LIVE_LLM_DEFERRED", "DB_ACCESS_DEFERRED", "DB_VALIDATION_DEFERRED", "CORPUS_MUTATION_DEFERRED", "CODE_EVIDENCE_INGESTION_DEFERRED", "WORKFORCE_RUNTIME_INTEGRATION_DEFERRED", "ANALYTICS_RUNTIME_INTEGRATION_DEFERRED"],
+  "expected_violated_boundaries": [],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Next-slice recommendation: add a deterministic controlled report fixture schema contract while keeping all runtime and exposure boundaries deferred.",
+  "expected_summary_terms": ["Next-slice recommendation", "controlled-readiness only", "runtime deferred"]
+}

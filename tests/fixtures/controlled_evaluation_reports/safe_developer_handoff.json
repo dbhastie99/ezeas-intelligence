@@ -1,0 +1,29 @@
+{
+  "fixture_id": "safe_developer_handoff",
+  "fixture_purpose": "Safe developer handoff fixture with controlled-readiness caveats.",
+  "input_metadata": {
+    "report_title": "Minerva Controlled Developer Handoff Golden Baseline",
+    "report_type": "DEVELOPER_HANDOFF",
+    "report_scope": "Internal developer handoff fixture only.",
+    "current_status": "Developer handoff: Minerva remains controlled-readiness only.",
+    "evidence_inputs": ["controlled report assembler output"],
+    "preferred_current_state_evidence": "Use current controlled report metadata only.",
+    "controlled_readiness_summary": "Developer handoff: Minerva remains controlled-readiness only. Runtime deferred, not deployed, no production, no chat exposure, no endpoint, no DB access, DB validation pending and not performed, no corpus mutation, no Code Evidence ingestion, no workforce-platform runtime integration, no ezeas-analytics runtime integration, live LLM use remains deferred, and no final natural-language answer generation.",
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "risks_and_unknowns": ["Future callers must preserve the no-final-answer boundary."],
+    "recommended_next_slice": "Keep next work local deterministic and fixture-driven.",
+    "developer_handoff": "Developer handoff: keep fixtures checked in and do not add runtime behaviour."
+  },
+  "expected_publication_decision": "PUBLISH_DEVELOPER_HANDOFF",
+  "expected_safe_for_controlled_evaluation_report": false,
+  "expected_safe_for_developer_handoff": true,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": [],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "RUNTIME_DEFERRED", "CHAT_EXPOSURE_DEFERRED", "ENDPOINT_EXPOSURE_DEFERRED", "FINAL_ANSWER_GENERATION_DEFERRED", "LIVE_LLM_DEFERRED", "DB_ACCESS_DEFERRED", "DB_VALIDATION_DEFERRED", "CORPUS_MUTATION_DEFERRED", "CODE_EVIDENCE_INGESTION_DEFERRED", "WORKFORCE_RUNTIME_INTEGRATION_DEFERRED", "ANALYTICS_RUNTIME_INTEGRATION_DEFERRED"],
+  "expected_violated_boundaries": [],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Keep next work local deterministic and fixture-driven.",
+  "expected_summary_terms": ["Developer handoff", "controlled-readiness only", "runtime deferred", "no endpoint"]
+}

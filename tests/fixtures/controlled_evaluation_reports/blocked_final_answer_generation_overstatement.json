@@ -1,0 +1,23 @@
+{
+  "fixture_id": "blocked_final_answer_generation_overstatement",
+  "fixture_purpose": "Final natural-language answer generation overstatement must be blocked.",
+  "input_metadata": {
+    "report_type": "CONTROLLED_EVALUATION_REPORT",
+    "current_status": "Final natural-language answer generation enabled.",
+    "controlled_readiness_summary": "Minerva remains controlled-readiness only. No production, no deployment, no runtime, no chat exposure, no endpoint, no DB access.",
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "recommended_next_slice": "Remove final answer generation overstatement before publication."
+  },
+  "expected_publication_decision": "BLOCKED_FINAL_ANSWER_GENERATION_CLAIM",
+  "expected_safe_for_controlled_evaluation_report": false,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": ["FINAL_ANSWER_GENERATION_CLAIM"],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "RUNTIME_DEFERRED", "CHAT_EXPOSURE_DEFERRED", "ENDPOINT_EXPOSURE_DEFERRED", "DB_ACCESS_DEFERRED"],
+  "expected_violated_boundaries": ["FINAL_ANSWER_GENERATION"],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Remove final answer generation overstatement before publication.",
+  "expected_summary_terms": ["Final natural-language answer generation enabled"]
+}

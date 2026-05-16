@@ -1,0 +1,29 @@
+{
+  "fixture_id": "safe_progress_summary",
+  "fixture_purpose": "Safe progress summary fixture with no production, deployment, runtime, endpoint, or final-answer claims.",
+  "input_metadata": {
+    "report_title": "Minerva Controlled Progress Summary Golden Baseline",
+    "report_type": "PROGRESS_SUMMARY",
+    "report_scope": "Internal progress summary fixture only.",
+    "current_status": "Progress summary: Minerva remains controlled-readiness only.",
+    "evidence_inputs": ["controlled deterministic test output"],
+    "preferred_current_state_evidence": "Use current controlled deterministic outputs.",
+    "controlled_readiness_summary": "Progress summary: Minerva remains controlled-readiness only. No production, no deployment, no runtime, no chat exposure, no endpoint, no DB access, DB validation pending and not performed, no corpus mutation, no Code Evidence ingestion, no workforce-platform runtime integration, no ezeas-analytics runtime integration, no live LLM, and no final natural-language answer generation.",
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "risks_and_unknowns": ["Summary drift can overstate readiness if caveats are removed."],
+    "recommended_next_slice": "Add more regression fixtures only after preserving current gates.",
+    "developer_handoff": "Progress summary remains internal only."
+  },
+  "expected_publication_decision": "PUBLISH_PROGRESS_SUMMARY",
+  "expected_safe_for_controlled_evaluation_report": false,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": true,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": [],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "RUNTIME_DEFERRED", "CHAT_EXPOSURE_DEFERRED", "ENDPOINT_EXPOSURE_DEFERRED", "FINAL_ANSWER_GENERATION_DEFERRED", "LIVE_LLM_DEFERRED", "DB_ACCESS_DEFERRED", "DB_VALIDATION_DEFERRED", "CORPUS_MUTATION_DEFERRED", "CODE_EVIDENCE_INGESTION_DEFERRED", "WORKFORCE_RUNTIME_INTEGRATION_DEFERRED", "ANALYTICS_RUNTIME_INTEGRATION_DEFERRED"],
+  "expected_violated_boundaries": [],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Add more regression fixtures only after preserving current gates.",
+  "expected_summary_terms": ["Progress summary", "controlled-readiness only", "no runtime", "no final natural-language answer generation"]
+}

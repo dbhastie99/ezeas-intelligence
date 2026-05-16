@@ -1,0 +1,23 @@
+{
+  "fixture_id": "blocked_exposure_overstatement",
+  "fixture_purpose": "Chat and endpoint exposure overstatements must be blocked.",
+  "input_metadata": {
+    "report_type": "CONTROLLED_EVALUATION_REPORT",
+    "current_status": "Internal chat enabled for Minerva. The API endpoint enabled Minerva access.",
+    "controlled_readiness_summary": "Minerva remains controlled-readiness only. No production, no deployment, no runtime, no DB access.",
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "recommended_next_slice": "Remove exposure overstatement before publication."
+  },
+  "expected_publication_decision": "BLOCKED_OVERSTATED_EXPOSURE",
+  "expected_safe_for_controlled_evaluation_report": false,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": ["CHAT_EXPOSURE_CLAIM", "ENDPOINT_EXPOSURE_CLAIM"],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "RUNTIME_DEFERRED", "DB_ACCESS_DEFERRED"],
+  "expected_violated_boundaries": ["CHAT_EXPOSURE", "ENDPOINT_EXPOSURE"],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Remove exposure overstatement before publication.",
+  "expected_summary_terms": ["Internal chat enabled", "API endpoint enabled"]
+}

@@ -1,0 +1,23 @@
+{
+  "fixture_id": "blocked_corpus_code_evidence_overstatement",
+  "fixture_purpose": "Corpus mutation and Code Evidence ingestion overstatements must be blocked.",
+  "input_metadata": {
+    "report_type": "CONTROLLED_EVALUATION_REPORT",
+    "current_status": "Corpus mutation occurred. Code Evidence ingestion occurred.",
+    "controlled_readiness_summary": "Minerva remains controlled-readiness only. No production, no deployment, no runtime, no chat exposure, no endpoint, no DB access.",
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "recommended_next_slice": "Remove corpus and Code Evidence ingestion overstatements before publication."
+  },
+  "expected_publication_decision": "BLOCKED_CORPUS_OR_CODE_EVIDENCE_CLAIM",
+  "expected_safe_for_controlled_evaluation_report": false,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": ["CORPUS_MUTATION_CLAIM", "CODE_EVIDENCE_INGESTION_CLAIM"],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "RUNTIME_DEFERRED", "CHAT_EXPOSURE_DEFERRED", "ENDPOINT_EXPOSURE_DEFERRED", "DB_ACCESS_DEFERRED"],
+  "expected_violated_boundaries": ["CORPUS_MUTATION", "CODE_EVIDENCE_INGESTION"],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Remove corpus and Code Evidence ingestion overstatements before publication.",
+  "expected_summary_terms": ["Corpus mutation occurred", "Code Evidence ingestion occurred"]
+}

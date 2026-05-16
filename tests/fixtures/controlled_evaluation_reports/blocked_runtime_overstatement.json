@@ -1,0 +1,23 @@
+{
+  "fixture_id": "blocked_runtime_overstatement",
+  "fixture_purpose": "Runtime-enabled overstatement must be blocked.",
+  "input_metadata": {
+    "report_type": "CONTROLLED_EVALUATION_REPORT",
+    "current_status": "Minerva is runtime-enabled.",
+    "controlled_readiness_summary": "Minerva remains controlled-readiness only. No production, no deployment, no chat exposure, no endpoint, no DB access.",
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "recommended_next_slice": "Remove runtime overstatement before publication."
+  },
+  "expected_publication_decision": "BLOCKED_OVERSTATED_RUNTIME",
+  "expected_safe_for_controlled_evaluation_report": false,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": ["RUNTIME_READINESS_CLAIM"],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "CHAT_EXPOSURE_DEFERRED", "ENDPOINT_EXPOSURE_DEFERRED", "DB_ACCESS_DEFERRED"],
+  "expected_violated_boundaries": ["RUNTIME_READINESS"],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Remove runtime overstatement before publication.",
+  "expected_summary_terms": ["runtime-enabled", "controlled-readiness only"]
+}

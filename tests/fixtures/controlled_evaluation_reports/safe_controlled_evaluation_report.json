@@ -1,0 +1,30 @@
+{
+  "fixture_id": "safe_controlled_evaluation_report",
+  "fixture_purpose": "Safe internal controlled evaluation report metadata with explicit no-action boundaries.",
+  "input_metadata": {
+    "report_title": "Minerva Controlled Evaluation Report Golden Baseline",
+    "report_type": "CONTROLLED_EVALUATION_REPORT",
+    "report_scope": "Internal controlled evaluation report fixture only.",
+    "current_status": "Minerva remains controlled-readiness only.",
+    "evidence_inputs": ["final controlled status", "publication gate output", "assembler output"],
+    "preferred_current_state_evidence": "Prefer final/current controlled-readiness evidence over older midstream artefacts.",
+    "controlled_readiness_summary": "Minerva remains controlled-readiness only. No production, no deployment, runtime deferred, no chat exposure, no endpoint, no DB access, DB validation pending and not performed, no corpus mutation, no Code Evidence ingestion, no workforce-platform runtime integration, no ezeas-analytics runtime integration, live LLM use remains deferred, and no final natural-language answer generation.",
+    "blocked_or_deferred_capabilities": ["internal chat exposure deferred"],
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "risks_and_unknowns": ["Runtime and DB validation remain deferred."],
+    "recommended_next_slice": "Add deterministic golden baseline fixtures before any runtime or chat-facing work.",
+    "developer_handoff": "Use only as controlled internal metadata."
+  },
+  "expected_publication_decision": "PUBLISH_CONTROLLED_EVALUATION_REPORT",
+  "expected_safe_for_controlled_evaluation_report": true,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": [],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "RUNTIME_DEFERRED", "CHAT_EXPOSURE_DEFERRED", "ENDPOINT_EXPOSURE_DEFERRED", "FINAL_ANSWER_GENERATION_DEFERRED", "LIVE_LLM_DEFERRED", "DB_ACCESS_DEFERRED", "DB_VALIDATION_DEFERRED", "CORPUS_MUTATION_DEFERRED", "CODE_EVIDENCE_INGESTION_DEFERRED", "WORKFORCE_RUNTIME_INTEGRATION_DEFERRED", "ANALYTICS_RUNTIME_INTEGRATION_DEFERRED"],
+  "expected_violated_boundaries": [],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Add deterministic golden baseline fixtures before any runtime or chat-facing work.",
+  "expected_summary_terms": ["controlled-readiness only", "no production", "no deployment", "no chat exposure", "no DB access"]
+}

@@ -1,0 +1,23 @@
+{
+  "fixture_id": "blocked_db_access_validation_overstatement",
+  "fixture_purpose": "DB access and DB validation overstatements must be blocked unless pending/not performed.",
+  "input_metadata": {
+    "report_type": "CONTROLLED_EVALUATION_REPORT",
+    "current_status": "DB access occurred during validation. DB validation completed.",
+    "controlled_readiness_summary": "Minerva remains controlled-readiness only. No production, no deployment, no runtime, no chat exposure, no endpoint, no corpus mutation, no Code Evidence ingestion.",
+    "no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+    "recommended_next_slice": "Replace DB completion claim with pending/not performed wording."
+  },
+  "expected_publication_decision": "BLOCKED_DB_ACCESS_OR_VALIDATION_CLAIM",
+  "expected_safe_for_controlled_evaluation_report": false,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": ["DB_ACCESS_CLAIM", "DB_VALIDATION_CLAIM"],
+  "expected_preserved_boundaries": ["CONTROLLED_READINESS_ONLY", "PRODUCTION_DEFERRED", "DEPLOYMENT_DEFERRED", "RUNTIME_DEFERRED", "CHAT_EXPOSURE_DEFERRED", "ENDPOINT_EXPOSURE_DEFERRED", "CORPUS_MUTATION_DEFERRED", "CODE_EVIDENCE_INGESTION_DEFERRED"],
+  "expected_violated_boundaries": ["DB_ACCESS", "DB_VALIDATION"],
+  "expected_no_action_attestation": "No action was taken against runtime, DB, corpus, routes, live LLMs, UI, or cross-repo integrations.",
+  "expected_recommended_next_slice": "Replace DB completion claim with pending/not performed wording.",
+  "expected_summary_terms": ["DB access occurred", "DB validation completed"]
+}

@@ -1,0 +1,23 @@
+{
+  "fixture_id": "ambiguous_requires_review",
+  "fixture_purpose": "Ambiguous metadata without controlled-readiness/no-action caveats must require caveat or human review.",
+  "input_metadata": {
+    "report_title": "Ambiguous Minerva Status",
+    "current_status": "Minerva status looks good.",
+    "controlled_readiness_summary": "Status is promising.",
+    "no_action_attestation": "",
+    "recommended_next_slice": "Review ambiguous metadata before publication."
+  },
+  "expected_publication_decision": "NEEDS_CAVEAT_BEFORE_PUBLICATION",
+  "expected_safe_for_controlled_evaluation_report": false,
+  "expected_safe_for_developer_handoff": false,
+  "expected_safe_for_progress_summary": false,
+  "expected_safe_for_final_answer_generation": false,
+  "expected_required_caveats": ["Minerva remains controlled-readiness only."],
+  "expected_block_reasons": [],
+  "expected_preserved_boundaries": [],
+  "expected_violated_boundaries": [],
+  "expected_no_action_attestation": "",
+  "expected_recommended_next_slice": "Review ambiguous metadata before publication.",
+  "expected_summary_terms": ["Minerva status looks good", "Status is promising"]
+}
