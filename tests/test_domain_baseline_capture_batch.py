@@ -601,6 +601,30 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_CONTRACT_DESIGN = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_CONTRACT_DESIGN.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_UI_SURFACE_DESIGN = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_UI_SURFACE_DESIGN.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ACCESS_CONTROL_DESIGN = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ACCESS_CONTROL_DESIGN.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_AUDIT_LOGGING_DESIGN = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_AUDIT_LOGGING_DESIGN.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_ENTRY_CRITERIA.md"
+)
 HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CANDIDATE_SERVICE = Path(
     "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
 )
@@ -849,6 +873,9 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING_CLOSEOUT_PROMPT 
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_endpoint_ui_planning_gate_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_endpoint_ui_design_pack_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -6900,6 +6927,350 @@ def test_historical_read_only_chat_pilot_endpoint_ui_planning_gate_links_from_co
         assert linked_doc in index
 
 
+def test_historical_read_only_chat_pilot_endpoint_ui_design_pack_docs_exist():
+    for path in (
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_CONTRACT_DESIGN,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_UI_SURFACE_DESIGN,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ACCESS_CONTROL_DESIGN,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_AUDIT_LOGGING_DESIGN,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_ENTRY_CRITERIA,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK_PROMPT,
+    ):
+        assert path.exists()
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_design_pack_status_inputs_and_model():
+    design_pack = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK)
+
+    for status_line in (
+        "EndpointUiDesignStatus: DESIGN_DRAFTED_NOT_IMPLEMENTED",
+        "EndpointCreatedThisSlice: No",
+        "RouteCreatedThisSlice: No",
+        "UICreatedThisSlice: No",
+        "ChatExposedThisSlice: No",
+        "LiveLLMCalledThisSlice: No",
+        "FinalAnswerGeneratedThisSlice: No",
+        "LiveRetrievalPerformedThisSlice: No",
+        "CorpusMutationPerformedThisSlice: No",
+        "DatabaseReadPerformedThisSlice: No",
+        "DatabaseWritePerformedThisSlice: No",
+    ):
+        assert status_line in design_pack
+
+    for reviewed_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md",
+    ):
+        assert reviewed_doc in design_pack
+
+    for status in (
+        "ENDPOINT_UI_DESIGN_NOT_STARTED",
+        "ENDPOINT_UI_DESIGN_DRAFTED",
+        "ENDPOINT_UI_DESIGN_BLOCKED",
+        "ENDPOINT_UI_DESIGN_DEFERRED",
+        "ENDPOINT_UI_DESIGN_READY_FOR_IMPLEMENTATION_GATE",
+        "ENDPOINT_UI_DESIGN_REQUIRES_ACCESS_CONTROL_REVIEW",
+        "ENDPOINT_UI_DESIGN_REQUIRES_AUDIT_LOGGING_REVIEW",
+        "ENDPOINT_UI_DESIGN_REQUIRES_LLM_POLICY_REVIEW",
+        "ENDPOINT_UI_DESIGN_REJECTED",
+        "ENDPOINT_UI_DESIGN_SUPERSEDED",
+    ):
+        assert status in design_pack
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_design_pack_summaries_and_envelopes():
+    design_pack = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK)
+
+    for endpoint_requirement in (
+        "future endpoint must be internal-only",
+        "future endpoint must be read-only",
+        "future endpoint must accept metadata/envelope input only at first",
+        "future endpoint must call the in-memory orchestrator candidate only unless later approved",
+        "future endpoint must not call live LLM unless later explicitly approved",
+        "future endpoint must not connect to DB or live retrieval backend unless later explicitly approved",
+    ):
+        assert endpoint_requirement in design_pack
+
+    for ui_requirement in (
+        "future UI must display envelope/status output, not pretend to be production chat",
+        "future UI must show refusal reason visibly",
+        "future UI must show citation readiness visibly",
+        "future UI must show caveat requirement visibly",
+        "future UI must show blocked gate status visibly",
+        "future UI must not silently convert historical evidence into current truth",
+    ):
+        assert ui_requirement in design_pack
+
+    for field in (
+        "RequestId",
+        "OperatorContext",
+        "SourceId",
+        "EvidenceScope",
+        "AnswerUsePermissionStatus",
+        "RetrievalEligibilityStatus",
+        "AnswerMode",
+        "CitationStatus",
+        "ProvenanceStatus",
+        "ConflictStatus",
+        "SupersessionStatus",
+        "CurrentTruthPermitted",
+        "RetrievalEligible",
+        "ChatEligible",
+        "CitationRequired",
+        "CaveatRequired",
+        "Notes",
+    ):
+        assert field in design_pack
+
+    for field in (
+        "PilotResponseStatus",
+        "PilotResponseMode",
+        "RefusalRequired",
+        "RefusalReason",
+        "CitationReady",
+        "CaveatRequired",
+        "Guardrails",
+        "NonGoals",
+        "Explanation",
+        "RuntimeBoundaryAsserted",
+        "LiveLLMCalled",
+        "FinalAnswerGenerated",
+        "ChatExposed",
+        "EndpointUIPresent",
+        "LiveRetrievalPerformed",
+        "CorpusMutationPerformed",
+        "DatabaseReadPerformed",
+        "DatabaseWritePerformed",
+    ):
+        assert field in design_pack
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_design_pack_visibility_access_audit_and_boundaries():
+    design_pack = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK)
+
+    for visibility_requirement in (
+        "refusal must never be hidden",
+        "missing answer-use permission must be visible",
+        "missing retrieval eligibility must be visible",
+        "missing citation/provenance must be visible",
+        "conflict/supersession blockers must be visible",
+        "citation readiness must be visible",
+        "caveat requirement must be visible",
+    ):
+        assert visibility_requirement in design_pack
+
+    for access_requirement in (
+        "internal-only pilot",
+        "operator/developer-only initially",
+        "no public access",
+        "no tenant/customer production access",
+        "access control decision before implementation",
+        "audit context captured where available",
+    ):
+        assert access_requirement in design_pack
+
+    for audit_field in (
+        "RequestId",
+        "OperatorContext",
+        "Timestamp",
+        "PilotResponseStatus",
+        "PilotResponseMode",
+        "RefusalReason",
+        "CitationReady",
+        "CaveatRequired",
+        "RuntimeBoundaryAsserted",
+        "no-runtime flags",
+        "Notes",
+    ):
+        assert audit_field in design_pack
+
+    for permission in (
+        "EndpointCreationPermitted: No",
+        "RouteCreationPermitted: No",
+        "UICreationPermitted: No",
+        "ChatExposurePermitted: No",
+        "LiveLLMCallPermitted: No",
+        "FinalAnswerGenerationPermitted: No",
+        "LiveRetrievalPermitted: No",
+        "CorpusMutationPermitted: No",
+        "DatabaseReadPermitted: No",
+        "DatabaseWritePermitted: No",
+        "SchemaMigrationPermitted: No",
+    ):
+        assert permission in design_pack
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_design_pack_stops_and_authorisation_limits():
+    design_pack = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK)
+
+    for stop_condition in (
+        "endpoint creation required",
+        "route/controller/API handler required",
+        "UI creation required",
+        "chat exposure required",
+        "live LLM call required",
+        "final answer generation required",
+        "live retrieval required",
+        "corpus query required",
+        "corpus mutation required",
+        "DB read/write required",
+        "public access required",
+        "access control unresolved",
+        "audit/logging unresolved",
+        "refusal visibility unresolved",
+        "citation visibility unresolved",
+    ):
+        assert stop_condition in design_pack
+
+    assert "a future endpoint/UI implementation gate may be considered" in design_pack
+    assert "any future endpoint/UI creation must be separately approved" in design_pack
+
+    for prohibited in (
+        "endpoint creation",
+        "route/controller/API handler creation",
+        "UI creation",
+        "chat exposure",
+        "live LLM calls",
+        "final natural-language answer generation",
+        "live retrieval backend",
+        "corpus/vector search",
+        "corpus mutation",
+        "source ingestion",
+        "Code Evidence ingestion",
+        "DB reads",
+        "DB writes",
+        "schema migrations",
+        "production deployment",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+    ):
+        assert prohibited in design_pack
+
+    assert (
+        "Preferred next Minerva slice should be historical read-only chat pilot "
+        "endpoint/UI implementation gate v0.1"
+    ) in design_pack
+    assert "Minerva has moved from endpoint/UI planning gate into endpoint/UI design" in design_pack
+    assert "Minerva remains pre-chat-exposure" in design_pack
+    assert "Endpoint/UI/live LLM/final answer generation remain separate future decisions" in design_pack
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_design_companion_docs_and_entry_criteria():
+    endpoint_contract = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_CONTRACT_DESIGN)
+    ui_surface = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_UI_SURFACE_DESIGN)
+    access_control = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ACCESS_CONTROL_DESIGN)
+    audit_logging = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_AUDIT_LOGGING_DESIGN)
+    implementation_entry = _read(
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_ENTRY_CRITERIA
+    )
+
+    assert "No endpoint, route, controller, or API handler is created" in endpoint_contract
+    assert "No UI is created" in ui_surface
+    assert "Access control is design only" in access_control
+    assert "No audit logging runtime is implemented" in audit_logging
+
+    for ui_requirement in (
+        "response status",
+        "response mode",
+        "refusal reason",
+        "citation readiness",
+        "caveat requirement",
+        "no-runtime flags",
+        "blocked gate status",
+    ):
+        assert ui_requirement in ui_surface
+
+    for access_requirement in (
+        "internal-only pilot",
+        "operator/developer-only initially",
+        "no public access",
+        "no tenant/customer production access",
+    ):
+        assert access_requirement in access_control
+
+    for audit_field in (
+        "RequestId",
+        "OperatorContext",
+        "Timestamp",
+        "PilotResponseStatus",
+        "PilotResponseMode",
+        "RefusalReason",
+        "CitationReady",
+        "CaveatRequired",
+        "RuntimeBoundaryAsserted",
+        "no-runtime flags",
+        "Notes",
+    ):
+        assert audit_field in audit_logging
+
+    for criterion in (
+        "endpoint/UI design pack complete",
+        "endpoint contract design complete",
+        "UI surface design complete",
+        "access control design complete",
+        "audit/logging design complete",
+        "refusal/citation visibility rules complete",
+        "no endpoint exists yet",
+        "no UI exists yet",
+        "no live LLM approved",
+        "no final answer generation approved",
+        "no live retrieval backend",
+        "no DB read/write",
+        "no corpus mutation",
+    ):
+        assert criterion in implementation_entry
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_design_updates_existing_controls():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE)
+    blockers = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BLOCKER_MODEL)
+    rules = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES)
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT)
+    response_contract = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT)
+    runtime_boundaries = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert "flows into endpoint/UI design, not endpoint/UI creation" in gate
+
+    for blocker in (
+        "ENDPOINT_CONTRACT_DESIGN_MISSING",
+        "UI_SURFACE_DESIGN_MISSING",
+        "ACCESS_CONTROL_DESIGN_MISSING",
+        "AUDIT_LOGGING_DESIGN_MISSING",
+    ):
+        assert blocker in blockers
+
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK.md" in rules
+    assert "endpoint/UI design pack is not endpoint/UI creation" in rules
+    assert "endpoint/UI design pack is not chat exposure" in rules
+
+    for orchestrator_doc in (closeout, response_contract):
+        assert "Endpoint/UI design consumes the orchestrator envelope only" in orchestrator_doc
+        assert "does not create endpoint/UI" in orchestrator_doc
+
+    assert "endpoint/UI design pack completed as a planned boundary" in runtime_boundaries
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK.md" in runtime_boundaries
+
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_CONTRACT_DESIGN.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_UI_SURFACE_DESIGN.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ACCESS_CONTROL_DESIGN.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_AUDIT_LOGGING_DESIGN.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_ENTRY_CRITERIA.md",
+        "2026-05-16_minerva_historical_read_only_chat_pilot_endpoint_ui_design_pack_v0_1.md",
+        "DESIGN_DRAFTED_NOT_IMPLEMENTED",
+    ):
+        assert linked_doc in index
+
+
 def test_historical_read_only_chat_pilot_orchestrator_links_from_existing_controls():
     for path in (
         HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT,
@@ -6979,10 +7350,17 @@ def test_historical_read_only_chat_pilot_orchestrator_slice_introduces_only_allo
             HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_ENTRY_CRITERIA,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BLOCKER_MODEL,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_CONTRACT_DESIGN,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_UI_SURFACE_DESIGN,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ACCESS_CONTROL_DESIGN,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_AUDIT_LOGGING_DESIGN,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_ENTRY_CRITERIA,
             HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
             HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING_CLOSEOUT_PROMPT,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE_PROMPT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK_PROMPT,
         )
     )
 

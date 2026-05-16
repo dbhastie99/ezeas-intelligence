@@ -10,6 +10,8 @@ The orchestrator candidate is hardened for in-memory metadata orchestration only
 
 This closeout flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md`, not endpoint/UI creation. The next slice may move to an endpoint/UI planning gate, provided that gate remains planning-only and does not expose chat.
 
+Endpoint/UI design consumes the orchestrator envelope only and does not create endpoint/UI. Any future endpoint/UI design must preserve the envelope/status boundary and must not generate final natural-language answers.
+
 No endpoint/UI, live LLM, final answer generation, live retrieval, DB read/write, or corpus mutation is authorised.
 
 ## Closed Scope

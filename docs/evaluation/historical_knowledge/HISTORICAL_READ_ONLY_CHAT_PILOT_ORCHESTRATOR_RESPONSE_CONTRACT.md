@@ -60,6 +60,8 @@ The response is an orchestration envelope only. No endpoint/UI exists. No live L
 
 The response contract may inform `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md`, but it does not authorise endpoint/UI creation, chat exposure, live LLM use, final natural-language answer generation, live retrieval, corpus query, database access, or corpus mutation.
 
+Endpoint/UI design consumes the orchestrator envelope only and does not create endpoint/UI. Future UI display must surface the envelope status, refusal reason, citation readiness, caveat requirement, and no-runtime flags without converting the envelope into production chat.
+
 ## Hardened Decision Coverage
 
 The response contract is hardened by `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG.md`.

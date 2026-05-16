@@ -6,7 +6,7 @@ Date: 16 May 2026
 
 ## 1. Purpose
 
-This document records the Minerva historical read-only chat pilot endpoint/UI planning gate. The gate decides what must be true before a future endpoint/UI design pack or implementation candidate may be considered.
+This document records the Minerva historical read-only chat pilot endpoint/UI planning gate. The gate decides what must be true before a future endpoint/UI design pack may be considered.
 
 ## 2. Scope
 
@@ -132,7 +132,7 @@ No final natural-language answer is generated. The orchestrator remains envelope
 
 ## 16. What This Gate Authorises
 
-Only a future endpoint/UI design pack may be considered. Any future endpoint/UI creation must be separately approved.
+Only a future endpoint/UI design pack may be considered. This gate flows into endpoint/UI design, not endpoint/UI creation. Any future endpoint/UI creation must be separately approved.
 
 ## 17. What This Gate Does Not Authorise
 
@@ -156,7 +156,7 @@ Only a future endpoint/UI design pack may be considered. Any future endpoint/UI 
 
 ## 18. Recommended Next Slice
 
-Preferred next Minerva slice should be historical read-only chat pilot endpoint/UI design pack v0.1 if this gate records ready. That future slice should design endpoint/UI shape only and must still not expose chat unless explicitly approved. If blockers exist, next slice should remediate blockers.
+Preferred next Minerva slice should be historical read-only chat pilot endpoint/UI design pack v0.1 if this gate records ready. That future slice should design endpoint/UI shape only and must flow into endpoint/UI design, not endpoint/UI creation. It must still not expose chat unless explicitly approved. If blockers exist, next slice should remediate blockers.
 
 ## 19. Progress After This Slice
 
