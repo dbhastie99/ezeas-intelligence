@@ -152,4 +152,4 @@ Progress after this slice: the orchestrator candidate is hardened for in-memory 
 
 ## 15. Developer Handoff
 
-Use this hardened contract as a planning artefact and internal service contract only. Any endpoint/UI, live LLM, final answer generation, live retrieval backend, DB read/write, corpus mutation, source ingestion, Code Evidence ingestion, current-truth promotion, runtime answer-use activation, or runtime retrieval activation requires separate explicit approval.
+Use this hardened contract as a planning artefact and internal service contract only. It flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md` for planning-gate consideration, not endpoint/UI creation. Any endpoint/UI, live LLM, final answer generation, live retrieval backend, DB read/write, corpus mutation, source ingestion, Code Evidence ingestion, current-truth promotion, runtime answer-use activation, or runtime retrieval activation requires separate explicit approval.

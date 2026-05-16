@@ -585,6 +585,22 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_ENTRY_CRITERIA.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BLOCKER_MODEL.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES.md"
+)
 HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CANDIDATE_SERVICE = Path(
     "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
 )
@@ -830,6 +846,9 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT = Path(
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING_CLOSEOUT_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_orchestrator_contract_hardening_closeout_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_endpoint_ui_planning_gate_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -6642,6 +6661,245 @@ def test_historical_read_only_chat_pilot_endpoint_ui_planning_entry_criteria_sta
     assert "These criteria permit future planning gate consideration only" in criteria
 
 
+def test_historical_read_only_chat_pilot_endpoint_ui_planning_gate_docs_exist():
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_ENTRY_CRITERIA.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BLOCKER_MODEL.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE_PROMPT.exists()
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_planning_gate_status_and_inputs():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE)
+
+    for status_line in (
+        "EndpointUiPlanningGateStatus: PLANNING_GATE_DRAFTED",
+        "EndpointCreatedThisSlice: No",
+        "UICreatedThisSlice: No",
+        "ChatExposedThisSlice: No",
+        "LiveLLMCalledThisSlice: No",
+        "FinalAnswerGeneratedThisSlice: No",
+        "LiveRetrievalPerformedThisSlice: No",
+        "CorpusMutationPerformedThisSlice: No",
+        "DatabaseReadPerformedThisSlice: No",
+        "DatabaseWritePerformedThisSlice: No",
+    ):
+        assert status_line in gate
+
+    for reviewed_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md",
+    ):
+        assert reviewed_doc in gate
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_planning_gate_model_and_preconditions():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE)
+
+    for status in (
+        "ENDPOINT_UI_PLANNING_GATE_NOT_STARTED",
+        "ENDPOINT_UI_PLANNING_GATE_DRAFTED",
+        "ENDPOINT_UI_PLANNING_GATE_BLOCKED",
+        "ENDPOINT_UI_PLANNING_GATE_DEFERRED",
+        "ENDPOINT_UI_PLANNING_GATE_READY_FOR_ENDPOINT_UI_DESIGN_PACK",
+        "ENDPOINT_UI_PLANNING_GATE_REQUIRES_ACCESS_CONTROL_REVIEW",
+        "ENDPOINT_UI_PLANNING_GATE_REQUIRES_AUDIT_LOGGING_REVIEW",
+        "ENDPOINT_UI_PLANNING_GATE_REQUIRES_LLM_POLICY_REVIEW",
+        "ENDPOINT_UI_PLANNING_GATE_REJECTED",
+        "ENDPOINT_UI_PLANNING_GATE_SUPERSEDED",
+    ):
+        assert status in gate
+
+    for precondition in (
+        "orchestrator contract hardening complete",
+        "orchestrator closeout complete",
+        "response contract complete",
+        "fixture catalog complete",
+        "guardrails complete",
+        "no-runtime assertions complete",
+        "endpoint/UI scope remains not implemented",
+        "live LLM remains not approved",
+        "final answer generation remains not approved",
+        "live retrieval backend remains not connected",
+        "DB read/write remains not approved",
+        "corpus mutation remains prohibited",
+    ):
+        assert precondition in gate
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_planning_gate_runtime_boundaries():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE)
+
+    for boundary in (
+        "This slice does not create an endpoint",
+        "This slice does not create UI",
+        "This slice does not expose chat",
+        "No live LLM is called",
+        "Any future LLM use requires separate policy/safety gate",
+        "No final natural-language answer is generated",
+        "no live retrieval backend",
+        "no corpus query",
+        "no corpus mutation",
+        "no DB reads",
+        "no DB writes",
+        "no Code Evidence ingestion",
+    ):
+        assert boundary in gate
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_planning_gate_safety_audit_and_stops():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE)
+
+    for requirement in (
+        "internal-only pilot",
+        "operator/developer-only access initially",
+        "refusal must remain visible",
+        "evidence/citation status must remain visible",
+        "blocked gates must be surfaced",
+        "no silent fallback to historical truth",
+        "request id",
+        "user/operator context where available",
+        "orchestrator response status",
+        "refusal reason",
+        "citation readiness",
+        "caveat flag",
+        "no-runtime assertions",
+        "timestamp",
+        "no sensitive content leakage",
+    ):
+        assert requirement in gate
+
+    for stop_condition in (
+        "endpoint creation required",
+        "UI creation required",
+        "chat exposure required",
+        "live LLM required",
+        "final answer generation required",
+        "live retrieval required",
+        "corpus query required",
+        "corpus mutation required",
+        "DB read/write required",
+        "public access required",
+        "access control unresolved",
+        "audit/logging unresolved",
+        "refusal visibility unresolved",
+    ):
+        assert stop_condition in gate
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_planning_gate_authorisation_limits():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE)
+
+    assert "Only a future endpoint/UI design pack may be considered" in gate
+    assert "Any future endpoint/UI creation must be separately approved" in gate
+
+    for prohibited in (
+        "endpoint creation",
+        "UI creation",
+        "chat exposure",
+        "live LLM calls",
+        "final natural-language answer generation",
+        "live retrieval backend",
+        "corpus/vector search",
+        "corpus mutation",
+        "source ingestion",
+        "Code Evidence ingestion",
+        "DB reads",
+        "DB writes",
+        "schema migrations",
+        "production deployment",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+    ):
+        assert prohibited in gate
+
+    assert "Minerva has moved from orchestrator closeout into endpoint/UI planning gate" in gate
+    assert "Minerva remains pre-chat-exposure" in gate
+    assert "Endpoint/UI/live LLM/final answer generation remain separate future decisions" in gate
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_entry_criteria_blockers_and_rules():
+    entry = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_ENTRY_CRITERIA)
+    blockers = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BLOCKER_MODEL)
+    rules = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES)
+
+    for criterion in (
+        "endpoint/UI planning gate complete",
+        "orchestrator closeout complete",
+        "response contract complete",
+        "guardrails complete",
+        "access control requirements documented",
+        "audit/logging requirements documented",
+        "refusal visibility requirements documented",
+        "live LLM remains not approved unless separate gate",
+        "final answer generation remains not approved unless separate gate",
+        "no live retrieval backend",
+        "no DB read/write",
+        "no corpus mutation",
+    ):
+        assert criterion in entry
+
+    for blocker in (
+        "ORCHESTRATOR_CLOSEOUT_MISSING",
+        "RESPONSE_CONTRACT_INCOMPLETE",
+        "GUARDRAILS_INCOMPLETE",
+        "ACCESS_CONTROL_UNRESOLVED",
+        "AUDIT_LOGGING_UNRESOLVED",
+        "REFUSAL_VISIBILITY_UNRESOLVED",
+        "CITATION_VISIBILITY_UNRESOLVED",
+        "LIVE_LLM_POLICY_UNRESOLVED",
+        "FINAL_ANSWER_POLICY_UNRESOLVED",
+        "LIVE_RETRIEVAL_BOUNDARY_UNRESOLVED",
+        "DB_BOUNDARY_UNRESOLVED",
+        "CORPUS_MUTATION_BOUNDARY_UNRESOLVED",
+        "ENDPOINT_REQUIRED_TOO_EARLY",
+        "UI_REQUIRED_TOO_EARLY",
+    ):
+        assert blocker in blockers
+
+    assert "Blocker resolution does not itself create endpoint/UI or expose chat" in blockers
+
+    for rule in (
+        "endpoint/UI planning is not endpoint/UI creation",
+        "endpoint/UI planning is not chat exposure",
+        "endpoint/UI planning is not live LLM approval",
+        "endpoint/UI planning is not final answer approval",
+        "endpoint/UI planning must preserve refusal/citation/gate visibility",
+    ):
+        assert rule in rules
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_planning_gate_links_from_controls():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT)
+    planning_entry = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA)
+    boundaries = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert (
+        "flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md`, "
+        "not endpoint/UI creation"
+    ) in closeout
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md" in planning_entry
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES.md" in planning_entry
+    assert "endpoint/UI planning gate as the next controlled boundary" in boundaries
+
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BLOCKER_MODEL.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES.md",
+        "2026-05-16_minerva_historical_read_only_chat_pilot_endpoint_ui_planning_gate_v0_1.md",
+        "PLANNING_GATE_DRAFTED",
+    ):
+        assert linked_doc in index
+
+
 def test_historical_read_only_chat_pilot_orchestrator_links_from_existing_controls():
     for path in (
         HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT,
@@ -6717,9 +6975,14 @@ def test_historical_read_only_chat_pilot_orchestrator_slice_introduces_only_allo
             HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_ENTRY_CRITERIA,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BLOCKER_MODEL,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_BOUNDARY_RULES,
             HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
             HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING_CLOSEOUT_PROMPT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE_PROMPT,
         )
     )
 

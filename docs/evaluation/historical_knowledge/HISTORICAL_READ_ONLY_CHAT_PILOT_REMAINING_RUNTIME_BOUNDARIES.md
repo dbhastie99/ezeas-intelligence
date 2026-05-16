@@ -11,6 +11,7 @@ This document lists remaining runtime boundaries before any real Minerva histori
 ## Remaining Boundaries Before Any Real Pilot
 
 - endpoint/UI;
+- endpoint/UI planning gate as the next controlled boundary;
 - live LLM usage;
 - live retrieval backend;
 - citation rendering runtime;
@@ -32,3 +33,7 @@ This boundary record does not authorise chat exposure, live LLM calls, final ans
 ## Implementation Candidate Boundary
 
 `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md` adds an internal in-memory orchestration candidate only. The remaining runtime boundaries are unchanged: endpoint/UI, live LLM usage, live retrieval backend, database access, citation rendering runtime, audit/logging runtime, pilot access control, production exposure prevention, monitoring/rollback, no corpus mutation, and no DB write remain separate future decisions.
+
+## Endpoint/UI Planning Gate Boundary
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md` is the next controlled boundary after orchestrator closeout. It may consider whether a future endpoint/UI design pack can be planned, but it does not create endpoint/UI, expose chat, call a live LLM, generate final answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, or change workforce-platform, award-configurator-v1, or ezeas-analytics.

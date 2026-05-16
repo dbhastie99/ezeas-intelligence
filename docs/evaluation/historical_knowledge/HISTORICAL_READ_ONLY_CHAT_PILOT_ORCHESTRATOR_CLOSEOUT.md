@@ -8,7 +8,7 @@ Date: 16 May 2026
 
 The orchestrator candidate is hardened for in-memory metadata orchestration only.
 
-The next slice may move to an endpoint/UI planning gate, provided that gate remains planning-only and does not expose chat.
+This closeout flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md`, not endpoint/UI creation. The next slice may move to an endpoint/UI planning gate, provided that gate remains planning-only and does not expose chat.
 
 No endpoint/UI, live LLM, final answer generation, live retrieval, DB read/write, or corpus mutation is authorised.
 
@@ -45,4 +45,4 @@ No endpoint/UI, live LLM, final answer generation, live retrieval, DB read/write
 
 ## Progress After This Slice
 
-Progress after this slice: the read-only chat pilot orchestrator candidate is closed out as hardened in-memory metadata orchestration only. Endpoint/UI planning may be considered next, but endpoint/UI scope, live LLM use, final answer generation, live retrieval, DB access, and corpus mutation remain unapproved.
+Progress after this slice: the read-only chat pilot orchestrator candidate is closed out as hardened in-memory metadata orchestration only. Endpoint/UI planning gate work may be considered next, but endpoint/UI creation, live LLM use, final answer generation, live retrieval, DB access, and corpus mutation remain unapproved.

@@ -58,6 +58,8 @@ This contract defines the deterministic response envelope returned by the intern
 
 The response is an orchestration envelope only. No endpoint/UI exists. No live LLM is called. No final answer is generated. No live retrieval backend is used. No DB read/write occurs. No corpus mutation occurs. This is not production chat exposure.
 
+The response contract may inform `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_GATE.md`, but it does not authorise endpoint/UI creation, chat exposure, live LLM use, final natural-language answer generation, live retrieval, corpus query, database access, or corpus mutation.
+
 ## Hardened Decision Coverage
 
 The response contract is hardened by `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG.md`.
