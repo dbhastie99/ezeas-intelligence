@@ -284,6 +284,15 @@ HISTORICAL_BATCH_REVIEW_DECISION_RECORD = (
 HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md"
 )
+HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md"
+)
+HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md"
+)
+HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -445,6 +454,9 @@ HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_PROMPT = Path(
 HISTORICAL_BATCH_REVIEW_DECISION_RECORD_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_batch_review_decision_record_v0_1.md"
 )
+HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_deep_review_execution_plan_v0_1.md"
+)
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
     / "developer_logs"
@@ -488,6 +500,9 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.exists()
     assert HISTORICAL_BATCH_REVIEW_DECISION_RECORD.exists()
     assert HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.exists()
+    assert HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.exists()
+    assert HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.exists()
+    assert HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.exists()
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
     assert HISTORICAL_BATCH_REGISTER_INDEX_PROMPT.exists()
@@ -497,6 +512,7 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REVIEW_QUEUE_PROMPT.exists()
     assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_PROMPT.exists()
     assert HISTORICAL_BATCH_REVIEW_DECISION_RECORD_PROMPT.exists()
+    assert HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN_PROMPT.exists()
 
 
 def test_historical_batch_review_queue_defines_status_model_and_analytics_entry():
@@ -940,6 +956,315 @@ def test_historical_batch_review_decision_record_is_linked_from_control_chain():
     assert "`READY_FOR_DEEP_REVIEW` and `CANDIDATE_SELECTED_FOR_REVIEW` do not authorise review execution until a decision record permits review start" in readiness_rules
     assert "HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md" in control_index
     assert "HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md" in control_index
+
+
+def test_historical_deep_review_execution_plan_defines_status_and_preconditions():
+    plan = _read(HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN)
+
+    for status in (
+        "REVIEW_NOT_STARTED",
+        "REVIEW_START_PERMITTED_NOT_STARTED",
+        "REVIEW_IN_PROGRESS",
+        "REVIEW_BLOCKED",
+        "REVIEW_DEFERRED",
+        "REVIEW_COMPLETED_FINDINGS_ONLY",
+        "REVIEW_COMPLETED_REQUIRES_CROSS_CHECK",
+        "REVIEW_COMPLETED_REJECT_SOURCE",
+        "REVIEW_COMPLETED_SUPERSEDED",
+        "REVIEW_COMPLETED_READY_FOR_INGESTION_DECISION",
+    ):
+        assert status in plan
+
+    for required_text in (
+        "`QueueEntryId` exists",
+        "`CandidateSelectionId` exists",
+        "`DecisionRecordId` exists",
+        "`SourceId` exists",
+        "`ReviewStartPermitted` is Yes",
+        "`IngestionPermitted` remains No",
+        "`AnswerUsePermitted` remains No",
+        "`CurrentTruthPermitted` remains No",
+        "`OperationalCorpusMutationPermitted` remains No",
+        "`CodeEvidenceIngestionPermitted` remains No",
+        "`LiveLLMUsePermitted` remains No",
+        "Required cross-check repositories are identified",
+        "Expected review outputs are identified",
+    ):
+        assert required_text in plan
+
+
+def test_historical_deep_review_execution_plan_defines_steps_crosschecks_and_classification():
+    plan = _read(HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN)
+
+    for required_text in (
+        "Confirm source identity",
+        "Confirm source date/version",
+        "Confirm repository/domain relevance",
+        "Extract claims/decisions as review findings only",
+        "Classify each finding as candidate historical evidence",
+        "Compare against current repository/domain truth",
+        "Record unresolved conflicts",
+        "Produce findings output",
+        "`workforce-platform` cross-check",
+        "`award-configurator-v1` cross-check",
+        "`ezeas-analytics` cross-check",
+        "`ezeas-intelligence` cross-check",
+        "Current repository files and latest committed logs must take priority",
+        "findings are review outputs only",
+        "Findings do not become current truth automatically",
+        "`SourceId`",
+        "`DecisionRecordId`",
+        "Reviewer",
+        "ReviewDate",
+        "evidence excerpt/summary",
+        "cross-check status",
+        "recommended decision",
+        "fact, decision, doctrine, backlog item, historical note, superseded item, and conflict",
+    ):
+        assert required_text in plan
+
+    for classification in (
+        "CANDIDATE_HISTORICAL_EVIDENCE",
+        "CURRENT_TRUTH_CANDIDATE_REQUIRES_APPROVAL",
+        "SUPERSEDED_EVIDENCE",
+        "DUPLICATE_EVIDENCE",
+        "CONFLICTING_EVIDENCE",
+        "BACKLOG_OR_FOLLOW_UP",
+        "NOT_RELEVANT",
+        "REQUIRES_REPOSITORY_CROSS_CHECK",
+    ):
+        assert classification in plan
+
+
+def test_historical_deep_review_execution_plan_defines_stop_completion_and_non_meanings():
+    plan = _read(HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN)
+
+    for required_text in (
+        "missing source reference",
+        "missing decision record",
+        "`ReviewStartPermitted` is not Yes",
+        "source identity conflict",
+        "duplicate/supersession unresolved",
+        "required cross-check unavailable",
+        "reviewer cannot determine date/version",
+        "corpus mutation, Code Evidence ingestion, DB write, live LLM call, current-truth promotion, or answer-use permission",
+        "findings output is completed",
+        "cross-check status is recorded",
+        "unresolved blockers are listed",
+        "ingestion decision remains separate",
+        "answer-use decision remains separate",
+        "current-truth decision remains separate",
+        "no corpus mutation occurs",
+        "no Code Evidence ingestion occurs",
+        "no live LLM call occurs",
+        "no DB write occurs",
+        "may recommend ingestion consideration, but does not approve ingestion",
+        "may recommend answer-use consideration, but does not approve answer use",
+        "may recommend current-truth consideration, but does not promote current truth",
+        "separate decision record update and future governed ingestion/backfill slice",
+        "does not perform deep review",
+        "does not ingest source content",
+        "does not promote current truth",
+        "does not permit answer use",
+        "does not mutate operational corpus",
+        "does not create Code Evidence",
+        "does not write to a database",
+        "does not call a live LLM",
+    ):
+        assert required_text in plan
+
+
+def test_historical_deep_review_checklist_includes_required_rows_and_status_values():
+    checklist = _read(HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST)
+
+    for status in (
+        "NOT_STARTED",
+        "REQUIRED",
+        "BLOCKED",
+        "NOT_APPLICABLE",
+        "COMPLETED_FINDINGS_ONLY",
+    ):
+        assert status in checklist
+
+    for header in (
+        "ChecklistItem",
+        "RequiredBeforeReviewCompletion",
+        "CurrentStatus",
+        "EvidenceRequired",
+        "BlockerIfMissing",
+        "Notes",
+    ):
+        assert header in checklist
+
+    for row in (
+        "Queue entry confirmed",
+        "Candidate selection confirmed",
+        "Decision record confirmed",
+        "ReviewStartPermitted confirmed",
+        "Source identity confirmed",
+        "Source date/version assessed",
+        "Repository/domain relevance assessed",
+        "Required cross-check repositories identified",
+        "Current repository truth checked",
+        "Findings captured",
+        "Evidence classification assigned",
+        "Conflicts recorded",
+        "Supersession risk recorded",
+        "Ingestion decision kept separate",
+        "Answer-use decision kept separate",
+        "Current-truth decision kept separate",
+        "Corpus mutation not performed",
+        "Code Evidence ingestion not performed",
+        "DB write not performed",
+        "Live LLM call not performed",
+        "Review completion status recorded",
+    ):
+        assert row in checklist
+
+
+def test_historical_deep_review_findings_template_includes_required_fields_and_defaults():
+    template = _read(HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE)
+
+    for field in (
+        "FindingsRecordId",
+        "DecisionRecordId",
+        "CandidateSelectionId",
+        "QueueEntryId",
+        "SourceId",
+        "SourceTitle",
+        "SourceDate",
+        "Reviewer",
+        "ReviewDateUtc",
+        "RepositoryContext",
+        "DomainContext",
+        "FindingId",
+        "FindingType",
+        "FindingSummary",
+        "SourceEvidenceReference",
+        "CrossCheckStatus",
+        "CurrentTruthImpactAssessment",
+        "SupersessionAssessment",
+        "ConflictAssessment",
+        "RecommendedNextDecision",
+        "IngestionRecommended",
+        "AnswerUseRecommended",
+        "CurrentTruthPromotionRecommended",
+        "Blockers",
+        "Notes",
+    ):
+        assert field in template
+
+    assert "| IngestionRecommended | No |" in template
+    assert "| AnswerUseRecommended | No |" in template
+    assert "| CurrentTruthPromotionRecommended | No |" in template
+
+
+def test_historical_deep_review_execution_controls_are_linked_from_chain():
+    plan = _read(HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN)
+    decision_record = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD)
+    decision_template = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE)
+    candidate_selection = _read(HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION)
+    readiness_rules = _read(HISTORICAL_BATCH_REVIEW_READINESS_RULES)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    prompt = _read(HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN_PROMPT)
+
+    for linked_doc in (
+        "HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md",
+        "HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md",
+        "HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md",
+    ):
+        assert linked_doc in plan or linked_doc.endswith("EXECUTION_PLAN.md")
+        assert linked_doc in control_index
+
+    assert "decision records can permit review start" in decision_record
+    assert "HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md" in decision_record
+    assert "still does not permit ingestion, answer use, or current-truth promotion" in decision_record
+    assert "ReviewExecutionPlanLink" in decision_template
+    assert "FindingsRecordLink" in decision_template
+    assert "ReviewStartPermitted: Yes" in candidate_selection
+    assert "deep-review execution planning" in candidate_selection
+    assert "Review execution requires decision record approval and the deep-review checklist" in readiness_rules
+    assert "HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md" in readiness_rules
+    assert "HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md" in prompt
+
+
+def test_historical_deep_review_execution_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+        assert "migrations" not in normalized
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+
+    for changed_file in changed_files:
+        if changed_file.endswith(".py"):
+            assert changed_file == "tests/test_domain_baseline_capture_batch.py"
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN,
+            HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST,
+            HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_DECISION_RECORD,
+            HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION,
+            HISTORICAL_BATCH_REVIEW_READINESS_RULES,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "does not perform deep review",
+        "does not ingest source content",
+        "does not promote current truth",
+        "does not permit answer use",
+        "does not mutate operational corpus",
+        "does not create Code Evidence",
+        "does not write to a database",
+        "does not call a live LLM",
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No answer-use permission",
+    ):
+        assert required_boundary in combined
 
 
 def test_historical_batch_registration_model_controls_default_path_and_truth_boundary():

@@ -27,7 +27,8 @@ Decision records are control artefacts only. Creating a decision record does not
 | CrossChecksRequired |  |
 | CrossChecksCompleted |  |
 | EvidenceReviewed |  |
-| FindingsRecordLink |  |
+| ReviewExecutionPlanLink | `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md` when review start is permitted |
+| FindingsRecordLink | Planned; required before review completion |
 | BackfillRequired |  |
 | OperationalCorpusMutationPermitted | No |
 | CodeEvidenceIngestionPermitted | No |

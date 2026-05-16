@@ -69,6 +69,7 @@ Every historical batch review decision record must include these fields:
 | CrossChecksRequired | Required cross-check evidence surfaces. |
 | CrossChecksCompleted | Completed cross-check evidence surfaces. |
 | EvidenceReviewed | Evidence reviewed by the governed review process. |
+| ReviewExecutionPlanLink | Link to `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md` or successor governed execution plan. |
 | FindingsRecordLink | Link to separate findings record. |
 | BackfillRequired | Yes/No or details for required backfill before ingestion or current-truth use. |
 | OperationalCorpusMutationPermitted | Yes/No operational corpus mutation permission. |
@@ -108,6 +109,16 @@ Review completion does not automatically promote current truth.
 Findings must be captured separately.
 
 Cross-check evidence must be recorded before any ingestion/current-truth decision.
+
+### Review Execution Plan Boundary
+
+Decision records can permit review start by setting `ReviewStartPermitted: Yes`, but review execution must follow `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md`.
+
+In short, decision records can permit review start, but review execution remains governed by the deep-review execution plan.
+
+The linked execution plan, checklist, and findings output template govern review steps, cross-checks, findings capture, stop conditions, and completion criteria.
+
+Permitting review start still does not permit ingestion, answer use, or current-truth promotion. `IngestionPermitted`, `AnswerUsePermitted`, and `CurrentTruthPermitted` remain No unless a separate future governed decision explicitly changes them.
 
 ## 8. Ingestion Decision Boundary
 
@@ -185,5 +196,7 @@ Creating a decision record does not create schema migrations, change endpoints, 
 Future developers must create or update a historical batch review decision record before any governed deep-review execution begins.
 
 Use the decision record to preserve the chain from queue entry to candidate selection to review start to findings to review completion to any later ingestion/backfill/current-truth decision.
+
+When review start is permitted, link `ReviewExecutionPlanLink` to `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md` and link `FindingsRecordLink` to the future findings record created from `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md`.
 
 Do not ingest source content, mutate operational corpus, create Code Evidence, call live LLM, write databases, create migrations, change endpoints, change UI, change workforce-platform, change award-configurator-v1, change ezeas-analytics, promote current truth, permit answer use, or execute deep review merely because a decision record exists.

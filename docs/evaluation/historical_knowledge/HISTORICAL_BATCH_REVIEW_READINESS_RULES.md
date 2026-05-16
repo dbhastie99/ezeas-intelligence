@@ -56,6 +56,14 @@ The decision record must follow `docs/evaluation/historical_knowledge/HISTORICAL
 
 Until that explicit decision exists, ingestion remains `No`, answer use remains `No`, current truth remains `No`, operational corpus mutation remains `No`, Code Evidence ingestion remains `No`, and live LLM use remains `No`.
 
+### Review Execution Checklist Requirement
+
+Readiness and candidate selection are prerequisites only. Review execution requires decision record approval and the deep-review checklist.
+
+After `ReviewStartPermitted: Yes` is recorded, the future reviewer must follow `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md` and complete `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md` before review completion can be recorded.
+
+Findings must be captured through `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md` or a governed successor. The checklist and findings output do not approve ingestion, answer use, or current-truth promotion.
+
 ## 6. Status Transition Controls
 
 Only a future explicit review-control slice may move a source into `READY_FOR_DEEP_REVIEW`, `REVIEW_IN_PROGRESS`, or `REVIEW_COMPLETE_NOT_INGESTED`.

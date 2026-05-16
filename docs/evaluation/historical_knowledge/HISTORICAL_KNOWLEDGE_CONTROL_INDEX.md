@@ -34,6 +34,9 @@ Use these durable controls together:
 | Historical batch review candidate selection template | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.md` |
 | Historical batch review decision-record model | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md` |
 | Historical batch review decision-record template | `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md` |
+| Historical deep-review execution plan | `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md` |
+| Historical deep-review execution checklist | `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md` |
+| Historical deep-review findings output template | `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md` |
 | Historical developer-log batch intake guidance | `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md` |
 | Historical developer-log batch register | `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
@@ -91,6 +94,8 @@ The historical batch review queue is `docs/evaluation/historical_knowledge/HISTO
 Historical batch review candidate selection is governed by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION.md`, with reusable records shaped by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_TEMPLATE.md`. Candidate selection is a separate control stage after queue readiness. It does not ingest source content, perform deep review, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
 
 Historical batch review decision records are governed by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md`, with reusable records shaped by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md`. Queue entries and selected candidates must flow into decision records before review execution. A decision record is required before any future deep review starts, but creating one does not ingest source content, perform deep review, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
+
+Historical deep-review execution is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md`, with completion checks shaped by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md` and findings shaped by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md`. These artefacts define the future review execution control model only. Creating them does not perform deep review, ingest source content, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
 
 Developer-log batch intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`. That guidance states that adding a file to a registered folder is not ingestion, adding a batch row is metadata registration only, original filename is metadata only, register entries drive classification rather than filenames, ingestion permitted defaults to No, review status defaults to `NOT_REVIEWED`, implementation-state classification defaults to `UNCERTAIN_REQUIRES_REVIEW` unless strong evidence exists, ordinary logs can remain batch-registered until needed, and Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed.
 
@@ -156,3 +161,5 @@ Future Codex slices must read this index, the gap register, the source register,
 Any future historical ingestion, governed ingestion, review approval, recapture, promotion, ledger update, runtime change, endpoint change, UI change, Code Evidence connection, live LLM call, DB write, migration, benchmark execution, corpus coverage execution, answer-gap execution, or generated artefact creation requires a separate explicit slice.
 
 This slice prompt is preserved at `docs/codex_prompts/2026-05-15_minerva_historical_knowledge_control_index_v0_1.md`.
+
+The historical deep-review execution plan slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_deep_review_execution_plan_v0_1.md`.

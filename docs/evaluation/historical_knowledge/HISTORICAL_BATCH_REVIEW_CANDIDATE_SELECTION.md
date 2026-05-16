@@ -123,6 +123,14 @@ The decision record must be created through `docs/evaluation/historical_knowledg
 
 The decision record must preserve ingestion `No`, answer use `No`, current truth `No`, operational corpus mutation `No`, Code Evidence ingestion `No`, and live LLM use `No` unless a future governed decision explicitly changes the relevant permission.
 
+### Deep-Review Execution Planning Boundary
+
+Selected candidates proceed to a decision record and then to deep-review execution planning only when the decision record explicitly sets `ReviewStartPermitted: Yes`.
+
+When review start is permitted, the future reviewer must follow `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md`, use `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md`, and capture findings using `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md`.
+
+Deep-review execution planning does not ingest source content, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
+
 ## 11. What Candidate Selection Does Not Mean
 
 Candidate selection does not ingest source content.
