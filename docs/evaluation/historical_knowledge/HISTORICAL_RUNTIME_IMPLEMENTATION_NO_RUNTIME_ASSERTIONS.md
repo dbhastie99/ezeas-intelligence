@@ -37,3 +37,9 @@ It also does not ingest source content, run source backfill, promote current tru
 The skeleton does not make historical sources answerable current truth and does not activate runtime answer-use permission or runtime retrieval eligibility beyond evaluating supplied metadata in-memory.
 
 The hardened skeleton contract is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING.md`; its decision catalog is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.md`; its closeout is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md`.
+
+## Answer Synthesis Enforcement Skeleton No-Runtime Statements
+
+`HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md` adds a deterministic metadata-only helper that consumes supplied retrieval gate output. It does not use a live retrieval backend, does not call an LLM, does not generate final answers, does not expose chat, does not create endpoint/UI, does not mutate corpus, and does not perform DB read/write.
+
+The answer synthesis enforcement skeleton response is for gate enforcement only. It does not make historical sources answerable current truth and does not activate runtime answer-use permission or runtime retrieval eligibility beyond evaluating supplied metadata in-memory.

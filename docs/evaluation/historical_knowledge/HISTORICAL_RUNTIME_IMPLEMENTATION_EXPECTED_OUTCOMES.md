@@ -48,3 +48,24 @@ Its metadata-only decisions map to these expected outcomes:
 - `BLOCKED_RUNTIME_NOT_IMPLEMENTED` maps to explicit runtime-not-implemented blocking.
 
 These are gate decisions only. They do not synthesize answers, render citations, perform retrieval, or expose chat.
+
+## Answer Synthesis Enforcement Skeleton Outcomes
+
+The answer synthesis enforcement skeleton is `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md`.
+
+Its metadata-only outcomes map as follows:
+
+- `CURRENT_TRUTH_ANSWER_ALLOWED` maps to allowed current-truth answer mode gate handoff only.
+- `HISTORICAL_CONTEXT_ANSWER_ALLOWED` maps to allowed historical-context answer mode gate handoff only and preserves historical label/caveat behaviour.
+- `CAVEATED_ANSWER_ALLOWED` maps to allowed caveated answer mode gate handoff only and preserves `CaveatRequired: true`.
+- `CONTEXT_ONLY_ANSWER_ALLOWED` maps to context-only answer mode gate handoff only.
+- `REFUSE_INSUFFICIENT_GOVERNED_EVIDENCE` maps to refusal insufficient governed evidence.
+- `REFUSE_NOT_ANSWER_APPROVED` maps to refusal not answer-approved.
+- `REFUSE_RETRIEVAL_NOT_ELIGIBLE` maps to refusal retrieval not eligible.
+- `REFUSE_MISSING_PROVENANCE` maps to refusal missing provenance.
+- `REFUSE_CONFLICTED_EVIDENCE` maps to refusal conflicted evidence.
+- `REFUSE_SUPERSEDED_EVIDENCE` maps to refusal superseded evidence for current-truth answering.
+- `REFUSE_CITATION_REQUIRED` maps to refusal pending citation/provenance enforcement.
+- `BLOCKED_RUNTIME_NOT_IMPLEMENTED` maps to explicit runtime-not-implemented blocking.
+
+These are gate enforcement decisions only. They do not generate final answers, call a live LLM, perform live retrieval, render citations, expose chat, mutate corpus, or perform DB read/write.

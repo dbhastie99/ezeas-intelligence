@@ -29,3 +29,20 @@ All decisions are metadata-only gate decisions. `RuntimeActionPermitted` is No f
 ## Boundary
 
 This decision catalog does not implement live retrieval, vector search, corpus query, database reads or writes, live LLM calls, endpoint/UI, chat, answer synthesis runtime, citation rendering runtime, corpus mutation, Code Evidence ingestion, source ingestion, or current-truth promotion.
+
+## Answer Synthesis Enforcement Handoff
+
+The answer synthesis enforcement skeleton consumes these decisions as supplied metadata only:
+
+- `ELIGIBLE_CURRENT_TRUTH_RETRIEVAL` -> `CURRENT_TRUTH_ANSWER_ALLOWED`
+- `ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL` -> `HISTORICAL_CONTEXT_ANSWER_ALLOWED`
+- `ELIGIBLE_CAVEATED_RETRIEVAL` -> `CAVEATED_ANSWER_ALLOWED`
+- `REFUSE_MISSING_ANSWER_USE_PERMISSION` -> `REFUSE_NOT_ANSWER_APPROVED`
+- `REFUSE_MISSING_RETRIEVAL_ELIGIBILITY` -> `REFUSE_RETRIEVAL_NOT_ELIGIBLE`
+- `REFUSE_MISSING_PROVENANCE` -> `REFUSE_MISSING_PROVENANCE`
+- `REFUSE_CONFLICTED_EVIDENCE` -> `REFUSE_CONFLICTED_EVIDENCE`
+- `REFUSE_SUPERSEDED_EVIDENCE` -> `REFUSE_SUPERSEDED_EVIDENCE`
+- `REFUSE_NOT_ANSWERABLE` -> `REFUSE_NOT_ANSWER_APPROVED`
+- `BLOCKED_RUNTIME_NOT_IMPLEMENTED` -> `BLOCKED_RUNTIME_NOT_IMPLEMENTED`
+
+The handoff is not final answer generation, not chat, not citation rendering, and not runtime activation.

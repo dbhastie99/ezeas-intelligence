@@ -475,6 +475,25 @@ HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT = (
 HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_SERVICE = Path(
     "app/services/historical_read_only_gated_retrieval_skeleton_service.py"
 )
+HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md"
+)
+HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT.md"
+)
+HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_FIXTURE_CATALOG = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_FIXTURE_CATALOG.md"
+)
+HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_GUARDRAILS = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_GUARDRAILS.md"
+)
+HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON_SERVICE = Path(
+    "app/services/historical_answer_synthesis_enforcement_skeleton_service.py"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -699,6 +718,9 @@ HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE_PROMPT = Path(
 )
 HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_gated_retrieval_skeleton_contract_hardening_v0_1.md"
+)
+HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_answer_synthesis_enforcement_skeleton_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -1447,6 +1469,7 @@ def test_historical_deep_review_execution_slice_introduces_only_docs_tests_and_n
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -1720,6 +1743,7 @@ def test_historical_review_findings_classification_slice_introduces_only_docs_te
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -2109,6 +2133,7 @@ def test_historical_ingestion_backfill_slice_introduces_only_docs_tests_and_no_r
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -2369,6 +2394,7 @@ def test_historical_backfill_execution_slice_introduces_only_docs_tests_and_no_r
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -2629,6 +2655,7 @@ def test_historical_current_truth_promotion_slice_introduces_only_docs_tests_and
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -2912,6 +2939,7 @@ def test_historical_answer_use_permission_slice_introduces_only_docs_tests_and_n
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -3247,6 +3275,7 @@ def test_historical_retrieval_eligibility_slice_introduces_only_docs_tests_and_n
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -3581,6 +3610,7 @@ def test_historical_answer_mode_slice_introduces_only_docs_tests_and_no_runtime_
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -3934,6 +3964,7 @@ def test_historical_citation_provenance_slice_introduces_only_docs_tests_and_no_
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -4563,6 +4594,7 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -4586,7 +4618,11 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "retrieval_runtime" not in normalized
-        assert "answer_synthesis" not in normalized or normalized.startswith("docs/")
+        assert "answer_synthesis" not in normalized or (
+            normalized.startswith("docs/")
+            or normalized
+            == "app/services/historical_answer_synthesis_enforcement_skeleton_service.py"
+        )
         assert "citation_rendering" not in normalized
         assert "chat" not in normalized or normalized.startswith("docs/")
         assert "workforce-platform" not in changed_file
@@ -4901,6 +4937,7 @@ def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skel
 
     allowed_exact = {
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
     allowed_prefixes = (
@@ -4926,7 +4963,11 @@ def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skel
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "live_retrieval_backend" not in normalized
-        assert "answer_synthesis" not in normalized or normalized.startswith("docs/")
+        assert "answer_synthesis" not in normalized or (
+            normalized.startswith("docs/")
+            or normalized
+            == "app/services/historical_answer_synthesis_enforcement_skeleton_service.py"
+        )
         assert "citation_rendering" not in normalized
         assert "chat" not in normalized or normalized.startswith("docs/")
         assert "workforce-platform" not in changed_file
@@ -4940,6 +4981,303 @@ def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skel
     assert "retrieve_relevant_chunks" not in service
     assert "Session" not in service
     assert "sqlalchemy" not in service
+
+
+def _approved_current_truth_retrieval_output() -> dict[str, object]:
+    return {
+        "RetrievalDecision": "ELIGIBLE_CURRENT_TRUTH_RETRIEVAL",
+        "RetrievalMode": "READ_ONLY_METADATA_ONLY",
+        "ExpectedAnswerMode": "CURRENT_TRUTH",
+        "RefusalReason": None,
+        "CitationRequired": True,
+        "CaveatRequired": False,
+        "RuntimeBoundaryAsserted": True,
+        "SourceId": "HIST-CT-001",
+        "EvidenceScope": "CURRENT_TRUTH",
+        "AnswerUsePermissionStatus": "APPROVED",
+        "RetrievalEligibilityStatus": "APPROVED",
+        "AnswerMode": "CURRENT_TRUTH",
+        "ProvenanceStatus": "READY",
+        "ConflictStatus": "NONE",
+        "SupersessionStatus": "NONE",
+    }
+
+
+def test_historical_answer_synthesis_enforcement_docs_and_service_exist():
+    assert HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.exists()
+    assert HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT.exists()
+    assert HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_FIXTURE_CATALOG.exists()
+    assert HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_GUARDRAILS.exists()
+    assert HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON_SERVICE.exists()
+    assert HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON_PROMPT.exists()
+
+
+def test_historical_answer_synthesis_enforcement_response_defaults_are_no_runtime():
+    from app.services.historical_answer_synthesis_enforcement_skeleton_service import (
+        evaluate_historical_answer_synthesis_enforcement,
+    )
+
+    response = evaluate_historical_answer_synthesis_enforcement(
+        _approved_current_truth_retrieval_output()
+    )
+
+    for required_field in (
+        "AnswerSynthesisSkeletonImplemented",
+        "LiveLLMCalled",
+        "FinalAnswerGenerated",
+        "ChatExposed",
+        "RetrievalRuntimeCalled",
+        "CorpusMutationPerformed",
+        "DatabaseReadPerformed",
+        "DatabaseWritePerformed",
+        "EndpointUIPresent",
+        "AnswerModeDecision",
+        "AllowedAnswerMode",
+        "RefusalRequired",
+        "RefusalReason",
+        "CitationRequired",
+        "CaveatRequired",
+        "RuntimeBoundaryAsserted",
+        "Guardrails",
+        "NonGoals",
+        "Explanation",
+    ):
+        assert required_field in response
+
+    assert response["AnswerSynthesisSkeletonImplemented"] is True
+    assert response["LiveLLMCalled"] is False
+    assert response["FinalAnswerGenerated"] is False
+    assert response["ChatExposed"] is False
+    assert response["RetrievalRuntimeCalled"] is False
+    assert response["CorpusMutationPerformed"] is False
+    assert response["DatabaseReadPerformed"] is False
+    assert response["DatabaseWritePerformed"] is False
+    assert response["EndpointUIPresent"] is False
+    assert response["RuntimeBoundaryAsserted"] is True
+
+
+def test_historical_answer_synthesis_enforcement_allowed_answer_modes():
+    from app.services.historical_answer_synthesis_enforcement_skeleton_service import (
+        evaluate_historical_answer_synthesis_enforcement,
+    )
+
+    current_truth_response = evaluate_historical_answer_synthesis_enforcement(
+        _approved_current_truth_retrieval_output()
+    )
+    assert current_truth_response["AnswerModeDecision"] == "CURRENT_TRUTH_ANSWER_ALLOWED"
+    assert current_truth_response["AllowedAnswerMode"] == "CURRENT_TRUTH"
+    assert current_truth_response["RefusalRequired"] is False
+
+    historical_context = _approved_current_truth_retrieval_output()
+    historical_context["RetrievalDecision"] = "ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL"
+    historical_context["ExpectedAnswerMode"] = "HISTORICAL_CONTEXT_ONLY"
+    historical_context["EvidenceScope"] = "HISTORICAL_CONTEXT_ONLY"
+    historical_context["AnswerMode"] = "HISTORICAL_CONTEXT"
+    historical_context_response = evaluate_historical_answer_synthesis_enforcement(
+        historical_context
+    )
+    assert historical_context_response["AnswerModeDecision"] == (
+        "HISTORICAL_CONTEXT_ANSWER_ALLOWED"
+    )
+    assert historical_context_response["AllowedAnswerMode"] == "HISTORICAL_CONTEXT"
+    assert historical_context_response["CaveatRequired"] is True
+
+    caveated = _approved_current_truth_retrieval_output()
+    caveated["RetrievalDecision"] = "ELIGIBLE_CAVEATED_RETRIEVAL"
+    caveated["ExpectedAnswerMode"] = "CAVEATED_CURRENT_TRUTH"
+    caveated["CaveatRequired"] = True
+    caveated_response = evaluate_historical_answer_synthesis_enforcement(caveated)
+    assert caveated_response["AnswerModeDecision"] == "CAVEATED_ANSWER_ALLOWED"
+    assert caveated_response["AllowedAnswerMode"] == "CAVEATED"
+    assert caveated_response["CaveatRequired"] is True
+
+
+def test_historical_answer_synthesis_enforcement_refusals_and_blocks():
+    from app.services.historical_answer_synthesis_enforcement_skeleton_service import (
+        evaluate_historical_answer_synthesis_enforcement,
+    )
+
+    retrieval_refusal = _approved_current_truth_retrieval_output()
+    retrieval_refusal["RetrievalDecision"] = "REFUSE_MISSING_RETRIEVAL_ELIGIBILITY"
+    retrieval_refusal["RefusalReason"] = "RETRIEVAL_ELIGIBILITY_MISSING_OR_BLOCKED"
+    retrieval_refusal_response = evaluate_historical_answer_synthesis_enforcement(
+        retrieval_refusal
+    )
+    assert retrieval_refusal_response["AnswerModeDecision"] == (
+        "REFUSE_RETRIEVAL_NOT_ELIGIBLE"
+    )
+    assert retrieval_refusal_response["RefusalRequired"] is True
+    assert retrieval_refusal_response["RefusalReason"] == (
+        "RETRIEVAL_ELIGIBILITY_MISSING_OR_BLOCKED"
+    )
+
+    missing_citation = _approved_current_truth_retrieval_output()
+    missing_citation["SourceId"] = ""
+    missing_citation_response = evaluate_historical_answer_synthesis_enforcement(
+        missing_citation
+    )
+    assert missing_citation_response["AnswerModeDecision"] == "REFUSE_CITATION_REQUIRED"
+    assert missing_citation_response["RefusalRequired"] is True
+
+    conflicted = _approved_current_truth_retrieval_output()
+    conflicted["ConflictStatus"] = "CONFLICTED"
+    conflicted_response = evaluate_historical_answer_synthesis_enforcement(conflicted)
+    assert conflicted_response["AnswerModeDecision"] == "REFUSE_CONFLICTED_EVIDENCE"
+    assert conflicted_response["AllowedAnswerMode"] is None
+
+    superseded = _approved_current_truth_retrieval_output()
+    superseded["SupersessionStatus"] = "SUPERSEDED"
+    superseded_response = evaluate_historical_answer_synthesis_enforcement(superseded)
+    assert superseded_response["AnswerModeDecision"] == "REFUSE_SUPERSEDED_EVIDENCE"
+    assert superseded_response["AllowedAnswerMode"] is None
+
+    not_answerable = _approved_current_truth_retrieval_output()
+    not_answerable["EvidenceScope"] = "NOT_ANSWERABLE"
+    not_answerable_response = evaluate_historical_answer_synthesis_enforcement(
+        not_answerable
+    )
+    assert not_answerable_response["AnswerModeDecision"] == "REFUSE_NOT_ANSWER_APPROVED"
+    assert not_answerable_response["RefusalRequired"] is True
+
+    runtime_required = _approved_current_truth_retrieval_output()
+    runtime_required["LiveLLMRequired"] = True
+    runtime_required_response = evaluate_historical_answer_synthesis_enforcement(
+        runtime_required
+    )
+    assert runtime_required_response["AnswerModeDecision"] == (
+        "BLOCKED_RUNTIME_NOT_IMPLEMENTED"
+    )
+    assert runtime_required_response["LiveLLMCalled"] is False
+    assert runtime_required_response["FinalAnswerGenerated"] is False
+    assert runtime_required_response["RetrievalRuntimeCalled"] is False
+    assert runtime_required_response["DatabaseReadPerformed"] is False
+    assert runtime_required_response["DatabaseWritePerformed"] is False
+
+
+def test_historical_answer_synthesis_enforcement_decision_catalog_is_complete():
+    contract = _read(HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT)
+    fixture_catalog = _read(HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_FIXTURE_CATALOG)
+    combined = contract + fixture_catalog
+
+    for decision in (
+        "CURRENT_TRUTH_ANSWER_ALLOWED",
+        "HISTORICAL_CONTEXT_ANSWER_ALLOWED",
+        "CAVEATED_ANSWER_ALLOWED",
+        "CONTEXT_ONLY_ANSWER_ALLOWED",
+        "REFUSE_INSUFFICIENT_GOVERNED_EVIDENCE",
+        "REFUSE_NOT_ANSWER_APPROVED",
+        "REFUSE_RETRIEVAL_NOT_ELIGIBLE",
+        "REFUSE_MISSING_PROVENANCE",
+        "REFUSE_CONFLICTED_EVIDENCE",
+        "REFUSE_SUPERSEDED_EVIDENCE",
+        "REFUSE_CITATION_REQUIRED",
+        "BLOCKED_RUNTIME_NOT_IMPLEMENTED",
+    ):
+        assert decision in combined
+
+
+def test_historical_answer_synthesis_enforcement_docs_record_no_runtime_boundaries():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON,
+            HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT,
+            HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_FIXTURE_CATALOG,
+            HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_GUARDRAILS,
+        )
+    )
+
+    for boundary in (
+        "in-memory and metadata-only",
+        "No live retrieval backend is used",
+        "No LLM is called",
+        "No final answer generation occurs",
+        "No final natural-language chat answer is generated",
+        "No chat is exposed",
+        "No endpoint/UI exists",
+        "No corpus mutation occurs",
+        "No DB read/write occurs",
+        "response is for gate enforcement only",
+    ):
+        assert boundary in combined
+
+
+def test_historical_answer_synthesis_enforcement_links_from_runtime_controls():
+    closeout = _read(HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT)
+    retrieval_contract = _read(HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT)
+    retrieval_catalog = _read(HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG)
+    synthesis_design = _read(HISTORICAL_RUNTIME_ANSWER_SYNTHESIS_GATE_DESIGN)
+    outcomes = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES)
+    assertions = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    for linked_doc in (
+        "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md",
+        "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT.md",
+        "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_FIXTURE_CATALOG.md",
+        "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_GUARDRAILS.md",
+    ):
+        assert linked_doc in closeout
+        assert linked_doc in index
+
+    assert "CURRENT_TRUTH_ANSWER_ALLOWED" in retrieval_contract
+    assert "HISTORICAL_CONTEXT_ANSWER_ALLOWED" in retrieval_catalog
+    assert "CAVEATED_ANSWER_ALLOWED" in synthesis_design
+    assert "REFUSE_CITATION_REQUIRED" in outcomes
+    assert "answer synthesis enforcement skeleton response is for gate enforcement only" in assertions
+
+
+def test_historical_answer_synthesis_enforcement_slice_introduces_only_allowed_changes():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "tests/test_domain_baseline_capture_batch.py",
+    }
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "operational" not in normalized or normalized.startswith("docs/")
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "database" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "live_retrieval_backend" not in normalized
+        assert "citation_rendering" not in normalized
+        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    service = _read(HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON_SERVICE)
+    assert "openai" not in service.lower()
+    assert "chatcompletion" not in service.lower()
+    assert "responses.create" not in service.lower()
+    assert "retrieve_relevant_chunks" not in service
+    assert "Session" not in service
+    assert "sqlalchemy" not in service
+    assert "requests." not in service
 
 
 def test_historical_chat_pilot_readiness_docs_exist():
@@ -5454,6 +5792,7 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -5477,7 +5816,11 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "retrieval_runtime" not in normalized
-        assert "answer_synthesis" not in normalized or normalized.startswith("docs/")
+        assert "answer_synthesis" not in normalized or (
+            normalized.startswith("docs/")
+            or normalized
+            == "app/services/historical_answer_synthesis_enforcement_skeleton_service.py"
+        )
         assert "citation_rendering" not in normalized
         assert "chat" not in normalized or normalized.startswith("docs/")
         assert "workforce-platform" not in changed_file
@@ -6010,6 +6353,7 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",

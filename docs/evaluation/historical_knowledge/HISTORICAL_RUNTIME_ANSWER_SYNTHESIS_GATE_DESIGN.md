@@ -10,6 +10,8 @@ This document defines the future answer synthesis gate design for a narrow, read
 
 No answer synthesis runtime or live LLM is implemented.
 
+The first answer synthesis enforcement skeleton is `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md`. It is an in-memory, metadata-only enforcement helper, not a final answer generator.
+
 ## 2. Required Inputs From Retrieval Gate
 
 - request/query context;
@@ -88,3 +90,11 @@ The test matrix link does not implement answer synthesis runtime, call a live LL
 ## 10. Boundary
 
 This document is design only. It does not implement answer synthesis runtime, does not call a live LLM, does not implement retrieval runtime, does not render citations, does not create endpoint/UI, and does not expose chat.
+
+## 11. Enforcement Skeleton Link
+
+`HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md` converts supplied retrieval gate output into one of the allowed enforcement decisions documented in `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT.md`.
+
+The primary allowed enforcement decisions are `CURRENT_TRUTH_ANSWER_ALLOWED`, `HISTORICAL_CONTEXT_ANSWER_ALLOWED`, `CAVEATED_ANSWER_ALLOWED`, and `CONTEXT_ONLY_ANSWER_ALLOWED`; refusal and block decisions remain explicit.
+
+The skeleton preserves that no live retrieval backend is used, no LLM is called, no final chat answer is generated, no chat is exposed, no endpoint/UI exists, no corpus mutation occurs, no DB read/write occurs, and the response is for gate enforcement only.

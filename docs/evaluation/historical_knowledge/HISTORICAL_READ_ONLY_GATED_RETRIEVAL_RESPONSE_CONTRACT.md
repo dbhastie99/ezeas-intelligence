@@ -45,6 +45,8 @@ The response is for gate evaluation only. It is not an answer, not a citation re
 
 The contract confirms that no live retrieval backend is used, no LLM is called, no chat is exposed, no endpoint/UI exists, no corpus mutation occurs, and no DB read/write occurs.
 
+The downstream answer synthesis enforcement skeleton may consume this response as supplied metadata only. That downstream use remains gate enforcement only and does not generate a final answer, expose chat, call a live LLM, perform live retrieval, mutate corpus, or perform DB read/write.
+
 ## Decision Catalog
 
 `RetrievalDecision` must be one of:
@@ -62,3 +64,13 @@ The contract confirms that no live retrieval backend is used, no LLM is called, 
 - `BLOCKED_RUNTIME_NOT_IMPLEMENTED`
 
 `RuntimeActionPermitted` is not exposed as a runtime action flag because runtime action is never permitted by this skeleton. The response instead preserves explicit false no-runtime fields and `RuntimeBoundaryAsserted: true`.
+
+## Answer Synthesis Enforcement Handoff
+
+Retrieval decisions map into answer synthesis enforcement decisions in `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT.md`.
+
+- `ELIGIBLE_CURRENT_TRUTH_RETRIEVAL` maps to `CURRENT_TRUTH_ANSWER_ALLOWED`.
+- `ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL` maps to `HISTORICAL_CONTEXT_ANSWER_ALLOWED`.
+- `ELIGIBLE_CAVEATED_RETRIEVAL` maps to `CAVEATED_ANSWER_ALLOWED`.
+- `REFUSE_*` decisions preserve refusal.
+- `BLOCKED_RUNTIME_NOT_IMPLEMENTED` remains blocked.

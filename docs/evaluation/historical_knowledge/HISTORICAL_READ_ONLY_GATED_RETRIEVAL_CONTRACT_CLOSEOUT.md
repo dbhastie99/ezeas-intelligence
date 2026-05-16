@@ -12,6 +12,12 @@ The next slice may move to the answer synthesis enforcement skeleton.
 
 No live retrieval/backend/LLM/chat/DB/corpus behaviour is authorised.
 
+## Answer Synthesis Enforcement Handoff
+
+The next runtime-adjacent control is now `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md`, with response shape in `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_RESPONSE_CONTRACT.md`, metadata-only fixtures in `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_FIXTURE_CATALOG.md`, and guardrails in `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_GUARDRAILS.md`.
+
+That skeleton consumes this retrieval gate output in-memory and metadata-only. It does not implement answer synthesis runtime, call a live LLM, generate final answers, expose chat, perform live retrieval, query corpus/vector/database stores, render citations, mutate corpus, write a database, or make historical sources current truth.
+
 ## Boundary Confirmation
 
 This closeout introduces no source content ingestion, no operational corpus mutation, no Code Evidence ingestion, no live LLM call, no DB read/write, no schema migration, no endpoint change, no UI change, no live retrieval backend, no answer synthesis runtime, no citation rendering runtime, no chat exposure, no workforce-platform change, no award-configurator-v1 change, no ezeas-analytics change, no current-truth promotion, no runtime answer-use activation, and no runtime retrieval activation beyond in-memory metadata evaluation.
