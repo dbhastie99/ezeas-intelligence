@@ -26,6 +26,7 @@ Conservative status values:
 | Required cross-check repositories identified | Yes | `REQUIRED` | Cross-check repository list | Yes | Missing cross-check targets block completion. |
 | Current repository truth checked | Yes | `REQUIRED` | Current docs/code/test/log/control references or blocker | Yes | Current repository truth takes priority unless governed otherwise. |
 | Findings captured | Yes | `REQUIRED` | Findings output link | Yes | Findings are review outputs only. |
+| Findings classification completed before outcome decision | Yes | `REQUIRED` | Finding classification link and classification status | Yes | Findings classification is required before any outcome decision. |
 | Evidence classification assigned | Yes | `REQUIRED` | Classification for each finding | Yes | Use controlled classification values. |
 | Conflicts recorded | Yes | `REQUIRED` | Conflict assessment or `None` | Yes | Unresolved conflicts must remain visible. |
 | Supersession risk recorded | Yes | `REQUIRED` | Supersession assessment or `None` | Yes | Duplicate/supersession unresolved blocks completion. |

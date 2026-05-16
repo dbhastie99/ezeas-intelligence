@@ -27,6 +27,8 @@ Use this template to capture governed historical deep-review findings. Findings 
 | CurrentTruthImpactAssessment |  |
 | SupersessionAssessment |  |
 | ConflictAssessment |  |
+| FindingClassificationLink |  |
+| RecommendedClassification |  |
 | RecommendedNextDecision |  |
 | IngestionRecommended | No |
 | AnswerUseRecommended | No |
@@ -39,6 +41,11 @@ Required conservative defaults:
 - `IngestionRecommended`: No
 - `AnswerUseRecommended`: No
 - `CurrentTruthPromotionRecommended`: No
+
+Planned/required classification fields:
+
+- `FindingClassificationLink`
+- `RecommendedClassification`
 
 Recommended finding types:
 

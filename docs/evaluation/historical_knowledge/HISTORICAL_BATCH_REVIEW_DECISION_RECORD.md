@@ -120,6 +120,16 @@ The linked execution plan, checklist, and findings output template govern review
 
 Permitting review start still does not permit ingestion, answer use, or current-truth promotion. `IngestionPermitted`, `AnswerUsePermitted`, and `CurrentTruthPermitted` remain No unless a separate future governed decision explicitly changes them.
 
+### Findings Classification And Outcome Boundary
+
+Decision records must not advance to ingestion/current-truth/answer-use decisions until findings classification and outcome decision are completed.
+
+Completed findings must first be classified through `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md` and the reusable `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md`.
+
+Classified findings must then flow through `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md` before any later ingestion/backfill/current-truth/answer-use decision can be considered.
+
+Findings classification and outcome decision still do not permit ingestion, answer use, or current-truth promotion unless separate future governed decisions explicitly approve those steps.
+
 ## 8. Ingestion Decision Boundary
 
 Ingestion requires a separate explicit decision.

@@ -37,6 +37,9 @@ Use these durable controls together:
 | Historical deep-review execution plan | `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md` |
 | Historical deep-review execution checklist | `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md` |
 | Historical deep-review findings output template | `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md` |
+| Historical review findings classification model | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md` |
+| Historical review outcome decision model | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md` |
+| Historical review finding classification template | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md` |
 | Historical developer-log batch intake guidance | `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md` |
 | Historical developer-log batch register | `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
@@ -52,6 +55,14 @@ Use these durable controls together:
 | First analytics cross-check findings draft placeholder | `docs/evaluation/historical_knowledge/crosscheck_findings_templates/HIST_ANALYTICS_2025_12_06_20_CROSSCHECK_FINDINGS_DRAFT_PLACEHOLDER.md` |
 | First analytics review execution checklist | `docs/evaluation/historical_knowledge/review_execution_checklists/HIST_ANALYTICS_2025_12_06_20_REVIEW_EXECUTION_CHECKLIST.md` |
 | First analytics inventory batch | `docs/evaluation/historical_knowledge/inventory_batches/HISTORICAL_SOURCE_INVENTORY_BATCH_2026_05_15_ANALYTICS.md` |
+
+New findings classification control status:
+
+| Control artefact | Status |
+| --- | --- |
+| `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md` | Active control model; findings classification only; no ingestion or answer use. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md` | Active outcome decision model; decision-control only; no current-truth promotion. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md` | Active reusable template; conservative defaults preserve ingestion No, answer use No, and current truth No. |
 
 ## 3. Source Authority Summary
 
@@ -96,6 +107,8 @@ Historical batch review candidate selection is governed by `docs/evaluation/hist
 Historical batch review decision records are governed by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD.md`, with reusable records shaped by `docs/evaluation/historical_knowledge/HISTORICAL_BATCH_REVIEW_DECISION_RECORD_TEMPLATE.md`. Queue entries and selected candidates must flow into decision records before review execution. A decision record is required before any future deep review starts, but creating one does not ingest source content, perform deep review, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
 
 Historical deep-review execution is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md`, with completion checks shaped by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md` and findings shaped by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md`. These artefacts define the future review execution control model only. Creating them does not perform deep review, ingest source content, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
+
+Historical review findings classification is governed by `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md`, with individual classification records shaped by `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md` and later outcome decisions governed by `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md`. Completed findings must flow through findings classification before any outcome decision, ingestion/backfill decision, current-truth decision, or answer-use decision can be considered. These artefacts do not perform deep review, ingest source content, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
 
 Developer-log batch intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`. That guidance states that adding a file to a registered folder is not ingestion, adding a batch row is metadata registration only, original filename is metadata only, register entries drive classification rather than filenames, ingestion permitted defaults to No, review status defaults to `NOT_REVIEWED`, implementation-state classification defaults to `UNCERTAIN_REQUIRES_REVIEW` unless strong evidence exists, ordinary logs can remain batch-registered until needed, and Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed.
 
@@ -163,3 +176,5 @@ Any future historical ingestion, governed ingestion, review approval, recapture,
 This slice prompt is preserved at `docs/codex_prompts/2026-05-15_minerva_historical_knowledge_control_index_v0_1.md`.
 
 The historical deep-review execution plan slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_deep_review_execution_plan_v0_1.md`.
+
+The historical review findings classification slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_review_findings_classification_v0_1.md`.

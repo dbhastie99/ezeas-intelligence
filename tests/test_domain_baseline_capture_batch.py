@@ -293,6 +293,15 @@ HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST = (
 HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md"
 )
+HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md"
+)
+HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md"
+)
+HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -457,6 +466,9 @@ HISTORICAL_BATCH_REVIEW_DECISION_RECORD_PROMPT = Path(
 HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_deep_review_execution_plan_v0_1.md"
 )
+HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_review_findings_classification_v0_1.md"
+)
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
     / "developer_logs"
@@ -503,6 +515,9 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.exists()
     assert HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.exists()
     assert HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.exists()
+    assert HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.exists()
+    assert HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.exists()
+    assert HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.exists()
     assert HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.exists()
     assert HISTORICAL_BATCH_REGISTRATION_AND_TRIAGE_MODEL_PROMPT.exists()
     assert HISTORICAL_BATCH_REGISTER_INDEX_PROMPT.exists()
@@ -513,6 +528,7 @@ def test_historical_batch_registration_and_triage_docs_exist():
     assert HISTORICAL_BATCH_REVIEW_CANDIDATE_SELECTION_PROMPT.exists()
     assert HISTORICAL_BATCH_REVIEW_DECISION_RECORD_PROMPT.exists()
     assert HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN_PROMPT.exists()
+    assert HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_PROMPT.exists()
 
 
 def test_historical_batch_review_queue_defines_status_model_and_analytics_entry():
@@ -1263,6 +1279,277 @@ def test_historical_deep_review_execution_slice_introduces_only_docs_tests_and_n
         "No ezeas-analytics changes",
         "No current-truth promotion",
         "No answer-use permission",
+    ):
+        assert required_boundary in combined
+
+
+def test_historical_review_findings_classification_model_defines_statuses_and_types():
+    model = _read(HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL)
+
+    for status in (
+        "CLASSIFICATION_NOT_STARTED",
+        "CLASSIFICATION_IN_PROGRESS",
+        "CLASSIFICATION_BLOCKED",
+        "CLASSIFICATION_COMPLETED_FINDINGS_ONLY",
+        "CLASSIFICATION_REQUIRES_CROSS_CHECK",
+        "CLASSIFICATION_READY_FOR_OUTCOME_DECISION",
+        "CLASSIFICATION_REJECTED",
+        "CLASSIFICATION_SUPERSEDED",
+    ):
+        assert status in model
+
+    for classification_type in (
+        "CURRENT_TRUTH_CANDIDATE_REQUIRES_APPROVAL",
+        "HISTORICAL_ONLY_CONTEXT",
+        "SUPERSEDED_BY_CURRENT_REPOSITORY_TRUTH",
+        "DUPLICATE_OF_EXISTING_EVIDENCE",
+        "CONFLICTS_WITH_CURRENT_TRUTH",
+        "BACKLOG_OR_FOLLOW_UP_ITEM",
+        "PLATFORM_DOCTRINE_CANDIDATE",
+        "HARDENING_REQUIREMENT_CANDIDATE",
+        "DEVELOPER_LOG_CONTEXT",
+        "NOT_RELEVANT",
+        "REQUIRES_REPOSITORY_CROSS_CHECK",
+    ):
+        assert classification_type in model
+
+
+def test_historical_review_findings_classification_model_defines_requirements_and_crosschecks():
+    model = _read(HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL)
+
+    for required_text in (
+        "Every finding must link to `FindingsRecordId`, `DecisionRecordId`, `SourceId`, source reference, reviewer, review date, repository context, and domain context",
+        "Every finding must receive a classification type",
+        "Every finding must record whether cross-check is required",
+        "Every finding must record whether it conflicts with current repository truth",
+        "Every finding must record whether it appears superseded or duplicate",
+        "Every finding must record recommended next decision",
+        "Every finding must preserve ingestion No, answer use No, and current truth No unless a later decision changes them",
+        "`workforce-platform` cross-check where source affects workforce/platform/runtime doctrine",
+        "`award-configurator-v1` cross-check where source affects award build/configuration/parser/interpreter truth",
+        "`ezeas-analytics` cross-check where source affects analytics/reporting schema/view/readiness truth",
+        "`ezeas-intelligence` cross-check where source affects Minerva retrieval/evidence/answering doctrine",
+        "Cross-checks must compare against current repository files, latest committed logs, current platform doctrine, hardening logs, and completed-domain baseline evidence where applicable",
+    ):
+        assert required_text in model
+
+
+def test_historical_review_findings_classification_model_defines_boundaries():
+    model = _read(HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL)
+
+    for required_text in (
+        "Conflicting evidence must not be promoted",
+        "Conflicting evidence must not be answerable current truth",
+        "Conflict requires decision-record update before ingestion or answer use can be considered",
+        "Historical source must not override newer repository/source truth without explicit decision rationale",
+        "Superseded findings remain historical context only unless separately preserved",
+        "Superseded findings must not be used as current answer truth",
+        "Duplicate findings should link to existing evidence rather than create new current truth",
+        "`CURRENT_TRUTH_CANDIDATE_REQUIRES_APPROVAL` is not current truth",
+        "Approval requires separate outcome decision, ingestion/backfill decision, and answer-use decision",
+        "Candidate status does not permit Minerva answer use",
+        "Historical-only findings may be useful for project narrative and audit history",
+        "Historical-only findings must not override current truth",
+        "Historical-only findings must be labelled historical in any future retrieval use",
+        "Answer-use remains No for all classifications in this slice",
+        "Answer-use requires explicit future governed approval",
+        "Minerva chat exposure must respect answer-use permission",
+        "Classification does not ingest source content",
+        "Classification does not mutate corpus",
+        "Classification may recommend future ingestion consideration but does not approve it",
+    ):
+        assert required_text in model
+
+
+def test_historical_review_findings_classification_model_defines_non_meanings():
+    model = _read(HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL)
+
+    for required_text in (
+        "Creating classification docs does not perform deep review",
+        "Classification does not ingest source content",
+        "Classification does not promote current truth",
+        "Classification does not permit answer use",
+        "Classification does not mutate operational corpus",
+        "Classification does not create Code Evidence",
+        "Classification does not write to a database",
+        "Classification does not call a live LLM",
+    ):
+        assert required_text in model
+
+
+def test_historical_review_outcome_decision_model_defines_statuses_and_boundaries():
+    model = _read(HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL)
+
+    for status in (
+        "OUTCOME_NOT_DECIDED",
+        "OUTCOME_REQUIRES_CROSS_CHECK",
+        "OUTCOME_HISTORICAL_ONLY",
+        "OUTCOME_SUPERSEDED",
+        "OUTCOME_DUPLICATE",
+        "OUTCOME_REJECTED",
+        "OUTCOME_BACKLOG_CAPTURE_REQUIRED",
+        "OUTCOME_CURRENT_TRUTH_CANDIDATE",
+        "OUTCOME_READY_FOR_INGESTION_DECISION",
+        "OUTCOME_READY_FOR_ANSWER_USE_DECISION",
+    ):
+        assert status in model
+
+    for required_text in (
+        "Outcome decision does not ingest",
+        "Outcome decision does not permit answer use unless a later answer-use decision explicitly approves it",
+        "Outcome decision does not promote current truth unless a later current-truth decision explicitly approves it",
+        "`OUTCOME_READY_FOR_INGESTION_DECISION` only means a later ingestion decision may be considered",
+        "`OUTCOME_READY_FOR_ANSWER_USE_DECISION` only means a later answer-use decision may be considered",
+    ):
+        assert required_text in model
+
+
+def test_historical_review_finding_classification_template_includes_fields_and_defaults():
+    template = _read(HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE)
+
+    for field in (
+        "FindingClassificationId",
+        "FindingsRecordId",
+        "DecisionRecordId",
+        "SourceId",
+        "SourceTitle",
+        "FindingId",
+        "FindingSummary",
+        "ClassificationStatus",
+        "FindingClassificationType",
+        "RepositoryContext",
+        "DomainContext",
+        "CrossCheckRequired",
+        "CrossCheckStatus",
+        "ConflictsWithCurrentTruth",
+        "SupersededBy",
+        "DuplicateOf",
+        "RecommendedOutcomeDecision",
+        "IngestionPermitted",
+        "AnswerUsePermitted",
+        "CurrentTruthPermitted",
+        "Reviewer",
+        "ClassifiedAtUtc",
+        "DecisionRecordLink",
+        "Notes",
+    ):
+        assert field in template
+
+    for default in (
+        "| IngestionPermitted | No |",
+        "| AnswerUsePermitted | No |",
+        "| CurrentTruthPermitted | No |",
+        "`IngestionPermitted`: No",
+        "`AnswerUsePermitted`: No",
+        "`CurrentTruthPermitted`: No",
+    ):
+        assert default in template
+
+
+def test_historical_review_findings_classification_is_linked_from_control_chain():
+    plan = _read(HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN)
+    findings_template = _read(HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE)
+    checklist = _read(HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST)
+    decision_record = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    prompt = _read(HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_PROMPT)
+
+    assert "Completed findings must flow into `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md` before any ingestion, answer-use, or current-truth decision can be considered" in plan
+    assert "Findings classification is a required control step between findings output and any later outcome decision" in plan
+    assert "FindingClassificationLink" in findings_template
+    assert "RecommendedClassification" in findings_template
+    assert "Findings classification completed before outcome decision" in checklist
+    assert "Findings classification is required before any outcome decision" in checklist
+    assert "Decision records must not advance to ingestion/current-truth/answer-use decisions until findings classification and outcome decision are completed" in decision_record
+    assert "HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md" in decision_record
+    assert "HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md" in decision_record
+    assert "HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md" in decision_record
+
+    for linked_doc in (
+        "HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md",
+        "HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md",
+        "HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md",
+    ):
+        assert linked_doc in control_index
+        assert linked_doc in prompt
+
+
+def test_historical_review_findings_classification_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+        assert "migrations" not in normalized
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+
+    for changed_file in changed_files:
+        if changed_file.endswith(".py"):
+            assert changed_file == "tests/test_domain_baseline_capture_batch.py"
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL,
+            HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL,
+            HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE,
+            HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN,
+            HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST,
+            HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_DECISION_RECORD,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "does not perform deep review",
+        "does not ingest source content",
+        "does not promote current truth",
+        "does not permit answer use",
+        "does not mutate operational corpus",
+        "does not create Code Evidence",
+        "does not write to a database",
+        "does not call a live LLM",
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No answer-use permission",
+        "No deep-review execution",
     ):
         assert required_boundary in combined
 

@@ -150,6 +150,8 @@ Review completion may recommend answer-use consideration, but does not approve a
 
 Review completion may recommend current-truth consideration, but does not promote current truth.
 
+Completed findings must flow into `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md` before any ingestion, answer-use, or current-truth decision can be considered. Findings classification is a required control step between findings output and any later outcome decision.
+
 A separate decision record update and future governed ingestion/backfill slice are required before any operational use.
 
 ## 13. What Deep Review Execution Planning Does Not Mean
