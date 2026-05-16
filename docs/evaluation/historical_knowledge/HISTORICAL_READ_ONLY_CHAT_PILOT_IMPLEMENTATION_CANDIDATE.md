@@ -121,3 +121,11 @@ Endpoint/UI/live LLM remain separate future decisions.
 ## 16. Developer Handoff
 
 Use this candidate only as an internal in-memory orchestration control. Future endpoint/UI planning, live LLM usage, live retrieval, database access, audit/logging runtime, citation rendering runtime, and production exposure require separate explicit approval.
+
+## 17. Contract Hardening Closeout Link
+
+The implementation candidate is now hardened by `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA.md`.
+
+Hardening status: `HARDENED_IN_MEMORY_ONLY`.
+
+No endpoint/UI exists. No live LLM is called. No final answer is generated. No live retrieval backend is used. No DB read/write occurs. No corpus mutation occurs. This is not production chat exposure.

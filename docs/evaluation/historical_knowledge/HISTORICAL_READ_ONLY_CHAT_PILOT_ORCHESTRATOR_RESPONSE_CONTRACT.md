@@ -57,3 +57,11 @@ This contract defines the deterministic response envelope returned by the intern
 ## Boundary
 
 The response is an orchestration envelope only. No endpoint/UI exists. No live LLM is called. No final answer is generated. No live retrieval backend is used. No DB read/write occurs. No corpus mutation occurs. This is not production chat exposure.
+
+## Hardened Decision Coverage
+
+The response contract is hardened by `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG.md`.
+
+Required decision coverage includes `READY_CURRENT_TRUTH_ENVELOPE`, `READY_HISTORICAL_CONTEXT_ENVELOPE`, `READY_CAVEATED_ENVELOPE`, `REFUSAL_ENVELOPE`, `BLOCKED_NO_RUNTIME_ENVELOPE`, `REFUSE_MISSING_ANSWER_USE`, `REFUSE_MISSING_RETRIEVAL_ELIGIBILITY`, `REFUSE_MISSING_PROVENANCE`, `REFUSE_MISSING_CITATION`, `REFUSE_CONFLICTED`, `REFUSE_SUPERSEDED`, and `REFUSE_NOT_ANSWERABLE`.
+
+All decision outcomes keep `FinalAnswerGenerated`, `LiveLLMCalled`, `ChatExposed`, `EndpointUIPresent`, `LiveRetrievalPerformed`, `CorpusMutationPerformed`, `DatabaseReadPerformed`, and `DatabaseWritePerformed` false.

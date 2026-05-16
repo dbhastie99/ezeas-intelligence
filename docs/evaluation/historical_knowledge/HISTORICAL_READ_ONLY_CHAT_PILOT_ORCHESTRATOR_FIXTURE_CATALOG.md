@@ -26,3 +26,9 @@ This catalog defines metadata-only fixtures for testing the in-memory orchestrat
 ## Boundary
 
 Fixtures are supplied metadata only. They do not ingest source content, query corpus/vector/database stores, call a live LLM, generate final answers, expose chat, create endpoint/UI, mutate corpus, or write/read a database.
+
+## Hardened Coverage Closeout
+
+This catalog supports `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING.md` and proves fixture coverage for current-truth readiness, historical-context readiness, caveated readiness, missing answer-use permission, missing retrieval eligibility, missing provenance/citation, conflicted evidence, superseded evidence, prior refusal, and no-runtime blocking.
+
+No endpoint/UI exists. No live LLM is called. No final answer is generated. No live retrieval backend is used. No DB read/write occurs. No corpus mutation occurs. This is not production chat exposure.

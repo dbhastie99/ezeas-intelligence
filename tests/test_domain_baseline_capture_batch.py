@@ -569,6 +569,22 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA.md"
+)
 HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CANDIDATE_SERVICE = Path(
     "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
 )
@@ -811,6 +827,9 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT_PROMPT = Path(
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_implementation_candidate_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING_CLOSEOUT_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_orchestrator_contract_hardening_closeout_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -1583,7 +1602,7 @@ def test_historical_deep_review_execution_slice_introduces_only_docs_tests_and_n
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
         assert "migrations" not in normalized
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
 
@@ -1859,7 +1878,7 @@ def test_historical_review_findings_classification_slice_introduces_only_docs_te
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
         assert "migrations" not in normalized
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
 
@@ -2252,7 +2271,7 @@ def test_historical_ingestion_backfill_slice_introduces_only_docs_tests_and_no_r
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
         assert "migrations" not in normalized
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
 
@@ -2515,7 +2534,7 @@ def test_historical_backfill_execution_slice_introduces_only_docs_tests_and_no_r
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
         assert "migrations" not in normalized
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
 
@@ -2778,7 +2797,7 @@ def test_historical_current_truth_promotion_slice_introduces_only_docs_tests_and
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
         assert "migrations" not in normalized
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
 
@@ -3064,7 +3083,7 @@ def test_historical_answer_use_permission_slice_introduces_only_docs_tests_and_n
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
         assert "migrations" not in normalized
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
 
@@ -3402,7 +3421,7 @@ def test_historical_retrieval_eligibility_slice_introduces_only_docs_tests_and_n
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
         assert "migrations" not in normalized
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
 
@@ -3736,7 +3755,7 @@ def test_historical_answer_mode_slice_introduces_only_docs_tests_and_no_runtime_
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "db" not in normalized or normalized.startswith("docs/")
         assert "schema" not in normalized or normalized.startswith("docs/")
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "workforce-platform" not in changed_file
@@ -4092,7 +4111,7 @@ def test_historical_citation_provenance_slice_introduces_only_docs_tests_and_no_
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "db" not in normalized or normalized.startswith("docs/")
         assert "schema" not in normalized or normalized.startswith("docs/")
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "workforce-platform" not in changed_file
@@ -4724,7 +4743,7 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "db" not in normalized or normalized.startswith("docs/")
         assert "schema" not in normalized or normalized.startswith("docs/")
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "retrieval_runtime" not in normalized
@@ -5075,7 +5094,7 @@ def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skel
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "database" not in normalized or normalized.startswith("docs/")
         assert "schema" not in normalized or normalized.startswith("docs/")
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "live_retrieval_backend" not in normalized
@@ -5382,7 +5401,7 @@ def test_historical_answer_synthesis_enforcement_slice_introduces_only_allowed_c
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "database" not in normalized or normalized.startswith("docs/")
         assert "schema" not in normalized or normalized.startswith("docs/")
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "live_retrieval_backend" not in normalized
@@ -5717,7 +5736,7 @@ def test_historical_citation_refusal_enforcement_slice_introduces_only_allowed_c
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "database" not in normalized or normalized.startswith("docs/")
         assert "schema" not in normalized or normalized.startswith("docs/")
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "live_retrieval_backend" not in normalized
@@ -6398,8 +6417,15 @@ def test_historical_read_only_chat_pilot_orchestrator_docs_and_service_exist():
     assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG.exists()
     assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS.exists()
     assert HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA.exists()
     assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CANDIDATE_SERVICE.exists()
     assert HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT.exists()
+    assert (
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING_CLOSEOUT_PROMPT.exists()
+    )
 
 
 def test_historical_read_only_chat_pilot_orchestrator_response_defaults_are_no_runtime():
@@ -6505,6 +6531,49 @@ def test_historical_read_only_chat_pilot_orchestrator_refusal_preservation():
     )
 
 
+def test_historical_read_only_chat_pilot_orchestrator_decision_catalog_is_hardened():
+    catalog = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG)
+
+    for decision in (
+        "READY_CURRENT_TRUTH_ENVELOPE",
+        "READY_HISTORICAL_CONTEXT_ENVELOPE",
+        "READY_CAVEATED_ENVELOPE",
+        "REFUSAL_ENVELOPE",
+        "BLOCKED_NO_RUNTIME_ENVELOPE",
+        "REFUSE_MISSING_ANSWER_USE",
+        "REFUSE_MISSING_RETRIEVAL_ELIGIBILITY",
+        "REFUSE_MISSING_PROVENANCE",
+        "REFUSE_MISSING_CITATION",
+        "REFUSE_CONFLICTED",
+        "REFUSE_SUPERSEDED",
+        "REFUSE_NOT_ANSWERABLE",
+    ):
+        assert decision in catalog
+
+    for runtime_field in (
+        "FinalAnswerGenerated",
+        "LiveLLMCalled",
+        "ChatExposed",
+        "EndpointUIPresent",
+        "RuntimeActionPermitted",
+    ):
+        assert runtime_field in catalog
+
+    decision_rows = [
+        line
+        for line in catalog.splitlines()
+        if line.startswith("| `") and not line.startswith("| `Decision`")
+    ]
+    assert len(decision_rows) == 12
+    for row in decision_rows:
+        cells = [cell.strip() for cell in row.strip("|").split("|")]
+        assert cells[5] == "false"
+        assert cells[6] == "false"
+        assert cells[7] == "false"
+        assert cells[8] == "false"
+        assert cells[9] == "false"
+
+
 def test_historical_read_only_chat_pilot_orchestrator_docs_record_no_runtime_boundaries():
     combined = "\n".join(
         _read(path)
@@ -6514,6 +6583,10 @@ def test_historical_read_only_chat_pilot_orchestrator_docs_record_no_runtime_bou
             HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS,
             HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA,
         )
     )
 
@@ -6527,6 +6600,46 @@ def test_historical_read_only_chat_pilot_orchestrator_docs_record_no_runtime_bou
         "This is not production chat exposure",
     ):
         assert boundary in combined
+
+    for prohibited_runtime in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database reads",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint/UI",
+        "No live retrieval backend",
+        "No final natural-language answer generation",
+        "No chat exposure",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+    ):
+        assert prohibited_runtime in combined
+
+
+def test_historical_read_only_chat_pilot_endpoint_ui_planning_entry_criteria_stays_planning_only():
+    criteria = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA)
+
+    for entry in (
+        "orchestrator contract hardening complete",
+        "orchestrator closeout complete",
+        "response contract complete",
+        "fixture catalog complete",
+        "guardrails complete",
+        "no-runtime assertions complete",
+        "endpoint/UI scope still not approved",
+        "live LLM still not approved",
+        "final answer generation still not approved",
+        "no live retrieval backend",
+        "no DB read/write",
+        "no corpus mutation",
+    ):
+        assert entry in criteria
+
+    assert "These criteria permit future planning gate consideration only" in criteria
 
 
 def test_historical_read_only_chat_pilot_orchestrator_links_from_existing_controls():
@@ -6547,7 +6660,12 @@ def test_historical_read_only_chat_pilot_orchestrator_links_from_existing_contro
         "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG.md",
         "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS.md",
         "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA.md",
         "2026-05-16_minerva_historical_read_only_chat_pilot_implementation_candidate_v0_1.md",
+        "2026-05-16_minerva_historical_read_only_chat_pilot_orchestrator_contract_hardening_closeout_v0_1.md",
     ):
         assert linked_doc in index
 
@@ -6595,8 +6713,13 @@ def test_historical_read_only_chat_pilot_orchestrator_slice_introduces_only_allo
             HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG,
             HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS,
             HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_DECISION_CATALOG,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_PLANNING_ENTRY_CRITERIA,
             HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
             HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CONTRACT_HARDENING_CLOSEOUT_PROMPT,
         )
     )
 
@@ -7213,7 +7336,7 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "db" not in normalized or normalized.startswith("docs/")
         assert "schema" not in normalized or normalized.startswith("docs/")
-        assert "endpoint" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
         assert "retrieval_runtime" not in normalized
@@ -7779,7 +7902,7 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
         assert "migrations" not in changed_file.lower()
-        assert "endpoint" not in changed_file.lower()
+        assert "endpoint" not in changed_file.lower() or changed_file.startswith("docs/")
         normalized = changed_file.lower().replace("\\", "/")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
