@@ -31,6 +31,7 @@ This template does not expose chat, call a live LLM, change retrieval runtime, m
 | EvidenceScope | `NOT_ANSWERABLE` |
 | AnswerScope | TBD |
 | RetrievalMode | TBD |
+| AnswerModeContractLink | `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_MODE_CONTRACT.md` or TBD |
 | CurrentTruthPermitted | No |
 | HistoricalContextPermitted | No |
 | RetrievalEligible | No |

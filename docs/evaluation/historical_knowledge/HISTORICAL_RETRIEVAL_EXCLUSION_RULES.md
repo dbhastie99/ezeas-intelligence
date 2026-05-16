@@ -51,3 +51,17 @@ Superseded evidence must not override newer repository truth.
 Conflicted evidence must not be presented as settled truth.
 
 Historical explanation use may be allowed only when separately approved, labelled historical, and not presented as current truth.
+
+## 5. Excluded Evidence to Refusal Answer Modes
+
+Excluded evidence maps to refusal answer modes under `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_MODE_CONTRACT.md`.
+
+`RETRIEVAL_EXCLUDED_NOT_ANSWERABLE` maps to `REFUSAL_NOT_ANSWER_APPROVED` or `REFUSAL_INSUFFICIENT_GOVERNED_EVIDENCE`.
+
+`RETRIEVAL_EXCLUDED_SUPERSEDED` maps to `REFUSAL_SUPERSEDED_EVIDENCE` for current-truth answers.
+
+`RETRIEVAL_EXCLUDED_CONFLICTED` maps to `REFUSAL_CONFLICTED_EVIDENCE` for settled answers unless a caveated mode is explicitly approved.
+
+Missing, blocked, revoked, or otherwise not eligible retrieval maps to `REFUSAL_RETRIEVAL_NOT_ELIGIBLE`.
+
+This mapping does not expose chat, implement retrieval runtime, implement answer synthesis runtime, call a live LLM, mutate corpus, or make excluded evidence answerable.

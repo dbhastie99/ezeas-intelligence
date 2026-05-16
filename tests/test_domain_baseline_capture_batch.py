@@ -364,6 +364,21 @@ HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING = (
 HISTORICAL_RETRIEVAL_EXCLUSION_RULES = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RETRIEVAL_EXCLUSION_RULES.md"
 )
+HISTORICAL_ANSWER_MODE_CONTRACT = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_MODE_CONTRACT.md"
+)
+HISTORICAL_ANSWER_MODE_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_MODE_TEMPLATE.md"
+)
+HISTORICAL_ANSWER_REFUSAL_POLICY = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_REFUSAL_POLICY.md"
+)
+HISTORICAL_ANSWER_MODE_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_MODE_BLOCKER_MODEL.md"
+)
+HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -545,6 +560,9 @@ HISTORICAL_ANSWER_USE_PERMISSION_GATE_PROMPT = Path(
 )
 HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_retrieval_eligibility_gate_v0_1.md"
+)
+HISTORICAL_ANSWER_MODE_CONTRACT_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_answer_mode_contract_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -3139,6 +3157,341 @@ def test_historical_retrieval_eligibility_slice_introduces_only_docs_tests_and_n
         "does not mutate corpus",
         "does not ingest source content",
         "does not promote current truth",
+        "does not write to a database",
+        "does not create endpoint",
+        "does not create UI",
+    ):
+        assert required_boundary in combined
+
+
+def test_historical_answer_mode_docs_exist():
+    assert HISTORICAL_ANSWER_MODE_CONTRACT.exists()
+    assert HISTORICAL_ANSWER_MODE_TEMPLATE.exists()
+    assert HISTORICAL_ANSWER_REFUSAL_POLICY.exists()
+    assert HISTORICAL_ANSWER_MODE_BLOCKER_MODEL.exists()
+    assert HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS.exists()
+    assert HISTORICAL_ANSWER_MODE_CONTRACT_PROMPT.exists()
+
+
+def test_historical_answer_mode_contract_statuses_modes_and_preconditions():
+    contract = _read(HISTORICAL_ANSWER_MODE_CONTRACT)
+
+    for status in (
+        "ANSWER_MODE_NOT_REQUESTED",
+        "ANSWER_MODE_BLOCKED",
+        "ANSWER_MODE_DEFERRED",
+        "ANSWER_MODE_REJECTED",
+        "ANSWER_MODE_APPROVED_CURRENT_TRUTH",
+        "ANSWER_MODE_APPROVED_HISTORICAL_CONTEXT",
+        "ANSWER_MODE_APPROVED_WITH_CAVEAT",
+        "ANSWER_MODE_APPROVED_BACKLOG_CONTEXT",
+        "ANSWER_MODE_APPROVED_DOCTRINE_CONTEXT",
+        "ANSWER_MODE_REFUSE_INSUFFICIENT_GOVERNED_EVIDENCE",
+        "ANSWER_MODE_REFUSE_NOT_ANSWER_APPROVED",
+        "ANSWER_MODE_REFUSE_CONFLICTED",
+        "ANSWER_MODE_REFUSE_SUPERSEDED",
+        "ANSWER_MODE_REVOKED",
+    ):
+        assert status in contract
+
+    for mode in (
+        "CURRENT_TRUTH_ANSWER",
+        "HISTORICAL_CONTEXT_ANSWER",
+        "CAVEATED_CURRENT_TRUTH_ANSWER",
+        "BACKLOG_CONTEXT_ANSWER",
+        "DOCTRINE_CONTEXT_ANSWER",
+        "HARDENING_CONTEXT_ANSWER",
+        "DEVELOPER_LOG_CONTEXT_ANSWER",
+        "REFUSAL_INSUFFICIENT_GOVERNED_EVIDENCE",
+        "REFUSAL_NOT_ANSWER_APPROVED",
+        "REFUSAL_CONFLICTED_EVIDENCE",
+        "REFUSAL_SUPERSEDED_EVIDENCE",
+        "REFUSAL_RETRIEVAL_NOT_ELIGIBLE",
+    ):
+        assert mode in contract
+
+    for precondition in (
+        "`RetrievalEligibilityId` exists",
+        "`RetrievalEligibilityStatus` is recorded",
+        "`AnswerUsePermissionId` exists",
+        "`AnswerUsePermissionStatus` is recorded",
+        "`EvidenceScope` is recorded",
+        "`AnswerScope` is recorded",
+        "`RetrievalMode` is recorded",
+        "Source provenance exists",
+        "Citation requirement is defined",
+        "Conflict status is resolved or explicitly caveated",
+        "Supersession status is resolved",
+        "`CurrentTruthPermitted` is Yes where current-truth answer is requested",
+        "`RetrievalEligible` is Yes for non-refusal answer modes",
+        "`ChatEligible` is not enabled in this slice",
+    ):
+        assert precondition in contract
+
+
+def test_historical_answer_mode_contract_dependencies_and_answer_rules():
+    contract = _read(HISTORICAL_ANSWER_MODE_CONTRACT)
+
+    for dependency in (
+        "Answer mode selection depends on retrieval eligibility",
+        "Retrieval eligibility alone does not implement answer synthesis",
+        "Absent, blocked, revoked, superseded, conflicted, or excluded retrieval eligibility must map to refusal or insufficient-evidence answer modes",
+        "Answer-use permission is required before non-refusal answer modes can be approved",
+        "Blocked, revoked, superseded, rejected, or missing answer-use permission must map to refusal",
+        "Historical-context approval must not be treated as current-truth approval",
+    ):
+        assert dependency in contract
+
+    for rule in (
+        "Current-truth answers require current-truth promotion, answer-use permission, retrieval eligibility, provenance, and citation support",
+        "Current-truth answers must not rely on historical-only, superseded, conflicted, or not-answerable evidence",
+        "Current-truth answers must not override newer repository truth",
+        "Historical-context answers must be labelled historical",
+        "Historical-context answers must not be presented as current operating truth",
+        "Caveated answers must carry caveat into the response",
+        "Caveated answers must not present unresolved evidence as settled truth",
+        "Backlog/follow-up evidence must not be represented as implemented behaviour",
+        "Future answer contract must distinguish planned, deferred, blocked, and implemented states",
+        "Doctrine/hardening context must not be treated as runtime implementation evidence unless separately supported",
+    ):
+        assert rule in contract
+
+
+def test_historical_answer_mode_refusal_citations_blockers_and_boundaries():
+    contract = _read(HISTORICAL_ANSWER_MODE_CONTRACT)
+    refusal = _read(HISTORICAL_ANSWER_REFUSAL_POLICY)
+    blocker_model = _read(HISTORICAL_ANSWER_MODE_BLOCKER_MODEL)
+    citation = _read(HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS)
+    combined = "\n".join((contract, refusal, blocker_model, citation))
+
+    for refusal_rule in (
+        "If answer-use permission is absent, answer mode must refuse or say insufficient governed evidence",
+        "If retrieval eligibility is absent, answer mode must refuse or say insufficient governed evidence",
+        "If evidence is superseded, answer mode must refuse current-truth answer",
+        "If evidence is conflicted, answer mode must refuse settled answer unless a caveated mode is explicitly approved",
+        "If citation/provenance is missing, answer mode must refuse chat-answer readiness",
+        "Runtime retrieval not implemented",
+        "Chat contract not implemented",
+        "This refusal policy is control documentation only and does not implement answer synthesis runtime",
+    ):
+        assert refusal_rule in combined
+
+    for field in (
+        "`SourceId`",
+        "`SourceTitle`",
+        "`SourceDate` or unknown-date marker",
+        "`RepositoryContext`",
+        "`DomainContext`",
+        "`AnswerUsePermissionId`",
+        "`RetrievalEligibilityId`",
+        "`AnswerModeId`",
+        "`EvidenceScope`",
+        "`RetrievalMode`",
+        "`AnswerMode`",
+        "`CitationRequired`",
+        "`CaveatRequired`",
+        "`ProvenanceStatus`",
+        "`Reviewer/Approver`",
+        "`ApprovedAtUtc`",
+        "`RevocationPath`",
+        "`Notes`",
+    ):
+        assert field in contract
+        assert field in citation
+
+    for blocker_code in (
+        "MISSING_RETRIEVAL_ELIGIBILITY",
+        "RETRIEVAL_NOT_ELIGIBLE",
+        "MISSING_ANSWER_USE_PERMISSION",
+        "ANSWER_USE_NOT_APPROVED",
+        "MISSING_CURRENT_TRUTH_PROMOTION",
+        "CURRENT_TRUTH_NOT_APPROVED",
+        "PROVENANCE_INCOMPLETE",
+        "CITATION_REQUIREMENT_UNDEFINED",
+        "CONFLICT_UNRESOLVED",
+        "SUPERSESSION_UNRESOLVED",
+        "CAVEAT_REQUIRED_NOT_DEFINED",
+        "ANSWER_SCOPE_UNDEFINED",
+        "ANSWER_MODE_UNDEFINED",
+        "CHAT_ELIGIBILITY_NOT_APPROVED",
+        "RUNTIME_RETRIEVAL_NOT_IMPLEMENTED",
+        "ANSWER_SYNTHESIS_GATE_NOT_IMPLEMENTED",
+        "CHAT_CONTRACT_NOT_IMPLEMENTED",
+    ):
+        assert blocker_code in contract
+        assert blocker_code in blocker_model
+
+    for boundary in (
+        "This slice does not implement answer synthesis runtime",
+        "This slice does not implement retrieval filtering",
+        "This slice does not activate answer modes at runtime",
+        "This slice does not mutate corpus or evidence stores",
+        "This slice does not call a live LLM",
+        "This slice does not expose Minerva chat",
+        "Chat exposure requires later pilot readiness gate",
+        "runtime retrieval gating, answer-mode enforcement, citation/provenance enforcement, and refusal behaviour tests",
+        "Missing citation/provenance blocks chat-answer readiness",
+        "Blocker resolution does not itself enable runtime retrieval, answer synthesis, chat, live LLM calls, or answerability",
+    ):
+        assert boundary in combined
+
+
+def test_historical_answer_mode_template_fields_and_defaults():
+    template = _read(HISTORICAL_ANSWER_MODE_TEMPLATE)
+
+    for field in (
+        "AnswerModeId",
+        "RetrievalEligibilityId",
+        "AnswerUsePermissionId",
+        "SourceId",
+        "SourceTitle",
+        "SourceDate",
+        "RepositoryContext",
+        "DomainContext",
+        "EvidenceScope",
+        "AnswerScope",
+        "RetrievalMode",
+        "AnswerModeStatus",
+        "AnswerMode",
+        "CurrentTruthPermitted",
+        "HistoricalContextPermitted",
+        "RetrievalEligible",
+        "ChatEligible",
+        "CaveatRequired",
+        "CitationRequired",
+        "ProvenanceStatus",
+        "ConflictStatus",
+        "SupersessionStatus",
+        "RefusalReason",
+        "RevocationPath",
+        "Blockers",
+        "DecisionRationale",
+        "ApprovedBy",
+        "ApprovedAtUtc",
+        "Notes",
+    ):
+        assert field in template
+
+    for default in (
+        "| CurrentTruthPermitted | No |",
+        "| HistoricalContextPermitted | No |",
+        "| RetrievalEligible | No |",
+        "| ChatEligible | No |",
+        "| CaveatRequired | Yes |",
+        "| CitationRequired | Yes |",
+    ):
+        assert default in template
+
+
+def test_historical_answer_mode_links_from_related_controls_and_index():
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    retrieval_gate = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE)
+    retrieval_template = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_TEMPLATE)
+    mapping = _read(HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING)
+    exclusions = _read(HISTORICAL_RETRIEVAL_EXCLUSION_RULES)
+    answer_gate = _read(HISTORICAL_ANSWER_USE_PERMISSION_GATE)
+    scope_rules = _read(HISTORICAL_ANSWER_USE_SCOPE_RULES)
+    prompt = _read(HISTORICAL_ANSWER_MODE_CONTRACT_PROMPT)
+
+    for linked_doc in (
+        "HISTORICAL_ANSWER_MODE_CONTRACT.md",
+        "HISTORICAL_ANSWER_MODE_TEMPLATE.md",
+        "HISTORICAL_ANSWER_REFUSAL_POLICY.md",
+        "HISTORICAL_ANSWER_MODE_BLOCKER_MODEL.md",
+        "HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS.md",
+    ):
+        assert linked_doc in index
+        assert linked_doc in prompt
+
+    assert "Retrieval eligibility flows into the answer-mode contract" in retrieval_gate
+    assert "does not itself select answer mode at runtime" in retrieval_gate
+    assert "AnswerModeContractLink" in retrieval_template
+    assert "Retrieval modes link to future answer modes" in mapping
+    assert "Excluded evidence maps to refusal answer modes" in exclusions
+    assert "Answer-use permission is prerequisite to non-refusal answer modes" in answer_gate
+    assert "Answer scopes link to answer modes" in scope_rules
+
+
+def test_historical_answer_mode_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "db" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_ANSWER_MODE_CONTRACT,
+            HISTORICAL_ANSWER_MODE_TEMPLATE,
+            HISTORICAL_ANSWER_REFUSAL_POLICY,
+            HISTORICAL_ANSWER_MODE_BLOCKER_MODEL,
+            HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE,
+            HISTORICAL_RETRIEVAL_ELIGIBILITY_TEMPLATE,
+            HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING,
+            HISTORICAL_RETRIEVAL_EXCLUSION_RULES,
+            HISTORICAL_ANSWER_USE_PERMISSION_GATE,
+            HISTORICAL_ANSWER_USE_SCOPE_RULES,
+            HISTORICAL_ANSWER_MODE_CONTRACT_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No retrieval runtime changes",
+        "No answer synthesis runtime changes",
+        "No chat exposure",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No runtime answer-use permission activation",
+        "No runtime retrieval eligibility activation",
+        "does not expose chat",
+        "does not call a live LLM",
+        "does not change retrieval runtime",
+        "does not change answer synthesis runtime",
+        "does not mutate corpus",
+        "does not ingest source content",
+        "does not promote current truth",
+        "does not activate answer use at runtime",
         "does not write to a database",
         "does not create endpoint",
         "does not create UI",

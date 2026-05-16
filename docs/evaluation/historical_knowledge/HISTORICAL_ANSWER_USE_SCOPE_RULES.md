@@ -69,3 +69,21 @@ Evidence scopes link to retrieval eligibility and answer modes through `docs/eva
 `DEVELOPER_LOG_CONTEXT` maps to historical-context retrieval eligibility unless separately promoted.
 
 `NOT_ANSWERABLE`, `SUPERSEDED_NOT_ANSWERABLE`, and `CONFLICTED_NOT_ANSWERABLE` map to excluded retrieval states and must not be used for current-truth answer generation.
+
+## 6. Answer Scopes to Answer Modes
+
+Answer scopes link to answer modes through `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_MODE_CONTRACT.md`.
+
+Historical-context answer scope maps to `HISTORICAL_CONTEXT_ANSWER` and must be labelled historical.
+
+Current-truth answer scope maps to `CURRENT_TRUTH_ANSWER` only after current-truth promotion, answer-use permission, retrieval eligibility, provenance, and citation support.
+
+Current-truth-with-caveat answer scope maps to `CAVEATED_CURRENT_TRUTH_ANSWER` only with visible caveat.
+
+Backlog/follow-up answer scope maps to `BACKLOG_CONTEXT_ANSWER` and must distinguish planned, deferred, blocked, and implemented states.
+
+Doctrine or hardening answer scope maps to `DOCTRINE_CONTEXT_ANSWER` or `HARDENING_CONTEXT_ANSWER` and must not be treated as runtime implementation evidence unless separately supported.
+
+Developer-log answer scope maps to `DEVELOPER_LOG_CONTEXT_ANSWER` and must not be used as standalone current truth.
+
+Not-answerable, superseded, conflicted, missing-permission, or missing-retrieval scopes map to refusal answer modes.

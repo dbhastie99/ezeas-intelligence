@@ -173,7 +173,17 @@ This slice does not call a live LLM.
 
 Chat exposure requires later answer-mode contract, refusal policy, citation/provenance answer contract, and pilot-readiness gate.
 
-## 14. Runtime Boundary
+## 14. Answer-Mode Contract Dependency
+
+Retrieval eligibility flows into the answer-mode contract at `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_MODE_CONTRACT.md`.
+
+Retrieval eligibility helps determine which answer modes may be considered, but it does not itself select answer mode at runtime.
+
+Retrieval eligibility alone does not implement answer synthesis, answer-mode enforcement, citation/provenance enforcement, refusal behaviour, or chat exposure.
+
+Absent, blocked, revoked, superseded, conflicted, or excluded retrieval eligibility must map to refusal or insufficient-evidence answer modes under the answer-mode contract.
+
+## 15. Runtime Boundary
 
 This slice does not implement retrieval filtering.
 
@@ -185,7 +195,7 @@ This slice does not activate retrieval eligibility at runtime.
 
 This slice does not mutate corpus or evidence stores.
 
-## 15. Blocker Handling
+## 16. Blocker Handling
 
 Blocked decisions must record one or more blocker codes and the required resolution path:
 
@@ -210,7 +220,7 @@ Blocked decisions must record one or more blocker codes and the required resolut
 
 Resolving a blocker only permits reassessment of the retrieval eligibility decision. It does not enable retrieval runtime, expose chat, call a live LLM, or make evidence answerable.
 
-## 16. What Retrieval Eligibility Gate Does Not Mean
+## 17. What Retrieval Eligibility Gate Does Not Mean
 
 Creating retrieval eligibility docs does not expose chat.
 
@@ -230,7 +240,7 @@ Retrieval eligibility gate does not write to a database.
 
 Retrieval eligibility gate does not create endpoint or UI changes.
 
-## 17. Developer Handoff
+## 18. Developer Handoff
 
 Future developers must use this gate after answer-use permission and before any runtime retrieval filtering, answer-mode contract, citation/provenance answer contract, refusal policy, pilot-readiness gate, or chat exposure.
 

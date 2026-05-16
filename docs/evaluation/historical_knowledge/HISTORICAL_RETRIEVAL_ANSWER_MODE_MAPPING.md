@@ -49,3 +49,18 @@ Backlog/context mode must not present backlog items as implemented behaviour.
 Doctrine/context mode must preserve source and review status.
 
 Excluded mode must not be used for answer generation.
+
+## 5. Retrieval Modes to Answer Modes
+
+Retrieval modes link to future answer modes through `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_MODE_CONTRACT.md`.
+
+| RetrievalMode | Candidate AnswerMode |
+| --- | --- |
+| `CURRENT_TRUTH_MODE` | `CURRENT_TRUTH_ANSWER` only when current-truth promotion, answer-use permission, retrieval eligibility, provenance, and citation support exist. |
+| `HISTORICAL_CONTEXT_MODE` | `HISTORICAL_CONTEXT_ANSWER` with visible historical labelling. |
+| `CAVEATED_ANSWER_MODE` | `CAVEATED_CURRENT_TRUTH_ANSWER` only when caveat text or caveat pointer is visible. |
+| `BACKLOG_CONTEXT_MODE` | `BACKLOG_CONTEXT_ANSWER` and never implemented behaviour unless separately supported. |
+| `DOCTRINE_CONTEXT_MODE` | `DOCTRINE_CONTEXT_ANSWER` or `HARDENING_CONTEXT_ANSWER` within approved scope. |
+| `EXCLUDED_MODE` | `REFUSAL_RETRIEVAL_NOT_ELIGIBLE`, `REFUSAL_NOT_ANSWER_APPROVED`, `REFUSAL_CONFLICTED_EVIDENCE`, `REFUSAL_SUPERSEDED_EVIDENCE`, or `REFUSAL_INSUFFICIENT_GOVERNED_EVIDENCE`. |
+
+This mapping does not implement retrieval runtime, answer synthesis runtime, chat exposure, or runtime answer-mode selection.

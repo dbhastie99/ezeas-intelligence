@@ -164,7 +164,17 @@ This slice does not call a live LLM.
 
 Chat exposure requires a later chat answer contract and pilot-readiness gate.
 
-## 14. Blocker Handling
+## 14. Answer-Mode Contract Dependency
+
+Answer-use permission is prerequisite to non-refusal answer modes under `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_MODE_CONTRACT.md`.
+
+Blocked, revoked, superseded, rejected, or missing answer-use permission must map to refusal or insufficient-evidence answer modes.
+
+Historical-context answer-use approval must not be treated as current-truth answer-mode approval.
+
+Answer-use permission alone does not implement retrieval, answer synthesis runtime, answer-mode enforcement, or chat exposure.
+
+## 15. Blocker Handling
 
 Blocked decisions must record one or more blocker codes and the required resolution path:
 
@@ -187,7 +197,7 @@ Blocked decisions must record one or more blocker codes and the required resolut
 
 Resolving a blocker only permits reassessment of the answer-use decision. It does not enable retrieval, expose chat, call a live LLM, or make evidence answerable.
 
-## 15. What Answer-Use Permission Gate Does Not Mean
+## 16. What Answer-Use Permission Gate Does Not Mean
 
 Creating answer-use permission docs does not expose chat.
 
@@ -207,7 +217,7 @@ Answer-use gate does not write to a database.
 
 Answer-use gate does not create endpoint or UI changes.
 
-## 16. Developer Handoff
+## 17. Developer Handoff
 
 Future developers must use this gate after current-truth promotion control when current-truth answer use is requested, or after historical review/ingestion controls when historical-context answer use is requested.
 
