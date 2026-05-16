@@ -460,6 +460,18 @@ HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS.md"
 )
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING.md"
+)
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.md"
+)
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md"
+)
 HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_SERVICE = Path(
     "app/services/historical_read_only_gated_retrieval_skeleton_service.py"
 )
@@ -684,6 +696,9 @@ HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PROMPT = Path(
 )
 HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_gated_retrieval_skeleton_candidate_v0_1.md"
+)
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_gated_retrieval_skeleton_contract_hardening_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -4651,8 +4666,12 @@ def test_historical_read_only_gated_retrieval_skeleton_docs_and_service_exist():
     assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT.exists()
     assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG.exists()
     assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.exists()
     assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_SERVICE.exists()
     assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE_PROMPT.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING_PROMPT.exists()
 
 
 def test_historical_read_only_gated_retrieval_response_defaults_are_no_runtime():
@@ -4661,6 +4680,27 @@ def test_historical_read_only_gated_retrieval_response_defaults_are_no_runtime()
     )
 
     response = evaluate_historical_retrieval_gate(_approved_current_truth_metadata())
+
+    for required_field in (
+        "RetrievalGateSkeletonImplemented",
+        "LiveRetrievalPerformed",
+        "LiveLLMCalled",
+        "CorpusMutationPerformed",
+        "DatabaseReadPerformed",
+        "DatabaseWritePerformed",
+        "EndpointUIPresent",
+        "RetrievalDecision",
+        "RetrievalMode",
+        "ExpectedAnswerMode",
+        "RefusalReason",
+        "CitationRequired",
+        "CaveatRequired",
+        "RuntimeBoundaryAsserted",
+        "Guardrails",
+        "NonGoals",
+        "Explanation",
+    ):
+        assert required_field in response
 
     assert response["RetrievalGateSkeletonImplemented"] is True
     assert response["LiveRetrievalPerformed"] is False
@@ -4679,39 +4719,67 @@ def test_historical_read_only_gated_retrieval_refusal_decisions():
 
     missing_answer_use = _approved_current_truth_metadata()
     missing_answer_use.pop("AnswerUsePermissionStatus")
-    assert evaluate_historical_retrieval_gate(missing_answer_use)["RefusalReason"] == (
-        "ANSWER_USE_PERMISSION_MISSING_OR_BLOCKED"
+    missing_answer_use_response = evaluate_historical_retrieval_gate(missing_answer_use)
+    assert missing_answer_use_response["RetrievalDecision"] == (
+        "REFUSE_MISSING_ANSWER_USE_PERMISSION"
     )
+    assert missing_answer_use_response["RefusalReason"] == "ANSWER_USE_PERMISSION_MISSING_OR_BLOCKED"
 
     missing_retrieval = _approved_current_truth_metadata()
     missing_retrieval.pop("RetrievalEligibilityStatus")
-    assert evaluate_historical_retrieval_gate(missing_retrieval)["RefusalReason"] == (
-        "RETRIEVAL_ELIGIBILITY_MISSING_OR_BLOCKED"
+    missing_retrieval_response = evaluate_historical_retrieval_gate(missing_retrieval)
+    assert missing_retrieval_response["RetrievalDecision"] == (
+        "REFUSE_MISSING_RETRIEVAL_ELIGIBILITY"
     )
+    assert missing_retrieval_response["RefusalReason"] == "RETRIEVAL_ELIGIBILITY_MISSING_OR_BLOCKED"
 
     missing_provenance = _approved_current_truth_metadata()
     missing_provenance["ProvenanceStatus"] = "MISSING"
-    assert evaluate_historical_retrieval_gate(missing_provenance)["RefusalReason"] == (
-        "MISSING_OR_INCOMPLETE_PROVENANCE"
-    )
+    missing_provenance_response = evaluate_historical_retrieval_gate(missing_provenance)
+    assert missing_provenance_response["RetrievalDecision"] == "REFUSE_MISSING_PROVENANCE"
+    assert missing_provenance_response["RefusalReason"] == "MISSING_OR_INCOMPLETE_PROVENANCE"
 
     conflicted = _approved_current_truth_metadata()
     conflicted["ConflictStatus"] = "CONFLICTED"
-    assert evaluate_historical_retrieval_gate(conflicted)["RefusalReason"] == (
-        "CONFLICTED_EVIDENCE_WITHOUT_APPROVED_CAVEAT"
-    )
+    conflicted_response = evaluate_historical_retrieval_gate(conflicted)
+    assert conflicted_response["RetrievalDecision"] == "REFUSE_CONFLICTED_EVIDENCE"
+    assert conflicted_response["RefusalReason"] == "CONFLICTED_EVIDENCE_WITHOUT_APPROVED_CAVEAT"
 
     superseded = _approved_current_truth_metadata()
     superseded["SupersessionStatus"] = "SUPERSEDED"
-    assert evaluate_historical_retrieval_gate(superseded)["RefusalReason"] == (
-        "SUPERSEDED_EVIDENCE_CANNOT_ANSWER_CURRENT_TRUTH"
-    )
+    superseded_response = evaluate_historical_retrieval_gate(superseded)
+    assert superseded_response["RetrievalDecision"] == "REFUSE_SUPERSEDED_EVIDENCE"
+    assert superseded_response["ExpectedAnswerMode"] == "REFUSAL"
+    assert superseded_response["RefusalReason"] == "SUPERSEDED_EVIDENCE_CANNOT_ANSWER_CURRENT_TRUTH"
 
     historical_current_truth_request = _approved_current_truth_metadata()
     historical_current_truth_request["EvidenceScope"] = "HISTORICAL_CONTEXT_ONLY"
-    assert evaluate_historical_retrieval_gate(historical_current_truth_request)["RefusalReason"] == (
+    historical_current_truth_response = evaluate_historical_retrieval_gate(
+        historical_current_truth_request
+    )
+    assert historical_current_truth_response["RetrievalDecision"] == (
+        "REFUSE_HISTORICAL_CONTEXT_NOT_CURRENT_TRUTH"
+    )
+    assert historical_current_truth_response["ExpectedAnswerMode"] == "HISTORICAL_CONTEXT_ONLY"
+    assert historical_current_truth_response["RefusalReason"] == (
         "HISTORICAL_CONTEXT_ONLY_CANNOT_ANSWER_CURRENT_TRUTH"
     )
+
+    not_answerable = _approved_current_truth_metadata()
+    not_answerable["EvidenceAnswerable"] = False
+    not_answerable_response = evaluate_historical_retrieval_gate(not_answerable)
+    assert not_answerable_response["RetrievalDecision"] == "REFUSE_NOT_ANSWERABLE"
+    assert not_answerable_response["RefusalReason"] == "EVIDENCE_NOT_ANSWERABLE"
+
+    runtime_required = _approved_current_truth_metadata()
+    runtime_required["LiveRetrievalRequired"] = True
+    runtime_required_response = evaluate_historical_retrieval_gate(runtime_required)
+    assert runtime_required_response["RetrievalDecision"] == "BLOCKED_RUNTIME_NOT_IMPLEMENTED"
+    assert runtime_required_response["LiveRetrievalPerformed"] is False
+    assert runtime_required_response["LiveLLMCalled"] is False
+    assert runtime_required_response["DatabaseReadPerformed"] is False
+    assert runtime_required_response["DatabaseWritePerformed"] is False
+    assert runtime_required_response["RuntimeBoundaryAsserted"] is True
 
 
 def test_historical_read_only_gated_retrieval_eligible_decisions_and_caveat_preservation():
@@ -4722,7 +4790,7 @@ def test_historical_read_only_gated_retrieval_eligible_decisions_and_caveat_pres
     current_truth_response = evaluate_historical_retrieval_gate(
         _approved_current_truth_metadata()
     )
-    assert current_truth_response["RetrievalDecision"] == "ELIGIBLE_CURRENT_TRUTH"
+    assert current_truth_response["RetrievalDecision"] == "ELIGIBLE_CURRENT_TRUTH_RETRIEVAL"
     assert current_truth_response["ExpectedAnswerMode"] == "CURRENT_TRUTH"
 
     historical_context = _approved_current_truth_metadata()
@@ -4730,13 +4798,38 @@ def test_historical_read_only_gated_retrieval_eligible_decisions_and_caveat_pres
     historical_context["AnswerMode"] = "HISTORICAL_CONTEXT"
     historical_context["CurrentTruthPermitted"] = False
     historical_context_response = evaluate_historical_retrieval_gate(historical_context)
-    assert historical_context_response["RetrievalDecision"] == "ELIGIBLE_HISTORICAL_CONTEXT"
+    assert historical_context_response["RetrievalDecision"] == (
+        "ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL"
+    )
     assert historical_context_response["ExpectedAnswerMode"] == "HISTORICAL_CONTEXT_ONLY"
 
     caveated = _approved_current_truth_metadata()
     caveated["CaveatRequired"] = True
     caveated_response = evaluate_historical_retrieval_gate(caveated)
+    assert caveated_response["RetrievalDecision"] == "ELIGIBLE_CAVEATED_RETRIEVAL"
     assert caveated_response["CaveatRequired"] is True
+
+
+def test_historical_read_only_gated_retrieval_decision_catalog_is_complete():
+    catalog = _read(HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG)
+
+    for decision in (
+        "ELIGIBLE_CURRENT_TRUTH_RETRIEVAL",
+        "ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL",
+        "ELIGIBLE_CAVEATED_RETRIEVAL",
+        "REFUSE_MISSING_ANSWER_USE_PERMISSION",
+        "REFUSE_MISSING_RETRIEVAL_ELIGIBILITY",
+        "REFUSE_MISSING_PROVENANCE",
+        "REFUSE_CONFLICTED_EVIDENCE",
+        "REFUSE_SUPERSEDED_EVIDENCE",
+        "REFUSE_HISTORICAL_CONTEXT_NOT_CURRENT_TRUTH",
+        "REFUSE_NOT_ANSWERABLE",
+        "BLOCKED_RUNTIME_NOT_IMPLEMENTED",
+    ):
+        assert decision in catalog
+
+    assert "RuntimeActionPermitted" in catalog
+    assert catalog.count("| No |") >= 11
 
 
 def test_historical_read_only_gated_retrieval_docs_record_no_runtime_boundaries():
@@ -4747,6 +4840,9 @@ def test_historical_read_only_gated_retrieval_docs_record_no_runtime_boundaries(
             HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT,
             HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG,
             HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS,
+            HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING,
+            HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG,
+            HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT,
         )
     )
 
@@ -4772,10 +4868,14 @@ def test_historical_read_only_gated_retrieval_links_from_runtime_controls():
     index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
 
     assert "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md" in matrix
-    assert "ELIGIBLE_CURRENT_TRUTH" in outcomes
-    assert "ELIGIBLE_HISTORICAL_CONTEXT" in outcomes
+    assert "ELIGIBLE_CURRENT_TRUTH_RETRIEVAL" in outcomes
+    assert "ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL" in outcomes
+    assert "ELIGIBLE_CAVEATED_RETRIEVAL" in outcomes
+    assert "REFUSE_NOT_ANSWERABLE" in outcomes
     assert "read-only gated retrieval skeleton is in-memory metadata evaluation only" in assertions
+    assert "BLOCKED_RUNTIME_NOT_IMPLEMENTED" in assertions
     assert "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md" in retrieval
+    assert "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.md" in retrieval
     assert "ReadOnlyGatedRetrievalSkeletonCandidateLink" in entry
 
     for linked_doc in (
@@ -4783,6 +4883,9 @@ def test_historical_read_only_gated_retrieval_links_from_runtime_controls():
         "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT.md",
         "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG.md",
         "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS.md",
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING.md",
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.md",
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md",
     ):
         assert linked_doc in index
 

@@ -104,6 +104,8 @@ The test matrix link does not implement runtime retrieval or activate runtime re
 
 The first read-only gated retrieval skeleton candidate is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md`. It evaluates supplied metadata in-memory only and does not use live retrieval, vector search, corpus query, database read/write, live LLM, endpoint/UI, chat, answer synthesis runtime, or citation rendering runtime.
 
+The hardened contract is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING.md`. The hardened decision catalog is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.md`; all decisions preserve RuntimeActionPermitted No. The contract closeout is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md`.
+
 ## 11. Boundary
 
 This document is design only. It does not implement runtime retrieval, retrieval filtering, endpoint/UI, live LLM calls, corpus mutation, database writes, or chat exposure.

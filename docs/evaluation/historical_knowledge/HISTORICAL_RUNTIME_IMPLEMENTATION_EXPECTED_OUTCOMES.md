@@ -35,12 +35,16 @@ The read-only gated retrieval skeleton candidate is `HISTORICAL_READ_ONLY_GATED_
 
 Its metadata-only decisions map to these expected outcomes:
 
-- `ELIGIBLE_CURRENT_TRUTH` maps to allowed current-truth answer gate handoff only.
-- `ELIGIBLE_HISTORICAL_CONTEXT` maps to allowed historical-context answer gate handoff only.
-- `REFUSED_NOT_ELIGIBLE` maps to refusal not answer-approved or retrieval not eligible.
-- `REFUSED_MISSING_PROVENANCE` maps to refusal missing provenance.
-- `REFUSED_CONFLICTED` maps to refusal conflicted.
-- `REFUSED_SUPERSEDED_CURRENT_TRUTH` maps to refusal superseded.
-- `REFUSED_HISTORICAL_CONTEXT_ONLY` maps to refusal where historical-context-only evidence is requested as current truth.
+- `ELIGIBLE_CURRENT_TRUTH_RETRIEVAL` maps to allowed current-truth answer gate handoff only.
+- `ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL` maps to allowed historical-context answer gate handoff only.
+- `ELIGIBLE_CAVEATED_RETRIEVAL` maps to allowed caveated answer gate handoff only.
+- `REFUSE_MISSING_ANSWER_USE_PERMISSION` maps to refusal not answer-approved.
+- `REFUSE_MISSING_RETRIEVAL_ELIGIBILITY` maps to refusal retrieval not eligible.
+- `REFUSE_MISSING_PROVENANCE` maps to refusal missing provenance.
+- `REFUSE_CONFLICTED_EVIDENCE` maps to refusal conflicted.
+- `REFUSE_SUPERSEDED_EVIDENCE` maps to refusal superseded.
+- `REFUSE_HISTORICAL_CONTEXT_NOT_CURRENT_TRUTH` maps to refusal where historical-context-only evidence is requested as current truth.
+- `REFUSE_NOT_ANSWERABLE` maps to refusal not answerable.
+- `BLOCKED_RUNTIME_NOT_IMPLEMENTED` maps to explicit runtime-not-implemented blocking.
 
 These are gate decisions only. They do not synthesize answers, render citations, perform retrieval, or expose chat.

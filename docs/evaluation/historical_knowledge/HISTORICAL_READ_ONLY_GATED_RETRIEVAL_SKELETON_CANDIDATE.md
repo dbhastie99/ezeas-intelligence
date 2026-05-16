@@ -6,7 +6,7 @@ Date: 16 May 2026
 
 ## Purpose
 
-This document defines the first Minerva historical read-only gated retrieval skeleton candidate.
+This document defines the first Minerva historical read-only gated retrieval skeleton candidate and records its hardened response contract.
 
 The skeleton is an in-memory and metadata-only gate evaluator. It accepts supplied metadata and returns a deterministic gate decision for answer-use permission, retrieval eligibility, answer mode, citation/provenance, conflict, supersession, current-truth, historical-context, caveat, and refusal handling.
 
@@ -18,17 +18,29 @@ It does not retrieve evidence. It evaluates metadata already supplied by a calle
 
 ## Decisions
 
-The candidate supports these deterministic decisions:
+The hardened candidate supports these deterministic decisions:
 
-- `REFUSED_NOT_ELIGIBLE`
-- `REFUSED_MISSING_PROVENANCE`
-- `REFUSED_CONFLICTED`
-- `REFUSED_SUPERSEDED_CURRENT_TRUTH`
-- `REFUSED_HISTORICAL_CONTEXT_ONLY`
-- `ELIGIBLE_CURRENT_TRUTH`
-- `ELIGIBLE_HISTORICAL_CONTEXT`
+- `ELIGIBLE_CURRENT_TRUTH_RETRIEVAL`
+- `ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL`
+- `ELIGIBLE_CAVEATED_RETRIEVAL`
+- `REFUSE_MISSING_ANSWER_USE_PERMISSION`
+- `REFUSE_MISSING_RETRIEVAL_ELIGIBILITY`
+- `REFUSE_MISSING_PROVENANCE`
+- `REFUSE_CONFLICTED_EVIDENCE`
+- `REFUSE_SUPERSEDED_EVIDENCE`
+- `REFUSE_HISTORICAL_CONTEXT_NOT_CURRENT_TRUTH`
+- `REFUSE_NOT_ANSWERABLE`
+- `BLOCKED_RUNTIME_NOT_IMPLEMENTED`
 
 Historical sources are not answerable current truth by default. Historical-context-only metadata remains historical-context-only and must not become current truth.
+
+## Contract Hardening Link
+
+Contract hardening is governed by `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING.md`.
+
+Decision values are defined in `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.md`.
+
+Closeout is recorded in `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md`.
 
 ## Runtime Boundary
 

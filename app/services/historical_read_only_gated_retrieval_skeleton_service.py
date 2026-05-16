@@ -6,6 +6,7 @@ ANSWER_USE_BLOCKERS = {"", "MISSING", "BLOCK", "BLOCKED", "REVOKED", "REJECTED",
 RETRIEVAL_BLOCKERS = {"", "MISSING", "BLOCK", "BLOCKED", "REVOKED", "REJECTED", "EXCLUDED"}
 PROVENANCE_BLOCKERS = {"", "MISSING", "INCOMPLETE"}
 CONFLICT_BLOCKERS = {"UNRESOLVED", "CONFLICTED"}
+NOT_ANSWERABLE_VALUES = {"NOT_ANSWERABLE", "UNANSWERABLE", "NO_ANSWER_USE"}
 
 
 @dataclass(frozen=True)
@@ -69,9 +70,31 @@ def evaluate_historical_retrieval_gate(
     citation_required = _bool_value(metadata, "CitationRequired", True)
     caveat_required = _bool_value(metadata, "CaveatRequired", False)
 
+    if _runtime_requested(metadata):
+        return _response(
+            decision="BLOCKED_RUNTIME_NOT_IMPLEMENTED",
+            mode="RUNTIME_NOT_IMPLEMENTED",
+            answer_mode="REFUSAL",
+            reason="RUNTIME_RETRIEVAL_NOT_IMPLEMENTED",
+            citation_required=citation_required,
+            caveat_required=caveat_required,
+            explanation="Runtime retrieval is not implemented; this skeleton only evaluates supplied metadata in-memory.",
+        )
+
+    if _not_answerable(metadata, evidence_scope, answer_mode):
+        return _response(
+            decision="REFUSE_NOT_ANSWERABLE",
+            mode="REFUSAL",
+            answer_mode="REFUSAL",
+            reason="EVIDENCE_NOT_ANSWERABLE",
+            citation_required=citation_required,
+            caveat_required=caveat_required,
+            explanation="Evidence is explicitly marked not answerable and cannot be used for retrieval handoff.",
+        )
+
     if answer_use_status in ANSWER_USE_BLOCKERS:
         return _response(
-            decision="REFUSED_NOT_ELIGIBLE",
+            decision="REFUSE_MISSING_ANSWER_USE_PERMISSION",
             mode="REFUSAL",
             answer_mode="REFUSAL",
             reason="ANSWER_USE_PERMISSION_MISSING_OR_BLOCKED",
@@ -82,7 +105,7 @@ def evaluate_historical_retrieval_gate(
 
     if retrieval_status in RETRIEVAL_BLOCKERS:
         return _response(
-            decision="REFUSED_NOT_ELIGIBLE",
+            decision="REFUSE_MISSING_RETRIEVAL_ELIGIBILITY",
             mode="REFUSAL",
             answer_mode="REFUSAL",
             reason="RETRIEVAL_ELIGIBILITY_MISSING_OR_BLOCKED",
@@ -93,7 +116,7 @@ def evaluate_historical_retrieval_gate(
 
     if provenance_status in PROVENANCE_BLOCKERS or citation_status in PROVENANCE_BLOCKERS:
         return _response(
-            decision="REFUSED_MISSING_PROVENANCE",
+            decision="REFUSE_MISSING_PROVENANCE",
             mode="REFUSAL",
             answer_mode="REFUSAL",
             reason="MISSING_OR_INCOMPLETE_PROVENANCE",
@@ -104,7 +127,7 @@ def evaluate_historical_retrieval_gate(
 
     if conflict_status in CONFLICT_BLOCKERS and not _approved_caveat_present(metadata):
         return _response(
-            decision="REFUSED_CONFLICTED",
+            decision="REFUSE_CONFLICTED_EVIDENCE",
             mode="REFUSAL",
             answer_mode="REFUSAL",
             reason="CONFLICTED_EVIDENCE_WITHOUT_APPROVED_CAVEAT",
@@ -115,7 +138,7 @@ def evaluate_historical_retrieval_gate(
 
     if supersession_status == "SUPERSEDED" and _requests_current_truth(answer_mode):
         return _response(
-            decision="REFUSED_SUPERSEDED_CURRENT_TRUTH",
+            decision="REFUSE_SUPERSEDED_EVIDENCE",
             mode="REFUSAL",
             answer_mode="REFUSAL",
             reason="SUPERSEDED_EVIDENCE_CANNOT_ANSWER_CURRENT_TRUTH",
@@ -126,7 +149,7 @@ def evaluate_historical_retrieval_gate(
 
     if evidence_scope == "HISTORICAL_CONTEXT_ONLY" and _requests_current_truth(answer_mode):
         return _response(
-            decision="REFUSED_HISTORICAL_CONTEXT_ONLY",
+            decision="REFUSE_HISTORICAL_CONTEXT_NOT_CURRENT_TRUTH",
             mode="HISTORICAL_CONTEXT_ONLY",
             answer_mode="HISTORICAL_CONTEXT_ONLY",
             reason="HISTORICAL_CONTEXT_ONLY_CANNOT_ANSWER_CURRENT_TRUTH",
@@ -145,8 +168,19 @@ def evaluate_historical_retrieval_gate(
         and supersession_status != "SUPERSEDED"
         and conflict_status not in CONFLICT_BLOCKERS
     ):
+        if caveat_required:
+            return _response(
+                decision="ELIGIBLE_CAVEATED_RETRIEVAL",
+                mode="READ_ONLY_METADATA_ONLY",
+                answer_mode="CAVEATED_CURRENT_TRUTH",
+                reason=None,
+                citation_required=citation_required,
+                caveat_required=True,
+                explanation="Metadata is eligible for caveated retrieval gate handoff only; caveat requirement is preserved.",
+            )
+
         return _response(
-            decision="ELIGIBLE_CURRENT_TRUTH",
+            decision="ELIGIBLE_CURRENT_TRUTH_RETRIEVAL",
             mode="READ_ONLY_METADATA_ONLY",
             answer_mode="CURRENT_TRUTH",
             reason=None,
@@ -162,7 +196,7 @@ def evaluate_historical_retrieval_gate(
         and (evidence_scope == "HISTORICAL_CONTEXT_ONLY" or _requests_historical_context(answer_mode))
     ):
         return _response(
-            decision="ELIGIBLE_HISTORICAL_CONTEXT",
+            decision="ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL",
             mode="READ_ONLY_METADATA_ONLY",
             answer_mode="HISTORICAL_CONTEXT_ONLY",
             reason=None,
@@ -172,7 +206,7 @@ def evaluate_historical_retrieval_gate(
         )
 
     return _response(
-        decision="REFUSED_NOT_ELIGIBLE",
+        decision="REFUSE_NOT_ANSWERABLE",
         mode="REFUSAL",
         answer_mode="REFUSAL",
         reason="NO_APPROVED_RETRIEVAL_PATH",
@@ -260,3 +294,27 @@ def _approved_caveat_present(metadata: dict[str, Any] | object) -> bool:
         "ApprovedCaveatPresent",
         False,
     )
+
+
+def _runtime_requested(metadata: dict[str, Any] | object) -> bool:
+    return any(
+        _bool_value(metadata, field_name, False)
+        for field_name in (
+            "RuntimeRequired",
+            "LiveRetrievalRequired",
+            "DatabaseReadRequired",
+            "LiveLLMRequired",
+            "EndpointUIRequired",
+        )
+    )
+
+
+def _not_answerable(
+    metadata: dict[str, Any] | object,
+    evidence_scope: str,
+    answer_mode: str,
+) -> bool:
+    evidence_answerable = _value(metadata, "EvidenceAnswerable")
+    if evidence_answerable is not None and not _bool_value(metadata, "EvidenceAnswerable", True):
+        return True
+    return evidence_scope in NOT_ANSWERABLE_VALUES or answer_mode in NOT_ANSWERABLE_VALUES

@@ -21,6 +21,8 @@ This document records explicit no-runtime assertions for the Minerva historical 
 - no DB write.
 - read-only gated retrieval skeleton is in-memory metadata evaluation only;
 - skeleton response is for gate evaluation only.
+- hardened skeleton decision catalog permits no runtime action;
+- `BLOCKED_RUNTIME_NOT_IMPLEMENTED` remains explicit when runtime behaviour is requested.
 
 ## Expanded Boundary
 
@@ -33,3 +35,5 @@ It also does not ingest source content, run source backfill, promote current tru
 `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md` adds a deterministic metadata-only helper. It does not use a live retrieval backend, does not call an LLM, does not expose chat, does not create endpoint/UI, does not mutate corpus, and does not perform DB read/write.
 
 The skeleton does not make historical sources answerable current truth and does not activate runtime answer-use permission or runtime retrieval eligibility beyond evaluating supplied metadata in-memory.
+
+The hardened skeleton contract is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING.md`; its decision catalog is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.md`; its closeout is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md`.

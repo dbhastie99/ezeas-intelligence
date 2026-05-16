@@ -38,3 +38,13 @@ This document records guardrails for the Minerva historical read-only gated retr
 This candidate does not make historical sources answerable current truth. It does not expose Minerva for chat. It does not implement retrieval runtime, answer synthesis runtime, or citation rendering runtime.
 
 The response is for gate evaluation only.
+
+## Contract Hardening
+
+The hardened contract is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_HARDENING.md`.
+
+The decision catalog is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_DECISION_CATALOG.md`.
+
+The closeout is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md`.
+
+All decisions remain read-only metadata decisions. RuntimeActionPermitted is No for all decisions.

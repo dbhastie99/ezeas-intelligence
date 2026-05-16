@@ -14,15 +14,17 @@ The fixtures are in-memory test metadata only. They do not create runtime data, 
 
 | Fixture | Expected Decision |
 | --- | --- |
-| missing answer-use permission | `REFUSED_NOT_ELIGIBLE` |
-| missing retrieval eligibility | `REFUSED_NOT_ELIGIBLE` |
-| missing provenance | `REFUSED_MISSING_PROVENANCE` |
-| conflicted evidence without caveat | `REFUSED_CONFLICTED` |
-| superseded evidence requested as current truth | `REFUSED_SUPERSEDED_CURRENT_TRUTH` |
-| historical-context-only evidence requested as current truth | `REFUSED_HISTORICAL_CONTEXT_ONLY` |
-| approved current-truth metadata | `ELIGIBLE_CURRENT_TRUTH` |
-| approved historical-context metadata | `ELIGIBLE_HISTORICAL_CONTEXT` |
-| caveat-required metadata | preserves `CaveatRequired: true` |
+| missing answer-use permission | `REFUSE_MISSING_ANSWER_USE_PERMISSION` |
+| missing retrieval eligibility | `REFUSE_MISSING_RETRIEVAL_ELIGIBILITY` |
+| missing provenance | `REFUSE_MISSING_PROVENANCE` |
+| conflicted evidence without caveat | `REFUSE_CONFLICTED_EVIDENCE` |
+| superseded evidence requested as current truth | `REFUSE_SUPERSEDED_EVIDENCE` |
+| historical-context-only evidence requested as current truth | `REFUSE_HISTORICAL_CONTEXT_NOT_CURRENT_TRUTH` |
+| approved current-truth metadata | `ELIGIBLE_CURRENT_TRUTH_RETRIEVAL` |
+| approved historical-context metadata | `ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL` |
+| caveat-required metadata | `ELIGIBLE_CAVEATED_RETRIEVAL`, preserves `CaveatRequired: true` |
+| not-answerable evidence | `REFUSE_NOT_ANSWERABLE` |
+| runtime requested or required | `BLOCKED_RUNTIME_NOT_IMPLEMENTED` |
 
 ## Boundary
 
