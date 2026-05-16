@@ -172,7 +172,15 @@ Chat exposure requires later pilot readiness gate.
 
 Chat exposure requires runtime enforcement of citation/provenance, answer-mode, refusal, and retrieval gates.
 
-## 16. Blocker Handling
+## 16. Runtime Gate Plan Flow
+
+Citation/provenance must flow into the runtime gate plan before chat readiness.
+
+The governing runtime gate plan is `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN.md`.
+
+Citation/provenance readiness is an input to runtime retrieval and answer synthesis gate planning only. It does not render citations at runtime, implement retrieval filtering, implement answer synthesis, permit live LLM calls, or expose chat.
+
+## 17. Blocker Handling
 
 Blocked decisions must record one or more blocker codes and the required resolution path:
 
@@ -196,7 +204,7 @@ Blocked decisions must record one or more blocker codes and the required resolut
 
 Resolving a blocker only permits reassessment of citation/provenance readiness. It does not enable retrieval runtime, citation rendering, answer synthesis runtime, chat, live LLM calls, or answerability.
 
-## 17. What Citation / Provenance Contract Does Not Mean
+## 18. What Citation / Provenance Contract Does Not Mean
 
 Creating citation/provenance docs does not expose chat.
 
@@ -224,7 +232,7 @@ Citation/provenance contract does not create endpoint changes.
 
 Citation/provenance contract does not create UI changes.
 
-## 18. Developer Handoff
+## 19. Developer Handoff
 
 Future developers must use this contract after answer-use permission, retrieval eligibility, and answer mode are recorded and before any answer synthesis runtime, citation rendering runtime, pilot-readiness gate, or chat exposure.
 

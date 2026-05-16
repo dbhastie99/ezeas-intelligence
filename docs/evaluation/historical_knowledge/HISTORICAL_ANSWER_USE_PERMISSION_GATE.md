@@ -182,6 +182,12 @@ Future chat use requires the answer-use permission id to flow into `docs/evaluat
 
 Answer-use permission alone does not render citations, satisfy provenance, implement retrieval, implement answer synthesis runtime, or expose chat.
 
+## 14b. Runtime Enforcement Before Chat
+
+Answer-use permission must be runtime-enforced before chat exposure.
+
+Answer-use permission records are planning inputs only until a later runtime gate implementation design and pilot readiness approval exist.
+
 ## 15. Blocker Handling
 
 Blocked decisions must record one or more blocker codes and the required resolution path:

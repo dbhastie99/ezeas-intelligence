@@ -202,6 +202,10 @@ Chat exposure requires later pilot readiness gate.
 
 Chat exposure requires runtime retrieval gating, answer-mode enforcement, citation/provenance enforcement, and refusal behaviour tests.
 
+Answer modes must be runtime-enforced before chat exposure.
+
+Approved answer-mode controls are planning inputs only until a later runtime gate implementation design and pilot readiness approval exist.
+
 ## 18. Blocker Handling
 
 Blocked decisions must record one or more blocker codes and the required resolution path:

@@ -394,6 +394,23 @@ HISTORICAL_CITATION_PROVENANCE_REFUSAL_RULES = (
 HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md"
 )
+HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN.md"
+)
+HISTORICAL_RUNTIME_GATE_CHAIN_REQUIREMENTS = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RUNTIME_GATE_CHAIN_REQUIREMENTS.md"
+)
+HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL.md"
+)
+HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE.md"
+)
+HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -581,6 +598,9 @@ HISTORICAL_ANSWER_MODE_CONTRACT_PROMPT = Path(
 )
 HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_citation_provenance_answer_contract_v0_1.md"
+)
+HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_runtime_retrieval_answer_synthesis_gate_plan_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -3864,6 +3884,337 @@ def test_historical_citation_provenance_slice_introduces_only_docs_tests_and_no_
         "does not write to a database",
         "does not create endpoint",
         "does not create UI",
+    ):
+        assert required_boundary in combined
+
+
+def test_historical_runtime_gate_plan_docs_exist():
+    assert HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN.exists()
+    assert HISTORICAL_RUNTIME_GATE_CHAIN_REQUIREMENTS.exists()
+    assert HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL.exists()
+    assert HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE.exists()
+    assert HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.exists()
+    assert HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN_PROMPT.exists()
+
+
+def test_historical_runtime_gate_plan_statuses_and_inputs_are_complete():
+    plan = _read(HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN)
+
+    for status in (
+        "RUNTIME_GATE_PLAN_NOT_STARTED",
+        "RUNTIME_GATE_PLAN_DRAFTED",
+        "RUNTIME_GATE_PLAN_BLOCKED",
+        "RUNTIME_GATE_PLAN_DEFERRED",
+        "RUNTIME_GATE_READY_FOR_IMPLEMENTATION_DESIGN",
+        "RUNTIME_GATE_REQUIRES_PILOT_READINESS_REVIEW",
+        "RUNTIME_GATE_REJECTED",
+        "RUNTIME_GATE_SUPERSEDED",
+    ):
+        assert status in plan
+
+    for upstream_doc in (
+        "HISTORICAL_ANSWER_USE_PERMISSION_GATE.md",
+        "HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md",
+        "HISTORICAL_ANSWER_MODE_CONTRACT.md",
+        "HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md",
+        "HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md",
+        "HISTORICAL_ANSWER_REFUSAL_POLICY.md",
+        "HISTORICAL_RETRIEVAL_EXCLUSION_RULES.md",
+        "HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md",
+        "HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md",
+    ):
+        assert upstream_doc in plan
+
+
+def test_historical_runtime_gate_plan_runtime_requirements_are_governed():
+    plan = _read(HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN)
+
+    assert "Runtime retrieval must check retrieval eligibility before exposing evidence to answer synthesis" in plan
+    assert "Not-answerable, blocked, revoked, superseded, conflicted, missing-provenance, and missing-citation evidence must be excluded from current-truth answer mode" in plan
+    assert "Historical-context evidence must only be retrievable for historical-context answer mode" in plan
+    assert "Caveated evidence must carry caveat metadata forward" in plan
+
+    for field in (
+        "SourceId",
+        "EvidenceScope",
+        "RetrievalMode",
+        "AnswerScope",
+        "provenance status",
+        "conflict status",
+        "supersession status",
+        "revocation path",
+    ):
+        assert field in plan
+
+    assert "Answer-use permission must be checked before non-refusal answer modes" in plan
+    assert "Missing, blocked, rejected, revoked, or superseded answer-use permission must produce refusal or insufficient-governed-evidence behaviour" in plan
+    assert "Current-truth answer use requires separate current-truth permission and answer-use permission" in plan
+    assert "Answer-use gate must not override retrieval exclusion rules" in plan
+
+
+def test_historical_runtime_gate_plan_answer_mode_citation_refusal_and_conflict_rules():
+    plan = _read(HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN)
+
+    for required_rule in (
+        "Answer mode must be selected from approved answer-mode statuses only",
+        "Answer mode must match retrieval mode and evidence scope",
+        "Historical-context mode must not be rendered as current truth",
+        "Backlog/follow-up context must not be rendered as implemented behaviour",
+        "Doctrine/hardening context must not be rendered as runtime implementation evidence",
+        "Refusal modes must be available when gates fail",
+        "Non-refusal answers must have required citation/provenance fields",
+        "Missing provenance must block chat-answer readiness",
+        "Citation rendering is not implemented in this slice",
+        "Absent answer-use permission, absent retrieval eligibility, absent answer mode, missing provenance, unresolved conflict, supersession, or missing citation must map to refusal or insufficient governed evidence",
+        "Refusal must not fabricate citations",
+        "Refusal must identify the missing or blocked gate where known",
+        "Conflicted evidence cannot produce settled/current-truth answers",
+        "Superseded evidence cannot produce current-truth answers",
+        "Caveated answer use requires explicit approval and visible caveat",
+        "Superseded or conflicted material may be historical context only where approved and labelled",
+    ):
+        assert required_rule in plan
+
+    for citation_field in (
+        "SourceId",
+        "SourceTitle",
+        "SourceDate",
+        "unknown-date marker",
+        "RepositoryContext",
+        "DomainContext",
+        "AnswerUsePermissionId",
+        "RetrievalEligibilityId",
+        "AnswerModeId",
+        "EvidenceScope",
+        "RetrievalMode",
+        "AnswerMode",
+        "RevocationPath",
+    ):
+        assert citation_field in plan
+
+
+def test_historical_runtime_gate_plan_chat_boundary_stop_conditions_and_non_goals():
+    plan = _read(HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN)
+
+    assert "This slice does not expose chat" in plan
+    assert "pilot readiness approval" in plan
+    assert "Chat pilot must be read-only initially" in plan
+
+    for stop_condition in (
+        "source content ingestion required",
+        "corpus mutation required",
+        "Code Evidence ingestion required",
+        "DB write required",
+        "endpoint/UI required",
+        "live LLM call required",
+        "retrieval runtime change required",
+        "answer synthesis runtime change required",
+        "citation rendering runtime required",
+        "current-truth promotion required",
+        "answer-use runtime activation required",
+        "retrieval eligibility runtime activation required",
+        "unresolved conflict/supersession behaviour",
+        "missing provenance/citation behaviour unresolved",
+    ):
+        assert stop_condition in plan
+
+    for non_goal in (
+        "runtime retrieval has been implemented",
+        "answer synthesis gating has been implemented",
+        "citation rendering has been implemented",
+        "chat has been exposed",
+        "live LLM can be called",
+        "corpus can be mutated",
+        "evidence has become answerable current truth",
+        "endpoint or UI exists",
+    ):
+        assert non_goal in plan
+
+
+def test_historical_runtime_gate_chain_blocker_template_and_chat_dependency_docs():
+    chain = _read(HISTORICAL_RUNTIME_GATE_CHAIN_REQUIREMENTS)
+    blockers = _read(HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL)
+    template = _read(HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE)
+    dependency = _read(HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP)
+
+    assert "source registration -> review/candidate/decision -> findings/classification -> ingestion/backfill decision -> current-truth promotion where applicable -> answer-use permission -> retrieval eligibility -> answer mode -> citation/provenance -> runtime gate -> chat pilot" in chain
+    assert "Missing links block chat readiness" in chain
+
+    for blocker in (
+        "MISSING_ANSWER_USE_GATE",
+        "MISSING_RETRIEVAL_ELIGIBILITY_GATE",
+        "MISSING_ANSWER_MODE_GATE",
+        "MISSING_CITATION_PROVENANCE_GATE",
+        "MISSING_REFUSAL_POLICY",
+        "MISSING_EVIDENCE_CHAIN",
+        "CONFLICT_BEHAVIOUR_UNRESOLVED",
+        "SUPERSESSION_BEHAVIOUR_UNRESOLVED",
+        "PROVENANCE_RUNTIME_ENFORCEMENT_UNDEFINED",
+        "CITATION_RUNTIME_ENFORCEMENT_UNDEFINED",
+        "RETRIEVAL_RUNTIME_NOT_DESIGNED",
+        "ANSWER_SYNTHESIS_RUNTIME_NOT_DESIGNED",
+        "CHAT_PILOT_READINESS_NOT_APPROVED",
+    ):
+        assert blocker in blockers
+    assert "does not itself implement runtime retrieval, answer synthesis, citation rendering, live LLM, endpoint/UI, or chat exposure" in blockers
+
+    for field in (
+        "RuntimeGateReadinessId",
+        "SourceDomain",
+        "AnswerUseGateReady",
+        "RetrievalEligibilityGateReady",
+        "AnswerModeGateReady",
+        "CitationProvenanceGateReady",
+        "RefusalPolicyReady",
+        "EvidenceChainReady",
+        "ConflictHandlingReady",
+        "SupersessionHandlingReady",
+        "RetrievalRuntimeDesignReady",
+        "AnswerSynthesisRuntimeDesignReady",
+        "CitationRenderingDesignReady",
+        "ChatPilotReadinessApproved",
+        "RuntimeImplementationPermitted",
+        "LiveLLMUsePermitted",
+        "EndpointUIPermitted",
+        "Blockers",
+        "DecisionRationale",
+        "ApprovedBy",
+        "ApprovedAtUtc",
+        "Notes",
+    ):
+        assert field in template
+    assert "`RuntimeImplementationPermitted`: No" in template
+    assert "`LiveLLMUsePermitted`: No" in template
+    assert "`EndpointUIPermitted`: No" in template
+
+    for dependency_name in (
+        "answer-use gate",
+        "retrieval eligibility gate",
+        "answer-mode contract",
+        "citation/provenance contract",
+        "refusal policy",
+        "evidence chain",
+        "runtime gate plan",
+        "retrieval runtime implementation design",
+        "answer synthesis gating design",
+        "citation rendering design",
+        "audit/logging plan",
+        "pilot readiness approval",
+    ):
+        assert dependency_name in dependency
+    assert "Chat pilot is not approved in this slice" in dependency
+
+
+def test_historical_runtime_gate_plan_links_from_related_controls_and_index():
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    citation = _read(HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT)
+    evidence_chain = _read(HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS)
+    answer_mode = _read(HISTORICAL_ANSWER_MODE_CONTRACT)
+    retrieval_gate = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE)
+    answer_use_gate = _read(HISTORICAL_ANSWER_USE_PERMISSION_GATE)
+    prompt = _read(HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN_PROMPT)
+
+    for linked_doc in (
+        "HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN.md",
+        "HISTORICAL_RUNTIME_GATE_CHAIN_REQUIREMENTS.md",
+        "HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL.md",
+        "HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE.md",
+        "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md",
+    ):
+        assert linked_doc in index
+        assert linked_doc in prompt
+
+    assert "Citation/provenance must flow into the runtime gate plan before chat readiness" in citation
+    assert "Runtime gate planning records that the runtime gate and chat pilot readiness steps remain pre-runtime unless separately approved" in evidence_chain
+    assert "Chat pilot readiness records pilot approval status before any chat exposure" in evidence_chain
+    assert "Answer modes must be runtime-enforced before chat exposure" in answer_mode
+    assert "Retrieval eligibility must be runtime-enforced before chat exposure" in retrieval_gate
+    assert "Answer-use permission must be runtime-enforced before chat exposure" in answer_use_gate
+
+
+def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "db" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "retrieval_runtime" not in normalized
+        assert "answer_synthesis" not in normalized or normalized.startswith("docs/")
+        assert "citation_rendering" not in normalized
+        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN,
+            HISTORICAL_RUNTIME_GATE_CHAIN_REQUIREMENTS,
+            HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL,
+            HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE,
+            HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT,
+            HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS,
+            HISTORICAL_ANSWER_MODE_CONTRACT,
+            HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE,
+            HISTORICAL_ANSWER_USE_PERMISSION_GATE,
+            HISTORICAL_RUNTIME_RETRIEVAL_ANSWER_SYNTHESIS_GATE_PLAN_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No retrieval runtime changes",
+        "No answer synthesis runtime changes",
+        "No citation rendering runtime changes",
+        "No chat exposure",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No runtime answer-use permission activation",
+        "No runtime retrieval eligibility activation",
+        "does not expose chat",
+        "does not implement runtime retrieval",
+        "does not implement retrieval runtime",
+        "does not implement answer synthesis",
+        "does not implement citation rendering",
+        "does not call a live LLM",
+        "does not mutate corpus",
     ):
         assert required_boundary in combined
 

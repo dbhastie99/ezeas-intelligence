@@ -191,6 +191,12 @@ Retrieval eligibility must be traceable in `docs/evaluation/historical_knowledge
 
 Retrieval eligibility alone does not render citations, satisfy provenance, implement answer synthesis, or expose chat.
 
+## 14b. Runtime Enforcement Before Chat
+
+Retrieval eligibility must be runtime-enforced before chat exposure.
+
+Retrieval eligibility records are planning inputs only until a later runtime gate implementation design and pilot readiness approval exist.
+
 ## 15. Runtime Boundary
 
 This slice does not implement retrieval filtering.

@@ -24,6 +24,8 @@ Future non-refusal historical answers must be traceable through this source-to-a
 8. Retrieval eligibility records `RetrievalEligibilityId`.
 9. Answer-mode control records `AnswerModeId`.
 10. Citation/provenance control records `CitationProvenanceId`.
+11. Runtime gate planning records that the runtime gate and chat pilot readiness steps remain pre-runtime unless separately approved.
+12. Chat pilot readiness records pilot approval status before any chat exposure.
 
 ## 3. Required Evidence Chain Fields
 
@@ -74,6 +76,10 @@ Retrieval eligibility does not expose chat.
 Answer-mode control does not implement answer synthesis runtime.
 
 Citation/provenance control does not render citations at runtime.
+
+Runtime gate planning does not implement retrieval runtime, answer synthesis runtime, citation rendering runtime, or chat.
+
+Chat pilot readiness is required before chat exposure and is not approved by this evidence chain.
 
 Missing or incomplete links in the chain map to refusal or insufficient governed evidence.
 
