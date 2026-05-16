@@ -45,3 +45,9 @@ Chat exposure remains prohibited until later.
 ## 4. Runtime Boundary
 
 This entry-criteria document does not implement retrieval runtime, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM calls, database writes, source ingestion, corpus mutation, Code Evidence ingestion, current-truth promotion, runtime answer-use permission activation, runtime retrieval eligibility activation, runtime answer-mode activation, or chat exposure.
+
+## Safety Test Pack Entry Boundary
+
+Future pilot implementation consideration must first satisfy the read-only chat pilot safety test pack governed by `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
+
+The safety test pack does not expose chat, approve endpoint/UI, approve live LLM use, or make final pilot go/no-go. Final pilot go/no-go remains separate.

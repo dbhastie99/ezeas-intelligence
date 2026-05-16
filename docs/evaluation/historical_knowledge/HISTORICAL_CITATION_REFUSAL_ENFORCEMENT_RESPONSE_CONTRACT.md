@@ -68,3 +68,9 @@ This document defines the response contract for the Minerva historical citation/
 The response is for citation/refusal gate enforcement only. It is not a final answer, not a chat response, not citation rendering, not retrieved evidence, not runtime answer-use permission, and not runtime retrieval activation.
 
 The skeleton is in-memory and metadata-only. No live retrieval backend is used, no LLM is called, no final chat answer is generated, no final answer generation occurs, no chat is exposed, no endpoint/UI exists, no corpus mutation occurs, and no DB read/write occurs.
+
+## Safety Test Pack Linkage
+
+The read-only chat pilot safety test pack is governed by `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
+
+The response contract remains metadata-envelope validation only. It does not expose chat, approve endpoint/UI, call a live LLM, query live retrieval, read/write a database, mutate corpus, ingest source content, create Code Evidence, promote current truth, activate runtime answer-use permission, or activate runtime retrieval eligibility.

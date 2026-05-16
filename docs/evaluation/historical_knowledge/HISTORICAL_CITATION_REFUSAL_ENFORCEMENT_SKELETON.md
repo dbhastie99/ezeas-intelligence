@@ -36,3 +36,9 @@ The skeleton evaluates fields such as `AnswerModeDecision`, `AllowedAnswerMode`,
 No live retrieval backend is used. No LLM is called. No final answer generation occurs. No final natural-language chat answer is generated. No chat is exposed. No endpoint/UI exists. No corpus mutation occurs. No DB read/write occurs.
 
 This skeleton does not perform live retrieval, vector search, corpus query, source content ingestion, operational corpus mutation, Code Evidence ingestion, database reads or writes, schema migrations, endpoint changes, UI changes, citation rendering runtime, chat exposure, workforce-platform changes, award-configurator-v1 changes, ezeas-analytics changes, current-truth promotion, runtime answer-use activation, or runtime retrieval activation beyond supplied metadata evaluation.
+
+## Safety Test Pack Linkage
+
+The read-only chat pilot safety test pack is governed by `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md`, with scenarios in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, expected outcomes in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, blockers in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and future closeout entry criteria in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
+
+The safety pack proves that citation/refusal enforcement remains metadata-envelope validation only. It does not expose chat, approve endpoint/UI, call a live LLM, render citations, query live retrieval, read/write a database, mutate corpus, ingest source content, create Code Evidence, promote current truth, activate runtime answer-use permission, or activate runtime retrieval eligibility.

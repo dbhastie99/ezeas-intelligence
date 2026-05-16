@@ -513,6 +513,26 @@ HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS = (
 HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON_SERVICE = Path(
     "app/services/historical_citation_refusal_enforcement_skeleton_service.py"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -743,6 +763,9 @@ HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON_PROMPT = Path(
 )
 HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_citation_refusal_enforcement_skeleton_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_safety_test_pack_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -5642,6 +5665,348 @@ def test_historical_citation_refusal_enforcement_slice_introduces_only_allowed_c
     assert "Session" not in service
     assert "sqlalchemy" not in service
     assert "requests." not in service
+
+
+def _approved_safety_chain_metadata() -> dict[str, object]:
+    metadata = _approved_current_truth_metadata()
+    metadata.update(
+        {
+            "SourceTitle": "Historical Control Record",
+            "SourceDate": "2026-05-16",
+            "UnknownDateMarker": "",
+            "RepositoryContext": "ezeas-intelligence",
+            "DomainContext": "historical_knowledge",
+            "AnswerUsePermissionId": "AUP-001",
+            "RetrievalEligibilityId": "RET-001",
+            "AnswerModeId": "AM-001",
+            "CaveatReady": True,
+        }
+    )
+    return metadata
+
+
+def _run_safety_chain(metadata: dict[str, object]) -> tuple[dict, dict, dict]:
+    from app.services.historical_answer_synthesis_enforcement_skeleton_service import (
+        evaluate_historical_answer_synthesis_enforcement,
+    )
+    from app.services.historical_citation_refusal_enforcement_skeleton_service import (
+        evaluate_historical_citation_refusal_enforcement,
+    )
+    from app.services.historical_read_only_gated_retrieval_skeleton_service import (
+        evaluate_historical_retrieval_gate,
+    )
+
+    retrieval = evaluate_historical_retrieval_gate(metadata)
+    synthesis_input = {**metadata, **retrieval}
+    synthesis = evaluate_historical_answer_synthesis_enforcement(synthesis_input)
+    citation_input = {**metadata, **retrieval, **synthesis}
+    citation = evaluate_historical_citation_refusal_enforcement(citation_input)
+    return retrieval, synthesis, citation
+
+
+def _assert_chain_no_runtime(*responses: dict) -> None:
+    for response in responses:
+        assert response.get("LiveLLMCalled") is False
+        assert response.get("CorpusMutationPerformed") is False
+        assert response.get("DatabaseReadPerformed") is False
+        assert response.get("DatabaseWritePerformed") is False
+        assert response.get("EndpointUIPresent") is False
+        assert response.get("RuntimeBoundaryAsserted") is True
+
+    assert responses[0]["LiveRetrievalPerformed"] is False
+    assert responses[1]["FinalAnswerGenerated"] is False
+    assert responses[1]["ChatExposed"] is False
+    assert responses[1]["RetrievalRuntimeCalled"] is False
+    assert responses[2]["FinalAnswerGenerated"] is False
+    assert responses[2]["ChatExposed"] is False
+    assert responses[2]["RetrievalRuntimeCalled"] is False
+
+
+def test_historical_read_only_chat_pilot_safety_docs_exist():
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK_PROMPT.exists()
+
+
+def test_historical_read_only_chat_pilot_safety_status_and_chain_docs():
+    pack = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK)
+
+    for status in (
+        "PILOT_SAFETY_TEST_PACK_NOT_STARTED",
+        "PILOT_SAFETY_TEST_PACK_DRAFTED",
+        "PILOT_SAFETY_TEST_PACK_BLOCKED",
+        "PILOT_SAFETY_TEST_PACK_READY_FOR_CLOSEOUT",
+        "PILOT_SAFETY_TEST_PACK_REQUIRES_REMEDIATION",
+        "PILOT_SAFETY_TEST_PACK_REJECTED",
+        "PILOT_SAFETY_TEST_PACK_SUPERSEDED",
+    ):
+        assert status in pack
+
+    for service_file in (
+        "historical_read_only_gated_retrieval_skeleton_service.py",
+        "historical_answer_synthesis_enforcement_skeleton_service.py",
+        "historical_citation_refusal_enforcement_skeleton_service.py",
+    ):
+        assert service_file in pack
+
+
+def test_historical_read_only_chat_pilot_safety_scenarios_and_outcomes_are_complete():
+    scenarios = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS)
+    outcomes = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES)
+
+    for scenario in (
+        "current-truth eligible metadata",
+        "historical-context metadata",
+        "caveated metadata",
+        "missing answer-use permission",
+        "missing retrieval eligibility",
+        "missing provenance",
+        "missing citation fields",
+        "conflicted evidence",
+        "superseded evidence",
+        "not-answerable evidence",
+        "prior refusal",
+        "no-runtime cases",
+        "skeleton chain never calls live LLM",
+        "skeleton chain never exposes chat",
+        "skeleton chain never generates final answer",
+        "skeleton chain never queries live retrieval",
+        "skeleton chain never reads or writes DB",
+        "skeleton chain never mutates corpus",
+        "skeleton chain never creates endpoint/UI",
+    ):
+        assert scenario in scenarios
+
+    for expected_outcome in (
+        "CITATION_READY_NO_FINAL_ANSWER",
+        "HISTORICAL_CONTEXT_ONLY_NO_CURRENT_TRUTH",
+        "CAVEATED_READY_NO_FINAL_ANSWER",
+        "REFUSAL_MISSING_ANSWER_USE",
+        "REFUSAL_MISSING_RETRIEVAL_ELIGIBILITY",
+        "REFUSAL_MISSING_PROVENANCE",
+        "REFUSAL_MISSING_CITATION",
+        "REFUSAL_CONFLICTED",
+        "REFUSAL_SUPERSEDED",
+        "REFUSAL_NOT_ANSWERABLE",
+        "NO_RUNTIME_ACTION",
+    ):
+        assert expected_outcome in outcomes
+
+
+def test_historical_read_only_chat_pilot_safety_boundaries_and_closeout_criteria():
+    pack = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK)
+    blockers = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL)
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA)
+
+    for assertion in (
+        "`LiveRetrievalPerformed`: false",
+        "`LiveLLMCalled`: false",
+        "`FinalAnswerGenerated`: false",
+        "`ChatExposed`: false",
+        "`CorpusMutationPerformed`: false",
+        "`DatabaseReadPerformed`: false",
+        "`DatabaseWritePerformed`: false",
+        "`EndpointUIPresent`: false",
+        "`RuntimeBoundaryAsserted`: true",
+    ):
+        assert assertion in pack
+
+    for boundary in (
+        "This slice does not expose chat",
+        "This slice does not approve endpoint/UI",
+        "This slice does not approve live LLM use",
+        "Final pilot go/no-go remains separate",
+        "chat pilot is approved",
+        "chat is exposed",
+        "live LLM can be called",
+        "endpoint/UI exists",
+        "final answers are generated",
+        "live retrieval exists",
+        "corpus can be mutated",
+        "database can be read or written",
+    ):
+        assert boundary in pack
+
+    for blocker in (
+        "SAFETY_SCENARIOS_INCOMPLETE",
+        "CURRENT_TRUTH_SCENARIO_UNTESTED",
+        "HISTORICAL_CONTEXT_SCENARIO_UNTESTED",
+        "CAVEATED_SCENARIO_UNTESTED",
+        "REFUSAL_SCENARIO_UNTESTED",
+        "CITATION_PROVENANCE_SCENARIO_UNTESTED",
+        "RUNTIME_BOUNDARY_UNTESTED",
+        "LIVE_LLM_BOUNDARY_UNCLEAR",
+        "CHAT_EXPOSURE_BOUNDARY_UNCLEAR",
+        "DB_BOUNDARY_UNCLEAR",
+        "CORPUS_MUTATION_BOUNDARY_UNCLEAR",
+        "PRIOR_REFUSAL_NOT_PRESERVED",
+    ):
+        assert blocker in blockers
+
+    assert "Blocker resolution does not itself expose chat or implement runtime behaviour" in blockers
+
+    for criterion in (
+        "all safety scenarios documented",
+        "all expected outcomes documented",
+        "no-runtime assertions documented",
+        "tests pass",
+        "blockers resolved or carried",
+        "no live LLM",
+        "no chat exposure",
+        "no endpoint/UI",
+        "no DB read/write",
+        "no corpus mutation",
+    ):
+        assert criterion in closeout
+
+
+def test_historical_read_only_chat_pilot_safety_chain_allows_citation_ready_no_final_answer():
+    retrieval, synthesis, citation = _run_safety_chain(_approved_safety_chain_metadata())
+
+    assert retrieval["RetrievalDecision"] == "ELIGIBLE_CURRENT_TRUTH_RETRIEVAL"
+    assert synthesis["AnswerModeDecision"] == "CURRENT_TRUTH_ANSWER_ALLOWED"
+    assert citation["CitationRefusalDecision"] == "CITATION_READY_CURRENT_TRUTH"
+    assert citation["CitationReady"] is True
+    assert citation["CitationEnvelopePrepared"] is True
+    _assert_chain_no_runtime(retrieval, synthesis, citation)
+
+
+def test_historical_read_only_chat_pilot_safety_chain_preserves_context_and_caveat():
+    historical_context = _approved_safety_chain_metadata()
+    historical_context["EvidenceScope"] = "HISTORICAL_CONTEXT_ONLY"
+    historical_context["AnswerMode"] = "HISTORICAL_CONTEXT"
+    historical_context["CurrentTruthPermitted"] = False
+    historical_context["UnknownDateMarker"] = "UNKNOWN_SOURCE_DATE"
+    historical_context["SourceDate"] = ""
+    retrieval, synthesis, citation = _run_safety_chain(historical_context)
+    assert retrieval["RetrievalDecision"] == "ELIGIBLE_HISTORICAL_CONTEXT_RETRIEVAL"
+    assert synthesis["AllowedAnswerMode"] == "HISTORICAL_CONTEXT"
+    assert citation["CitationRefusalDecision"] in (
+        "CITATION_READY_HISTORICAL_CONTEXT",
+        "CITATION_READY_CAVEATED",
+    )
+    assert citation["CitationRefusalDecision"] != "CITATION_READY_CURRENT_TRUTH"
+    assert citation["CaveatRequired"] is True
+    _assert_chain_no_runtime(retrieval, synthesis, citation)
+
+    caveated = _approved_safety_chain_metadata()
+    caveated["CaveatRequired"] = True
+    caveated["CaveatReady"] = True
+    retrieval, synthesis, citation = _run_safety_chain(caveated)
+    assert retrieval["RetrievalDecision"] == "ELIGIBLE_CAVEATED_RETRIEVAL"
+    assert synthesis["AllowedAnswerMode"] == "CAVEATED"
+    assert citation["CitationRefusalDecision"] == "CITATION_READY_CAVEATED"
+    assert citation["CaveatRequired"] is True
+    _assert_chain_no_runtime(retrieval, synthesis, citation)
+
+
+def test_historical_read_only_chat_pilot_safety_chain_preserves_refusals():
+    cases = (
+        ("AnswerUsePermissionStatus", "", "REFUSE_MISSING_ANSWER_USE_PERMISSION"),
+        ("RetrievalEligibilityStatus", "", "REFUSE_MISSING_RETRIEVAL_ELIGIBILITY"),
+        ("ProvenanceStatus", "MISSING", "REFUSE_MISSING_PROVENANCE"),
+        ("ConflictStatus", "CONFLICTED", "REFUSE_CONFLICTED_EVIDENCE"),
+        ("SupersessionStatus", "SUPERSEDED", "REFUSE_SUPERSEDED_EVIDENCE"),
+        ("EvidenceAnswerable", False, "REFUSE_NOT_ANSWERABLE"),
+    )
+
+    for field_name, value, retrieval_decision in cases:
+        metadata = _approved_safety_chain_metadata()
+        metadata[field_name] = value
+        retrieval, synthesis, citation = _run_safety_chain(metadata)
+        assert retrieval["RetrievalDecision"] == retrieval_decision
+        assert synthesis["RefusalRequired"] is True
+        assert citation["CitationRefusalDecision"] == "REFUSE_PRIOR_GATE_REFUSAL"
+        assert citation["RefusalRequired"] is True
+        _assert_chain_no_runtime(retrieval, synthesis, citation)
+
+
+def test_historical_read_only_chat_pilot_safety_chain_refuses_missing_citation_fields():
+    missing_source_title = _approved_safety_chain_metadata()
+    missing_source_title["SourceTitle"] = ""
+    retrieval, synthesis, citation = _run_safety_chain(missing_source_title)
+
+    assert retrieval["RetrievalDecision"] == "ELIGIBLE_CURRENT_TRUTH_RETRIEVAL"
+    assert synthesis["AnswerModeDecision"] == "CURRENT_TRUTH_ANSWER_ALLOWED"
+    assert citation["CitationRefusalDecision"] == "REFUSE_MISSING_SOURCE_TITLE"
+    assert citation["RefusalRequired"] is True
+    _assert_chain_no_runtime(retrieval, synthesis, citation)
+
+
+def test_historical_read_only_chat_pilot_safety_links_from_existing_controls():
+    referenced_docs = (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md",
+    )
+
+    for path in (
+        HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON,
+        HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT,
+        HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS,
+        HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON,
+        HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT,
+        HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES,
+        HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS,
+        HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA,
+        HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+    ):
+        content = _read(path)
+        for referenced_doc in referenced_docs:
+            assert referenced_doc in content
+
+
+def test_historical_read_only_chat_pilot_safety_slice_introduces_no_runtime_changes():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+    }
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [line[3:].strip() for line in changed.stdout.splitlines() if line.strip()]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "operational" not in normalized or normalized.startswith("docs/")
+        assert "database" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "live_retrieval_backend" not in normalized
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    for service_path in (
+        HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_SERVICE,
+        HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON_SERVICE,
+        HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON_SERVICE,
+    ):
+        service = _read(service_path).lower()
+        assert "openai" not in service
+        assert "chatcompletion" not in service
+        assert "responses.create" not in service
+        assert "retrieve_relevant_chunks" not in service
+        assert "sqlalchemy" not in service
+        assert "requests." not in service
 
 
 def test_historical_chat_pilot_readiness_docs_exist():

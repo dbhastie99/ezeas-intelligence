@@ -34,3 +34,9 @@ Date: 16 May 2026
 ## Enforcement Rule
 
 The response is for citation/refusal gate enforcement only. It may state that metadata is citation-ready for a later renderer, but it must not generate final answer text, render citations, expose chat, call a live LLM, perform live retrieval, write a database, mutate corpus, or make historical sources answerable current truth.
+
+## Safety Test Pack Linkage
+
+The read-only chat pilot safety test pack is governed by `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
+
+These guardrails are part of the safety proof that the skeleton chain never calls live LLM, never exposes chat, never generates final answers, never queries live retrieval, never reads or writes DB, never mutates corpus, and never creates endpoint/UI.

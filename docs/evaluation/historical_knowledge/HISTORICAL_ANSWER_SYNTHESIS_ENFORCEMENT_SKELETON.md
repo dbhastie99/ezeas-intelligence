@@ -44,3 +44,9 @@ The next metadata-only gate is documented by:
 - `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`
 
 That gate consumes this skeleton's output, validates citation/provenance and governance-chain readiness, and either prepares a citation-ready metadata envelope or preserves/refines refusal. It remains in-memory and metadata-only and does not render citations or generate final answer text.
+
+## Safety Test Pack Linkage
+
+The read-only chat pilot safety test pack is governed by `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md`, with scenarios in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, expected outcomes in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, blockers in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and future closeout entry criteria in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
+
+The safety pack proves that answer synthesis enforcement preserves retrieval refusals, caveats, historical-context boundaries, and no-runtime assertions without generating final natural-language chat answers.

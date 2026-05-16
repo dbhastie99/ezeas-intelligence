@@ -51,3 +51,9 @@ The answer synthesis enforcement skeleton response is for gate enforcement only.
 Supporting controls are `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT.md`, `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_FIXTURE_CATALOG.md`, and `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`.
 
 The citation/refusal enforcement skeleton response is for citation/refusal gate enforcement only. It does not make historical sources answerable current truth and does not activate runtime answer-use permission or runtime retrieval eligibility beyond evaluating supplied metadata in-memory.
+
+## Read-Only Chat Pilot Safety Test Pack No-Runtime Assertions
+
+The read-only chat pilot safety test pack is governed by `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
+
+The safety-pack no-runtime assertions preserve `LiveRetrievalPerformed false`, `LiveLLMCalled false`, `FinalAnswerGenerated false`, `ChatExposed false`, `CorpusMutationPerformed false`, `DatabaseReadPerformed false`, `DatabaseWritePerformed false`, `EndpointUIPresent false`, and `RuntimeBoundaryAsserted true`.

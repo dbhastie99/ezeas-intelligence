@@ -92,3 +92,9 @@ Its metadata-only outcomes map as follows:
 - `BLOCKED_RUNTIME_NOT_IMPLEMENTED` maps to explicit runtime-not-implemented blocking.
 
 These are citation/refusal gate enforcement decisions only. They do not generate final answers, call a live LLM, perform live retrieval, render citations, expose chat, mutate corpus, or perform DB read/write.
+
+## Read-Only Chat Pilot Safety Test Pack Outcomes
+
+The read-only chat pilot safety test pack is governed by `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md`, with scenarios in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, expected outcomes in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, blockers in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and future closeout entry criteria in `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
+
+Safety-pack expected outcomes include `CITATION_READY_NO_FINAL_ANSWER`, `HISTORICAL_CONTEXT_ONLY_NO_CURRENT_TRUTH`, `CAVEATED_READY_NO_FINAL_ANSWER`, refusal outcomes for missing answer-use, retrieval eligibility, provenance, citation, conflicted, superseded, not-answerable evidence, and `NO_RUNTIME_ACTION`.
