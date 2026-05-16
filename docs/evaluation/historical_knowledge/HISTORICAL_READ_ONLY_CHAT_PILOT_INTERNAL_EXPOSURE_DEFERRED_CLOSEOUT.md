@@ -10,6 +10,8 @@ This closeout records that Minerva historical read-only chat pilot internal expo
 
 It closes the current readiness stream in a deferred state while preserving the minimal endpoint/UI candidate, no-production exposure attestations, exposure decision gate, access/audit requirements, and future resume criteria.
 
+This deferred closeout flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md`, which preserves the same deferred status at stream level.
+
 ## 2. Scope
 
 Scope is limited to documentation/control/test hardening. This slice does not expose chat, register routes globally, create public endpoints, create tenant/customer access, call live LLMs, generate final natural-language answers, connect live retrieval, read or write databases, mutate corpus, ingest source content, create Code Evidence, or make cross-repo changes.
@@ -176,6 +178,7 @@ Scope is limited to documentation/control/test hardening. This slice does not ex
 
 - If explicit exposure approval is later supplied, next Minerva slice may be an internal exposure candidate.
 - If no exposure approval is supplied, next slice should move to Minerva pilot readiness stream closeout or another non-exposure planning stream.
+- The stream-level closeout is recorded at `HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md` and preserves deferred status.
 - No future slice should expose chat without explicit approval.
 
 ## 17. Progress After This Slice

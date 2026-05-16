@@ -731,6 +731,26 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_NO_RUN_ATTESTATION = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_NO_RUN_ATTESTATION.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.md"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -994,6 +1014,9 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE_PROMPT = Path(
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_internal_exposure_deferred_closeout_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_readiness_stream_closeout_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -8480,6 +8503,12 @@ def test_historical_read_only_chat_pilot_exposure_decision_gate_slice_introduces
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.md",
+        "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_readiness_stream_closeout_v0_1.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md",
         "tests/test_domain_baseline_capture_batch.py",
     }
@@ -8814,6 +8843,12 @@ def test_historical_read_only_chat_pilot_internal_exposure_deferred_slice_introd
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.md",
+        "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_readiness_stream_closeout_v0_1.md",
         "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md",
         "tests/test_domain_baseline_capture_batch.py",
     }
@@ -8834,6 +8869,348 @@ def test_historical_read_only_chat_pilot_internal_exposure_deferred_slice_introd
         assert "workforce-platform" not in changed_file
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
+
+    service = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_CANDIDATE_SERVICE).lower()
+    assert "openai" not in service
+    assert "chatcompletion" not in service
+    assert "responses.create" not in service
+    assert "retrieve_chunks_for_question" not in service
+    assert "sqlalchemy" not in service
+    assert "get_db" not in service
+
+
+def test_historical_read_only_chat_pilot_readiness_stream_closeout_docs_exist():
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT_PROMPT.exists()
+
+
+def test_historical_read_only_chat_pilot_readiness_stream_closeout_status_and_model():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT)
+
+    for required_text in (
+        "ReadOnlyChatPilotReadinessStreamStatus: CLOSED_DEFERRED_PENDING_EXPOSURE_APPROVAL",
+        "ExplicitExposureApprovalPresent: No",
+        "InternalExposureEnabledThisSlice: No",
+        "ProductionChatExposedThisSlice: No",
+        "PublicAccessEnabledThisSlice: No",
+        "TenantCustomerAccessEnabledThisSlice: No",
+        "GlobalRouteRegisteredThisSlice: No",
+        "LiveLLMCalledThisSlice: No",
+        "FinalAnswerGeneratedThisSlice: No",
+        "LiveRetrievalPerformedThisSlice: No",
+        "CorpusMutationPerformedThisSlice: No",
+        "DatabaseReadPerformedThisSlice: No",
+        "DatabaseWritePerformedThisSlice: No",
+    ):
+        assert required_text in closeout
+
+    for status in (
+        "READ_ONLY_CHAT_PILOT_STREAM_CLOSEOUT_NOT_STARTED",
+        "READ_ONLY_CHAT_PILOT_STREAM_CLOSED_DEFERRED_PENDING_EXPOSURE_APPROVAL",
+        "READ_ONLY_CHAT_PILOT_STREAM_BLOCKED_BY_EXPOSURE_APPROVAL",
+        "READ_ONLY_CHAT_PILOT_STREAM_BLOCKED_BY_ACCESS_CONTROL",
+        "READ_ONLY_CHAT_PILOT_STREAM_BLOCKED_BY_AUDIT_LOGGING",
+        "READ_ONLY_CHAT_PILOT_STREAM_READY_TO_RESUME_IF_APPROVED",
+        "READ_ONLY_CHAT_PILOT_STREAM_REJECTED",
+        "READ_ONLY_CHAT_PILOT_STREAM_SUPERSEDED",
+    ):
+        assert status in closeout
+
+
+def test_historical_read_only_chat_pilot_readiness_stream_closeout_inputs_and_inventory():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT)
+    inventory = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY)
+    combined = closeout + "\n" + inventory
+
+    for required_input in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md",
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md",
+        "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md",
+        "HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md",
+    ):
+        assert required_input in closeout
+
+    for stream_area in (
+        "source/governance controls",
+        "retrieval skeleton",
+        "answer synthesis skeleton",
+        "citation/refusal skeleton",
+        "safety test pack",
+        "go/no-go closeout",
+        "orchestrator candidate",
+        "orchestrator closeout",
+        "endpoint/UI planning gate",
+        "endpoint/UI design pack",
+        "endpoint/UI implementation gate",
+        "minimal endpoint/UI implementation candidate",
+        "minimal endpoint/UI candidate closeout",
+        "exposure decision gate",
+        "internal exposure deferred closeout",
+    ):
+        assert stream_area in combined
+
+    assert "Complete Stream Inventory" in inventory
+    assert "no-runtime" in inventory
+    assert "not globally registered" in inventory
+
+
+def test_historical_read_only_chat_pilot_readiness_stream_positions_and_deferral():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT)
+
+    for required_text in (
+        "Governance/skeleton readiness is complete for current purposes",
+        "Answer-use, retrieval, answer-mode, and citation gates remain required",
+        "Historical sources do not become current truth by default",
+        "Skeleton and orchestrator services remain in-memory metadata-only",
+        "no live retrieval backend",
+        "no live LLM",
+        "no final answer generation",
+        "no DB read/write",
+        "no corpus mutation",
+        "The minimal endpoint/UI candidate service exists",
+        "candidate remains internal metadata/envelope-only",
+        "remains not globally registered",
+        "remains not production chat",
+        "subject to future explicit exposure approval",
+        "Internal exposure is deferred",
+        "Explicit exposure approval is absent",
+        "No internal exposure is enabled",
+        "No public/tenant/customer exposure is enabled",
+        "Future exposure requires resume criteria",
+    ):
+        assert required_text in closeout
+
+
+def test_historical_read_only_chat_pilot_readiness_stream_resume_stops_and_authorisation():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT)
+    resume = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA)
+
+    for criterion in (
+        "explicit exposure approval",
+        "internal-only scope confirmation",
+        "operator/developer-only access confirmation",
+        "access-control decision complete",
+        "audit/logging decision complete",
+        "no-production exposure attestation reviewed",
+        "live LLM remains unapproved unless separate policy gate approves it",
+        "final answer generation remains unapproved unless separate gate approves it",
+    ):
+        assert criterion in closeout
+
+    for criterion in (
+        "explicit exposure approval supplied",
+        "internal-only scope confirmed",
+        "operator/developer-only access confirmed",
+        "access control decision complete",
+        "audit/logging decision complete",
+        "candidate service remains current",
+        "no-production exposure attestation reviewed",
+        "live LLM remains unapproved unless separate policy gate approves it",
+        "final answer generation remains unapproved unless separate gate approves it",
+    ):
+        assert criterion in resume
+
+    for stop_condition in (
+        "closeout would expose chat",
+        "closeout would register global route",
+        "closeout would enable public access",
+        "closeout would enable tenant/customer access",
+        "closeout would call live LLM",
+        "closeout would generate final answer",
+        "closeout would connect live retrieval",
+        "closeout would query/mutate corpus",
+        "closeout would read/write DB",
+        "exposure requested without approval",
+        "access control unresolved",
+        "audit/logging unresolved",
+    ):
+        assert stop_condition in closeout
+
+    assert "future internal exposure may be reconsidered if explicit approval and resume criteria are supplied" in closeout
+    assert "current Minerva read-only chat pilot readiness stream may be considered closed/deferred" in closeout
+
+    for blocked in (
+        "internal exposure",
+        "production chat exposure",
+        "public endpoint",
+        "tenant/customer endpoint",
+        "global route registration",
+        "live LLM calls",
+        "final natural-language answer generation",
+        "live retrieval backend",
+        "corpus/vector search",
+        "corpus mutation",
+        "source ingestion",
+        "Code Evidence ingestion",
+        "DB reads",
+        "DB writes",
+        "schema migrations",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+    ):
+        assert blocked in closeout
+
+
+def test_historical_read_only_chat_pilot_readiness_stream_decision_record_defaults_are_conservative():
+    record = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD)
+
+    for field in (
+        "DecisionId",
+        "DecisionStatus",
+        "DecisionDate",
+        "StreamClosed",
+        "ExplicitExposureApprovalPresent",
+        "InternalExposureEnabledThisSlice",
+        "ProductionChatExposedThisSlice",
+        "PublicAccessEnabledThisSlice",
+        "TenantCustomerAccessEnabledThisSlice",
+        "GlobalRouteRegisteredThisSlice",
+        "LiveLLMCalledThisSlice",
+        "FinalAnswerGeneratedThisSlice",
+        "DBReadPerformedThisSlice",
+        "DBWritePerformedThisSlice",
+        "DeferralReason",
+        "ResumeCriteria",
+        "Blockers",
+        "DecisionRationale",
+        "ApprovedBy",
+        "Notes",
+    ):
+        assert field in record
+
+    for conservative_default in (
+        "| ExplicitExposureApprovalPresent | No |",
+        "| InternalExposureEnabledThisSlice | No |",
+        "| ProductionChatExposedThisSlice | No |",
+        "| PublicAccessEnabledThisSlice | No |",
+        "| TenantCustomerAccessEnabledThisSlice | No |",
+        "| GlobalRouteRegisteredThisSlice | No |",
+        "| LiveLLMCalledThisSlice | No |",
+        "| FinalAnswerGeneratedThisSlice | No |",
+        "| DBReadPerformedThisSlice | No |",
+        "| DBWritePerformedThisSlice | No |",
+    ):
+        assert conservative_default in record
+
+
+def test_historical_read_only_chat_pilot_final_no_exposure_attestation():
+    attestation = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION)
+
+    for required_text in (
+        "no internal exposure enabled",
+        "no production chat exposure",
+        "no public endpoint",
+        "no tenant/customer endpoint",
+        "no global route registration",
+        "no live LLM",
+        "no final answer",
+        "no live retrieval",
+        "no DB read/write",
+        "no corpus mutation",
+        "no cross-repo changes",
+    ):
+        assert required_text in attestation
+
+
+def test_historical_read_only_chat_pilot_readiness_stream_closeout_updates_existing_controls():
+    deferred_closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT)
+    resume = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_RESUME_CRITERIA)
+    boundaries = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md" in deferred_closeout
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA.md" in resume
+    assert "readiness stream closeout as the current boundary" in boundaries
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md" in boundaries
+
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.md",
+        "2026-05-16_minerva_historical_read_only_chat_pilot_readiness_stream_closeout_v0_1.md",
+        "CLOSED_DEFERRED_PENDING_EXPOSURE_APPROVAL",
+    ):
+        assert linked_doc in index
+
+
+def test_historical_read_only_chat_pilot_readiness_stream_slice_introduces_only_allowed_changes():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+    }
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [line[3:].strip() for line in changed.stdout.splitlines() if line.strip()]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus_ingestion" not in normalized
+        assert "db_write" not in normalized
+        assert "/routers/" not in normalized
+        assert normalized != "app/main.py"
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "live_retrieval_backend" not in normalized
+        assert "final_answer_generation" not in normalized
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_DECISION_RECORD,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_ARTEFACT_INVENTORY,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_FUTURE_RESUME_CRITERIA,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+        )
+    )
+
+    for prohibited_runtime in (
+        "source content",
+        "corpus mutation",
+        "Code Evidence",
+        "live LLM",
+        "database",
+        "schema migrations",
+        "live retrieval backend",
+        "final natural-language answer",
+        "production chat exposure",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+    ):
+        assert prohibited_runtime in combined
 
     service = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_CANDIDATE_SERVICE).lower()
     assert "openai" not in service

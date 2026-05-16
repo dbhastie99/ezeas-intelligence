@@ -8,6 +8,8 @@ Date: 16 May 2026
 
 This attestation records that the internal exposure deferred closeout introduced no runtime exposure or operational execution.
 
+The stream-level final no-exposure attestation is recorded at `HISTORICAL_READ_ONLY_CHAT_PILOT_FINAL_NO_EXPOSURE_ATTESTATION.md`.
+
 ## Attestation
 
 - no internal exposure enabled;

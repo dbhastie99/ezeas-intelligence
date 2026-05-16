@@ -16,6 +16,7 @@ This document lists remaining runtime boundaries before any real Minerva histori
 - endpoint/UI implementation gate as a controlled boundary;
 - pilot exposure decision gate as the current controlled boundary;
 - internal exposure deferred closeout as the current boundary after no explicit exposure approval;
+- readiness stream closeout as the current boundary after deferred internal exposure;
 - live LLM usage;
 - live retrieval backend;
 - citation rendering runtime;
@@ -31,6 +32,8 @@ This document lists remaining runtime boundaries before any real Minerva histori
 No endpoint/UI exists. No live LLM approval exists. No live retrieval backend is connected. No production chat route exists. No citation rendering runtime exists beyond metadata envelope validation. No audit/logging runtime exists beyond design documentation. Pilot implementation candidate remains separate.
 
 Internal exposure deferred closeout is the current boundary after the pilot exposure decision gate because explicit exposure approval is not present. It closes/defer readiness and does not approve exposure.
+
+Readiness stream closeout is the current boundary after internal exposure deferred closeout. It records `CLOSED_DEFERRED_PENDING_EXPOSURE_APPROVAL` and does not approve exposure.
 
 ## Non-Authorisation
 
@@ -69,3 +72,7 @@ RouteRegisteredGlobally: No.
 ## Internal Exposure Deferred Closeout Boundary
 
 `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT.md` is the current boundary after the exposure decision gate. Status: `DEFERRED_NO_EXPLICIT_EXPOSURE_APPROVAL`. It records that internal exposure is deferred, no exposure evidence is captured, and future exposure may be reconsidered only if explicit approval and resume criteria are supplied. It does not expose chat, register a global route, enable public access, enable tenant/customer access, call a live LLM, generate final natural-language answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
+
+## Readiness Stream Closeout Boundary
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_READINESS_STREAM_CLOSEOUT.md` is the current stream-level boundary after internal exposure deferred closeout. Status: `CLOSED_DEFERRED_PENDING_EXPOSURE_APPROVAL`. It records that the Minerva read-only chat pilot readiness stream is closed/deferred, explicit exposure approval is absent, and no exposure was enabled. It does not expose chat, register a global route, enable public access, enable tenant/customer access, call a live LLM, generate final natural-language answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
