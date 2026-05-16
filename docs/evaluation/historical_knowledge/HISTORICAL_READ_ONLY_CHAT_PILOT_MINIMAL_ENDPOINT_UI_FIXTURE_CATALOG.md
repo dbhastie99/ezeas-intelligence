@@ -21,3 +21,7 @@ This catalog defines metadata-only fixtures for the internal candidate service. 
 ## Fixture Boundary
 
 Fixtures are test inputs only. They do not ingest source content, perform operational corpus mutation, create Code Evidence, call live LLMs, read or write a database, register routes, create UI, expose production chat, or activate runtime retrieval/answer-use permissions.
+
+## Closeout Fixture Review
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md` reviews these fixtures for closeout. The current-truth fixture returns ready envelope without final answer generation. The historical-context fixture returns historical envelope and is not silently converted to current truth. The caveated fixture preserves caveat. The refusal fixture remains refusal. The no-runtime flags remain false.

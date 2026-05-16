@@ -38,3 +38,21 @@ This attestation applies to the endpoint/UI implementation gate slice. The slice
 - Corpus mutation performed: No
 - Database read performed: No
 - Database write performed: No
+
+## Minimal Candidate Closeout Attestation
+
+- Closeout control: `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md`
+- Static review: `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW.md`
+- No-production exposure attestation: `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.md`
+- EndpointCreatedForProduction: No
+- RouteRegisteredGlobally: No
+- UICreatedForProduction: No
+- ChatExposedToUsers: No
+- PublicAccessEnabled: No
+- TenantCustomerAccessEnabled: No
+- LiveLLMCalledThisSlice: No
+- FinalAnswerGeneratedThisSlice: No
+- LiveRetrievalPerformedThisSlice: No
+- CorpusMutationPerformedThisSlice: No
+- DatabaseReadPerformedThisSlice: No
+- DatabaseWritePerformedThisSlice: No

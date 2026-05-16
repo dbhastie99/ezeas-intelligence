@@ -671,6 +671,26 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CLOSEOUT_ENTRY_CRITERIA = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CLOSEOUT_ENTRY_CRITERIA.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_DECISION_CATALOG = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_DECISION_CATALOG.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.md"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -925,6 +945,9 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE_PROMPT = Path(
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_minimal_endpoint_ui_implementation_candidate_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_minimal_endpoint_ui_candidate_closeout_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -7738,6 +7761,13 @@ def test_historical_read_only_chat_pilot_minimal_endpoint_ui_candidate_preserves
     assert historical_response["PilotResponseStatus"] == "READY_HISTORICAL_CONTEXT_ENVELOPE"
     assert historical_response["PilotResponseMode"] == "READY_HISTORICAL_CONTEXT_ENVELOPE"
 
+    caveated = _approved_orchestrator_metadata()
+    caveated.update({"RequestId": "caveated-envelope", "CaveatRequired": True})
+    caveated_response = _run_minimal_endpoint_ui_candidate(caveated)
+    assert caveated_response["PilotResponseStatus"] == "READY_CAVEATED_ENVELOPE"
+    assert caveated_response["CaveatRequired"] is True
+    assert caveated_response["FinalAnswerGenerated"] is False
+
     refusal = _approved_orchestrator_metadata()
     refusal.update({"RequestId": "refusal-envelope", "CitationStatus": "MISSING"})
     refusal_response = _run_minimal_endpoint_ui_candidate(refusal)
@@ -7867,6 +7897,210 @@ def test_historical_read_only_chat_pilot_minimal_endpoint_ui_slice_introduces_no
     assert "sqlalchemy" not in service
     assert "get_db" not in service
     assert "requests." not in service
+
+
+def test_historical_read_only_chat_pilot_minimal_endpoint_ui_closeout_docs_exist():
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_DECISION_CATALOG.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_CANDIDATE_SERVICE.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT_PROMPT.exists()
+
+
+def test_historical_read_only_chat_pilot_minimal_endpoint_ui_closeout_status_and_model():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT)
+
+    for required_text in (
+        "MinimalEndpointUiCandidateCloseoutStatus: CLOSEOUT_COMPLETED_INTERNAL_ENVELOPE_ONLY",
+        "EndpointCreatedForProduction: No",
+        "RouteRegisteredGlobally: No",
+        "UICreatedForProduction: No",
+        "ChatExposedToUsers: No",
+        "PublicAccessEnabled: No",
+        "TenantCustomerAccessEnabled: No",
+        "LiveLLMCalledThisSlice: No",
+        "FinalAnswerGeneratedThisSlice: No",
+        "LiveRetrievalPerformedThisSlice: No",
+        "CorpusMutationPerformedThisSlice: No",
+        "DatabaseReadPerformedThisSlice: No",
+        "DatabaseWritePerformedThisSlice: No",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_NOT_STARTED",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_COMPLETED_INTERNAL_ENVELOPE_ONLY",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_BLOCKED",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_REQUIRES_EXPOSURE_REVIEW",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_REQUIRES_LLM_POLICY_REVIEW",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_REQUIRES_ACCESS_CONTROL_REVIEW",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_READY_FOR_PILOT_EXPOSURE_DECISION_GATE",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_REJECTED",
+        "MINIMAL_ENDPOINT_UI_CLOSEOUT_SUPERSEDED",
+    ):
+        assert required_text in closeout
+
+
+def test_historical_read_only_chat_pilot_minimal_endpoint_ui_closeout_reviews_candidate_boundaries():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT)
+
+    for required_text in (
+        "The candidate service exists",
+        "consumes supplied metadata only",
+        "calls/reuses the in-memory orchestrator only",
+        "returns envelope/status output",
+        "does not register a production route",
+        "does not expose public chat",
+        "current-truth fixture returns ready envelope without final answer generation",
+        "historical-context fixture returns historical envelope",
+        "caveated fixture preserves caveat",
+        "refusal fixture remains refusal",
+        "no-runtime flags remain false",
+        "No live LLM",
+        "No final answer generation",
+        "No live retrieval",
+        "No corpus mutation",
+        "No DB read/write",
+        "No Code Evidence ingestion",
+        "No production chat exposure",
+        "No public access",
+        "No tenant/customer access",
+        "No global route registration",
+        "Any future exposure requires separate decision gate",
+    ):
+        assert required_text in closeout
+
+
+def test_historical_read_only_chat_pilot_minimal_endpoint_ui_closeout_authorisation_limits():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT)
+
+    assert "a future pilot exposure decision gate may be considered" in closeout
+    assert "any future exposure must be separately approved" in closeout
+
+    for blocked in (
+        "production chat exposure",
+        "public endpoint",
+        "tenant/customer endpoint",
+        "global route registration",
+        "live LLM calls",
+        "final natural-language answer generation",
+        "live retrieval backend",
+        "corpus/vector search",
+        "corpus mutation",
+        "source ingestion",
+        "Code Evidence ingestion",
+        "DB reads",
+        "DB writes",
+        "schema migrations",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+    ):
+        assert blocked in closeout
+
+
+def test_historical_read_only_chat_pilot_minimal_endpoint_ui_static_review_and_attestation():
+    static_review = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW)
+    attestation = _read(
+        HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION
+    )
+
+    for required_text in (
+        "service existence",
+        "envelope/status-only response",
+        "no global route registration",
+        "no production UI",
+        "no live LLM",
+        "no final answer",
+        "no DB read/write",
+        "no corpus mutation",
+        "no cross-repo changes",
+    ):
+        assert required_text in static_review
+
+    for required_text in (
+        "no production chat exposure",
+        "no public endpoint",
+        "no tenant/customer endpoint",
+        "no global route registration",
+        "no live LLM",
+        "no final answer",
+        "no live retrieval",
+        "no DB read/write",
+        "no corpus mutation",
+        "no cross-repo changes",
+    ):
+        assert required_text in attestation
+
+
+def test_historical_read_only_chat_pilot_minimal_endpoint_ui_decision_catalog_is_no_runtime():
+    catalog = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_DECISION_CATALOG)
+
+    for decision in (
+        "READY_CURRENT_TRUTH_ENVELOPE",
+        "READY_HISTORICAL_CONTEXT_ENVELOPE",
+        "READY_CAVEATED_ENVELOPE",
+        "REFUSAL_ENVELOPE",
+        "BLOCKED_NO_RUNTIME_ENVELOPE",
+        "BLOCKED_NO_EXPOSURE_ENVELOPE",
+    ):
+        assert decision in catalog
+
+    for field_name in (
+        "ExposurePermitted",
+        "FinalAnswerGenerated",
+        "LiveLLMCalled",
+        "ChatExposed",
+        "DatabaseReadPerformed",
+        "DatabaseWritePerformed",
+    ):
+        assert field_name in catalog
+
+    assert catalog.count("No/false") >= 36
+
+
+def test_historical_read_only_chat_pilot_exposure_decision_entry_criteria():
+    criteria = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA)
+
+    for required_text in (
+        "minimal endpoint/UI candidate closeout complete",
+        "static review complete",
+        "no-production exposure attestation complete",
+        "access control decision required",
+        "audit/logging decision required",
+        "no live LLM approved",
+        "no final answer generation approved",
+        "no live retrieval backend",
+        "no DB read/write",
+        "no corpus mutation",
+        "explicit exposure decision required",
+    ):
+        assert required_text in criteria
+
+
+def test_historical_read_only_chat_pilot_minimal_endpoint_ui_closeout_updates_existing_controls():
+    for path in (
+        HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_RESPONSE_CONTRACT,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_GUARDRAILS,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_FIXTURE_CATALOG,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CLOSEOUT_ENTRY_CRITERIA,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_NO_EXPOSURE_ATTESTATION,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES,
+        HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+    ):
+        content = _read(path)
+        assert "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md" in content
+
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_DECISION_CATALOG.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.md",
+        "2026-05-16_minerva_historical_read_only_chat_pilot_minimal_endpoint_ui_candidate_closeout_v0_1.md",
+        "CLOSEOUT_COMPLETED_INTERNAL_ENVELOPE_ONLY",
+    ):
+        assert linked_doc in index
 
 
 def test_historical_read_only_chat_pilot_orchestrator_links_from_existing_controls():

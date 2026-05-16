@@ -37,3 +37,7 @@ Date: 16 May 2026
 ## Enforcement Position
 
 Any future route, UI, live retrieval, LLM use, DB access, corpus access, production exposure, or tenant/customer access requires a separate approval slice.
+
+## Closeout Guardrail Confirmation
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md` confirms the candidate remains internal envelope/status-only. The closeout does not authorise production chat exposure, public endpoint, tenant/customer endpoint, global route registration, live LLM calls, final natural-language answer generation, live retrieval backend, corpus/vector search, corpus mutation, source ingestion, Code Evidence ingestion, DB reads, DB writes, schema migrations, workforce-platform changes, award-configurator-v1 changes, or ezeas-analytics changes. A future pilot exposure decision gate must be separately approved.

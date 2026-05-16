@@ -136,3 +136,9 @@ Minerva now has an internal metadata/envelope candidate service for the endpoint
 ## 19. Developer Handoff
 
 Use `app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py` only as an internal metadata-envelope adapter around the orchestrator candidate. Do not register a route, expose UI, call live LLMs, generate final answers, connect retrieval, query corpus/vector/database stores, read or write databases, mutate corpus, ingest sources, ingest Code Evidence, migrate schemas, or change workforce-platform, award-configurator-v1, or ezeas-analytics without a separate explicit approval slice.
+
+## 20. Candidate Closeout Link
+
+This candidate is closed out by `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md`, supported by `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_DECISION_CATALOG.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.md`.
+
+Closeout status: `CLOSEOUT_COMPLETED_INTERNAL_ENVELOPE_ONLY`. The closeout authorises only future pilot exposure decision gate consideration and does not authorise production chat exposure, public endpoint, tenant/customer endpoint, global route registration, live LLM calls, final natural-language answer generation, live retrieval backend, corpus/vector search, corpus mutation, source ingestion, Code Evidence ingestion, DB reads, DB writes, schema migrations, workforce-platform changes, award-configurator-v1 changes, or ezeas-analytics changes.

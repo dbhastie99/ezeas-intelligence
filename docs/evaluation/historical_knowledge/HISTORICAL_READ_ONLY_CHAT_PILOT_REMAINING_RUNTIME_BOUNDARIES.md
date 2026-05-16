@@ -53,3 +53,7 @@ This boundary record does not authorise chat exposure, live LLM calls, final ans
 `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE.md` creates an internal metadata/envelope candidate service only. It does not create endpoint/UI, register a global route, expose chat, call a live LLM, generate final answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, deploy production chat, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
 
 RouteRegisteredGlobally: No.
+
+## Minimal Endpoint/UI Candidate Closeout Boundary
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md` closes out the candidate as `CLOSEOUT_COMPLETED_INTERNAL_ENVELOPE_ONLY`. It may support only future pilot exposure decision gate consideration. It does not create endpoint/UI, register a global route, expose production chat, enable public access, enable tenant/customer access, call a live LLM, generate final natural-language answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
