@@ -148,6 +148,12 @@ Future retrieval gating must exclude not-answerable, blocked, superseded, and co
 
 Future retrieval gating must preserve historical-context-only evidence for historical-context answer mode only.
 
+Answer-use permission flows into retrieval eligibility and does not itself implement retrieval.
+
+Answer-use permission does not make evidence retrieval eligible until a separate retrieval eligibility gate approves the requested retrieval mode.
+
+Future retrieval eligibility is governed by `docs/evaluation/historical_knowledge/HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md`.
+
 ## 13. Chat Exposure Boundary
 
 This slice does not expose Minerva chat.

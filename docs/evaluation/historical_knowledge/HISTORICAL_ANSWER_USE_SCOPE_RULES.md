@@ -51,3 +51,21 @@ This is a rule document only and does not implement retrieval or chat behaviour.
 Future retrieval must consume answer-use permission status before evidence can be eligible for answer assembly.
 
 Future chat must consume a later answer-mode contract, citation/provenance contract, refusal policy, and pilot-readiness gate before exposure.
+
+## 5. Retrieval Eligibility and Answer Modes
+
+Evidence scopes link to retrieval eligibility and answer modes through `docs/evaluation/historical_knowledge/HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md` and `docs/evaluation/historical_knowledge/HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING.md`.
+
+`HISTORICAL_CONTEXT_ONLY` maps to historical-context retrieval eligibility and must not be presented as current truth.
+
+`CURRENT_TRUTH` maps to current-truth retrieval eligibility only after current-truth approval, answer-use permission, and retrieval eligibility approval.
+
+`CURRENT_TRUTH_WITH_CAVEAT` maps to caveated retrieval eligibility and must preserve caveats in any future answer contract.
+
+`BACKLOG_CONTEXT_ONLY` maps to backlog/context retrieval eligibility and must not present backlog items as implemented behaviour.
+
+`PLATFORM_DOCTRINE_CONTEXT` and `HARDENING_REQUIREMENT_CONTEXT` map to doctrine/context retrieval eligibility and must preserve source and review status.
+
+`DEVELOPER_LOG_CONTEXT` maps to historical-context retrieval eligibility unless separately promoted.
+
+`NOT_ANSWERABLE`, `SUPERSEDED_NOT_ANSWERABLE`, and `CONFLICTED_NOT_ANSWERABLE` map to excluded retrieval states and must not be used for current-truth answer generation.

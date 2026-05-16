@@ -148,7 +148,17 @@ Future current-truth answer use requires both `CurrentTruthPermitted` Yes and se
 
 A current-truth promotion record may link a future answer-use permission record, but that link does not activate retrieval, expose chat, call a live LLM, or make evidence answerable unless a later runtime gate explicitly implements it.
 
-## 10. Explicit Non-Goals
+## 10. Retrieval Eligibility and Future Chat Handoff
+
+Current-truth promotion requires answer-use permission and retrieval eligibility before future chat use.
+
+Future current-truth chat use requires `CurrentTruthPermitted` Yes, answer-use permission for the requested answer scope, and retrieval eligibility for the requested retrieval mode.
+
+Retrieval eligibility is governed by `docs/evaluation/historical_knowledge/HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md`.
+
+Current-truth promotion must not be treated as retrieval eligibility, chat exposure, answer synthesis permission, or runtime activation.
+
+## 11. Explicit Non-Goals
 
 - Do not ingest source content.
 - Do not mutate operational corpus.
@@ -163,7 +173,7 @@ A current-truth promotion record may link a future answer-use permission record,
 - Do not modify runtime answer behaviour.
 - Do not fabricate benchmark, coverage, answer gap, or DB-backed results.
 
-## 11. Developer Handoff
+## 12. Developer Handoff
 
 Future developers must treat this control as the handoff point after future backfilled evidence validation and before any later explicit promotion slice.
 

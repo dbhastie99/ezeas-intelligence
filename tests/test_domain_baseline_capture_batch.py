@@ -349,6 +349,21 @@ HISTORICAL_ANSWER_USE_BLOCKER_MODEL = (
 HISTORICAL_ANSWER_USE_SCOPE_RULES = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_USE_SCOPE_RULES.md"
 )
+HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md"
+)
+HISTORICAL_RETRIEVAL_ELIGIBILITY_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RETRIEVAL_ELIGIBILITY_TEMPLATE.md"
+)
+HISTORICAL_RETRIEVAL_ELIGIBILITY_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RETRIEVAL_ELIGIBILITY_BLOCKER_MODEL.md"
+)
+HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING.md"
+)
+HISTORICAL_RETRIEVAL_EXCLUSION_RULES = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RETRIEVAL_EXCLUSION_RULES.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -527,6 +542,9 @@ HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL_PROMPT = Path(
 )
 HISTORICAL_ANSWER_USE_PERMISSION_GATE_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_answer_use_permission_gate_v0_1.md"
+)
+HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_retrieval_eligibility_gate_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -2781,6 +2799,340 @@ def test_historical_answer_use_permission_slice_introduces_only_docs_tests_and_n
         "No ezeas-analytics changes",
         "No current-truth promotion",
         "No runtime answer-use permission activation",
+        "does not expose chat",
+        "does not call a live LLM",
+        "does not change retrieval runtime",
+        "does not mutate corpus",
+        "does not ingest source content",
+        "does not promote current truth",
+        "does not write to a database",
+        "does not create endpoint",
+        "does not create UI",
+    ):
+        assert required_boundary in combined
+
+
+def test_historical_retrieval_eligibility_docs_exist():
+    assert HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.exists()
+    assert HISTORICAL_RETRIEVAL_ELIGIBILITY_TEMPLATE.exists()
+    assert HISTORICAL_RETRIEVAL_ELIGIBILITY_BLOCKER_MODEL.exists()
+    assert HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING.exists()
+    assert HISTORICAL_RETRIEVAL_EXCLUSION_RULES.exists()
+    assert HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE_PROMPT.exists()
+
+
+def test_historical_retrieval_eligibility_gate_required_model_and_dependencies():
+    gate = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE)
+
+    for status in (
+        "RETRIEVAL_ELIGIBILITY_NOT_REQUESTED",
+        "RETRIEVAL_ELIGIBILITY_BLOCKED",
+        "RETRIEVAL_ELIGIBILITY_DEFERRED",
+        "RETRIEVAL_ELIGIBILITY_REJECTED",
+        "RETRIEVAL_ELIGIBLE_HISTORICAL_CONTEXT_ONLY",
+        "RETRIEVAL_ELIGIBLE_CURRENT_TRUTH",
+        "RETRIEVAL_ELIGIBLE_WITH_CAVEAT",
+        "RETRIEVAL_ELIGIBLE_BACKLOG_CONTEXT_ONLY",
+        "RETRIEVAL_ELIGIBLE_DOCTRINE_CONTEXT_ONLY",
+        "RETRIEVAL_EXCLUDED_NOT_ANSWERABLE",
+        "RETRIEVAL_EXCLUDED_SUPERSEDED",
+        "RETRIEVAL_EXCLUDED_CONFLICTED",
+        "RETRIEVAL_REVOKED",
+    ):
+        assert status in gate
+
+    for precondition in (
+        "`SourceId` exists",
+        "`AnswerUsePermissionId` exists",
+        "`AnswerUsePermissionStatus` is recorded",
+        "`EvidenceScope` is recorded",
+        "`AnswerScope` is recorded",
+        "Source provenance exists",
+        "Cross-check status is recorded",
+        "Conflict status is resolved or explicitly caveated",
+        "Supersession status is resolved",
+        "Citation/provenance requirement is defined",
+        "Revocation/removal path is defined",
+        "Retrieval runtime has not yet been enabled in this slice",
+    ):
+        assert precondition in gate
+
+    assert "Answer-use permission is required before retrieval eligibility can be approved" in gate
+    assert "Answer-use permission alone does not implement retrieval" in gate
+    assert "Answer-use permission alone does not expose chat" in gate
+    assert "Current-truth retrieval requires `CurrentTruthPermitted` Yes" in gate
+    assert "Historical-context retrieval does not become current-truth retrieval" in gate
+
+
+def test_historical_retrieval_eligibility_mapping_modes_exclusions_and_refusals():
+    gate = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE)
+    mapping = _read(HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING)
+    exclusions = _read(HISTORICAL_RETRIEVAL_EXCLUSION_RULES)
+    combined = "\n".join((gate, mapping, exclusions))
+
+    for required_mapping in (
+        "| `HISTORICAL_CONTEXT_ONLY` | `RETRIEVAL_ELIGIBLE_HISTORICAL_CONTEXT_ONLY` |",
+        "| `CURRENT_TRUTH` | `RETRIEVAL_ELIGIBLE_CURRENT_TRUTH` |",
+        "| `CURRENT_TRUTH_WITH_CAVEAT` | `RETRIEVAL_ELIGIBLE_WITH_CAVEAT` |",
+        "| `BACKLOG_CONTEXT_ONLY` | `RETRIEVAL_ELIGIBLE_BACKLOG_CONTEXT_ONLY` |",
+        "| `PLATFORM_DOCTRINE_CONTEXT` | `RETRIEVAL_ELIGIBLE_DOCTRINE_CONTEXT_ONLY` |",
+        "| `HARDENING_REQUIREMENT_CONTEXT` | `RETRIEVAL_ELIGIBLE_DOCTRINE_CONTEXT_ONLY` or equivalent governed context mode |",
+        "| `DEVELOPER_LOG_CONTEXT` | `RETRIEVAL_ELIGIBLE_HISTORICAL_CONTEXT_ONLY` unless separately promoted |",
+        "| `NOT_ANSWERABLE` | `RETRIEVAL_EXCLUDED_NOT_ANSWERABLE` |",
+        "| `SUPERSEDED_NOT_ANSWERABLE` | `RETRIEVAL_EXCLUDED_SUPERSEDED` |",
+        "| `CONFLICTED_NOT_ANSWERABLE` | `RETRIEVAL_EXCLUDED_CONFLICTED` |",
+    ):
+        assert required_mapping in gate
+
+    for mode_rule in (
+        "Current-truth mode may only retrieve current-truth eligible evidence",
+        "Historical-context mode may retrieve historical-context evidence but must not present it as current truth",
+        "Caveated mode must carry caveat into future answer contract",
+        "Backlog/context mode must not present backlog items as implemented behaviour",
+        "Doctrine/context mode must preserve source and review status",
+        "Excluded modes must not be used for answer generation",
+    ):
+        assert mode_rule in gate
+
+    for exclusion_rule in (
+        "Not-answerable evidence is excluded from answer retrieval",
+        "Superseded evidence is excluded from current-truth retrieval",
+        "Conflicted evidence is excluded from settled-answer retrieval",
+        "Blocked or revoked answer-use permission excludes retrieval",
+        "Missing provenance excludes retrieval",
+        "Missing citation requirement excludes chat-answer retrieval",
+        "Excluded evidence must not be used for current-truth answer generation",
+    ):
+        assert exclusion_rule in combined
+
+    assert "Conflicted evidence defaults to excluded from current-truth and settled-answer modes" in gate
+    assert "Superseded evidence defaults to excluded from current-truth mode" in gate
+    assert "If retrieval eligibility is absent, future Minerva answer logic must refuse or state insufficient governed evidence" in gate
+    assert "If retrieval eligibility is blocked, future Minerva answer logic must refuse or state evidence is not retrieval-approved" in gate
+    assert "This is a control document only and does not implement retrieval runtime or chat behaviour" in mapping
+
+
+def test_historical_retrieval_eligibility_citation_blockers_and_boundaries_are_complete():
+    gate = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE)
+    blocker_model = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_BLOCKER_MODEL)
+    combined = "\n".join((gate, blocker_model))
+
+    for field in (
+        "`SourceId`",
+        "`SourceTitle`",
+        "`SourceDate` or unknown-date marker",
+        "`RepositoryContext`",
+        "`DomainContext`",
+        "`AnswerUsePermissionId`",
+        "`RetrievalEligibilityId`",
+        "`EvidenceScope`",
+        "`RetrievalMode`",
+        "`CitationRequired`",
+        "`CaveatRequired`",
+        "`Reviewer/Approver`",
+        "`ApprovedAtUtc`",
+        "`RevocationPath`",
+        "`Notes`",
+    ):
+        assert field in gate
+
+    for blocker_code in (
+        "MISSING_SOURCE_ID",
+        "MISSING_ANSWER_USE_PERMISSION",
+        "ANSWER_USE_NOT_APPROVED",
+        "ANSWER_USE_REVOKED",
+        "ANSWER_USE_SUPERSEDED",
+        "MISSING_CURRENT_TRUTH_PROMOTION",
+        "CURRENT_TRUTH_NOT_APPROVED",
+        "PROVENANCE_INCOMPLETE",
+        "CROSS_CHECK_INCOMPLETE",
+        "CONFLICT_UNRESOLVED",
+        "SUPERSESSION_UNRESOLVED",
+        "EVIDENCE_SCOPE_UNDEFINED",
+        "ANSWER_SCOPE_UNDEFINED",
+        "RETRIEVAL_MODE_UNDEFINED",
+        "CITATION_REQUIREMENT_UNDEFINED",
+        "REVOCATION_PATH_MISSING",
+        "RETRIEVAL_RUNTIME_NOT_IMPLEMENTED",
+        "CHAT_CONTRACT_NOT_IMPLEMENTED",
+    ):
+        assert blocker_code in gate
+        assert blocker_code in blocker_model
+
+    for boundary in (
+        "This slice does not expose Minerva chat",
+        "This slice does not change answer synthesis",
+        "This slice does not call a live LLM",
+        "This slice does not implement retrieval filtering",
+        "This slice does not modify retrieval code",
+        "This slice does not activate answer-use permission at runtime",
+        "This slice does not activate retrieval eligibility at runtime",
+        "This slice does not mutate corpus or evidence stores",
+        "Creating retrieval eligibility docs does not expose chat",
+        "Retrieval eligibility gate does not call a live LLM",
+        "Retrieval eligibility gate does not change retrieval runtime",
+        "Retrieval eligibility gate does not mutate corpus",
+        "Retrieval eligibility gate does not ingest source content",
+        "Retrieval eligibility gate does not promote current truth",
+        "Retrieval eligibility gate does not activate answer use at runtime",
+        "Retrieval eligibility gate does not write to a database",
+        "Retrieval eligibility gate does not create endpoint or UI changes",
+    ):
+        assert boundary in combined
+
+    assert "Blocker resolution does not itself enable retrieval runtime" in blocker_model
+    assert "Resolution does not expose chat" in blocker_model
+    assert "Resolution does not call a live LLM" in blocker_model
+    assert "Resolution does not make evidence answerable" in blocker_model
+
+
+def test_historical_retrieval_eligibility_template_fields_and_defaults():
+    template = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_TEMPLATE)
+
+    for field in (
+        "RetrievalEligibilityId",
+        "AnswerUsePermissionId",
+        "SourceId",
+        "SourceTitle",
+        "SourceDate",
+        "RepositoryContext",
+        "DomainContext",
+        "DecisionRecordId",
+        "FindingsRecordId",
+        "FindingClassificationId",
+        "IngestionBackfillDecisionId",
+        "CurrentTruthPromotionId",
+        "AnswerUsePermissionStatus",
+        "RetrievalEligibilityStatus",
+        "EvidenceScope",
+        "AnswerScope",
+        "RetrievalMode",
+        "CurrentTruthPermitted",
+        "HistoricalContextPermitted",
+        "RetrievalEligible",
+        "ChatEligible",
+        "CaveatRequired",
+        "CitationRequired",
+        "ProvenanceStatus",
+        "CrossCheckStatus",
+        "ConflictStatus",
+        "SupersessionStatus",
+        "RevocationPath",
+        "Blockers",
+        "DecisionRationale",
+        "ApprovedBy",
+        "ApprovedAtUtc",
+        "Notes",
+    ):
+        assert field in template
+
+    for default in (
+        "| CurrentTruthPermitted | No |",
+        "| HistoricalContextPermitted | No |",
+        "| RetrievalEligible | No |",
+        "| ChatEligible | No |",
+        "| CaveatRequired | Yes |",
+        "| CitationRequired | Yes |",
+    ):
+        assert default in template
+
+
+def test_historical_retrieval_eligibility_is_linked_from_prior_controls_and_index():
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    answer_gate = _read(HISTORICAL_ANSWER_USE_PERMISSION_GATE)
+    answer_template = _read(HISTORICAL_ANSWER_USE_PERMISSION_TEMPLATE)
+    scope_rules = _read(HISTORICAL_ANSWER_USE_SCOPE_RULES)
+    promotion_control = _read(HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL)
+    ingestion_control = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+    prompt = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE_PROMPT)
+
+    for linked_doc in (
+        "HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md",
+        "HISTORICAL_RETRIEVAL_ELIGIBILITY_TEMPLATE.md",
+        "HISTORICAL_RETRIEVAL_ELIGIBILITY_BLOCKER_MODEL.md",
+        "HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING.md",
+        "HISTORICAL_RETRIEVAL_EXCLUSION_RULES.md",
+    ):
+        assert linked_doc in index
+        assert linked_doc in prompt
+
+    assert "Answer-use permission flows into retrieval eligibility and does not itself implement retrieval" in answer_gate
+    assert "RetrievalEligibilityLink" in answer_template
+    assert "Evidence scopes link to retrieval eligibility and answer modes" in scope_rules
+    assert "Current-truth promotion requires answer-use permission and retrieval eligibility before future chat use" in promotion_control
+    assert "Ingestion/backfill evidence must pass answer-use and retrieval eligibility gates before future answer use" in ingestion_control
+
+
+def test_historical_retrieval_eligibility_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "db" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+        assert "migrations" not in normalized
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE,
+            HISTORICAL_RETRIEVAL_ELIGIBILITY_TEMPLATE,
+            HISTORICAL_RETRIEVAL_ELIGIBILITY_BLOCKER_MODEL,
+            HISTORICAL_RETRIEVAL_ANSWER_MODE_MAPPING,
+            HISTORICAL_RETRIEVAL_EXCLUSION_RULES,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_ANSWER_USE_PERMISSION_GATE,
+            HISTORICAL_ANSWER_USE_PERMISSION_TEMPLATE,
+            HISTORICAL_ANSWER_USE_SCOPE_RULES,
+            HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL,
+            HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL,
+            HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No retrieval runtime changes",
+        "No chat exposure",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No runtime answer-use permission activation",
+        "No runtime retrieval eligibility activation",
         "does not expose chat",
         "does not call a live LLM",
         "does not change retrieval runtime",

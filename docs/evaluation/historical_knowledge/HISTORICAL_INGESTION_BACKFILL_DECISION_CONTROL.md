@@ -216,6 +216,12 @@ Ingested historical material must not become answerable current truth by default
 
 Minerva chat exposure must respect answer-use permission and current-truth status.
 
+Ingestion/backfill evidence must pass answer-use and retrieval eligibility gates before future answer use.
+
+The retrieval eligibility gate is governed by `docs/evaluation/historical_knowledge/HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md`.
+
+Ingestion/backfill evidence must not be retrieved for current-truth, historical-context, caveated, backlog/context, doctrine/context, or chat answer modes unless later answer-use permission and retrieval eligibility explicitly approve the requested mode.
+
 ## 13. Rollback / Removal Requirements
 
 Any future ingestion/backfill plan must include rollback/removal instructions.

@@ -26,6 +26,7 @@ This template does not expose chat, call a live LLM, change retrieval runtime, m
 | IngestionBackfillDecisionId | TBD or not applicable with rationale |
 | CurrentTruthPromotionId | TBD or not applicable with rationale |
 | AnswerUsePermissionStatus | `ANSWER_USE_NOT_REQUESTED` |
+| RetrievalEligibilityLink | TBD or not yet requested |
 | EvidenceScope | `NOT_ANSWERABLE` |
 | AnswerScope | TBD |
 | CurrentTruthPermitted | No |
