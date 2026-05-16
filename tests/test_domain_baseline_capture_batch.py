@@ -311,6 +311,19 @@ HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE = (
 HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL.md"
 )
+HISTORICAL_BACKFILL_EXECUTION_DESIGN = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BACKFILL_EXECUTION_DESIGN.md"
+)
+HISTORICAL_BACKFILL_EXECUTION_RUNBOOK = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BACKFILL_EXECUTION_RUNBOOK.md"
+)
+HISTORICAL_BACKFILL_EXECUTION_SAFETY_CHECKLIST = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_BACKFILL_EXECUTION_SAFETY_CHECKLIST.md"
+)
+HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -480,6 +493,9 @@ HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_PROMPT = Path(
 )
 HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_ingestion_backfill_decision_control_v0_1.md"
+)
+HISTORICAL_BACKFILL_EXECUTION_DESIGN_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_backfill_execution_design_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -1950,6 +1966,256 @@ def test_historical_ingestion_backfill_slice_introduces_only_docs_tests_and_no_r
         "does not create Code Evidence",
         "does not write to a database",
         "does not call a live LLM",
+    ):
+        assert required_boundary in combined
+
+
+def test_historical_backfill_execution_design_docs_exist():
+    assert HISTORICAL_BACKFILL_EXECUTION_DESIGN.exists()
+    assert HISTORICAL_BACKFILL_EXECUTION_RUNBOOK.exists()
+    assert HISTORICAL_BACKFILL_EXECUTION_SAFETY_CHECKLIST.exists()
+    assert HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE.exists()
+    assert HISTORICAL_BACKFILL_EXECUTION_DESIGN_PROMPT.exists()
+
+
+def test_historical_backfill_execution_design_stages_and_defaults_are_complete():
+    design = _read(HISTORICAL_BACKFILL_EXECUTION_DESIGN)
+
+    for stage in (
+        "DECISION_APPROVED",
+        "SOURCE_SCOPE_FROZEN",
+        "SOURCE_AUTHORITY_CHECKED",
+        "SUPERSESSION_CONFLICT_CHECKED",
+        "DUPLICATE_LINKING_CHECKED",
+        "SENSITIVITY_TENANT_RISK_CHECKED",
+        "EVIDENCE_EXTRACTION_PLAN_PREPARED",
+        "BACKFILL_DRY_RUN_PREPARED",
+        "BACKFILL_DRY_RUN_REVIEWED",
+        "BACKFILL_APPLY_APPROVED",
+        "BACKFILL_APPLY_EXECUTED_FUTURE_SLICE",
+        "POST_BACKFILL_VALIDATION",
+        "CURRENT_TRUTH_PROMOTION_DECISION_SEPARATE",
+        "ANSWER_USE_DECISION_SEPARATE",
+    ):
+        assert stage in design
+
+    for default in (
+        "| `BackfillExecutionPermitted` | No |",
+        "| `BackfillDryRunPermitted` | No, unless a later explicit dry-run slice approves it |",
+        "| `CorpusMutationPermitted` | No |",
+        "| `DatabaseWritePermitted` | No |",
+        "| `CurrentTruthPromotionPermitted` | No |",
+        "| `AnswerUsePermitted` | No |",
+        "| `ChatExposurePermitted` | No |",
+        "| `CodeEvidenceIngestionPermitted` | No |",
+        "| `LiveLLMUsePermitted` | No |",
+    ):
+        assert default in design
+
+    for required_text in (
+        "This slice only designs future execution",
+        "It does not execute backfill",
+        "It does not ingest historical source content",
+        "It does not create or mutate corpus records",
+        "It does not create Code Evidence",
+        "It does not write to the database",
+        "It does not call a live LLM",
+        "It does not promote current truth",
+        "It does not permit answer use",
+        "It does not expose chat",
+    ):
+        assert required_text in design
+
+
+def test_historical_backfill_execution_runbook_records_required_controls():
+    runbook = _read(HISTORICAL_BACKFILL_EXECUTION_RUNBOOK)
+
+    for required_text in (
+        "Required decision-control artefact exists",
+        "Required source review status is complete and linked",
+        "Required blocker clearance is recorded",
+        "A dry run is mandatory before any apply approval",
+        "This runbook does not approve a dry run",
+        "This runbook does not extract source content",
+        "Duplicate handling must prefer links to existing reviewed evidence",
+        "Superseded source handling must identify the newer controlling source",
+        "Conflicting findings are blocked until a conflict-resolution record",
+        "Historical-only sources may support historical provenance and rationale records only",
+        "Every future dry-run or apply planning record must use",
+        "Future execution planning must include rollback/removal expectations",
+        "Post-backfill validation must confirm",
+        "explicit handoff to current-truth promotion control",
+    ):
+        assert required_text in runbook
+
+
+def test_historical_backfill_execution_safety_checklist_is_conservative():
+    checklist = _read(HISTORICAL_BACKFILL_EXECUTION_SAFETY_CHECKLIST)
+
+    for required_check in (
+        "Source reviewed",
+        "Ingestion/backfill decision approved",
+        "No unresolved blockers",
+        "Source scope frozen",
+        "Source authority confirmed",
+        "Supersession checked",
+        "Conflict checked",
+        "Duplicate checked",
+        "Sensitive data checked",
+        "Tenant data checked",
+        "Extraction plan reviewed",
+        "Dry-run completed in future slice",
+        "Reviewer approval captured",
+        "No answer-use permission implied",
+        "No current-truth promotion implied",
+    ):
+        assert required_check in checklist
+
+    assert "| `BackfillExecutionPermitted` | No |" in checklist
+    assert "| `BackfillDryRunPermitted` | No, unless a later explicit dry-run slice approves it |" in checklist
+    assert "| `AnswerUsePermitted` | No |" in checklist
+    assert "| `CurrentTruthPromotionPermitted` | No |" in checklist
+
+
+def test_historical_backfill_execution_audit_template_fields_and_non_goals():
+    template = _read(HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE)
+
+    for field in (
+        "BackfillExecutionId or planned identifier",
+        "SourceRegisterId",
+        "DecisionRecordReference",
+        "DecisionControlReference",
+        "SourceScope",
+        "BackfillScope",
+        "DryRunReference",
+        "Reviewer",
+        "ApprovalDate",
+        "ExecutionStatus",
+        "CorpusMutationPerformed",
+        "DatabaseWritePerformed",
+        "CurrentTruthPromotionPerformed",
+        "AnswerUsePermissionGranted",
+        "SourceAuthoritySummary",
+        "SupersessionSummary",
+        "ConflictSummary",
+        "DuplicateSummary",
+        "SensitivitySummary",
+        "ExtractedEvidenceSummary",
+        "ValidationSummary",
+        "Notes",
+        "Explicit non-goals",
+    ):
+        assert field in template
+
+    for default in (
+        "| CorpusMutationPerformed | No |",
+        "| DatabaseWritePerformed | No |",
+        "| CurrentTruthPromotionPerformed | No |",
+        "| AnswerUsePermissionGranted | No |",
+        "| ExtractedEvidenceSummary | Not extracted in this slice. |",
+    ):
+        assert default in template
+
+
+def test_historical_backfill_execution_is_linked_from_decision_control_and_index():
+    control = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+    template = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE)
+    blocker_model = _read(HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    prompt = _read(HISTORICAL_BACKFILL_EXECUTION_DESIGN_PROMPT)
+
+    for linked_doc in (
+        "HISTORICAL_BACKFILL_EXECUTION_DESIGN.md",
+        "HISTORICAL_BACKFILL_EXECUTION_RUNBOOK.md",
+        "HISTORICAL_BACKFILL_EXECUTION_SAFETY_CHECKLIST.md",
+        "HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE.md",
+    ):
+        assert linked_doc in index
+        assert linked_doc in prompt
+
+    assert "Future backfill execution design is governed by `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_EXECUTION_DESIGN.md`" in control
+    assert "BackfillExecutionDesignReference" in template
+
+    for blocker_code in (
+        "BACKFILL_EXECUTION_DESIGN_MISSING",
+        "DRY_RUN_NOT_APPROVED",
+        "DRY_RUN_NOT_REVIEWED",
+    ):
+        assert blocker_code in control
+        assert blocker_code in blocker_model
+
+
+def test_historical_backfill_execution_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "db" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+        assert "migrations" not in normalized
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_BACKFILL_EXECUTION_DESIGN,
+            HISTORICAL_BACKFILL_EXECUTION_RUNBOOK,
+            HISTORICAL_BACKFILL_EXECUTION_SAFETY_CHECKLIST,
+            HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL,
+            HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE,
+            HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL,
+            HISTORICAL_BACKFILL_EXECUTION_DESIGN_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No current-truth promotion",
+        "No answer-use permission",
+        "does not execute backfill",
+        "does not ingest source content",
+        "does not mutate operational corpus",
+        "does not create Code Evidence",
+        "does not write to a database",
+        "does not call a live LLM",
+        "does not promote current truth",
+        "does not permit answer use",
+        "does not expose chat",
+        "does not modify runtime answer behaviour",
     ):
         assert required_boundary in combined
 

@@ -51,7 +51,7 @@ approval for any later state:
 | `INGESTION_DECISION_APPROVED_FOR_PLANNING_ONLY` | A future ingestion plan may be drafted, but no source content may be ingested. |
 | `BACKFILL_DECISION_APPROVED_FOR_PLANNING_ONLY` | A future backfill plan may be drafted, but no target store may be written. |
 | `INGESTION_READY_PENDING_BACKFILL_PLAN` | Ingestion planning prerequisites are satisfied, but a governed backfill plan is still required. |
-| `BACKFILL_READY_PENDING_EXECUTION_PLAN` | Backfill planning prerequisites are satisfied, but a governed execution plan is still required before any write. |
+| `BACKFILL_READY_PENDING_EXECUTION_PLAN` | Backfill planning prerequisites are satisfied, but a governed execution design and later execution plan are still required before any dry-run or write. |
 | `INGESTED_NOT_CURRENT_TRUTH` | A future governed ingestion may have completed, but current-truth promotion remains separate and unapproved. |
 | `INGESTED_HISTORICAL_ONLY` | A future governed ingestion may have completed into historical-only scope, not current answer truth. |
 | `CURRENT_TRUTH_PROMOTION_REQUIRED_SEPARATELY` | Current-truth promotion requires a separate explicit governed decision. |
@@ -71,6 +71,9 @@ Every ingestion/backfill decision record starts with these values:
 | `DatabaseWritePermitted` | No |
 | `LiveLLMUsePermitted` | No |
 | `ChatExposurePermitted` | No |
+| `BackfillExecutionPermitted` | No |
+| `BackfillDryRunPermitted` | No, unless a later explicit dry-run slice approves it |
+| `CorpusMutationPermitted` | No |
 
 These defaults remain No unless a later governed decision explicitly changes the
 specific permission. No default may be inferred from classification, outcome
@@ -173,6 +176,10 @@ Future backfill planning must define whether the target is metadata-only, histor
 
 No target write occurs in this slice.
 
+Future backfill execution design is governed by `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_EXECUTION_DESIGN.md`. Decision approval can hand off to future execution design only; it does not execute backfill, prepare an approved dry-run, mutate corpus, write a database, promote current truth, permit answer use, create Code Evidence, call a live LLM, or expose chat.
+
+Future execution design must preserve these stages: decision approved; source scope frozen; source authority checked; supersession/conflict checked; duplicate linking checked; sensitivity and tenant-data risk checked; evidence extraction plan prepared; backfill dry-run prepared; backfill dry-run reviewed; backfill apply approved; backfill apply executed in a future explicit slice; post-backfill validation; current-truth promotion decision remains separate; answer-use decision remains separate.
+
 ## 11. Current Truth Boundary
 
 Ingestion/backfill decision control does not promote current truth.
@@ -241,6 +248,9 @@ Blocked decisions must record one or more blocker codes and the required resolut
 - `CURRENT_TRUTH_NOT_APPROVED`
 - `INGESTION_SCOPE_NOT_DEFINED`
 - `BACKFILL_STRATEGY_NOT_DEFINED`
+- `BACKFILL_EXECUTION_DESIGN_MISSING`
+- `DRY_RUN_NOT_APPROVED`
+- `DRY_RUN_NOT_REVIEWED`
 - `REVIEW_GATE_NOT_READY`
 - `SOURCE_AUTHORITY_TOO_LOW`
 - `HISTORICAL_ONLY_CONTEXT`

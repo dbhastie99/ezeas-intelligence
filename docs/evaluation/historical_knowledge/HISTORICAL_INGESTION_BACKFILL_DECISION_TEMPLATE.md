@@ -39,6 +39,9 @@ Use this template to record a governed ingestion/backfill decision-control state
 | AnswerUsePermitted | No |
 | IngestionPermitted | No |
 | BackfillPermitted | No |
+| BackfillExecutionPermitted | No |
+| BackfillDryRunPermitted | No, unless a later explicit dry-run slice approves it |
+| CorpusMutationPermitted | No |
 | OperationalCorpusMutationPermitted | No |
 | CodeEvidenceIngestionPermitted | No |
 | DatabaseWritePermitted | No |
@@ -54,6 +57,9 @@ Use this template to record a governed ingestion/backfill decision-control state
 | DuplicateAssessment |  |
 | ProvenanceStatus |  |
 | RollbackPlanStatus |  |
+| BackfillExecutionDesignReference | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_EXECUTION_DESIGN.md` |
+| BackfillDryRunStatus | Not approved. |
+| BackfillApplyStatus | Not approved. |
 | FormalEvidenceGapStatus |  |
 | SensitiveDataAssessment |  |
 | Blockers |  |
@@ -72,6 +78,9 @@ Use this template to record a governed ingestion/backfill decision-control state
 - Do not create Code Evidence.
 - Do not write to database.
 - Do not call live LLM.
+- Do not execute backfill.
+- Do not approve a backfill dry-run.
+- Do not create or mutate corpus records.
 - Do not promote current truth.
 - Do not permit answer use.
 - Do not expose chat.
@@ -87,6 +96,9 @@ Required conservative defaults:
 - `AnswerUsePermitted`: No
 - `IngestionPermitted`: No
 - `BackfillPermitted`: No
+- `BackfillExecutionPermitted`: No
+- `BackfillDryRunPermitted`: No, unless a later explicit dry-run slice approves it
+- `CorpusMutationPermitted`: No
 - `OperationalCorpusMutationPermitted`: No
 - `CodeEvidenceIngestionPermitted`: No
 - `DatabaseWritePermitted`: No

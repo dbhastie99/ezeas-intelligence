@@ -42,6 +42,9 @@ Blocker resolution does not itself perform ingestion, permit answer use, or prom
 | `CURRENT_TRUTH_NOT_APPROVED` | Current-truth promotion has not been explicitly approved. | Keep `CurrentTruthPromotionPermitted` No unless a separate current-truth decision approves it. |
 | `INGESTION_SCOPE_NOT_DEFINED` | Proposed ingestion scope is missing or ambiguous. | Define bounded ingestion scope before any planning decision. |
 | `BACKFILL_STRATEGY_NOT_DEFINED` | Proposed backfill strategy is missing or ambiguous. | Define backfill target, method, provenance, and rollback strategy before planning. |
+| `BACKFILL_EXECUTION_DESIGN_MISSING` | A planning-only approval has no linked future execution design. | Link `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_EXECUTION_DESIGN.md` before execution planning proceeds. |
+| `DRY_RUN_NOT_APPROVED` | Dry-run permission has not been explicitly approved in a later dry-run slice. | Keep `BackfillDryRunPermitted` No until a later explicit dry-run slice approves it. |
+| `DRY_RUN_NOT_REVIEWED` | Dry-run output has not been reviewed. | Review dry-run output before any future apply approval. |
 | `REVIEW_GATE_NOT_READY` | Required upstream review gate is incomplete or not ready. | Complete the gate or defer with explicit rationale. |
 | `SOURCE_AUTHORITY_TOO_LOW` | The source authority is too low for the proposed use. | Restrict to historical context, reject, or require higher-authority evidence. |
 | `HISTORICAL_ONLY_CONTEXT` | The finding is valid only as historical context. | Preserve historical-only retention and block current answer/current truth use. |
