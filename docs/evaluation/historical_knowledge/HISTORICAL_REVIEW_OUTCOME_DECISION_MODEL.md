@@ -51,6 +51,12 @@ Outcome decision does not mutate operational corpus, create Code Evidence, write
 
 The ingestion/backfill decision-control model is the next governed gate for assessing whether ingestion or backfill planning may be considered. It still preserves ingestion No unless a later governed ingestion/backfill decision explicitly changes it.
 
+### Answer-Use Permission Decision Boundary
+
+`OUTCOME_READY_FOR_ANSWER_USE_DECISION` means answer-use permission may be considered, not approved.
+
+The answer-use permission gate is governed by `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_USE_PERMISSION_GATE.md`, and it remains separate from outcome decision, ingestion/backfill decision, and current-truth promotion.
+
 ## 5. Required Inputs
 
 Before recording an outcome decision, the decision path must have:

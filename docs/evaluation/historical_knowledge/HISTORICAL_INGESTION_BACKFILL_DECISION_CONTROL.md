@@ -208,6 +208,10 @@ Current-truth approval does not automatically mean answer-use permission.
 
 Answer-use permission must remain a separate decision.
 
+Ingestion/backfill does not automatically permit answer use and must flow through answer-use permission gating.
+
+The answer-use permission gate is governed by `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_USE_PERMISSION_GATE.md`.
+
 Ingested historical material must not become answerable current truth by default.
 
 Minerva chat exposure must respect answer-use permission and current-truth status.

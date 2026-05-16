@@ -138,7 +138,17 @@ Use these artefacts together:
 
 Future promotion records must be created from the template or an approved successor.
 
-## 9. Explicit Non-Goals
+## 9. Answer-Use Permission Gate Handoff
+
+Current-truth promotion does not automatically permit answer use and must flow into the answer-use permission gate when current-truth answers are requested.
+
+The answer-use permission gate is governed by `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_USE_PERMISSION_GATE.md`.
+
+Future current-truth answer use requires both `CurrentTruthPermitted` Yes and separate `AnswerUsePermitted` Yes.
+
+A current-truth promotion record may link a future answer-use permission record, but that link does not activate retrieval, expose chat, call a live LLM, or make evidence answerable unless a later runtime gate explicitly implements it.
+
+## 10. Explicit Non-Goals
 
 - Do not ingest source content.
 - Do not mutate operational corpus.
@@ -153,7 +163,7 @@ Future promotion records must be created from the template or an approved succes
 - Do not modify runtime answer behaviour.
 - Do not fabricate benchmark, coverage, answer gap, or DB-backed results.
 
-## 10. Developer Handoff
+## 11. Developer Handoff
 
 Future developers must treat this control as the handoff point after future backfilled evidence validation and before any later explicit promotion slice.
 

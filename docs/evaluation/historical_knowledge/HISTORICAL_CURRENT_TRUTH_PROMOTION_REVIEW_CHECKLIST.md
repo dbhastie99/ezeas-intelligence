@@ -30,6 +30,7 @@ This checklist is documentation/control only. It does not promote current truth,
 | Proposed truth scope documented | Scope is explicit and narrow. |
 | Reviewer approval captured | Required only in a future explicit promotion slice. |
 | Answer-use remains separate | `AnswerUsePermitted` remains No unless separately approved. |
+| Answer-use permission decision before chat/retrieval use | Required before any chat or retrieval use; current-truth promotion must flow into the answer-use permission gate. |
 | No chat exposure implied | Chat exposure remains No. |
 
 ## 3. Conservative Permission Defaults

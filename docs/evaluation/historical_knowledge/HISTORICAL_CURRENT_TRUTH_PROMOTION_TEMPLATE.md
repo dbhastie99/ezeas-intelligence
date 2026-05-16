@@ -37,6 +37,7 @@ This template does not promote current truth, permit answer use, ingest source c
 | DecisionDate | TBD |
 | RequiredNextAction | TBD |
 | AnswerUsePermissionStatus | `ANSWER_USE_NOT_APPROVED` |
+| AnswerUsePermissionLink | TBD optional planned link to `HISTORICAL_ANSWER_USE_PERMISSION_TEMPLATE.md` record |
 | Notes | TBD |
 | Explicit non-goals | See section 5. |
 
