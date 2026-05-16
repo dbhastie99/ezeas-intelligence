@@ -14,6 +14,7 @@ This document lists remaining runtime boundaries before any real Minerva histori
 - endpoint/UI planning gate as the next controlled boundary;
 - endpoint/UI design pack completed as a planned boundary;
 - endpoint/UI implementation gate as a controlled boundary;
+- pilot exposure decision gate as the current controlled boundary;
 - live LLM usage;
 - live retrieval backend;
 - citation rendering runtime;
@@ -27,6 +28,8 @@ This document lists remaining runtime boundaries before any real Minerva histori
 ## Current Boundary State
 
 No endpoint/UI exists. No live LLM approval exists. No live retrieval backend is connected. No production chat route exists. No citation rendering runtime exists beyond metadata envelope validation. No audit/logging runtime exists beyond design documentation. Pilot implementation candidate remains separate.
+
+Pilot exposure decision gate is the current boundary. It decides readiness conditions only and does not approve exposure.
 
 ## Non-Authorisation
 
@@ -57,3 +60,7 @@ RouteRegisteredGlobally: No.
 ## Minimal Endpoint/UI Candidate Closeout Boundary
 
 `HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md` closes out the candidate as `CLOSEOUT_COMPLETED_INTERNAL_ENVELOPE_ONLY`. It may support only future pilot exposure decision gate consideration. It does not create endpoint/UI, register a global route, expose production chat, enable public access, enable tenant/customer access, call a live LLM, generate final natural-language answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
+
+## Pilot Exposure Decision Gate Boundary
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md` is the current controlled boundary after minimal endpoint/UI candidate closeout. It may decide only what must be true before a future strictly internal exposure candidate may be considered. It does not approve exposure, create endpoint/UI, register a global route, expose production chat, enable public access, enable tenant/customer access, call a live LLM, generate final natural-language answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.

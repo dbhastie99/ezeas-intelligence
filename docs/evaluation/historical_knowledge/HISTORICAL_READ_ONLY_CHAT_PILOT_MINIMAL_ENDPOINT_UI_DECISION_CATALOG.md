@@ -8,6 +8,8 @@ Date: 16 May 2026
 
 This catalog records the decision envelopes reviewed for the minimal endpoint/UI candidate closeout.
 
+This catalog is an input to `HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md`; all exposure/runtime fields remain conservative.
+
 ## Decision Catalog
 
 | Decision | ExposurePermitted | FinalAnswerGenerated | LiveLLMCalled | ChatExposed | DatabaseReadPerformed | DatabaseWritePerformed | Notes |
@@ -22,4 +24,3 @@ This catalog records the decision envelopes reviewed for the minimal endpoint/UI
 ## Boundary
 
 All runtime and exposure fields remain No/false. This catalog does not approve endpoint registration, UI exposure, live LLM use, final answer generation, live retrieval, corpus/vector search, DB reads, DB writes, or corpus mutation.
-

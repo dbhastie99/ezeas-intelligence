@@ -8,6 +8,8 @@ Date: 16 May 2026
 
 This static review records the minimal endpoint/UI candidate boundary for no-exposure and no-live-runtime behaviour.
 
+This review is an input to `HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md`; it does not approve exposure.
+
 ## Review Findings
 
 | Review item | Finding |
@@ -27,4 +29,3 @@ This static review records the minimal endpoint/UI candidate boundary for no-exp
 StaticReviewStatus: COMPLETE_INTERNAL_ENVELOPE_ONLY
 
 The candidate remains internal, metadata-only, in-memory, unmounted, no-route, no-UI, no-public-access, no-tenant/customer-access, no-live-retrieval, no-live-LLM, no-final-answer, no-DB, no-corpus, and no-cross-repo-change.
-

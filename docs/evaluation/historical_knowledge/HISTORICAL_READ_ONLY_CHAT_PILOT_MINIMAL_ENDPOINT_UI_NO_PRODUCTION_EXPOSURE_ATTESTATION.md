@@ -8,6 +8,8 @@ Date: 16 May 2026
 
 This attestation records that the minimal endpoint/UI candidate closeout introduced no production exposure.
 
+The exposure decision gate closeout attestation is `HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION.md`.
+
 ## Attestation
 
 - no production chat exposure
@@ -24,4 +26,3 @@ This attestation records that the minimal endpoint/UI candidate closeout introdu
 ## Boundary
 
 This attestation does not authorise production endpoint creation, public endpoint creation, tenant/customer endpoint creation, route registration, UI exposure, live LLM calls, final answer generation, live retrieval backend, corpus/vector search, corpus mutation, source ingestion, Code Evidence ingestion, DB reads, DB writes, schema migrations, workforce-platform changes, award-configurator-v1 changes, or ezeas-analytics changes.
-

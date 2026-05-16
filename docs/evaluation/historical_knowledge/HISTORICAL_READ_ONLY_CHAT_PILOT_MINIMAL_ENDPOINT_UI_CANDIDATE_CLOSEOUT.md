@@ -8,6 +8,8 @@ Date: 16 May 2026
 
 This document closes out the minimal internal endpoint/UI candidate for Minerva historical knowledge as an internal envelope/status-only candidate.
 
+This closeout flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md`, not exposure.
+
 ## 2. Scope
 
 Scope is limited to static review and closeout of the existing candidate service and its control documents. This closeout does not expand exposure, register routes, create production UI, connect runtime retrieval, call a live LLM, generate final answers, query databases, mutate corpus, ingest sources, ingest Code Evidence, or change other repositories.
@@ -137,4 +139,3 @@ Minerva has a closed-out minimal internal endpoint/UI candidate for future decis
 ## 16. Developer Handoff
 
 Use the candidate service only as an internal metadata-envelope adapter around the in-memory orchestrator candidate. A future pilot exposure decision gate is required before any internal exposure discussion. Do not register a route, expose UI, call live LLMs, generate final answers, connect retrieval, query corpus/vector/database stores, read or write databases, mutate corpus, ingest sources, ingest Code Evidence, migrate schemas, or change workforce-platform, award-configurator-v1, or ezeas-analytics without separate explicit approval.
-

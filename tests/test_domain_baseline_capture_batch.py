@@ -691,6 +691,26 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTES
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_RECORD = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_RECORD.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_ENTRY_CRITERIA.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_BLOCKER_MODEL.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION.md"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -948,6 +968,9 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE_PRO
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_minimal_endpoint_ui_candidate_closeout_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_exposure_decision_gate_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -8101,6 +8124,362 @@ def test_historical_read_only_chat_pilot_minimal_endpoint_ui_closeout_updates_ex
         "CLOSEOUT_COMPLETED_INTERNAL_ENVELOPE_ONLY",
     ):
         assert linked_doc in index
+
+
+def test_historical_read_only_chat_pilot_exposure_decision_gate_docs_exist():
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_RECORD.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_ENTRY_CRITERIA.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_BLOCKER_MODEL.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE_PROMPT.exists()
+
+
+def test_historical_read_only_chat_pilot_exposure_decision_gate_status_inputs_and_model():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE)
+
+    for required_text in (
+        "PilotExposureDecisionGateStatus: DECISION_GATE_DRAFTED",
+        "InternalExposureApprovedThisSlice: No",
+        "ProductionChatExposedThisSlice: No",
+        "PublicAccessEnabledThisSlice: No",
+        "TenantCustomerAccessEnabledThisSlice: No",
+        "GlobalRouteRegisteredThisSlice: No",
+        "LiveLLMCalledThisSlice: No",
+        "FinalAnswerGeneratedThisSlice: No",
+        "LiveRetrievalPerformedThisSlice: No",
+        "CorpusMutationPerformedThisSlice: No",
+        "DatabaseReadPerformedThisSlice: No",
+        "DatabaseWritePerformedThisSlice: No",
+    ):
+        assert required_text in gate
+
+    for required_input in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_DECISION_CATALOG.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_IMPLEMENTATION_CANDIDATE.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_RESPONSE_CONTRACT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md",
+        "historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
+    ):
+        assert required_input in gate
+
+    for status in (
+        "PILOT_EXPOSURE_DECISION_NOT_STARTED",
+        "PILOT_EXPOSURE_DECISION_DRAFTED",
+        "PILOT_EXPOSURE_DECISION_BLOCKED",
+        "PILOT_EXPOSURE_DECISION_DEFERRED",
+        "PILOT_EXPOSURE_DECISION_READY_FOR_INTERNAL_EXPOSURE_CANDIDATE",
+        "PILOT_EXPOSURE_DECISION_REQUIRES_ACCESS_CONTROL_REVIEW",
+        "PILOT_EXPOSURE_DECISION_REQUIRES_AUDIT_LOGGING_REVIEW",
+        "PILOT_EXPOSURE_DECISION_REQUIRES_LLM_POLICY_REVIEW",
+        "PILOT_EXPOSURE_DECISION_REJECTED",
+        "PILOT_EXPOSURE_DECISION_SUPERSEDED",
+    ):
+        assert status in gate
+
+
+def test_historical_read_only_chat_pilot_exposure_decision_gate_preconditions_and_boundaries():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE)
+
+    for prerequisite in (
+        "minimal endpoint/UI candidate closeout complete",
+        "static review complete",
+        "no-production exposure attestation complete",
+        "decision catalog complete",
+        "response contract complete",
+        "guardrails complete",
+        "access control decision required",
+        "audit/logging decision required",
+        "no live LLM approved",
+        "no final answer generation approved",
+        "no live retrieval backend",
+        "no DB read/write",
+        "no corpus mutation",
+        "explicit exposure decision required",
+    ):
+        assert prerequisite in gate
+
+    for boundary in (
+        "future exposure candidate may only be internal",
+        "future exposure candidate must be operator/developer controlled",
+        "future exposure candidate must remain envelope/status-only unless later approved",
+        "this slice does not approve exposure",
+        "no public access",
+        "no tenant/customer access",
+        "no production customer-facing route",
+        "no production chat exposure",
+        "no global route registration in this slice",
+        "any future registration must be separately approved",
+        "internal exposure candidate must remain controlled and reversible",
+        "no live LLM calls",
+        "no final natural-language answer generation",
+        "future LLM/final-answer behaviour requires separate policy gate",
+        "no live retrieval backend",
+        "no corpus/vector search",
+        "no corpus mutation",
+        "no source ingestion",
+        "no Code Evidence ingestion",
+        "no DB reads",
+        "no DB writes",
+        "access control must be explicitly decided before exposure",
+        "audit/logging must be explicitly decided before exposure",
+        "refusal/citation/caveat/no-runtime flags must remain visible",
+        "exposure must not hide blocked gates",
+    ):
+        assert boundary in gate
+
+
+def test_historical_read_only_chat_pilot_exposure_decision_gate_blockers_stops_and_authorisation():
+    gate = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE)
+
+    for blocker in (
+        "exposure not approved",
+        "access control decision not complete",
+        "audit/logging runtime not implemented",
+        "live LLM not approved",
+        "final answer generation not approved",
+        "production/public/tenant access prohibited",
+    ):
+        assert blocker in gate
+
+    for stop_condition in (
+        "production chat exposure required",
+        "public access required",
+        "tenant/customer access required",
+        "global route registration required",
+        "live LLM required",
+        "final answer generation required",
+        "live retrieval required",
+        "corpus query required",
+        "corpus mutation required",
+        "DB read/write required",
+        "access control unresolved",
+        "audit/logging unresolved",
+        "refusal visibility unresolved",
+        "citation visibility unresolved",
+    ):
+        assert stop_condition in gate
+
+    assert "a future strictly internal exposure candidate may be considered if gate records ready" in gate
+    assert "any future exposure must be separately approved and remain internal unless later expanded" in gate
+
+    for blocked in (
+        "production chat exposure",
+        "public endpoint",
+        "tenant/customer endpoint",
+        "global route registration",
+        "live LLM calls",
+        "final natural-language answer generation",
+        "live retrieval backend",
+        "corpus/vector search",
+        "corpus mutation",
+        "source ingestion",
+        "Code Evidence ingestion",
+        "DB reads",
+        "DB writes",
+        "schema migrations",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+    ):
+        assert blocked in gate
+
+
+def test_historical_read_only_chat_pilot_exposure_decision_record_defaults_are_conservative():
+    record = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_RECORD)
+
+    for field in (
+        "DecisionId",
+        "DecisionStatus",
+        "DecisionDate",
+        "InputsReviewed",
+        "MinimalEndpointUiCloseoutComplete",
+        "StaticReviewComplete",
+        "NoProductionExposureAttestationComplete",
+        "AccessControlDecisionComplete",
+        "AuditLoggingDecisionComplete",
+        "InternalExposureCandidatePermitted",
+        "ProductionChatExposedThisSlice",
+        "PublicAccessEnabledThisSlice",
+        "TenantCustomerAccessEnabledThisSlice",
+        "GlobalRouteRegisteredThisSlice",
+        "LiveLLMCalledThisSlice",
+        "FinalAnswerGeneratedThisSlice",
+        "LiveRetrievalPerformedThisSlice",
+        "CorpusMutationPerformedThisSlice",
+        "DatabaseReadPerformedThisSlice",
+        "DatabaseWritePerformedThisSlice",
+        "Blockers",
+        "DecisionRationale",
+        "ApprovedBy",
+        "Notes",
+    ):
+        assert field in record
+
+    for conservative_default in (
+        "| AccessControlDecisionComplete | No |",
+        "| AuditLoggingDecisionComplete | No |",
+        "| InternalExposureCandidatePermitted | No |",
+        "| ProductionChatExposedThisSlice | No |",
+        "| PublicAccessEnabledThisSlice | No |",
+        "| TenantCustomerAccessEnabledThisSlice | No |",
+        "| GlobalRouteRegisteredThisSlice | No |",
+        "| LiveLLMCalledThisSlice | No |",
+        "| FinalAnswerGeneratedThisSlice | No |",
+        "| LiveRetrievalPerformedThisSlice | No |",
+        "| CorpusMutationPerformedThisSlice | No |",
+        "| DatabaseReadPerformedThisSlice | No |",
+        "| DatabaseWritePerformedThisSlice | No |",
+    ):
+        assert conservative_default in record
+
+
+def test_historical_read_only_chat_pilot_internal_exposure_entry_criteria_and_blockers():
+    criteria = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_ENTRY_CRITERIA)
+    blocker_model = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_BLOCKER_MODEL)
+
+    for required_criterion in (
+        "exposure decision gate complete",
+        "minimal endpoint/UI closeout complete",
+        "no-production exposure attestation complete",
+        "access control decision complete",
+        "audit/logging decision complete",
+        "internal-only scope confirmed",
+        "operator/developer-only scope confirmed",
+        "envelope/status-only response confirmed",
+        "no public access",
+        "no tenant/customer access",
+        "no live LLM approved",
+        "no final answer generation approved",
+        "no live retrieval backend",
+        "no DB read/write",
+        "no corpus mutation",
+    ):
+        assert required_criterion in criteria
+
+    for blocker_code in (
+        "EXPOSURE_DECISION_INCOMPLETE",
+        "ACCESS_CONTROL_DECISION_INCOMPLETE",
+        "AUDIT_LOGGING_DECISION_INCOMPLETE",
+        "NO_PRODUCTION_ATTESTATION_MISSING",
+        "PUBLIC_ACCESS_RISK",
+        "TENANT_CUSTOMER_ACCESS_RISK",
+        "GLOBAL_ROUTE_REGISTRATION_RISK",
+        "LIVE_LLM_POLICY_UNRESOLVED",
+        "FINAL_ANSWER_POLICY_UNRESOLVED",
+        "LIVE_RETRIEVAL_BOUNDARY_UNRESOLVED",
+        "DB_BOUNDARY_UNRESOLVED",
+        "CORPUS_MUTATION_BOUNDARY_UNRESOLVED",
+        "REFUSAL_VISIBILITY_UNRESOLVED",
+        "CITATION_VISIBILITY_UNRESOLVED",
+    ):
+        assert blocker_code in blocker_model
+
+    assert "Blocker resolution does not itself expose chat or approve production access" in blocker_model
+
+
+def test_historical_read_only_chat_pilot_no_production_closeout_attestation():
+    attestation = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION)
+
+    for required_text in (
+        "no production chat exposure",
+        "no public endpoint",
+        "no tenant/customer endpoint",
+        "no global route registration",
+        "no live LLM",
+        "no final answer",
+        "no live retrieval",
+        "no DB read/write",
+        "no corpus mutation",
+        "no cross-repo changes",
+    ):
+        assert required_text in attestation
+
+
+def test_historical_read_only_chat_pilot_exposure_decision_gate_updates_existing_controls():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT)
+    criteria = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA)
+    minimal_attestation = _read(
+        HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION
+    )
+    boundaries = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert "flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md`, not exposure" in closeout
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md" in criteria
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_ENTRY_CRITERIA.md" in criteria
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION.md" in minimal_attestation
+    assert "pilot exposure decision gate as the current controlled boundary" in boundaries
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md" in boundaries
+
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_RECORD.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_BLOCKER_MODEL.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION.md",
+        "2026-05-16_minerva_historical_read_only_chat_pilot_exposure_decision_gate_v0_1.md",
+        "DECISION_GATE_DRAFTED",
+    ):
+        assert linked_doc in index
+
+
+def test_historical_read_only_chat_pilot_exposure_decision_gate_slice_introduces_only_allowed_changes():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed = {
+        "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_exposure_decision_gate_v0_1.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_RECORD.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_ENTRY_CRITERIA.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_BLOCKER_MODEL.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_NO_PRODUCTION_EXPOSURE_CLOSEOUT_ATTESTATION.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_CANDIDATE_CLOSEOUT.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_STATIC_REVIEW.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_DECISION_CATALOG.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_PILOT_EXPOSURE_DECISION_ENTRY_CRITERIA.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_MINIMAL_ENDPOINT_UI_NO_PRODUCTION_EXPOSURE_ATTESTATION.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md",
+        "docs/evaluation/historical_knowledge/HISTORICAL_KNOWLEDGE_CONTROL_INDEX.md",
+        "tests/test_domain_baseline_capture_batch.py",
+    }
+
+    for line in changed.stdout.splitlines():
+        changed_file = line[3:].replace("\\", "/")
+        if not changed_file:
+            continue
+        assert changed_file in allowed
+        normalized = changed_file.lower()
+        assert not normalized.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or "no_production_exposure_closeout_attestation" in normalized
+        assert "/routers/" not in normalized
+        assert normalized != "app/main.py"
+        assert "/ui/" not in normalized
+        assert "live_retrieval_backend" not in normalized
+        assert "final_answer_generation" not in normalized
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    service = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_CANDIDATE_SERVICE).lower()
+    assert "openai" not in service
+    assert "chatcompletion" not in service
+    assert "responses.create" not in service
+    assert "retrieve_chunks_for_question" not in service
+    assert "sqlalchemy" not in service
+    assert "get_db" not in service
+    assert "requests." not in service
 
 
 def test_historical_read_only_chat_pilot_orchestrator_links_from_existing_controls():
