@@ -15,6 +15,7 @@ Scope is limited to documentation/control/test hardening for exposure-readiness 
 ## 3. Current Status
 
 - PilotExposureDecisionGateStatus: DECISION_GATE_DRAFTED
+- FlowsToInternalExposureDeferredCloseout: Yes - no explicit exposure approval is present, so this gate flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT.md`.
 - InternalExposureApprovedThisSlice: No
 - ProductionChatExposedThisSlice: No
 - PublicAccessEnabledThisSlice: No
@@ -167,13 +168,13 @@ Scope is limited to documentation/control/test hardening for exposure-readiness 
 
 Preferred next Minerva slice should be historical read-only chat pilot internal exposure candidate v0.1 if this gate records ready and explicit approval is provided.
 
-If explicit exposure approval is not provided, next slice should defer exposure and close out readiness.
+Explicit exposure approval is not present in this stream, so this gate flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT.md` and exposure is deferred.
 
 That future slice must still not approve live LLM or final natural-language answer generation unless separately gated.
 
 ## 18. Progress After This Slice
 
-Minerva has moved from minimal endpoint/UI closeout into pilot exposure decision gate.
+Minerva has moved from minimal endpoint/UI closeout into pilot exposure decision gate, then into internal exposure deferred closeout because explicit exposure approval is not present.
 
 Minerva remains pre-production-chat-exposure.
 

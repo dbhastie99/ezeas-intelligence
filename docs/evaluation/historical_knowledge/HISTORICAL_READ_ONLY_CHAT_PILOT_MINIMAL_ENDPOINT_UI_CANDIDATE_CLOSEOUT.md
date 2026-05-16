@@ -8,7 +8,7 @@ Date: 16 May 2026
 
 This document closes out the minimal internal endpoint/UI candidate for Minerva historical knowledge as an internal envelope/status-only candidate.
 
-This closeout flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md`, not exposure.
+This closeout flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md`, then into `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT.md` when explicit exposure approval is absent. It does not flow directly into exposure.
 
 ## 2. Scope
 

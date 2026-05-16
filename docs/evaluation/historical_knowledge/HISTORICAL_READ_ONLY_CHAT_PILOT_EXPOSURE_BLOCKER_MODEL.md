@@ -24,7 +24,18 @@ This model defines blocker codes for the Minerva historical read-only chat pilot
 - `CORPUS_MUTATION_BOUNDARY_UNRESOLVED`
 - `REFUSAL_VISIBILITY_UNRESOLVED`
 - `CITATION_VISIBILITY_UNRESOLVED`
+- `EXPLICIT_EXPOSURE_APPROVAL_MISSING`
+- `INTERNAL_SCOPE_UNCONFIRMED`
+- `OPERATOR_DEVELOPER_ACCESS_UNCONFIRMED`
+- `ACCESS_CONTROL_DECISION_MISSING`
+- `AUDIT_LOGGING_DECISION_MISSING`
+- `CANDIDATE_CURRENCY_UNCONFIRMED`
+- `NO_PRODUCTION_ATTESTATION_NOT_REVIEWED`
+- `DB_BOUNDARY_RISK`
+- `CORPUS_MUTATION_RISK`
 
 ## Resolution Boundary
 
 Blocker resolution does not itself expose chat or approve production access. Any future exposure still requires separate explicit approval, and production/public/tenant/customer access remains prohibited unless separately gated.
+
+Deferred internal exposure blockers are refined in `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_BLOCKER_MODEL.md`.

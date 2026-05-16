@@ -10,6 +10,7 @@ This closeout attestation records that the exposure decision gate introduced no 
 
 ## Attestation
 
+- linked internal exposure no-run attestation: `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_NO_RUN_ATTESTATION.md`;
 - no production chat exposure;
 - no public endpoint;
 - no tenant/customer endpoint;

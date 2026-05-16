@@ -10,6 +10,8 @@ This document defines entry criteria that must be satisfied before a future stri
 
 ## Entry Criteria
 
+- deferred decision record reviewed: `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_DECISION_RECORD.md`;
+- resume criteria satisfied: `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_RESUME_CRITERIA.md`;
 - exposure decision gate complete;
 - minimal endpoint/UI closeout complete;
 - no-production exposure attestation complete;
@@ -29,3 +31,5 @@ This document defines entry criteria that must be satisfied before a future stri
 ## Boundary
 
 Meeting these criteria would authorise only consideration of a future strictly internal exposure candidate after separate explicit approval. It does not approve production chat, public or tenant/customer access, global route registration, live LLM calls, final natural-language answers, live retrieval, DB access, corpus mutation, source ingestion, Code Evidence ingestion, schema migration, or cross-repo changes.
+
+Current deferred state is recorded in `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_DECISION_RECORD.md`. Future resume must satisfy `HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_RESUME_CRITERIA.md` before any internal exposure candidate is considered.

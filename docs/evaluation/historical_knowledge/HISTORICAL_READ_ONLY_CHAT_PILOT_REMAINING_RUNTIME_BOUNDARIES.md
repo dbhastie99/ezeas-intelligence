@@ -15,6 +15,7 @@ This document lists remaining runtime boundaries before any real Minerva histori
 - endpoint/UI design pack completed as a planned boundary;
 - endpoint/UI implementation gate as a controlled boundary;
 - pilot exposure decision gate as the current controlled boundary;
+- internal exposure deferred closeout as the current boundary after no explicit exposure approval;
 - live LLM usage;
 - live retrieval backend;
 - citation rendering runtime;
@@ -29,7 +30,7 @@ This document lists remaining runtime boundaries before any real Minerva histori
 
 No endpoint/UI exists. No live LLM approval exists. No live retrieval backend is connected. No production chat route exists. No citation rendering runtime exists beyond metadata envelope validation. No audit/logging runtime exists beyond design documentation. Pilot implementation candidate remains separate.
 
-Pilot exposure decision gate is the current boundary. It decides readiness conditions only and does not approve exposure.
+Internal exposure deferred closeout is the current boundary after the pilot exposure decision gate because explicit exposure approval is not present. It closes/defer readiness and does not approve exposure.
 
 ## Non-Authorisation
 
@@ -64,3 +65,7 @@ RouteRegisteredGlobally: No.
 ## Pilot Exposure Decision Gate Boundary
 
 `HISTORICAL_READ_ONLY_CHAT_PILOT_EXPOSURE_DECISION_GATE.md` is the current controlled boundary after minimal endpoint/UI candidate closeout. It may decide only what must be true before a future strictly internal exposure candidate may be considered. It does not approve exposure, create endpoint/UI, register a global route, expose production chat, enable public access, enable tenant/customer access, call a live LLM, generate final natural-language answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
+
+## Internal Exposure Deferred Closeout Boundary
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_INTERNAL_EXPOSURE_DEFERRED_CLOSEOUT.md` is the current boundary after the exposure decision gate. Status: `DEFERRED_NO_EXPLICIT_EXPOSURE_APPROVAL`. It records that internal exposure is deferred, no exposure evidence is captured, and future exposure may be reconsidered only if explicit approval and resume criteria are supplied. It does not expose chat, register a global route, enable public access, enable tenant/customer access, call a live LLM, generate final natural-language answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, promote current truth, activate runtime answer-use permission, activate runtime retrieval eligibility, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
