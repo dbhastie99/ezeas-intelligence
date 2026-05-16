@@ -28,3 +28,7 @@ No endpoint/UI exists. No live LLM approval exists. No live retrieval backend is
 ## Non-Authorisation
 
 This boundary record does not authorise chat exposure, live LLM calls, final answer generation, endpoint/UI creation, live retrieval, database reads, database writes, corpus mutation, source content ingestion, Code Evidence ingestion, schema migrations, workforce-platform changes, award-configurator-v1 changes, or ezeas-analytics changes.
+
+## Implementation Candidate Boundary
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md` adds an internal in-memory orchestration candidate only. The remaining runtime boundaries are unchanged: endpoint/UI, live LLM usage, live retrieval backend, database access, citation rendering runtime, audit/logging runtime, pilot access control, production exposure prevention, monitoring/rollback, no corpus mutation, and no DB write remain separate future decisions.

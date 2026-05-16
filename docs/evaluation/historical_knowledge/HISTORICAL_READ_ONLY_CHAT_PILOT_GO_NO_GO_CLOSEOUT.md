@@ -141,3 +141,9 @@ No chat was exposed in this slice.
 ## 15. Developer Handoff
 
 Future developers may use this closeout only as permission to consider a separate implementation candidate slice. That later slice must preserve read-only gating, must not treat historical sources as answerable current truth by default, and must keep endpoint/UI, live LLM usage, live retrieval, database access, citation rendering runtime, audit/logging runtime, and pilot exposure separately approved.
+
+## 16. Implementation Candidate Follow-On
+
+The follow-on implementation candidate is recorded in `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md`, with response shape in `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT.md`, fixtures in `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG.md`, guardrails in `HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS.md`, and future closeout entry criteria in `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA.md`.
+
+That follow-on candidate remains internal/in-memory only. It does not expose chat, create endpoint/UI, call a live LLM, generate a final answer, perform live retrieval, read or write a database, mutate corpus, ingest source content, create Code Evidence, or deploy production chat.

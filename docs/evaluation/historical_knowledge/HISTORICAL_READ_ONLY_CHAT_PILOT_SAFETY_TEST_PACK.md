@@ -119,3 +119,7 @@ Minerva has moved from citation/refusal enforcement skeleton into pilot safety t
 Use this pack with `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
 
 The future closeout may evaluate readiness for a pilot implementation candidate, but this pack itself does not implement chat, endpoint/UI, live retrieval, live LLM use, database access, corpus mutation, source ingestion, current-truth promotion, runtime answer-use activation, or runtime retrieval activation.
+
+## 17. Implementation Candidate Link
+
+The first implementation candidate is recorded in `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md`. It uses the same safety expectations and remains an orchestration envelope only: no endpoint/UI exists, no live LLM is called, no final answer is generated, no live retrieval backend is used, no DB read/write occurs, and no corpus mutation occurs.

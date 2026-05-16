@@ -30,3 +30,9 @@ Date: 16 May 2026
 ## Boundary
 
 This decision record does not implement runtime behaviour. It does not expose chat, call a live LLM, generate final answers, create endpoint/UI, connect live retrieval, read/write a database, mutate corpus, ingest source content, create Code Evidence, or promote current truth.
+
+## Follow-On Candidate Record
+
+The follow-on in-memory implementation candidate is `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md`.
+
+The candidate does not change the conservative defaults in this decision record. Chat exposure, live LLM use, endpoint/UI, database reads, database writes, corpus mutation, source ingestion, Code Evidence ingestion, schema migrations, and production deployment remain not permitted.

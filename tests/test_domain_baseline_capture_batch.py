@@ -1,4 +1,4 @@
-import subprocess
+﻿import subprocess
 from pathlib import Path
 
 
@@ -549,6 +549,29 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CANDIDATE_SERVICE = Path(
+    "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -785,6 +808,9 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK_PROMPT = Path(
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_go_no_go_closeout_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_implementation_candidate_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -1535,6 +1561,7 @@ def test_historical_deep_review_execution_slice_introduces_only_docs_tests_and_n
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -1810,6 +1837,7 @@ def test_historical_review_findings_classification_slice_introduces_only_docs_te
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -2201,6 +2229,7 @@ def test_historical_ingestion_backfill_slice_introduces_only_docs_tests_and_no_r
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -2463,6 +2492,7 @@ def test_historical_backfill_execution_slice_introduces_only_docs_tests_and_no_r
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -2725,6 +2755,7 @@ def test_historical_current_truth_promotion_slice_introduces_only_docs_tests_and
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -3010,6 +3041,7 @@ def test_historical_answer_use_permission_slice_introduces_only_docs_tests_and_n
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -3347,6 +3379,7 @@ def test_historical_retrieval_eligibility_slice_introduces_only_docs_tests_and_n
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -3683,6 +3716,7 @@ def test_historical_answer_mode_slice_introduces_only_docs_tests_and_no_runtime_
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -4038,6 +4072,7 @@ def test_historical_citation_provenance_slice_introduces_only_docs_tests_and_no_
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -4669,6 +4704,7 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -4698,7 +4734,11 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
             == "app/services/historical_answer_synthesis_enforcement_skeleton_service.py"
         )
         assert "citation_rendering" not in normalized
-        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert (
+            "chat" not in normalized
+            or normalized.startswith("docs/")
+            or changed_file == "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
+        )
         assert "workforce-platform" not in changed_file
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
@@ -5013,6 +5053,7 @@ def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skel
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
     allowed_prefixes = (
@@ -5044,7 +5085,11 @@ def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skel
             == "app/services/historical_answer_synthesis_enforcement_skeleton_service.py"
         )
         assert "citation_rendering" not in normalized
-        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert (
+            "chat" not in normalized
+            or normalized.startswith("docs/")
+            or changed_file == "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
+        )
         assert "workforce-platform" not in changed_file
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
@@ -5314,6 +5359,7 @@ def test_historical_answer_synthesis_enforcement_slice_introduces_only_allowed_c
     allowed_exact = {
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
@@ -5341,7 +5387,11 @@ def test_historical_answer_synthesis_enforcement_slice_introduces_only_allowed_c
         assert not normalized.startswith("ui/")
         assert "live_retrieval_backend" not in normalized
         assert "citation_rendering" not in normalized
-        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert (
+            "chat" not in normalized
+            or normalized.startswith("docs/")
+            or changed_file == "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
+        )
         assert "workforce-platform" not in changed_file
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
@@ -5645,6 +5695,7 @@ def test_historical_citation_refusal_enforcement_slice_introduces_only_allowed_c
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
     allowed_prefixes = (
@@ -5671,7 +5722,11 @@ def test_historical_citation_refusal_enforcement_slice_introduces_only_allowed_c
         assert not normalized.startswith("ui/")
         assert "live_retrieval_backend" not in normalized
         assert "citation_rendering" not in normalized
-        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert (
+            "chat" not in normalized
+            or normalized.startswith("docs/")
+            or changed_file == "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
+        )
         assert "workforce-platform" not in changed_file
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
@@ -6227,6 +6282,7 @@ def test_historical_read_only_chat_pilot_closeout_slice_introduces_no_runtime_ch
 
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -6301,6 +6357,279 @@ def test_historical_read_only_chat_pilot_closeout_slice_introduces_no_runtime_ch
         assert "requests." not in service
 
 
+def _approved_orchestrator_metadata() -> dict[str, object]:
+    return {
+        "SourceId": "HIST-ORCH-CT-001",
+        "EvidenceScope": "CURRENT_TRUTH",
+        "AnswerUsePermissionStatus": "APPROVED",
+        "RetrievalEligibilityStatus": "APPROVED",
+        "AnswerMode": "CURRENT_TRUTH",
+        "CitationStatus": "READY",
+        "ProvenanceStatus": "READY",
+        "ConflictStatus": "NONE",
+        "SupersessionStatus": "NONE",
+        "CurrentTruthPermitted": True,
+        "RetrievalEligible": True,
+        "ChatEligible": False,
+        "CitationRequired": True,
+        "CaveatRequired": False,
+        "SourceTitle": "Historical Orchestrator Fixture",
+        "SourceDate": "2026-05-16",
+        "UnknownDateMarker": "",
+        "RepositoryContext": "ezeas-intelligence",
+        "DomainContext": "Minerva historical knowledge",
+        "AnswerUsePermissionId": "AUP-HIST-ORCH-001",
+        "RetrievalEligibilityId": "RET-HIST-ORCH-001",
+        "AnswerModeId": "ANS-HIST-ORCH-001",
+    }
+
+
+def _run_orchestrator(metadata: dict[str, object]) -> dict[str, object]:
+    from app.services.historical_read_only_chat_pilot_orchestrator_candidate_service import (
+        evaluate_historical_read_only_chat_pilot_orchestrator_candidate,
+    )
+
+    return evaluate_historical_read_only_chat_pilot_orchestrator_candidate(metadata)
+
+
+def test_historical_read_only_chat_pilot_orchestrator_docs_and_service_exist():
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CANDIDATE_SERVICE.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT.exists()
+
+
+def test_historical_read_only_chat_pilot_orchestrator_response_defaults_are_no_runtime():
+    response = _run_orchestrator(_approved_orchestrator_metadata())
+
+    for required_field in (
+        "ChatPilotOrchestratorCandidateImplemented",
+        "LiveLLMCalled",
+        "FinalAnswerGenerated",
+        "ChatExposed",
+        "EndpointUIPresent",
+        "LiveRetrievalPerformed",
+        "CorpusMutationPerformed",
+        "DatabaseReadPerformed",
+        "DatabaseWritePerformed",
+        "RetrievalGateResult",
+        "AnswerSynthesisGateResult",
+        "CitationRefusalGateResult",
+        "PilotResponseStatus",
+        "PilotResponseMode",
+        "RefusalRequired",
+        "RefusalReason",
+        "CitationReady",
+        "CaveatRequired",
+        "RuntimeBoundaryAsserted",
+        "Guardrails",
+        "NonGoals",
+        "Explanation",
+    ):
+        assert required_field in response
+
+    assert response["ChatPilotOrchestratorCandidateImplemented"] is True
+    assert response["LiveLLMCalled"] is False
+    assert response["FinalAnswerGenerated"] is False
+    assert response["ChatExposed"] is False
+    assert response["EndpointUIPresent"] is False
+    assert response["LiveRetrievalPerformed"] is False
+    assert response["CorpusMutationPerformed"] is False
+    assert response["DatabaseReadPerformed"] is False
+    assert response["DatabaseWritePerformed"] is False
+    assert response["RuntimeBoundaryAsserted"] is True
+
+
+def test_historical_read_only_chat_pilot_orchestrator_ready_envelopes():
+    current_truth = _run_orchestrator(_approved_orchestrator_metadata())
+    assert current_truth["PilotResponseStatus"] == "READY_CURRENT_TRUTH_ENVELOPE"
+    assert current_truth["FinalAnswerGenerated"] is False
+
+    historical_context = _approved_orchestrator_metadata()
+    historical_context["EvidenceScope"] = "HISTORICAL_CONTEXT_ONLY"
+    historical_context["AnswerMode"] = "HISTORICAL_CONTEXT"
+    historical_context["CurrentTruthPermitted"] = False
+    historical_context_response = _run_orchestrator(historical_context)
+    assert historical_context_response["PilotResponseStatus"] == (
+        "READY_HISTORICAL_CONTEXT_ENVELOPE"
+    )
+    assert historical_context_response["PilotResponseStatus"] != "READY_CURRENT_TRUTH_ENVELOPE"
+
+    caveated = _approved_orchestrator_metadata()
+    caveated["CaveatRequired"] = True
+    caveated_response = _run_orchestrator(caveated)
+    assert caveated_response["PilotResponseStatus"] == "READY_CAVEATED_ENVELOPE"
+    assert caveated_response["CaveatRequired"] is True
+
+
+def test_historical_read_only_chat_pilot_orchestrator_refusal_preservation():
+    cases = (
+        ("AnswerUsePermissionStatus", "MISSING"),
+        ("RetrievalEligibilityStatus", "MISSING"),
+        ("ProvenanceStatus", "MISSING"),
+        ("CitationStatus", "MISSING"),
+        ("SupersessionStatus", "SUPERSEDED"),
+    )
+
+    for field_name, value in cases:
+        metadata = _approved_orchestrator_metadata()
+        metadata[field_name] = value
+        response = _run_orchestrator(metadata)
+        assert response["PilotResponseStatus"] == "REFUSAL_ENVELOPE"
+        assert response["RefusalRequired"] is True
+        assert response["CitationReady"] is False
+
+    conflicted = _approved_orchestrator_metadata()
+    conflicted["ConflictStatus"] = "CONFLICTED"
+    conflicted_response = _run_orchestrator(conflicted)
+    assert conflicted_response["PilotResponseStatus"] == "REFUSAL_ENVELOPE"
+
+    caveat_ready_conflict = _approved_orchestrator_metadata()
+    caveat_ready_conflict["ConflictStatus"] = "CONFLICTED"
+    caveat_ready_conflict["CaveatRequired"] = True
+    caveat_ready_conflict["CaveatReady"] = True
+    caveat_ready_conflict["CaveatApproved"] = True
+    caveat_ready_response = _run_orchestrator(caveat_ready_conflict)
+    assert caveat_ready_response["PilotResponseStatus"] == "READY_CAVEATED_ENVELOPE"
+    assert caveat_ready_response["CaveatRequired"] is True
+
+    prior_refusal = _approved_orchestrator_metadata()
+    prior_refusal["EvidenceAnswerable"] = False
+    prior_refusal_response = _run_orchestrator(prior_refusal)
+    assert prior_refusal_response["PilotResponseStatus"] == "REFUSAL_ENVELOPE"
+    assert prior_refusal_response["CitationRefusalGateResult"]["CitationRefusalDecision"] == (
+        "REFUSE_PRIOR_GATE_REFUSAL"
+    )
+
+
+def test_historical_read_only_chat_pilot_orchestrator_docs_record_no_runtime_boundaries():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA,
+        )
+    )
+
+    for boundary in (
+        "No endpoint/UI exists",
+        "No live LLM is called",
+        "No final answer is generated",
+        "No live retrieval backend is used",
+        "No DB read/write occurs",
+        "No corpus mutation occurs",
+        "This is not production chat exposure",
+    ):
+        assert boundary in combined
+
+
+def test_historical_read_only_chat_pilot_orchestrator_links_from_existing_controls():
+    for path in (
+        HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_CLOSEOUT_DECISION_RECORD,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES,
+        HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK,
+        HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+    ):
+        content = _read(path)
+        assert "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE.md" in content
+
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA.md",
+        "2026-05-16_minerva_historical_read_only_chat_pilot_implementation_candidate_v0_1.md",
+    ):
+        assert linked_doc in index
+
+
+def test_historical_read_only_chat_pilot_orchestrator_slice_introduces_only_allowed_changes():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
+        "tests/test_domain_baseline_capture_batch.py",
+    }
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [line[3:].strip() for line in changed.stdout.splitlines() if line.strip()]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus_ingestion" not in normalized
+        assert "db_write" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "live_retrieval_backend" not in normalized
+        assert "final_answer_generation" not in normalized
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_RESPONSE_CONTRACT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_FIXTURE_CATALOG,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_GUARDRAILS,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_CLOSEOUT_ENTRY_CRITERIA,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_PROMPT,
+        )
+    )
+
+    for prohibited_runtime in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database reads",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint/UI",
+        "No live retrieval backend",
+        "No final natural-language answer generation",
+        "No chat exposure",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No runtime answer-use permission activation",
+        "No runtime retrieval eligibility activation",
+    ):
+        assert prohibited_runtime in combined
+
+    service = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_ORCHESTRATOR_CANDIDATE_SERVICE).lower()
+    assert "openai" not in service
+    assert "chatcompletion" not in service
+    assert "responses.create" not in service
+    assert "retrieve_relevant_chunks" not in service
+    assert "sqlalchemy" not in service
+    assert "requests." not in service
+
+
 def test_historical_read_only_chat_pilot_safety_slice_introduces_no_runtime_changes():
     changed = subprocess.run(
         ["git", "status", "--short"],
@@ -6312,6 +6641,7 @@ def test_historical_read_only_chat_pilot_safety_slice_introduces_no_runtime_chan
 
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -6863,6 +7193,7 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
@@ -6892,7 +7223,11 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
             == "app/services/historical_answer_synthesis_enforcement_skeleton_service.py"
         )
         assert "citation_rendering" not in normalized
-        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert (
+            "chat" not in normalized
+            or normalized.startswith("docs/")
+            or changed_file == "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py"
+        )
         assert "workforce-platform" not in changed_file
         assert "award-configurator-v1" not in changed_file
         assert "ezeas-analytics" not in changed_file
@@ -7425,6 +7760,7 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "app/services/historical_answer_synthesis_enforcement_skeleton_service.py",
         "app/services/historical_citation_refusal_enforcement_skeleton_service.py",
+        "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
     }
     allowed_prefixes = (
         "docs/codex_prompts/",
