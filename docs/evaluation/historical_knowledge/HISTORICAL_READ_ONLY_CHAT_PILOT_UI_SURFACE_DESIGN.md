@@ -27,3 +27,7 @@ The UI must display envelope/status output and must not pretend to be production
 ## Non-Creation Statement
 
 No UI is created. This design does not add frontend components, routes, controllers, API handlers, endpoint code, chat exposure, live LLM calls, final answer generation, live retrieval, DB access, corpus mutation, source ingestion, Code Evidence ingestion, schema migrations, production deployment, workforce-platform changes, award-configurator-v1 changes, or ezeas-analytics changes.
+
+## Implementation Gate Link
+
+This UI surface design flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE.md`. It does not flow directly into UI implementation. Any future UI candidate must visibly surface refusal, citation readiness, caveat, blocked gates, and no-runtime flags unless separately expanded by an explicit control slice.

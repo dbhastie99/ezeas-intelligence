@@ -177,6 +177,7 @@ Scope is limited to endpoint/UI design documentation, control state, and static 
 ## 15. What This Design Pack Authorises
 
 - a future endpoint/UI implementation gate may be considered.
+- this design pack flows into implementation gate, not implementation directly.
 - any future endpoint/UI creation must be separately approved.
 
 ## 16. What This Design Pack Does Not Authorise

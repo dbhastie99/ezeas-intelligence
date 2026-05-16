@@ -62,3 +62,7 @@ This document defines the future Minerva historical read-only chat pilot endpoin
 ## Non-Creation Statement
 
 This contract design creates no endpoint, no route, no controller, and no API handler. It does not expose chat, call a live LLM, generate a final natural-language answer, connect live retrieval, query corpus/vector/database stores, mutate corpus, ingest source content, ingest Code Evidence, read or write a database, migrate schemas, or change runtime behaviour.
+
+## Implementation Gate Link
+
+This endpoint contract design flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE.md`. It does not flow directly into endpoint implementation. Any future endpoint candidate must remain minimal/internal/read-only/envelope-only unless separately approved.

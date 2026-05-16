@@ -13,6 +13,7 @@ This document lists remaining runtime boundaries before any real Minerva histori
 - endpoint/UI;
 - endpoint/UI planning gate as the next controlled boundary;
 - endpoint/UI design pack completed as a planned boundary;
+- endpoint/UI implementation gate as a controlled boundary;
 - live LLM usage;
 - live retrieval backend;
 - citation rendering runtime;
@@ -42,3 +43,7 @@ This boundary record does not authorise chat exposure, live LLM calls, final ans
 ## Endpoint/UI Design Pack Boundary
 
 `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_DESIGN_PACK.md` completes the endpoint/UI design boundary. It designs request/response envelopes, UI visibility, access-control expectations, audit/logging expectations, and implementation entry criteria only. It does not create endpoint/UI, expose chat, call a live LLM, generate final answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, or change workforce-platform, award-configurator-v1, or ezeas-analytics.
+
+## Endpoint/UI Implementation Gate Boundary
+
+`HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE.md` is a controlled boundary after endpoint/UI design. It may decide whether a future minimal/internal/read-only/envelope-only endpoint/UI implementation candidate can be considered, but it does not create endpoint/UI, expose chat, call a live LLM, generate final answers, connect live retrieval, query corpus/vector/database stores, read or write a database, mutate corpus, ingest source content, ingest Code Evidence, migrate schemas, deploy production chat, or change workforce-platform, award-configurator-v1, or ezeas-analytics.

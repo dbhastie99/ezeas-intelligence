@@ -20,3 +20,7 @@ This document defines the future access-control model as design only.
 ## Design-Only Statement
 
 Access control is design only. This document does not implement authentication, authorization, endpoint code, route/controller/API handler code, UI code, chat exposure, live LLM calls, final answer generation, live retrieval, DB reads/writes, corpus mutation, source ingestion, Code Evidence ingestion, schema migrations, or cross-repo changes.
+
+## Implementation Gate Link
+
+This access-control design flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_ENDPOINT_UI_IMPLEMENTATION_GATE.md`. A future candidate must be internal-only/operator-developer first. No public or production tenant/customer access is approved by this design or by the implementation gate.
