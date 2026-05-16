@@ -111,4 +111,16 @@ Post-backfill validation must confirm:
 
 Backfill completion does not make evidence current truth.
 
-The next governed stage after successful future backfill validation is an explicit handoff to current-truth promotion control. Answer-use permission remains separate even if current-truth promotion is later approved.
+The next governed stage after successful future backfill validation is an explicit handoff to current-truth promotion control at `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md`.
+
+Current-truth promotion is separate from ingestion/backfill.
+
+Current-truth promotion is separate from answer-use permission.
+
+Backfilled evidence can remain historical-only.
+
+A current-truth candidate is not current truth until approved by a later explicit promotion slice.
+
+Answer-use permission remains separate even if current-truth promotion is later approved.
+
+A current-truth approved item is still not answer-use approved unless answer-use permission is separately granted.

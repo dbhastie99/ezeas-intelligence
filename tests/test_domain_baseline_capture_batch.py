@@ -324,6 +324,19 @@ HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE.md"
 )
+HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md"
+)
+HISTORICAL_CURRENT_TRUTH_PROMOTION_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CURRENT_TRUTH_PROMOTION_TEMPLATE.md"
+)
+HISTORICAL_CURRENT_TRUTH_PROMOTION_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CURRENT_TRUTH_PROMOTION_BLOCKER_MODEL.md"
+)
+HISTORICAL_CURRENT_TRUTH_PROMOTION_REVIEW_CHECKLIST = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_CURRENT_TRUTH_PROMOTION_REVIEW_CHECKLIST.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -496,6 +509,9 @@ HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL_PROMPT = Path(
 )
 HISTORICAL_BACKFILL_EXECUTION_DESIGN_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_backfill_execution_design_v0_1.md"
+)
+HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_current_truth_promotion_control_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -2210,6 +2226,262 @@ def test_historical_backfill_execution_slice_introduces_only_docs_tests_and_no_r
         "does not ingest source content",
         "does not mutate operational corpus",
         "does not create Code Evidence",
+        "does not write to a database",
+        "does not call a live LLM",
+        "does not promote current truth",
+        "does not permit answer use",
+        "does not expose chat",
+        "does not modify runtime answer behaviour",
+    ):
+        assert required_boundary in combined
+
+
+def test_historical_current_truth_promotion_control_docs_exist():
+    assert HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.exists()
+    assert HISTORICAL_CURRENT_TRUTH_PROMOTION_TEMPLATE.exists()
+    assert HISTORICAL_CURRENT_TRUTH_PROMOTION_BLOCKER_MODEL.exists()
+    assert HISTORICAL_CURRENT_TRUTH_PROMOTION_REVIEW_CHECKLIST.exists()
+    assert HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL_PROMPT.exists()
+
+
+def test_historical_current_truth_promotion_state_separation_and_defaults():
+    control = _read(HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL)
+
+    for state in (
+        "HISTORICAL_SOURCE_REGISTERED",
+        "HISTORICAL_SOURCE_REVIEWED",
+        "FINDING_CLASSIFIED",
+        "INGESTION_BACKFILL_DECISION_APPROVED",
+        "BACKFILL_EXECUTION_COMPLETED",
+        "BACKFILLED_EVIDENCE_VALIDATED",
+        "CURRENT_TRUTH_CANDIDATE_IDENTIFIED",
+        "CURRENT_TRUTH_PROMOTION_REVIEW_STARTED",
+        "CURRENT_TRUTH_PROMOTION_BLOCKED",
+        "CURRENT_TRUTH_PROMOTION_DEFERRED",
+        "CURRENT_TRUTH_PROMOTION_APPROVED_FUTURE_SLICE",
+        "ANSWER_USE_PERMISSION_SEPARATE",
+    ):
+        assert state in control
+
+    for default in (
+        "| `CurrentTruthPromotionPermitted` | No |",
+        "| `CurrentTruthPromotionApplied` | No |",
+        "| `AnswerUsePermitted` | No |",
+        "| `CorpusMutationPermitted` | No |",
+        "| `DatabaseWritePermitted` | No |",
+        "| `ChatExposurePermitted` | No |",
+        "| `LiveLLMUsePermitted` | No |",
+        "| `CodeEvidenceIngestionPermitted` | No |",
+    ):
+        assert default in control
+
+    for required_text in (
+        "This slice defines the control model only",
+        "It does not promote any historical finding to current truth",
+        "It does not change any answer-use permissions",
+        "It does not mutate corpus",
+        "It does not write to a database",
+        "It does not ingest source content",
+        "It does not call a live LLM",
+        "It does not expose chat",
+        "Current-truth promotion is separate from ingestion/backfill",
+        "Current-truth promotion is separate from answer-use permission",
+        "Backfilled evidence can remain historical-only",
+        "A current-truth candidate is not current truth until approved by a later explicit promotion slice",
+        "A current-truth approved item is still not answer-use approved unless answer-use permission is separately granted",
+    ):
+        assert required_text in control
+
+
+def test_historical_current_truth_promotion_template_fields_and_defaults():
+    template = _read(HISTORICAL_CURRENT_TRUTH_PROMOTION_TEMPLATE)
+
+    for field in (
+        "PromotionCandidateId or planned identifier",
+        "SourceRegisterId",
+        "FindingReference",
+        "FindingClassification",
+        "BackfillExecutionReference",
+        "BackfillValidationReference",
+        "ProposedCurrentTruthStatement",
+        "ProposedTruthScope",
+        "RepositoryContext",
+        "SourceAuthoritySummary",
+        "SupersessionAssessment",
+        "ConflictAssessment",
+        "DuplicateAssessment",
+        "RepositoryCrossCheckStatus",
+        "FormalEvidenceGapStatus",
+        "ImplementationStateAssessment",
+        "SensitiveDataAssessment",
+        "PromotionDecisionStatus",
+        "Blockers",
+        "Reviewer",
+        "DecisionDate",
+        "RequiredNextAction",
+        "AnswerUsePermissionStatus",
+        "Notes",
+        "Explicit non-goals",
+    ):
+        assert field in template
+
+    for default in (
+        "| CurrentTruthPromotionPermitted | No |",
+        "| CurrentTruthPromotionApplied | No |",
+        "| AnswerUsePermitted | No |",
+        "| CorpusMutationPermitted | No |",
+        "| DatabaseWritePermitted | No |",
+        "| ChatExposurePermitted | No |",
+        "| LiveLLMUsePermitted | No |",
+        "| CodeEvidenceIngestionPermitted | No |",
+    ):
+        assert default in template
+
+
+def test_historical_current_truth_promotion_blocker_model_is_complete():
+    blocker_model = _read(HISTORICAL_CURRENT_TRUTH_PROMOTION_BLOCKER_MODEL)
+
+    for blocker_code in (
+        "SOURCE_NOT_REVIEWED",
+        "BACKFILL_NOT_COMPLETED",
+        "BACKFILL_VALIDATION_NOT_COMPLETED",
+        "FINDING_CLASSIFICATION_NOT_PROMOTABLE",
+        "HISTORICAL_ONLY_CONTEXT",
+        "SUPERSEDED_BY_CURRENT_REPOSITORY_TRUTH",
+        "CONFLICT_REQUIRES_RESOLUTION",
+        "DUPLICATE_REQUIRES_LINKING",
+        "REPOSITORY_CROSS_CHECK_REQUIRED",
+        "FORMAL_EVIDENCE_GAP",
+        "IMPLEMENTATION_STATE_UNCERTAIN",
+        "SOURCE_AUTHORITY_TOO_LOW",
+        "SENSITIVE_OR_TENANT_DATA_RISK",
+        "PROMOTION_SCOPE_NOT_DEFINED",
+        "REVIEWER_APPROVAL_MISSING",
+        "ANSWER_USE_NOT_APPROVED",
+    ):
+        assert blocker_code in blocker_model
+
+    assert "Blocker resolution does not itself promote current truth" in blocker_model
+    assert "Resolving a blocker does not permit answer use" in blocker_model
+
+
+def test_historical_current_truth_promotion_review_checklist_is_conservative():
+    checklist = _read(HISTORICAL_CURRENT_TRUTH_PROMOTION_REVIEW_CHECKLIST)
+
+    for required_check in (
+        "Source reviewed",
+        "Finding classified as promotable",
+        "Ingestion/backfill decision exists where required",
+        "Backfill completed where required",
+        "Backfill validation completed where required",
+        "Source authority confirmed",
+        "Current repository truth cross-checked",
+        "Supersession checked",
+        "Conflict checked",
+        "Duplicate checked",
+        "Implementation state checked",
+        "Formal evidence gaps checked",
+        "Sensitive/tenant data checked",
+        "Proposed truth scope documented",
+        "Reviewer approval captured",
+        "Answer-use remains separate",
+        "No chat exposure implied",
+    ):
+        assert required_check in checklist
+
+    assert "| `CurrentTruthPromotionPermitted` | No |" in checklist
+    assert "| `CurrentTruthPromotionApplied` | No |" in checklist
+    assert "| `AnswerUsePermitted` | No |" in checklist
+
+
+def test_historical_current_truth_promotion_control_is_linked_from_backfill_chain_and_index():
+    control = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+    design = _read(HISTORICAL_BACKFILL_EXECUTION_DESIGN)
+    runbook = _read(HISTORICAL_BACKFILL_EXECUTION_RUNBOOK)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    prompt = _read(HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL_PROMPT)
+
+    for linked_doc in (
+        "HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md",
+        "HISTORICAL_CURRENT_TRUTH_PROMOTION_TEMPLATE.md",
+        "HISTORICAL_CURRENT_TRUTH_PROMOTION_BLOCKER_MODEL.md",
+        "HISTORICAL_CURRENT_TRUTH_PROMOTION_REVIEW_CHECKLIST.md",
+    ):
+        assert linked_doc in design
+        assert linked_doc in index
+        assert linked_doc in prompt
+
+    assert "HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md" in control
+    assert "Future current-truth promotion control is governed by `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md`" in control
+    assert "Post-backfill validation may identify a current-truth candidate" in design
+    assert "Backfill completion does not make evidence current truth" in runbook
+    assert "The next governed stage after successful future backfill validation is an explicit handoff to current-truth promotion control" in runbook
+
+
+def test_historical_current_truth_promotion_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "db" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+        assert "migrations" not in normalized
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL,
+            HISTORICAL_CURRENT_TRUTH_PROMOTION_TEMPLATE,
+            HISTORICAL_CURRENT_TRUTH_PROMOTION_BLOCKER_MODEL,
+            HISTORICAL_CURRENT_TRUTH_PROMOTION_REVIEW_CHECKLIST,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL,
+            HISTORICAL_BACKFILL_EXECUTION_DESIGN,
+            HISTORICAL_BACKFILL_EXECUTION_RUNBOOK,
+            HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No current-truth promotion",
+        "No answer-use permission",
+        "This slice defines the control model only",
+        "does not ingest source content",
+        "does not mutate corpus",
         "does not write to a database",
         "does not call a live LLM",
         "does not promote current truth",

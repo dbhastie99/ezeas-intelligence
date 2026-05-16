@@ -192,6 +192,12 @@ Current-truth promotion must be visible to retrieval/answer gating before chat e
 
 Historical evidence must not override newer repository truth unless explicitly approved.
 
+Future current-truth promotion control is governed by `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md`. A current-truth candidate is not current truth until approved by a later explicit promotion slice.
+
+Backfilled evidence can remain historical-only.
+
+A current-truth approved item is still not answer-use approved unless answer-use permission is separately granted.
+
 ## 12. Answer-Use Boundary
 
 Answer use remains No in this slice.
@@ -288,5 +294,7 @@ Decision control does not modify runtime answer behaviour.
 Future developers must use this model after findings classification and outcome decision, and before any ingestion/backfill planning work.
 
 Use `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE.md` for individual decision records and `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL.md` for blocker handling.
+
+Use `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md` only after future backfilled evidence validation when a separate current-truth candidate assessment is needed.
 
 Do not ingest source content, backfill corpus, mutate operational evidence, create Code Evidence, call live LLM, write databases, create migrations, change endpoints, change UI, change `workforce-platform`, change `award-configurator-v1`, change `ezeas-analytics`, promote current truth, permit answer use, or execute deep review merely because ingestion/backfill decision control exists.

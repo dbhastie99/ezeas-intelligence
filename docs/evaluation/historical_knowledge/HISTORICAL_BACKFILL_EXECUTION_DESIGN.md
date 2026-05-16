@@ -144,6 +144,8 @@ Backfill apply requires a reviewed dry-run result, a completed audit record, exp
 
 Post-backfill validation must prove the future apply stayed within approved scope, preserved provenance, linked duplicates, respected historical-only labels, avoided tenant/sensitive data, and did not grant current-truth, answer-use, chat exposure, Code Evidence ingestion, live LLM use, or uncontrolled database writes.
 
+Post-backfill validation may identify a current-truth candidate for later assessment under `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md`. Candidate identification does not promote current truth, permit answer use, mutate corpus, write a database, call a live LLM, ingest source content, create Code Evidence, or expose chat.
+
 ## 6. Required Artefacts
 
 Future execution planning must use:
@@ -154,6 +156,10 @@ Future execution planning must use:
 - `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_EXECUTION_RUNBOOK.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_EXECUTION_SAFETY_CHECKLIST.md`
 - `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_EXECUTION_AUDIT_RECORD_TEMPLATE.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_CONTROL.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_TEMPLATE.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_BLOCKER_MODEL.md`
+- `docs/evaluation/historical_knowledge/HISTORICAL_CURRENT_TRUTH_PROMOTION_REVIEW_CHECKLIST.md`
 
 ## 7. Explicit Non-Goals
 
