@@ -74,6 +74,12 @@ Use these durable controls together:
 | Historical runtime gate chain requirements | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_GATE_CHAIN_REQUIREMENTS.md` |
 | Historical runtime gate blocker model | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_GATE_BLOCKER_MODEL.md` |
 | Historical runtime gate implementation readiness template | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_GATE_IMPLEMENTATION_READINESS_TEMPLATE.md` |
+| Historical runtime implementation design pack | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK.md` |
+| Historical runtime retrieval gate design | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_RETRIEVAL_GATE_DESIGN.md` |
+| Historical runtime answer synthesis gate design | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_ANSWER_SYNTHESIS_GATE_DESIGN.md` |
+| Historical runtime citation/refusal gate design | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_CITATION_REFUSAL_GATE_DESIGN.md` |
+| Historical runtime audit/logging design | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_AUDIT_LOGGING_DESIGN.md` |
+| Historical runtime implementation test matrix plan | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md` |
 | Historical chat pilot readiness dependency map | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md` |
 | Historical chat pilot readiness checklist | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.md` |
 | Historical chat pilot go/no-go | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_GO_NO_GO.md` |
@@ -143,6 +149,12 @@ New findings classification control status:
 | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_SCOPE_BOUNDARY.md` | Active pilot boundary; internal-only, read-only, governed-evidence-only, no source mutation, corpus mutation, Code Evidence ingestion, DB writes, endpoint/UI, live LLM, or cross-repo changes. |
 | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_BLOCKER_MODEL.md` | Active blocker model; blocker resolution does not itself expose chat or implement runtime behaviour. |
 | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA.md` | Active implementation entry criteria; future design entry only; no runtime implementation, endpoint/UI, or live LLM yet. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK.md` | Active runtime implementation design pack; design/control only; no retrieval runtime, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM, corpus mutation, or chat exposure. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_RETRIEVAL_GATE_DESIGN.md` | Active retrieval gate design; future filtering and refusal handoff only; no retrieval runtime implementation. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_ANSWER_SYNTHESIS_GATE_DESIGN.md` | Active answer synthesis gate design; future answer/refusal mode control only; no answer synthesis runtime or live LLM. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_CITATION_REFUSAL_GATE_DESIGN.md` | Active citation/refusal gate design; future provenance and refusal control only; no citation rendering runtime. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_AUDIT_LOGGING_DESIGN.md` | Active audit/logging design; future audit field planning only; no audit logging runtime or database writes. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md` | Active runtime implementation test matrix plan; planned test groups only; no runtime skeleton implementation. |
 
 ## 3. Source Authority Summary
 

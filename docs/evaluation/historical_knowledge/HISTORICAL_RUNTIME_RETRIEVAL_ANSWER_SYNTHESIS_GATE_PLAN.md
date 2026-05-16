@@ -172,7 +172,13 @@ The chat pilot readiness checklist, go/no-go decision, scope boundary, blocker m
 
 A ready runtime gate plan does not implement runtime retrieval, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM usage, or chat exposure.
 
-## 16. Progress After This Slice
+## 16. Runtime Implementation Design Pack Link
+
+The runtime implementation design pack is `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK.md`.
+
+That design pack may translate this gate plan into future retrieval, answer-use, answer-mode, citation/refusal, and audit/logging design. It remains design only and does not implement retrieval runtime, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM usage, or chat exposure.
+
+## 17. Progress After This Slice
 
 Minerva has moved from citation/provenance answer readiness into runtime retrieval/answer synthesis gate planning.
 
@@ -180,7 +186,7 @@ Minerva remains pre-runtime and pre-chat.
 
 Estimated progress toward narrow safe internal chat pilot is about 77%.
 
-## 17. Developer Handoff
+## 18. Developer Handoff
 
 Future developers must treat this plan as a planning/control artefact only. Runtime implementation design must first prove that answer-use permission, retrieval eligibility, answer-mode enforcement, citation/provenance enforcement, refusal behaviour, conflict/supersession behaviour, audit/logging, and pilot readiness approval are all linked.
 

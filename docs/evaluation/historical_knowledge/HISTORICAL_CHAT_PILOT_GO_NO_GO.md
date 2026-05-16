@@ -37,6 +37,12 @@ GO does not permit endpoint/UI.
 
 GO only permits a future implementation design slice unless explicitly stated otherwise.
 
-## 5. Runtime Boundary
+## 5. GO Permits Implementation Design Only
+
+GO permits implementation design only unless later explicitly expanded by a separate approved control.
+
+GO does not permit read-only retrieval skeleton work, answer synthesis skeleton work, citation rendering skeleton work, endpoint/UI work, live LLM use, or chat exposure.
+
+## 6. Runtime Boundary
 
 This go/no-go record does not implement retrieval runtime, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM calls, database writes, source ingestion, corpus mutation, Code Evidence ingestion, current-truth promotion, runtime answer-use permission activation, runtime retrieval eligibility activation, or chat exposure.

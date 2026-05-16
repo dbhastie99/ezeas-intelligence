@@ -22,6 +22,8 @@ This document maps the dependencies that must be satisfied before a Minerva hist
 - refusal policy
 - evidence chain
 - runtime gate plan
+- runtime implementation design pack: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK.md`
+- runtime implementation test matrix plan: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md`
 - retrieval runtime implementation design
 - answer synthesis gating design
 - citation rendering design

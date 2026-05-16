@@ -177,7 +177,13 @@ That next slice should design runtime retrieval/answer/citation enforcement but 
 
 If no-go, next slice should remediate blocker(s).
 
-## 16. Progress After This Slice
+## 16. Readiness Flow Into Runtime Implementation Design
+
+Chat pilot readiness flows into runtime implementation design, not chat exposure.
+
+A ready checklist may support a governed runtime implementation design pack and later test matrix planning only. It does not expose chat, implement retrieval runtime, implement answer synthesis runtime, implement citation rendering runtime, approve endpoint/UI, or approve live LLM use.
+
+## 17. Progress After This Slice
 
 Minerva has moved from runtime gate planning into chat pilot readiness control.
 
@@ -185,7 +191,7 @@ Minerva remains pre-runtime and pre-chat.
 
 Estimated progress toward narrow safe internal chat pilot is about 81%.
 
-## 17. Developer Handoff
+## 18. Developer Handoff
 
 Future developers must treat this checklist as a readiness control only. A `GO_FOR_RUNTIME_IMPLEMENTATION_DESIGN` decision permits only a future implementation design slice unless another explicit approval states otherwise.
 

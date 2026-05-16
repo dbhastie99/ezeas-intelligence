@@ -24,6 +24,11 @@ It does not approve runtime implementation.
 - no endpoint/UI yet;
 - no live LLM yet.
 
+Required links:
+
+- `RuntimeImplementationDesignPackLink`: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK.md`
+- `RuntimeImplementationTestMatrixPlanLink`: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md`
+
 ## 3. Design Boundary
 
 Meeting these entry criteria allows only a future implementation design slice, not runtime behaviour.
