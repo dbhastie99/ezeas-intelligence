@@ -174,6 +174,14 @@ Historical-context answer-use approval must not be treated as current-truth answ
 
 Answer-use permission alone does not implement retrieval, answer synthesis runtime, answer-mode enforcement, or chat exposure.
 
+## 14a. Citation / Provenance Traceability
+
+Answer-use permission must be traceable through retrieval eligibility, answer mode, and citation/provenance.
+
+Future chat use requires the answer-use permission id to flow into `docs/evaluation/historical_knowledge/HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE.md`, `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_MODE_CONTRACT.md`, `docs/evaluation/historical_knowledge/HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md`, and `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md`.
+
+Answer-use permission alone does not render citations, satisfy provenance, implement retrieval, implement answer synthesis runtime, or expose chat.
+
 ## 15. Blocker Handling
 
 Blocked decisions must record one or more blocker codes and the required resolution path:

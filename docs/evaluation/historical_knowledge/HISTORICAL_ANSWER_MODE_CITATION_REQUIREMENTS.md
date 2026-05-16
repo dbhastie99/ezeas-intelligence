@@ -10,6 +10,10 @@ This document defines citation and provenance requirements for future Minerva hi
 
 Missing citation/provenance blocks chat-answer readiness.
 
+The governing citation/provenance answer contract is `docs/evaluation/historical_knowledge/HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md`.
+
+The source-to-answer evidence chain requirements are `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md`.
+
 ## 2. Required Citation / Provenance Fields
 
 Every answer-mode record must preserve:
@@ -42,3 +46,5 @@ Missing `SourceId`, source title, repository/domain context, answer-use permissi
 Unknown source dates must be marked with an explicit unknown-date marker rather than omitted.
 
 Citation requirements do not implement retrieval runtime, answer synthesis runtime, chat exposure, live LLM calls, corpus mutation, source ingestion, database writes, endpoint changes, or UI changes.
+
+Citation requirements also do not render citations at runtime. Runtime citation rendering requires a later explicit implementation slice.

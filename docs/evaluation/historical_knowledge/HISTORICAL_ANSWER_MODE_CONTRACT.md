@@ -164,6 +164,14 @@ Every answer-mode record must preserve:
 - `RevocationPath`
 - `Notes`
 
+Answer modes require the citation/provenance answer contract before chat readiness.
+
+The governing citation/provenance answer contract is `docs/evaluation/historical_knowledge/HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md`.
+
+The required source-to-answer evidence chain is `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md`.
+
+An approved answer mode does not by itself make an answer chat-ready. Future chat readiness requires governed citation/provenance, refusal handling, retrieval enforcement, and pilot-readiness approval.
+
 ## 15. Conflict / Supersession Handling
 
 Conflicted evidence defaults to refusal for settled/current-truth answers.

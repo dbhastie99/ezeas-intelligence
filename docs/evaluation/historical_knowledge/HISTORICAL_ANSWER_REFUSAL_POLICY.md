@@ -21,6 +21,8 @@ This refusal policy is control documentation only and does not implement answer 
 | Conflicted evidence | `REFUSAL_CONFLICTED_EVIDENCE` unless a caveated answer mode is explicitly approved |
 | Superseded evidence | `REFUSAL_SUPERSEDED_EVIDENCE` for current-truth answers |
 | Missing citation/provenance | `REFUSAL_INSUFFICIENT_GOVERNED_EVIDENCE`; chat-answer readiness is blocked |
+| Missing citation/provenance contract record | `REFUSAL_INSUFFICIENT_GOVERNED_EVIDENCE`; non-refusal chat answer is blocked |
+| Incomplete citation/provenance | `REFUSAL_INSUFFICIENT_GOVERNED_EVIDENCE`; insufficient governed evidence must be stated |
 | Runtime retrieval not implemented | `REFUSAL_RETRIEVAL_NOT_ELIGIBLE` or insufficient governed evidence for chat readiness |
 | Chat contract not implemented | `REFUSAL_INSUFFICIENT_GOVERNED_EVIDENCE` for chat-answer readiness |
 
@@ -37,6 +39,10 @@ If evidence is conflicted, future Minerva answer logic must not answer as settle
 If evidence is superseded, future Minerva answer logic must refuse current-truth answers and may only use it for labelled historical explanation when separately approved.
 
 If citation/provenance is missing, chat-answer readiness is blocked.
+
+If citation/provenance is incomplete, future Minerva answer logic must refuse or state insufficient governed evidence.
+
+Refusal must not fabricate citations, and should explain which citation/provenance, answer-use, retrieval eligibility, or answer-mode gate is missing where known.
 
 ## 4. Runtime Boundary
 

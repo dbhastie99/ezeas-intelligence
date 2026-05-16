@@ -183,6 +183,14 @@ Retrieval eligibility alone does not implement answer synthesis, answer-mode enf
 
 Absent, blocked, revoked, superseded, conflicted, or excluded retrieval eligibility must map to refusal or insufficient-evidence answer modes under the answer-mode contract.
 
+## 14a. Citation / Provenance Dependency
+
+Retrieval eligibility must flow into answer mode and citation/provenance before chat use.
+
+Retrieval eligibility must be traceable in `docs/evaluation/historical_knowledge/HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md` and `docs/evaluation/historical_knowledge/HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md`.
+
+Retrieval eligibility alone does not render citations, satisfy provenance, implement answer synthesis, or expose chat.
+
 ## 15. Runtime Boundary
 
 This slice does not implement retrieval filtering.

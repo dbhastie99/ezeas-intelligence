@@ -379,6 +379,21 @@ HISTORICAL_ANSWER_MODE_BLOCKER_MODEL = (
 HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS.md"
 )
+HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md"
+)
+HISTORICAL_CITATION_PROVENANCE_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CITATION_PROVENANCE_TEMPLATE.md"
+)
+HISTORICAL_CITATION_PROVENANCE_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CITATION_PROVENANCE_BLOCKER_MODEL.md"
+)
+HISTORICAL_CITATION_PROVENANCE_REFUSAL_RULES = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CITATION_PROVENANCE_REFUSAL_RULES.md"
+)
+HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -563,6 +578,9 @@ HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE_PROMPT = Path(
 )
 HISTORICAL_ANSWER_MODE_CONTRACT_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_answer_mode_contract_v0_1.md"
+)
+HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_citation_provenance_answer_contract_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -3477,6 +3495,357 @@ def test_historical_answer_mode_slice_introduces_only_docs_tests_and_no_runtime_
         "No UI changes",
         "No retrieval runtime changes",
         "No answer synthesis runtime changes",
+        "No chat exposure",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No runtime answer-use permission activation",
+        "No runtime retrieval eligibility activation",
+        "does not expose chat",
+        "does not call a live LLM",
+        "does not change retrieval runtime",
+        "does not change answer synthesis runtime",
+        "does not mutate corpus",
+        "does not ingest source content",
+        "does not promote current truth",
+        "does not activate answer use at runtime",
+        "does not write to a database",
+        "does not create endpoint",
+        "does not create UI",
+    ):
+        assert required_boundary in combined
+
+
+def test_historical_citation_provenance_docs_exist():
+    assert HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.exists()
+    assert HISTORICAL_CITATION_PROVENANCE_TEMPLATE.exists()
+    assert HISTORICAL_CITATION_PROVENANCE_BLOCKER_MODEL.exists()
+    assert HISTORICAL_CITATION_PROVENANCE_REFUSAL_RULES.exists()
+    assert HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.exists()
+    assert HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT_PROMPT.exists()
+
+
+def test_historical_citation_provenance_statuses_modes_and_chain_fields():
+    contract = _read(HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT)
+
+    for status in (
+        "CITATION_NOT_REQUESTED",
+        "CITATION_BLOCKED",
+        "CITATION_DEFERRED",
+        "CITATION_REQUIRED",
+        "CITATION_READY_CURRENT_TRUTH",
+        "CITATION_READY_HISTORICAL_CONTEXT",
+        "CITATION_READY_WITH_CAVEAT",
+        "CITATION_READY_BACKLOG_CONTEXT",
+        "CITATION_READY_DOCTRINE_CONTEXT",
+        "CITATION_MISSING_REFUSE",
+        "CITATION_INCOMPLETE_REFUSE",
+        "CITATION_REVOKED",
+        "CITATION_SUPERSEDED",
+    ):
+        assert status in contract
+
+    for requirement in (
+        "`CURRENT_TRUTH_ANSWER` | Requires current-truth promotion id",
+        "answer-use permission id, retrieval eligibility id, answer mode id",
+        "source id, source title, source date or unknown marker",
+        "repository context, domain context, citation, provenance status, and revocation path",
+        "`HISTORICAL_CONTEXT_ANSWER` | Requires historical label",
+        "`CAVEATED_CURRENT_TRUTH_ANSWER` | Requires visible caveat",
+        "`BACKLOG_CONTEXT_ANSWER` | Requires backlog/follow-up label and must not present planned work as implemented",
+        "`DOCTRINE_CONTEXT_ANSWER` | Requires doctrine source references",
+        "`HARDENING_CONTEXT_ANSWER` | Requires hardening source references",
+        "Refusal modes | Require refusal reason and missing/blocked provenance explanation",
+    ):
+        assert requirement in contract
+
+    for field in (
+        "`SourceId`",
+        "`SourceTitle`",
+        "`SourceDate` or unknown-date marker",
+        "`RepositoryContext`",
+        "`DomainContext`",
+        "`DecisionRecordId` where applicable",
+        "`FindingsRecordId` where applicable",
+        "`FindingClassificationId` where applicable",
+        "`IngestionBackfillDecisionId` where applicable",
+        "`CurrentTruthPromotionId` where applicable",
+        "`AnswerUsePermissionId`",
+        "`RetrievalEligibilityId`",
+        "`AnswerModeId`",
+        "`EvidenceScope`",
+        "`AnswerScope`",
+        "`RetrievalMode`",
+        "`AnswerMode`",
+        "`CitationRequired`",
+        "`CaveatRequired`",
+        "`ProvenanceStatus`",
+        "`ConflictStatus`",
+        "`SupersessionStatus`",
+        "`Reviewer/Approver`",
+        "`ApprovedAtUtc`",
+        "`RevocationPath`",
+        "`Notes`",
+    ):
+        assert field in contract
+
+
+def test_historical_citation_provenance_answer_rules_and_refusals():
+    contract = _read(HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT)
+    refusal_rules = _read(HISTORICAL_CITATION_PROVENANCE_REFUSAL_RULES)
+    combined = "\n".join((contract, refusal_rules))
+
+    for rule in (
+        "Current-truth answers must cite current-truth-approved evidence",
+        "Current-truth answers must not cite historical-only evidence as current truth",
+        "Current-truth answers must not cite superseded/conflicted evidence as settled truth",
+        "Current-truth citation must preserve repository/domain context",
+        "Historical-context answers must identify evidence as historical",
+        "Historical-context citation must not imply current operating truth",
+        "Historical context must include source date or unknown-date marker",
+        "Caveated answers must cite the caveat basis",
+        "Caveated answers must expose conflict, limitation, uncertainty, or scope boundary",
+        "Caveat must be visible in future answer contract",
+        "Refusal may cite absence of governed evidence, missing answer-use permission, missing retrieval eligibility, missing provenance, conflict, or supersession",
+        "Refusal must not fabricate citations",
+        "Refusal should explain which gate is missing where known",
+        "Missing `SourceId` blocks non-refusal answers",
+        "Missing citation requirement blocks chat-answer readiness",
+        "Incomplete provenance maps to refusal or insufficient governed evidence",
+        "Unknown source date must be visibly marked and may require caveat or refusal depending on answer mode",
+        "Superseded evidence must not support current-truth answers",
+        "Conflicted evidence must not support settled answers",
+        "Caveated answer use requires explicit caveat and answer-use/retrieval eligibility approval",
+    ):
+        assert rule in combined
+
+    for refusal_case in (
+        "Missing provenance",
+        "Incomplete provenance",
+        "Missing citation requirement",
+        "Unresolved conflict",
+        "Supersession",
+        "Missing answer-use permission",
+        "Missing retrieval eligibility",
+        "Missing answer mode",
+    ):
+        assert refusal_case in refusal_rules
+
+
+def test_historical_citation_provenance_boundaries_blockers_and_non_goals():
+    contract = _read(HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT)
+    blocker_model = _read(HISTORICAL_CITATION_PROVENANCE_BLOCKER_MODEL)
+    combined = "\n".join((contract, blocker_model))
+
+    for boundary in (
+        "This slice does not implement citation rendering",
+        "This slice does not implement answer synthesis runtime",
+        "This slice does not implement retrieval filtering",
+        "This slice does not activate answer modes at runtime",
+        "This slice does not mutate corpus or evidence stores",
+        "This slice does not call a live LLM",
+        "This slice does not expose Minerva chat",
+        "Chat exposure requires later pilot readiness gate",
+        "Chat exposure requires runtime enforcement of citation/provenance, answer-mode, refusal, and retrieval gates",
+    ):
+        assert boundary in contract
+
+    for blocker_code in (
+        "MISSING_SOURCE_ID",
+        "MISSING_SOURCE_TITLE",
+        "MISSING_SOURCE_DATE_OR_UNKNOWN_MARKER",
+        "MISSING_REPOSITORY_CONTEXT",
+        "MISSING_DOMAIN_CONTEXT",
+        "MISSING_ANSWER_USE_PERMISSION",
+        "MISSING_RETRIEVAL_ELIGIBILITY",
+        "MISSING_ANSWER_MODE",
+        "MISSING_CURRENT_TRUTH_PROMOTION",
+        "PROVENANCE_INCOMPLETE",
+        "CITATION_REQUIREMENT_UNDEFINED",
+        "CAVEAT_REQUIRED_NOT_DEFINED",
+        "CONFLICT_UNRESOLVED",
+        "SUPERSESSION_UNRESOLVED",
+        "REVOCATION_PATH_MISSING",
+        "CITATION_RENDERING_NOT_IMPLEMENTED",
+        "CHAT_CONTRACT_NOT_IMPLEMENTED",
+    ):
+        assert blocker_code in contract
+        assert blocker_code in blocker_model
+
+    for non_goal in (
+        "Creating citation/provenance docs does not expose chat",
+        "Citation/provenance contract does not call a live LLM",
+        "Citation/provenance contract does not change retrieval runtime",
+        "Citation/provenance contract does not change answer synthesis runtime",
+        "Citation/provenance contract does not render citations at runtime",
+        "Citation/provenance contract does not mutate corpus",
+        "Citation/provenance contract does not ingest source content",
+        "Citation/provenance contract does not promote current truth",
+        "Citation/provenance contract does not activate answer use at runtime",
+        "Citation/provenance contract does not write to a database",
+        "Citation/provenance contract does not create endpoint or UI changes",
+        "Blocker resolution does not itself enable runtime retrieval, citation rendering, answer synthesis, chat, live LLM calls, or answerability",
+    ):
+        assert non_goal in combined
+
+
+def test_historical_citation_provenance_template_and_evidence_chain():
+    template = _read(HISTORICAL_CITATION_PROVENANCE_TEMPLATE)
+    evidence_chain = _read(HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS)
+
+    for field in (
+        "CitationProvenanceId",
+        "AnswerModeId",
+        "RetrievalEligibilityId",
+        "AnswerUsePermissionId",
+        "SourceId",
+        "SourceTitle",
+        "SourceDate",
+        "UnknownDateMarker",
+        "RepositoryContext",
+        "DomainContext",
+        "DecisionRecordId",
+        "FindingsRecordId",
+        "FindingClassificationId",
+        "IngestionBackfillDecisionId",
+        "CurrentTruthPromotionId",
+        "EvidenceScope",
+        "AnswerScope",
+        "RetrievalMode",
+        "AnswerMode",
+        "CitationStatus",
+        "CitationRequired",
+        "CaveatRequired",
+        "CaveatText",
+        "ProvenanceStatus",
+        "ConflictStatus",
+        "SupersessionStatus",
+        "RefusalReason",
+        "RevocationPath",
+        "Blockers",
+        "ApprovedBy",
+        "ApprovedAtUtc",
+        "Notes",
+    ):
+        assert field in template
+
+    for default in (
+        "| CitationRequired | Yes |",
+        "| CaveatRequired | Yes |",
+        "| ProvenanceStatus | `NOT_RUNTIME_ENFORCED` |",
+        "| ChatEligible | No |",
+    ):
+        assert default in template
+
+    for chain in (
+        "complete required evidence chain from source registration through answer mode and citation/provenance",
+        "source-to-answer-mode-to-citation chain",
+        "Source registration establishes `SourceId`, `SourceTitle`, source date or unknown-date marker",
+        "Answer-use permission records `AnswerUsePermissionId`",
+        "Retrieval eligibility records `RetrievalEligibilityId`",
+        "Answer-mode control records `AnswerModeId`",
+        "Citation/provenance control records `CitationProvenanceId`",
+        "The chain is control documentation only and does not implement runtime behaviour",
+    ):
+        assert chain in evidence_chain
+
+
+def test_historical_citation_provenance_links_from_related_controls_and_index():
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    answer_mode_contract = _read(HISTORICAL_ANSWER_MODE_CONTRACT)
+    answer_mode_template = _read(HISTORICAL_ANSWER_MODE_TEMPLATE)
+    refusal_policy = _read(HISTORICAL_ANSWER_REFUSAL_POLICY)
+    citation_requirements = _read(HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS)
+    retrieval_gate = _read(HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE)
+    answer_use_gate = _read(HISTORICAL_ANSWER_USE_PERMISSION_GATE)
+    prompt = _read(HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT_PROMPT)
+
+    for linked_doc in (
+        "HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md",
+        "HISTORICAL_CITATION_PROVENANCE_TEMPLATE.md",
+        "HISTORICAL_CITATION_PROVENANCE_BLOCKER_MODEL.md",
+        "HISTORICAL_CITATION_PROVENANCE_REFUSAL_RULES.md",
+        "HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md",
+    ):
+        assert linked_doc in index
+        assert linked_doc in prompt
+
+    assert "Answer modes require the citation/provenance answer contract before chat readiness" in answer_mode_contract
+    assert "CitationProvenanceLink" in answer_mode_template
+    assert "If citation/provenance is incomplete, future Minerva answer logic must refuse or state insufficient governed evidence" in refusal_policy
+    assert "HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT.md" in citation_requirements
+    assert "HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS.md" in citation_requirements
+    assert "Retrieval eligibility must flow into answer mode and citation/provenance before chat use" in retrieval_gate
+    assert "Answer-use permission must be traceable through retrieval eligibility, answer mode, and citation/provenance" in answer_use_gate
+
+
+def test_historical_citation_provenance_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "db" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT,
+            HISTORICAL_CITATION_PROVENANCE_TEMPLATE,
+            HISTORICAL_CITATION_PROVENANCE_BLOCKER_MODEL,
+            HISTORICAL_CITATION_PROVENANCE_REFUSAL_RULES,
+            HISTORICAL_ANSWER_EVIDENCE_CHAIN_REQUIREMENTS,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_ANSWER_MODE_CONTRACT,
+            HISTORICAL_ANSWER_MODE_TEMPLATE,
+            HISTORICAL_ANSWER_REFUSAL_POLICY,
+            HISTORICAL_ANSWER_MODE_CITATION_REQUIREMENTS,
+            HISTORICAL_RETRIEVAL_ELIGIBILITY_GATE,
+            HISTORICAL_ANSWER_USE_PERMISSION_GATE,
+            HISTORICAL_CITATION_PROVENANCE_ANSWER_CONTRACT_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No retrieval runtime changes",
+        "No answer synthesis runtime changes",
+        "No citation rendering runtime changes",
         "No chat exposure",
         "No workforce-platform changes",
         "No award-configurator-v1 changes",

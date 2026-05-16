@@ -17,6 +17,7 @@ This template does not expose chat, call a live LLM, change retrieval runtime, c
 | AnswerModeId | TBD |
 | RetrievalEligibilityId | TBD |
 | AnswerUsePermissionId | TBD |
+| CitationProvenanceLink | Planned/optional; link to future citation/provenance record |
 | SourceId | TBD |
 | SourceTitle | TBD |
 | SourceDate | TBD or unknown-date marker |
