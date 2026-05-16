@@ -40,6 +40,9 @@ Use these durable controls together:
 | Historical review findings classification model | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md` |
 | Historical review outcome decision model | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md` |
 | Historical review finding classification template | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md` |
+| Historical ingestion/backfill decision control | `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md` |
+| Historical ingestion/backfill decision template | `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE.md` |
+| Historical ingestion/backfill blocker model | `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL.md` |
 | Historical developer-log batch intake guidance | `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md` |
 | Historical developer-log batch register | `docs/evaluation/historical_knowledge/batch_registers/HISTORICAL_DEVELOPER_LOG_BATCH_REGISTER_2026_05_15.md` |
 | Historical backfill process | `docs/evaluation/historical_knowledge/HISTORICAL_BACKFILL_PROCESS.md` |
@@ -63,6 +66,9 @@ New findings classification control status:
 | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md` | Active control model; findings classification only; no ingestion or answer use. |
 | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md` | Active outcome decision model; decision-control only; no current-truth promotion. |
 | `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md` | Active reusable template; conservative defaults preserve ingestion No, answer use No, and current truth No. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md` | Active ingestion/backfill decision-control model; planning gate only; no target write, current-truth promotion, or answer use. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE.md` | Active reusable decision template; conservative defaults preserve ingestion No, answer use No, current truth No, operational mutation No, Code Evidence ingestion No, and live LLM use No. |
+| `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL.md` | Active blocker model; blocker resolution does not itself perform ingestion, permit answer use, or promote current truth. |
 
 ## 3. Source Authority Summary
 
@@ -109,6 +115,8 @@ Historical batch review decision records are governed by `docs/evaluation/histor
 Historical deep-review execution is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN.md`, with completion checks shaped by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_EXECUTION_CHECKLIST.md` and findings shaped by `docs/evaluation/historical_knowledge/HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE.md`. These artefacts define the future review execution control model only. Creating them does not perform deep review, ingest source content, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
 
 Historical review findings classification is governed by `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL.md`, with individual classification records shaped by `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md` and later outcome decisions governed by `docs/evaluation/historical_knowledge/HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL.md`. Completed findings must flow through findings classification before any outcome decision, ingestion/backfill decision, current-truth decision, or answer-use decision can be considered. These artefacts do not perform deep review, ingest source content, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
+
+Historical ingestion/backfill decision control is governed by `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md`, with reusable decision records shaped by `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE.md` and blockers governed by `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL.md`. `OUTCOME_READY_FOR_INGESTION_DECISION` may flow into this control only after findings classification and outcome decision exist, but it still does not approve ingestion. Ingestion/backfill decision control does not ingest source content, backfill corpus, promote current truth, permit answer use, mutate operational corpus, create Code Evidence, write databases, call live LLM, or change runtime behaviour.
 
 Developer-log batch intake is governed by `docs/evaluation/historical_knowledge/HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md`. That guidance states that adding a file to a registered folder is not ingestion, adding a batch row is metadata registration only, original filename is metadata only, register entries drive classification rather than filenames, ingestion permitted defaults to No, review status defaults to `NOT_REVIEWED`, implementation-state classification defaults to `UNCERTAIN_REQUIRES_REVIEW` unless strong evidence exists, ordinary logs can remain batch-registered until needed, and Minerva must not treat batch-registered sources as current truth unless later reviewed/backfilled/governed.
 
@@ -178,3 +186,5 @@ This slice prompt is preserved at `docs/codex_prompts/2026-05-15_minerva_histori
 The historical deep-review execution plan slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_deep_review_execution_plan_v0_1.md`.
 
 The historical review findings classification slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_review_findings_classification_v0_1.md`.
+
+The historical ingestion/backfill decision control slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_ingestion_backfill_decision_control_v0_1.md`.

@@ -130,6 +130,14 @@ Classified findings must then flow through `docs/evaluation/historical_knowledge
 
 Findings classification and outcome decision still do not permit ingestion, answer use, or current-truth promotion unless separate future governed decisions explicitly approve those steps.
 
+### Ingestion / Backfill Decision Control Boundary
+
+Decision records must not advance to ingestion/backfill without ingestion/backfill decision control.
+
+After classified findings and outcome decision exist, any `OUTCOME_READY_FOR_INGESTION_DECISION` path must flow through `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md` before ingestion or backfill planning may be considered.
+
+Ingestion/backfill decision control still does not ingest source content, backfill corpus, promote current truth, or permit answer use.
+
 ## 8. Ingestion Decision Boundary
 
 Ingestion requires a separate explicit decision.

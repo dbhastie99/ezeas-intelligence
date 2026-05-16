@@ -122,6 +122,8 @@ Classification does not mutate corpus.
 
 Classification may recommend future ingestion consideration but does not approve it.
 
+Classification is a prerequisite for ingestion/backfill decision control through `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md`, but classification is not permission to ingest, backfill, mutate corpus, promote current truth, or permit answer use.
+
 ## 13. What Findings Classification Does Not Mean
 
 Creating classification docs does not perform deep review.

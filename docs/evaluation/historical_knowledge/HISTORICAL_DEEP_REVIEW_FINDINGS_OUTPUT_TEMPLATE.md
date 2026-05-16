@@ -28,6 +28,7 @@ Use this template to capture governed historical deep-review findings. Findings 
 | SupersessionAssessment |  |
 | ConflictAssessment |  |
 | FindingClassificationLink |  |
+| IngestionBackfillDecisionLink | Planned/optional |
 | RecommendedClassification |  |
 | RecommendedNextDecision |  |
 | IngestionRecommended | No |
@@ -45,6 +46,7 @@ Required conservative defaults:
 Planned/required classification fields:
 
 - `FindingClassificationLink`
+- `IngestionBackfillDecisionLink`
 - `RecommendedClassification`
 
 Recommended finding types:

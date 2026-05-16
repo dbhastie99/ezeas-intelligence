@@ -302,6 +302,15 @@ HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL = (
 HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE.md"
 )
+HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md"
+)
+HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE.md"
+)
+HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL = (
+    HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL.md"
+)
 HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_DEVELOPER_LOG_BATCH_INTAKE_GUIDANCE.md"
 )
@@ -468,6 +477,9 @@ HISTORICAL_DEEP_REVIEW_EXECUTION_PLAN_PROMPT = Path(
 )
 HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_review_findings_classification_v0_1.md"
+)
+HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_ingestion_backfill_decision_control_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -1550,6 +1562,394 @@ def test_historical_review_findings_classification_slice_introduces_only_docs_te
         "No current-truth promotion",
         "No answer-use permission",
         "No deep-review execution",
+    ):
+        assert required_boundary in combined
+
+
+def test_historical_ingestion_backfill_decision_control_docs_exist():
+    assert HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.exists()
+    assert HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE.exists()
+    assert HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL.exists()
+
+
+def test_historical_ingestion_backfill_decision_status_model_is_complete():
+    model = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+
+    for status in (
+        "FINDING_CLASSIFIED",
+        "INGESTION_BACKFILL_CANDIDATE",
+        "INGESTION_BACKFILL_DECISION_DRAFTED",
+        "INGESTION_BACKFILL_APPROVED",
+        "INGESTION_BACKFILL_BLOCKED",
+        "INGESTION_BACKFILL_DEFERRED",
+        "HISTORICAL_ONLY_RETENTION",
+        "CURRENT_TRUTH_PROMOTION_CANDIDATE",
+        "ANSWER_USE_CANDIDATE",
+        "CURRENT_TRUTH_APPROVED",
+        "ANSWER_USE_APPROVED",
+        "INGESTION_DECISION_NOT_STARTED",
+        "INGESTION_DECISION_BLOCKED",
+        "INGESTION_DECISION_DEFERRED",
+        "INGESTION_DECISION_REJECTED",
+        "INGESTION_DECISION_APPROVED_FOR_PLANNING_ONLY",
+        "BACKFILL_DECISION_APPROVED_FOR_PLANNING_ONLY",
+        "INGESTION_READY_PENDING_BACKFILL_PLAN",
+        "BACKFILL_READY_PENDING_EXECUTION_PLAN",
+        "INGESTED_NOT_CURRENT_TRUTH",
+        "INGESTED_HISTORICAL_ONLY",
+        "CURRENT_TRUTH_PROMOTION_REQUIRED_SEPARATELY",
+    ):
+        assert status in model
+
+
+def test_historical_ingestion_backfill_preconditions_are_required():
+    model = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+
+    for required_text in (
+        "`DecisionRecordId` exists",
+        "`FindingsRecordId` exists",
+        "`FindingClassificationId` exists",
+        "Outcome decision exists",
+        "Source id exists",
+        "Source reference exists",
+        "Source date/version is known or explicitly marked unknown",
+        "Repository/domain context exists",
+        "Required cross-checks are completed or explicitly deferred with rationale",
+        "Conflicts are resolved or explicitly blocked",
+        "Supersession status is recorded",
+        "Duplicate status is recorded",
+        "Provenance requirement is recorded",
+        "Rollback/removal requirement is recorded",
+        "Current-truth decision remains separate",
+        "Answer-use decision remains separate",
+    ):
+        assert required_text in model
+
+
+def test_historical_ingestion_backfill_classification_and_outcome_requirements():
+    model = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+
+    for required_text in (
+        "Only classified findings may enter ingestion/backfill decision control",
+        "A classified finding is not ingestion",
+        "A classified finding is not current truth",
+        "A classified finding is not answer-use permission",
+        "`CURRENT_TRUTH_CANDIDATE_REQUIRES_APPROVAL` does not mean current truth",
+        "`CURRENT_TRUTH_CANDIDATE_REQUIRES_APPROVAL` is still only a candidate",
+        "`HISTORICAL_ONLY_CONTEXT` may only be considered for historical-labelled ingestion",
+        "Historical-only findings must not be used as current answers",
+        "`SUPERSEDED_BY_CURRENT_REPOSITORY_TRUTH` must not be ingested as current truth",
+        "Superseded findings must not be used as current truth",
+        "`CONFLICTS_WITH_CURRENT_TRUTH` must remain blocked until conflict resolution",
+        "Conflicting findings must be blocked until conflict resolution",
+        "Duplicate findings should link to existing evidence rather than create duplicate truth",
+        "Backlog/follow-up findings may inform planning but must not be represented as implemented behaviour",
+        "`OUTCOME_READY_FOR_INGESTION_DECISION` only means an ingestion/backfill decision may be considered",
+        "`OUTCOME_READY_FOR_ANSWER_USE_DECISION` does not permit answer use by itself",
+    ):
+        assert required_text in model
+
+
+def test_historical_ingestion_backfill_crosscheck_and_provenance_requirements():
+    model = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+
+    for required_text in (
+        "`workforce-platform` cross-check where source affects workforce/platform/runtime doctrine",
+        "`award-configurator-v1` cross-check where source affects award build/configuration/parser/interpreter truth",
+        "`ezeas-analytics` cross-check where source affects analytics/reporting schema/view/readiness truth",
+        "`ezeas-intelligence` cross-check where source affects Minerva retrieval/evidence/answering doctrine",
+        "Current repository truth and latest committed logs must take priority over unreviewed historical material",
+    ):
+        assert required_text in model
+
+    for field in (
+        "SourceId",
+        "SourceTitle",
+        "SourceDate",
+        "unknown-date marker",
+        "RegisteredBatchId",
+        "QueueEntryId",
+        "CandidateSelectionId",
+        "DecisionRecordId",
+        "FindingsRecordId",
+        "FindingClassificationId",
+        "Reviewer",
+        "ReviewDateUtc",
+        "CrossCheckStatus",
+        "OutcomeDecisionStatus",
+        "IngestionDecisionStatus",
+        "SourceEvidenceReference",
+        "Notes",
+    ):
+        assert field in model
+
+
+def test_historical_ingestion_backfill_boundaries_and_non_meanings():
+    model = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+
+    for required_text in (
+        "No target write occurs in this slice",
+        "Ingestion/backfill decision control does not promote current truth",
+        "Ingestion/backfill approval does not automatically mean current truth",
+        "Answer use remains No in this slice",
+        "Current-truth approval does not automatically mean answer-use permission",
+        "Answer-use permission must remain a separate decision",
+        "Any future ingestion/backfill plan must include rollback/removal instructions",
+        "Provenance must be sufficient to remove or quarantine ingested evidence",
+        "Superseded or rejected evidence must be quarantineable",
+        "No irreversible ingestion is allowed without rollback planning",
+        "Creating decision-control docs does not ingest source content",
+        "Decision control does not backfill corpus",
+        "Decision control does not promote current truth",
+        "Decision control does not permit answer use",
+        "Decision control does not mutate operational corpus",
+        "Decision control does not create Code Evidence",
+        "Decision control does not write to a database",
+        "Decision control does not call a live LLM",
+        "Decision control does not expose chat",
+        "Decision control does not add endpoints",
+        "Decision control does not add UI",
+        "Decision control does not modify runtime answer behaviour",
+    ):
+        assert required_text in model
+
+
+def test_historical_ingestion_backfill_blocker_handling_is_complete():
+    control = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL)
+    blocker_model = _read(HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL)
+    combined = f"{control}\n{blocker_model}"
+
+    for blocker_code in (
+        "MISSING_DECISION_RECORD",
+        "MISSING_FINDINGS_RECORD",
+        "MISSING_CLASSIFICATION",
+        "MISSING_OUTCOME_DECISION",
+        "MISSING_SOURCE_REFERENCE",
+        "UNKNOWN_SOURCE_DATE_UNASSESSED",
+        "CROSS_CHECK_INCOMPLETE",
+        "CONFLICT_UNRESOLVED",
+        "SUPERSESSION_UNRESOLVED",
+        "DUPLICATE_UNRESOLVED",
+        "PROVENANCE_INCOMPLETE",
+        "ROLLBACK_PLAN_MISSING",
+        "CURRENT_TRUTH_DECISION_MISSING",
+        "ANSWER_USE_DECISION_MISSING",
+        "TARGET_STORE_UNDECIDED",
+        "SOURCE_NOT_REVIEWED",
+        "CLASSIFICATION_NOT_ALLOWED_FOR_INGESTION",
+        "SUPERSEDED_BY_CURRENT_TRUTH",
+        "CONFLICT_REQUIRES_RESOLUTION",
+        "DUPLICATE_REQUIRES_LINKING",
+        "IMPLEMENTATION_STATE_UNCERTAIN",
+        "REPOSITORY_CROSS_CHECK_REQUIRED",
+        "FORMAL_EVIDENCE_GAP",
+        "SENSITIVE_OR_TENANT_DATA_RISK",
+        "ANSWER_USE_NOT_APPROVED",
+        "CURRENT_TRUTH_NOT_APPROVED",
+        "INGESTION_SCOPE_NOT_DEFINED",
+        "BACKFILL_STRATEGY_NOT_DEFINED",
+        "REVIEW_GATE_NOT_READY",
+        "SOURCE_AUTHORITY_TOO_LOW",
+        "HISTORICAL_ONLY_CONTEXT",
+    ):
+        assert blocker_code in control
+        assert blocker_code in blocker_model
+        assert blocker_code in combined
+
+    assert "Blocker resolution does not itself perform ingestion, permit answer use, or promote current truth" in blocker_model
+
+
+def test_historical_ingestion_backfill_decision_template_fields_and_defaults():
+    template = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE)
+
+    for field in (
+        "IngestionBackfillDecisionId",
+        "SourceRegisterId",
+        "DecisionRecordId",
+        "FindingsRecordId",
+        "FindingId",
+        "FindingReference",
+        "FindingClassification",
+        "FindingClassificationId",
+        "ReviewDecisionRecordReference",
+        "SourceId",
+        "SourceTitle",
+        "SourceDate",
+        "RegisteredBatchId",
+        "QueueEntryId",
+        "CandidateSelectionId",
+        "OutcomeDecisionStatus",
+        "DecisionStatus",
+        "IngestionDecisionStatus",
+        "ProposedIngestionScope",
+        "ProposedBackfillScope",
+        "ProposedBackfillTarget",
+        "BackfillTargetBoundary",
+        "ProposedTruthStatus",
+        "ProposedAnswerUseStatus",
+        "CurrentTruthPermitted",
+        "CurrentTruthPromotionPermitted",
+        "AnswerUsePermitted",
+        "IngestionPermitted",
+        "BackfillPermitted",
+        "OperationalCorpusMutationPermitted",
+        "CodeEvidenceIngestionPermitted",
+        "DatabaseWritePermitted",
+        "LiveLLMUsePermitted",
+        "ChatExposurePermitted",
+        "CrossCheckStatus",
+        "RepositoryCrossCheckStatus",
+        "ConflictStatus",
+        "ConflictAssessment",
+        "SupersessionStatus",
+        "SupersessionAssessment",
+        "DuplicateStatus",
+        "DuplicateAssessment",
+        "ProvenanceStatus",
+        "RollbackPlanStatus",
+        "FormalEvidenceGapStatus",
+        "SensitiveDataAssessment",
+        "Blockers",
+        "RequiredNextAction",
+        "DecisionRationale",
+        "Reviewer",
+        "DecisionDate",
+        "DecidedBy",
+        "DecidedAtUtc",
+        "Notes",
+        "Explicit Non-Goals",
+    ):
+        assert field in template
+
+    for default in (
+        "| CurrentTruthPermitted | No |",
+        "| CurrentTruthPromotionPermitted | No |",
+        "| AnswerUsePermitted | No |",
+        "| IngestionPermitted | No |",
+        "| BackfillPermitted | No |",
+        "| OperationalCorpusMutationPermitted | No |",
+        "| CodeEvidenceIngestionPermitted | No |",
+        "| DatabaseWritePermitted | No |",
+        "| LiveLLMUsePermitted | No |",
+        "| ChatExposurePermitted | No |",
+        "`CurrentTruthPermitted`: No",
+        "`CurrentTruthPromotionPermitted`: No",
+        "`AnswerUsePermitted`: No",
+        "`IngestionPermitted`: No",
+        "`BackfillPermitted`: No",
+        "`OperationalCorpusMutationPermitted`: No",
+        "`CodeEvidenceIngestionPermitted`: No",
+        "`DatabaseWritePermitted`: No",
+        "`LiveLLMUsePermitted`: No",
+        "`ChatExposurePermitted`: No",
+    ):
+        assert default in template
+
+
+def test_historical_ingestion_backfill_control_is_linked_from_review_chain():
+    outcome = _read(HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL)
+    classification = _read(HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL)
+    classification_template = _read(HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE)
+    decision_record = _read(HISTORICAL_BATCH_REVIEW_DECISION_RECORD)
+    findings_template = _read(HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE)
+    control_index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+    prompt = _read(HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL_PROMPT)
+
+    assert "`OUTCOME_READY_FOR_INGESTION_DECISION` flows into `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md`, but still does not approve ingestion" in outcome
+    assert "Classification is a prerequisite for ingestion/backfill decision control" in classification
+    assert "but classification is not permission to ingest, backfill, mutate corpus, promote current truth, or permit answer use" in classification
+    assert "IngestionBackfillDecisionLink" in classification_template
+    assert "Decision records must not advance to ingestion/backfill without ingestion/backfill decision control" in decision_record
+    assert "Ingestion/backfill decision control still does not ingest source content, backfill corpus, promote current truth, or permit answer use" in decision_record
+    assert "IngestionBackfillDecisionLink" in findings_template
+
+    for linked_doc in (
+        "HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md",
+        "HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE.md",
+        "HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL.md",
+    ):
+        assert linked_doc in control_index
+        assert linked_doc in prompt
+
+
+def test_historical_ingestion_backfill_slice_introduces_only_docs_tests_and_no_runtime_calls():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "db" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+        assert "migrations" not in normalized
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+
+    for changed_file in changed_files:
+        if changed_file.endswith(".py"):
+            assert changed_file == "tests/test_domain_baseline_capture_batch.py"
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL,
+            HISTORICAL_INGESTION_BACKFILL_DECISION_TEMPLATE,
+            HISTORICAL_INGESTION_BACKFILL_BLOCKER_MODEL,
+            HISTORICAL_REVIEW_OUTCOME_DECISION_MODEL,
+            HISTORICAL_REVIEW_FINDINGS_CLASSIFICATION_MODEL,
+            HISTORICAL_REVIEW_FINDING_CLASSIFICATION_TEMPLATE,
+            HISTORICAL_BATCH_REVIEW_DECISION_RECORD,
+            HISTORICAL_DEEP_REVIEW_FINDINGS_OUTPUT_TEMPLATE,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL_PROMPT,
+        )
+    )
+
+    for required_boundary in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No answer-use permission",
+        "No deep-review execution",
+        "does not ingest source content",
+        "does not backfill corpus",
+        "does not promote current truth",
+        "does not permit answer use",
+        "does not mutate operational corpus",
+        "does not create Code Evidence",
+        "does not write to a database",
+        "does not call a live LLM",
     ):
         assert required_boundary in combined
 

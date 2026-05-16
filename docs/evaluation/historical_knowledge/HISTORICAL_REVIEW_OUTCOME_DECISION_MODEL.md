@@ -45,6 +45,12 @@ Outcome decision does not promote current truth unless a later current-truth dec
 
 Outcome decision does not mutate operational corpus, create Code Evidence, write to a database, call a live LLM, create migrations, change endpoints, change UI, change workforce-platform, change award-configurator-v1, change ezeas-analytics, or change runtime behaviour.
 
+### Ingestion / Backfill Decision Control Boundary
+
+`OUTCOME_READY_FOR_INGESTION_DECISION` flows into `docs/evaluation/historical_knowledge/HISTORICAL_INGESTION_BACKFILL_DECISION_CONTROL.md`, but still does not approve ingestion.
+
+The ingestion/backfill decision-control model is the next governed gate for assessing whether ingestion or backfill planning may be considered. It still preserves ingestion No unless a later governed ingestion/backfill decision explicitly changes it.
+
 ## 5. Required Inputs
 
 Before recording an outcome decision, the decision path must have:

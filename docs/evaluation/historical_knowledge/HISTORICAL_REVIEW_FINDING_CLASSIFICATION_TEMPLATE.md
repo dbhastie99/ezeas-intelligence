@@ -31,6 +31,7 @@ Use this template to classify individual findings after governed historical deep
 | Reviewer |  |
 | ClassifiedAtUtc |  |
 | DecisionRecordLink |  |
+| IngestionBackfillDecisionLink | Planned/optional |
 | Notes |  |
 
 Required conservative defaults:
