@@ -35,3 +35,7 @@ This document maps required safety scenarios to expected retrieval, synthesis, a
 ## Boundary
 
 These scenarios are metadata-only tests. They do not call a live LLM, generate final natural-language chat answers, perform live retrieval, query a database, expose chat, mutate corpus, ingest source content, create Code Evidence, or activate runtime answer-use/retrieval eligibility beyond in-memory metadata evaluation.
+
+## Closeout Flow
+
+These scenarios feed `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md` and `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.md`. They do not expose chat or approve endpoint/UI, live LLM usage, live retrieval, database access, corpus mutation, source ingestion, Code Evidence ingestion, or final answer generation.

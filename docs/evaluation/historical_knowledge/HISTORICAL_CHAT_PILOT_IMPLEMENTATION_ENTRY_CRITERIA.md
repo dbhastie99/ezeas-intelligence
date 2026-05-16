@@ -23,6 +23,8 @@ It does not approve runtime implementation.
 - no runtime implementation yet;
 - no endpoint/UI yet;
 - no live LLM yet.
+- read-only closeout prerequisite recorded in `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`;
+- read-only implementation candidate entry criteria recorded in `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.md`.
 
 Required links:
 
@@ -51,3 +53,9 @@ This entry-criteria document does not implement retrieval runtime, answer synthe
 Future pilot implementation consideration must first satisfy the read-only chat pilot safety test pack governed by `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
 
 The safety test pack does not expose chat, approve endpoint/UI, approve live LLM use, or make final pilot go/no-go. Final pilot go/no-go remains separate.
+
+## Read-Only Closeout Prerequisite
+
+Future read-only chat pilot implementation candidate consideration requires `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md` to record `GO_FOR_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE`.
+
+This prerequisite authorises only a future candidate slice and does not expose chat, approve live LLM use, approve endpoint/UI, connect live retrieval, read/write a database, mutate corpus, or generate final natural-language answers.

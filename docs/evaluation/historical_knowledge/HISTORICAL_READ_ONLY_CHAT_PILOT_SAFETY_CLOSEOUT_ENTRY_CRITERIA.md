@@ -24,3 +24,10 @@ This document defines entry criteria for a future Minerva historical read-only c
 ## Closeout Boundary
 
 Meeting these entry criteria does not expose chat and does not approve endpoint/UI, live LLM use, live retrieval, database access, corpus mutation, source ingestion, Code Evidence ingestion, current-truth promotion, runtime answer-use activation, runtime retrieval activation, or final answer generation. The future go/no-go closeout remains a separate decision.
+
+## Closeout Links
+
+- Closeout decision artefact: `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`
+- Implementation candidate entry criteria: `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.md`
+
+These links are prerequisites for closeout review only. They do not expose chat or authorise runtime implementation.

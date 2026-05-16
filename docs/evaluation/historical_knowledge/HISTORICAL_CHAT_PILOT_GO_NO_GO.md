@@ -46,3 +46,9 @@ GO does not permit read-only retrieval skeleton work, answer synthesis skeleton 
 ## 6. Runtime Boundary
 
 This go/no-go record does not implement retrieval runtime, answer synthesis runtime, citation rendering runtime, endpoint/UI, live LLM calls, database writes, source ingestion, corpus mutation, Code Evidence ingestion, current-truth promotion, runtime answer-use permission activation, runtime retrieval eligibility activation, or chat exposure.
+
+## 7. Read-Only Closeout Reference
+
+The read-only pilot closeout is recorded separately in `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`.
+
+That closeout may authorise only a future read-only chat pilot implementation candidate. It does not expose chat in this slice, approve live LLM use, approve endpoint/UI, connect live retrieval, read/write a database, mutate corpus, or generate final natural-language answers.

@@ -533,6 +533,22 @@ HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA = (
     HISTORICAL_KNOWLEDGE_ROOT
     / "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md"
 )
+HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_CLOSEOUT_DECISION_RECORD = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_CLOSEOUT_DECISION_RECORD.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -766,6 +782,9 @@ HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON_PROMPT = Path(
 )
 HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_safety_test_pack_v0_1.md"
+)
+HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_chat_pilot_go_no_go_closeout_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -5959,6 +5978,327 @@ def test_historical_read_only_chat_pilot_safety_links_from_existing_controls():
         content = _read(path)
         for referenced_doc in referenced_docs:
             assert referenced_doc in content
+
+
+def test_historical_read_only_chat_pilot_closeout_docs_exist():
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_CLOSEOUT_DECISION_RECORD.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.exists()
+    assert HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT_PROMPT.exists()
+
+
+def test_historical_read_only_chat_pilot_closeout_status_inputs_and_status_model():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT)
+
+    for status_field in (
+        "`ReadOnlyChatPilotCloseoutStatus`: `CLOSEOUT_DRAFTED`",
+        "`ChatExposedThisSlice`: No",
+        "`LiveLLMCalledThisSlice`: No",
+        "`FinalAnswerGeneratedThisSlice`: No",
+        "`EndpointUICreatedThisSlice`: No",
+        "`LiveRetrievalPerformedThisSlice`: No",
+        "`CorpusMutationPerformedThisSlice`: No",
+        "`DatabaseReadPerformedThisSlice`: No",
+        "`DatabaseWritePerformedThisSlice`: No",
+    ):
+        assert status_field in closeout
+
+    for upstream_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT_CLOSEOUT.md",
+        "HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md",
+        "HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md",
+        "HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.md",
+        "HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md",
+    ):
+        assert upstream_doc in closeout
+
+    for status in (
+        "GO_FOR_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE",
+        "NO_GO_BLOCKED_BY_GOVERNANCE_CHAIN_GAP",
+        "NO_GO_BLOCKED_BY_RETRIEVAL_SKELETON_GAP",
+        "NO_GO_BLOCKED_BY_ANSWER_SYNTHESIS_SKELETON_GAP",
+        "NO_GO_BLOCKED_BY_CITATION_REFUSAL_SKELETON_GAP",
+        "NO_GO_BLOCKED_BY_SAFETY_TEST_GAP",
+        "NO_GO_BLOCKED_BY_RUNTIME_BOUNDARY_GAP",
+        "NO_GO_DEFER_CHAT_PILOT",
+    ):
+        assert status in closeout
+
+
+def test_historical_read_only_chat_pilot_closeout_evidence_and_boundaries():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT)
+
+    for governance_item in (
+        "answer-use permission gate exists",
+        "retrieval eligibility gate exists",
+        "answer-mode contract exists",
+        "citation/provenance answer contract exists",
+        "runtime gate plan exists",
+        "chat pilot readiness checklist exists",
+        "runtime implementation design exists",
+        "runtime implementation test matrix exists",
+    ):
+        assert governance_item in closeout
+
+    for skeleton_item in (
+        "read-only gated retrieval skeleton exists",
+        "answer synthesis enforcement skeleton exists",
+        "citation/refusal enforcement skeleton exists",
+        "skeleton chain is in-memory metadata-only",
+        "skeleton chain does not call live retrieval",
+        "skeleton chain does not call live LLM",
+        "skeleton chain does not expose chat",
+        "skeleton chain does not generate final answers",
+        "skeleton chain does not read/write DB",
+        "skeleton chain does not mutate corpus",
+    ):
+        assert skeleton_item in closeout
+
+    for safety_item in (
+        "safety scenarios exist",
+        "expected outcomes exist",
+        "no-runtime assertions exist",
+        "safety blocker model exists",
+        "safety closeout entry criteria exist",
+        "tests pass",
+    ):
+        assert safety_item in closeout
+
+    for runtime_boundary in (
+        "no endpoint/UI exists",
+        "no live LLM approval exists",
+        "no live retrieval backend is connected",
+        "no production chat route exists",
+        "no citation rendering runtime exists beyond metadata envelope validation",
+        "no audit/logging runtime exists beyond design documentation",
+        "pilot implementation candidate remains separate",
+    ):
+        assert runtime_boundary in closeout
+
+
+def test_historical_read_only_chat_pilot_closeout_authorisation_and_non_authorisation():
+    closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT)
+
+    assert "Decision status: `GO_FOR_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE`" in closeout
+    assert "This GO authorises only a future implementation candidate slice" in closeout
+    assert "It does not expose chat in this slice" in closeout
+
+    for authorised in (
+        "a future read-only chat pilot implementation candidate may be considered if GO is recorded",
+        "future implementation must remain read-only and gated",
+        "future implementation must still require explicit approval for endpoint/UI and live LLM usage",
+    ):
+        assert authorised in closeout
+
+    for prohibited in (
+        "chat exposure in this slice",
+        "live LLM calls",
+        "final natural-language answer generation",
+        "endpoint/UI creation",
+        "live retrieval backend connection",
+        "corpus mutation",
+        "source content ingestion",
+        "Code Evidence ingestion",
+        "database reads",
+        "database writes",
+        "schema migrations",
+        "workforce-platform changes",
+        "award-configurator-v1 changes",
+        "ezeas-analytics changes",
+    ):
+        assert prohibited in closeout
+
+    assert "historical read-only chat pilot implementation candidate v0.1" in closeout
+    assert "Minerva historical governance/skeleton-readiness reaches 100%" in closeout
+    assert "No chat was exposed in this slice" in closeout
+
+
+def test_historical_read_only_chat_pilot_candidate_entry_decision_record_and_boundaries():
+    entry = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA)
+    decision = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_CLOSEOUT_DECISION_RECORD)
+    boundaries = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES)
+
+    for criterion in (
+        "go/no-go closeout recorded",
+        "governance chain complete",
+        "retrieval skeleton complete",
+        "answer synthesis skeleton complete",
+        "citation/refusal skeleton complete",
+        "safety test pack complete",
+        "no-runtime assertions pass",
+        "pilot scope remains internal/read-only",
+        "endpoint/UI plan must be separately approved",
+        "live LLM usage must be separately approved",
+        "no corpus mutation",
+        "no DB read/write unless later explicitly designed and approved",
+    ):
+        assert criterion in entry
+
+    for field in (
+        "CloseoutDecisionId",
+        "CloseoutStatus",
+        "DecisionDate",
+        "InputsReviewed",
+        "GovernanceChainComplete",
+        "RetrievalSkeletonComplete",
+        "AnswerSynthesisSkeletonComplete",
+        "CitationRefusalSkeletonComplete",
+        "SafetyTestPackComplete",
+        "ChatExposurePermittedThisSlice",
+        "LiveLLMPermittedThisSlice",
+        "EndpointUIPermittedThisSlice",
+        "DatabaseReadPermittedThisSlice",
+        "DatabaseWritePermittedThisSlice",
+        "CorpusMutationPermittedThisSlice",
+        "FutureImplementationCandidatePermitted",
+        "Blockers",
+        "DecisionRationale",
+        "ApprovedBy",
+        "Notes",
+    ):
+        assert field in decision
+
+    for conservative_default in (
+        "`ChatExposurePermittedThisSlice`: No",
+        "`LiveLLMPermittedThisSlice`: No",
+        "`EndpointUIPermittedThisSlice`: No",
+        "`DatabaseReadPermittedThisSlice`: No",
+        "`DatabaseWritePermittedThisSlice`: No",
+        "`CorpusMutationPermittedThisSlice`: No",
+    ):
+        assert conservative_default in decision
+
+    for boundary in (
+        "endpoint/UI",
+        "live LLM usage",
+        "live retrieval backend",
+        "citation rendering runtime",
+        "audit/logging runtime",
+        "pilot access control",
+        "production exposure prevention",
+        "monitoring/rollback",
+        "no corpus mutation",
+        "no DB write",
+    ):
+        assert boundary in boundaries
+
+
+def test_historical_read_only_chat_pilot_closeout_links_from_existing_controls():
+    safety_pack = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_TEST_PACK)
+    safety_closeout = _read(HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA)
+    checklist = _read(HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST)
+    go_no_go = _read(HISTORICAL_CHAT_PILOT_GO_NO_GO)
+    implementation_entry = _read(HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert "flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`, not chat exposure" in safety_pack
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md" in safety_closeout
+    assert "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.md" in safety_closeout
+    assert "final closeout step exists at `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`" in checklist
+    assert "The read-only pilot closeout is recorded separately in `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`" in go_no_go
+    assert "read-only closeout prerequisite recorded in `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`" in implementation_entry
+
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_CLOSEOUT_DECISION_RECORD.md",
+        "HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES.md",
+    ):
+        assert linked_doc in index
+
+    assert "GO_FOR_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE" in index
+    assert "2026-05-16_minerva_historical_read_only_chat_pilot_go_no_go_closeout_v0_1.md" in index
+
+
+def test_historical_read_only_chat_pilot_closeout_slice_introduces_no_runtime_changes():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+    }
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "corpus_ingestion" not in normalized
+        assert "db_write" not in normalized
+        assert "endpoint" not in normalized or normalized.startswith("docs/")
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "live_retrieval_backend" not in normalized
+        assert "final_answer_generation" not in normalized
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_CLOSEOUT_DECISION_RECORD,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_REMAINING_RUNTIME_BOUNDARIES,
+            HISTORICAL_KNOWLEDGE_CONTROL_INDEX,
+            HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT_PROMPT,
+        )
+    )
+
+    for prohibited_runtime in (
+        "No source content ingestion",
+        "No operational corpus mutation",
+        "No Code Evidence ingestion",
+        "No live LLM calls",
+        "No database reads or writes",
+        "No schema migrations",
+        "No endpoint changes",
+        "No UI changes",
+        "No live retrieval backend",
+        "No final chat answer generation",
+        "No chat exposure",
+        "No workforce-platform changes",
+        "No award-configurator-v1 changes",
+        "No ezeas-analytics changes",
+        "No current-truth promotion",
+        "No runtime answer-use permission activation",
+        "No runtime retrieval eligibility activation",
+    ):
+        assert prohibited_runtime in combined
+
+    for service_path in (
+        HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_SERVICE,
+        HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON_SERVICE,
+        HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON_SERVICE,
+    ):
+        service = _read(service_path).lower()
+        assert "openai" not in service
+        assert "chatcompletion" not in service
+        assert "responses.create" not in service
+        assert "retrieve_relevant_chunks" not in service
+        assert "sqlalchemy" not in service
+        assert "requests." not in service
 
 
 def test_historical_read_only_chat_pilot_safety_slice_introduces_no_runtime_changes():

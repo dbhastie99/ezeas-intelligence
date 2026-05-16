@@ -104,11 +104,17 @@ This safety test pack does not mean:
 
 Preferred next Minerva slice should be historical read-only chat pilot go/no-go closeout v0.1. That future slice should decide whether the skeleton chain is ready for a pilot implementation candidate. It must still not expose chat unless explicitly approved later.
 
-## 14. Progress After This Slice
+## 14. Flow Into Go/No-Go Closeout
+
+This safety test pack flows into `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`, not chat exposure.
+
+The safety pack can support a closeout decision about whether a future implementation candidate may be considered. It does not itself approve chat, endpoint/UI, live LLM use, live retrieval, database access, corpus mutation, final answer generation, or production exposure.
+
+## 15. Progress After This Slice
 
 Minerva has moved from citation/refusal enforcement skeleton into pilot safety test pack readiness. Estimated progress toward narrow safe internal chat pilot is about 99%.
 
-## 15. Developer Handoff
+## 16. Developer Handoff
 
 Use this pack with `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_SCENARIOS.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_EXPECTED_OUTCOMES.md`, `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_BLOCKER_MODEL.md`, and `HISTORICAL_READ_ONLY_CHAT_PILOT_SAFETY_CLOSEOUT_ENTRY_CRITERIA.md`.
 

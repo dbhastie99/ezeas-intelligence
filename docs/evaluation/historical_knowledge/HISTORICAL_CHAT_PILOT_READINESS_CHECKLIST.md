@@ -141,7 +141,13 @@ Minerva is not exposed for chat yet.
 - runtime implementation design is separately approved;
 - endpoint/UI remains prohibited until later.
 
-## 13. Stop Conditions
+## 13. Final Closeout Step
+
+- final closeout step exists at `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md`;
+- read-only implementation candidate entry criteria exist at `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.md`;
+- final closeout can authorise only a future implementation candidate, not chat exposure.
+
+## 14. Stop Conditions
 
 - live LLM call required;
 - endpoint/UI required;
@@ -157,7 +163,7 @@ Minerva is not exposed for chat yet.
 - citation/provenance behaviour unresolved;
 - refusal behaviour unresolved.
 
-## 14. What This Checklist Does Not Mean
+## 15. What This Checklist Does Not Mean
 
 - chat pilot is implemented;
 - chat endpoint exists;
@@ -169,7 +175,7 @@ Minerva is not exposed for chat yet.
 - historical evidence is answerable by default;
 - Minerva is exposed for chat.
 
-## 15. Recommended Next Slice
+## 16. Recommended Next Slice
 
 If go/no-go permits, preferred next Minerva slice should be historical runtime implementation design pack v0.1.
 
@@ -177,13 +183,13 @@ That next slice should design runtime retrieval/answer/citation enforcement but 
 
 If no-go, next slice should remediate blocker(s).
 
-## 16. Readiness Flow Into Runtime Implementation Design
+## 17. Readiness Flow Into Runtime Implementation Design
 
 Chat pilot readiness flows into runtime implementation design, not chat exposure.
 
 A ready checklist may support a governed runtime implementation design pack and later test matrix planning only. It does not expose chat, implement retrieval runtime, implement answer synthesis runtime, implement citation rendering runtime, approve endpoint/UI, or approve live LLM use.
 
-## 17. Progress After This Slice
+## 18. Progress After This Slice
 
 Minerva has moved from runtime gate planning into chat pilot readiness control.
 
@@ -191,7 +197,7 @@ Minerva remains pre-runtime and pre-chat.
 
 Estimated progress toward narrow safe internal chat pilot is about 81%.
 
-## 18. Developer Handoff
+## 19. Developer Handoff
 
 Future developers must treat this checklist as a readiness control only. A `GO_FOR_RUNTIME_IMPLEMENTATION_DESIGN` decision permits only a future implementation design slice unless another explicit approval states otherwise.
 

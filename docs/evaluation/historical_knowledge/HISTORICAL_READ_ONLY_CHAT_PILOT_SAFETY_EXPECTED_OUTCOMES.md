@@ -25,3 +25,7 @@ This document defines expected outcomes for the Minerva historical read-only cha
 ## Outcome Boundary
 
 Expected outcomes describe safety proof targets for the in-memory skeleton chain only. They do not approve chat pilot implementation, endpoint/UI, live LLM use, live retrieval, database access, corpus mutation, source ingestion, current-truth promotion, or final natural-language chat answers.
+
+## Closeout Flow
+
+These expected outcomes feed `HISTORICAL_READ_ONLY_CHAT_PILOT_GO_NO_GO_CLOSEOUT.md` and `HISTORICAL_READ_ONLY_CHAT_PILOT_IMPLEMENTATION_CANDIDATE_ENTRY_CRITERIA.md`. Outcome readiness supports closeout review only and does not expose chat.
