@@ -85,6 +85,10 @@ Use these durable controls together:
 | Historical runtime implementation expected outcomes | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES.md` |
 | Historical runtime implementation no-runtime assertions | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS.md` |
 | Historical runtime implementation blocker model | `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL.md` |
+| Historical read-only gated retrieval skeleton candidate | `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md` |
+| Historical read-only gated retrieval response contract | `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT.md` |
+| Historical read-only gated retrieval fixture catalog | `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG.md` |
+| Historical read-only gated retrieval guardrails | `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS.md` |
 | Historical chat pilot readiness dependency map | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md` |
 | Historical chat pilot readiness checklist | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_READINESS_CHECKLIST.md` |
 | Historical chat pilot go/no-go | `docs/evaluation/historical_knowledge/HISTORICAL_CHAT_PILOT_GO_NO_GO.md` |
@@ -320,3 +324,7 @@ The historical chat pilot readiness checklist slice prompt is preserved at `docs
 The historical runtime implementation design pack slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_runtime_implementation_design_pack_v0_1.md`.
 
 The historical runtime implementation test matrix slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_runtime_implementation_test_matrix_v0_1.md`.
+
+The historical read-only gated retrieval skeleton candidate slice prompt is preserved at `docs/codex_prompts/2026-05-16_minerva_historical_read_only_gated_retrieval_skeleton_candidate_v0_1.md`.
+
+The historical read-only gated retrieval skeleton candidate is governed by `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md`, with response shape in `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT.md`, metadata-only fixtures in `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG.md`, and guardrails in `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS.md`. It is in-memory metadata evaluation only. It does not use a live retrieval backend, call an LLM, expose chat, create endpoint/UI, mutate corpus, perform DB read/write, ingest source content, create Code Evidence, promote current truth, activate runtime answer-use permission, or activate runtime retrieval eligibility beyond evaluating supplied metadata in-memory.

@@ -29,7 +29,10 @@ Required links:
 - `RuntimeImplementationDesignPackLink`: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK.md`
 - `RuntimeImplementationTestMatrixPlanLink`: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PLAN.md`
 - `RuntimeImplementationTestMatrixLink`: `docs/evaluation/historical_knowledge/HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`
+- `ReadOnlyGatedRetrievalSkeletonCandidateLink`: `docs/evaluation/historical_knowledge/HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md`
 - `TestMatrixStatus`: `RUNTIME_TEST_MATRIX_READY_FOR_READ_ONLY_RETRIEVAL_SKELETON` only after the matrix is clean; otherwise `RUNTIME_TEST_MATRIX_DRAFTED` or blocked status applies.
+
+The read-only gated retrieval skeleton candidate is a pre-pilot step only. It does not approve endpoint/UI, live retrieval, live LLM use, answer synthesis runtime, citation rendering runtime, or chat exposure.
 
 ## 3. Design Boundary
 

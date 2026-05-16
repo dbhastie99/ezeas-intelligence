@@ -444,6 +444,25 @@ HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS = (
 HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_RUNTIME_IMPLEMENTATION_BLOCKER_MODEL.md"
 )
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md"
+)
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT.md"
+)
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG.md"
+)
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS = (
+    HISTORICAL_KNOWLEDGE_ROOT
+    / "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS.md"
+)
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_SERVICE = Path(
+    "app/services/historical_read_only_gated_retrieval_skeleton_service.py"
+)
 HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP = (
     HISTORICAL_KNOWLEDGE_ROOT / "HISTORICAL_CHAT_PILOT_READINESS_DEPENDENCY_MAP.md"
 )
@@ -662,6 +681,9 @@ HISTORICAL_RUNTIME_IMPLEMENTATION_DESIGN_PACK_PROMPT = Path(
 )
 HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX_PROMPT = Path(
     "docs/codex_prompts/2026-05-16_minerva_historical_runtime_implementation_test_matrix_v0_1.md"
+)
+HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE_PROMPT = Path(
+    "docs/codex_prompts/2026-05-16_minerva_historical_read_only_gated_retrieval_skeleton_candidate_v0_1.md"
 )
 HISTORICAL_ANALYTICS_SOURCE_PLACEHOLDER = (
     HISTORICAL_REGISTERED_SOURCES_ROOT
@@ -1407,7 +1429,10 @@ def test_historical_deep_review_execution_slice_introduces_only_docs_tests_and_n
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -1434,7 +1459,7 @@ def test_historical_deep_review_execution_slice_introduces_only_docs_tests_and_n
 
     for changed_file in changed_files:
         if changed_file.endswith(".py"):
-            assert changed_file == "tests/test_domain_baseline_capture_batch.py"
+            assert changed_file in allowed_exact
 
     combined = "\n".join(
         _read(path)
@@ -1677,7 +1702,10 @@ def test_historical_review_findings_classification_slice_introduces_only_docs_te
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -1704,7 +1732,7 @@ def test_historical_review_findings_classification_slice_introduces_only_docs_te
 
     for changed_file in changed_files:
         if changed_file.endswith(".py"):
-            assert changed_file == "tests/test_domain_baseline_capture_batch.py"
+            assert changed_file in allowed_exact
 
     combined = "\n".join(
         _read(path)
@@ -2063,7 +2091,10 @@ def test_historical_ingestion_backfill_slice_introduces_only_docs_tests_and_no_r
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -2091,7 +2122,7 @@ def test_historical_ingestion_backfill_slice_introduces_only_docs_tests_and_no_r
 
     for changed_file in changed_files:
         if changed_file.endswith(".py"):
-            assert changed_file == "tests/test_domain_baseline_capture_batch.py"
+            assert changed_file in allowed_exact
 
     combined = "\n".join(
         _read(path)
@@ -2320,7 +2351,10 @@ def test_historical_backfill_execution_slice_introduces_only_docs_tests_and_no_r
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -2577,7 +2611,10 @@ def test_historical_current_truth_promotion_slice_introduces_only_docs_tests_and
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -2857,7 +2894,10 @@ def test_historical_answer_use_permission_slice_introduces_only_docs_tests_and_n
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -3189,7 +3229,10 @@ def test_historical_retrieval_eligibility_slice_introduces_only_docs_tests_and_n
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -3520,7 +3563,10 @@ def test_historical_answer_mode_slice_introduces_only_docs_tests_and_no_runtime_
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -3870,7 +3916,10 @@ def test_historical_citation_provenance_slice_introduces_only_docs_tests_and_no_
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -4496,7 +4545,10 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -4573,6 +4625,218 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
         "does not mutate corpus",
     ):
         assert required_boundary in combined
+
+
+def _approved_current_truth_metadata() -> dict[str, object]:
+    return {
+        "SourceId": "HIST-CT-001",
+        "EvidenceScope": "CURRENT_TRUTH",
+        "AnswerUsePermissionStatus": "APPROVED",
+        "RetrievalEligibilityStatus": "APPROVED",
+        "AnswerMode": "CURRENT_TRUTH",
+        "CitationStatus": "READY",
+        "ProvenanceStatus": "READY",
+        "ConflictStatus": "NONE",
+        "SupersessionStatus": "NONE",
+        "CurrentTruthPermitted": True,
+        "RetrievalEligible": True,
+        "ChatEligible": False,
+        "CitationRequired": True,
+        "CaveatRequired": False,
+    }
+
+
+def test_historical_read_only_gated_retrieval_skeleton_docs_and_service_exist():
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_SERVICE.exists()
+    assert HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE_PROMPT.exists()
+
+
+def test_historical_read_only_gated_retrieval_response_defaults_are_no_runtime():
+    from app.services.historical_read_only_gated_retrieval_skeleton_service import (
+        evaluate_historical_retrieval_gate,
+    )
+
+    response = evaluate_historical_retrieval_gate(_approved_current_truth_metadata())
+
+    assert response["RetrievalGateSkeletonImplemented"] is True
+    assert response["LiveRetrievalPerformed"] is False
+    assert response["LiveLLMCalled"] is False
+    assert response["CorpusMutationPerformed"] is False
+    assert response["DatabaseReadPerformed"] is False
+    assert response["DatabaseWritePerformed"] is False
+    assert response["EndpointUIPresent"] is False
+    assert response["RuntimeBoundaryAsserted"] is True
+
+
+def test_historical_read_only_gated_retrieval_refusal_decisions():
+    from app.services.historical_read_only_gated_retrieval_skeleton_service import (
+        evaluate_historical_retrieval_gate,
+    )
+
+    missing_answer_use = _approved_current_truth_metadata()
+    missing_answer_use.pop("AnswerUsePermissionStatus")
+    assert evaluate_historical_retrieval_gate(missing_answer_use)["RefusalReason"] == (
+        "ANSWER_USE_PERMISSION_MISSING_OR_BLOCKED"
+    )
+
+    missing_retrieval = _approved_current_truth_metadata()
+    missing_retrieval.pop("RetrievalEligibilityStatus")
+    assert evaluate_historical_retrieval_gate(missing_retrieval)["RefusalReason"] == (
+        "RETRIEVAL_ELIGIBILITY_MISSING_OR_BLOCKED"
+    )
+
+    missing_provenance = _approved_current_truth_metadata()
+    missing_provenance["ProvenanceStatus"] = "MISSING"
+    assert evaluate_historical_retrieval_gate(missing_provenance)["RefusalReason"] == (
+        "MISSING_OR_INCOMPLETE_PROVENANCE"
+    )
+
+    conflicted = _approved_current_truth_metadata()
+    conflicted["ConflictStatus"] = "CONFLICTED"
+    assert evaluate_historical_retrieval_gate(conflicted)["RefusalReason"] == (
+        "CONFLICTED_EVIDENCE_WITHOUT_APPROVED_CAVEAT"
+    )
+
+    superseded = _approved_current_truth_metadata()
+    superseded["SupersessionStatus"] = "SUPERSEDED"
+    assert evaluate_historical_retrieval_gate(superseded)["RefusalReason"] == (
+        "SUPERSEDED_EVIDENCE_CANNOT_ANSWER_CURRENT_TRUTH"
+    )
+
+    historical_current_truth_request = _approved_current_truth_metadata()
+    historical_current_truth_request["EvidenceScope"] = "HISTORICAL_CONTEXT_ONLY"
+    assert evaluate_historical_retrieval_gate(historical_current_truth_request)["RefusalReason"] == (
+        "HISTORICAL_CONTEXT_ONLY_CANNOT_ANSWER_CURRENT_TRUTH"
+    )
+
+
+def test_historical_read_only_gated_retrieval_eligible_decisions_and_caveat_preservation():
+    from app.services.historical_read_only_gated_retrieval_skeleton_service import (
+        evaluate_historical_retrieval_gate,
+    )
+
+    current_truth_response = evaluate_historical_retrieval_gate(
+        _approved_current_truth_metadata()
+    )
+    assert current_truth_response["RetrievalDecision"] == "ELIGIBLE_CURRENT_TRUTH"
+    assert current_truth_response["ExpectedAnswerMode"] == "CURRENT_TRUTH"
+
+    historical_context = _approved_current_truth_metadata()
+    historical_context["EvidenceScope"] = "HISTORICAL_CONTEXT_ONLY"
+    historical_context["AnswerMode"] = "HISTORICAL_CONTEXT"
+    historical_context["CurrentTruthPermitted"] = False
+    historical_context_response = evaluate_historical_retrieval_gate(historical_context)
+    assert historical_context_response["RetrievalDecision"] == "ELIGIBLE_HISTORICAL_CONTEXT"
+    assert historical_context_response["ExpectedAnswerMode"] == "HISTORICAL_CONTEXT_ONLY"
+
+    caveated = _approved_current_truth_metadata()
+    caveated["CaveatRequired"] = True
+    caveated_response = evaluate_historical_retrieval_gate(caveated)
+    assert caveated_response["CaveatRequired"] is True
+
+
+def test_historical_read_only_gated_retrieval_docs_record_no_runtime_boundaries():
+    combined = "\n".join(
+        _read(path)
+        for path in (
+            HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE,
+            HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT,
+            HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG,
+            HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS,
+        )
+    )
+
+    for boundary in (
+        "in-memory and metadata-only",
+        "No live retrieval backend is used",
+        "No LLM is called",
+        "No chat is exposed",
+        "No endpoint/UI exists",
+        "No corpus mutation occurs",
+        "No DB read/write occurs",
+        "response is for gate evaluation only",
+    ):
+        assert boundary in combined
+
+
+def test_historical_read_only_gated_retrieval_links_from_runtime_controls():
+    matrix = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX)
+    outcomes = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_EXPECTED_OUTCOMES)
+    assertions = _read(HISTORICAL_RUNTIME_IMPLEMENTATION_NO_RUNTIME_ASSERTIONS)
+    retrieval = _read(HISTORICAL_RUNTIME_RETRIEVAL_GATE_DESIGN)
+    entry = _read(HISTORICAL_CHAT_PILOT_IMPLEMENTATION_ENTRY_CRITERIA)
+    index = _read(HISTORICAL_KNOWLEDGE_CONTROL_INDEX)
+
+    assert "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md" in matrix
+    assert "ELIGIBLE_CURRENT_TRUTH" in outcomes
+    assert "ELIGIBLE_HISTORICAL_CONTEXT" in outcomes
+    assert "read-only gated retrieval skeleton is in-memory metadata evaluation only" in assertions
+    assert "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md" in retrieval
+    assert "ReadOnlyGatedRetrievalSkeletonCandidateLink" in entry
+
+    for linked_doc in (
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md",
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_RESPONSE_CONTRACT.md",
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_FIXTURE_CATALOG.md",
+        "HISTORICAL_READ_ONLY_GATED_RETRIEVAL_GUARDRAILS.md",
+    ):
+        assert linked_doc in index
+
+
+def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skeleton_changes():
+    changed = subprocess.run(
+        ["git", "status", "--short"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert changed.returncode == 0
+
+    allowed_exact = {
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+        "tests/test_domain_baseline_capture_batch.py",
+    }
+    allowed_prefixes = (
+        "docs/codex_prompts/",
+        "docs/evaluation/historical_knowledge/",
+    )
+    changed_files = [
+        line[3:].strip()
+        for line in changed.stdout.splitlines()
+        if line.strip()
+    ]
+
+    for changed_file in changed_files:
+        normalized = changed_file.lower().replace("\\", "/")
+        assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
+        assert not changed_file.endswith(".json")
+        assert "code_evidence" not in normalized
+        assert "operational" not in normalized or normalized.startswith("docs/")
+        assert "corpus" not in normalized or normalized.startswith("docs/")
+        assert "database" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "endpoint" not in normalized
+        assert "/ui/" not in normalized
+        assert not normalized.startswith("ui/")
+        assert "live_retrieval_backend" not in normalized
+        assert "answer_synthesis" not in normalized or normalized.startswith("docs/")
+        assert "citation_rendering" not in normalized
+        assert "chat" not in normalized or normalized.startswith("docs/")
+        assert "workforce-platform" not in changed_file
+        assert "award-configurator-v1" not in changed_file
+        assert "ezeas-analytics" not in changed_file
+
+    service = _read(HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_SERVICE)
+    assert "openai" not in service.lower()
+    assert "chatcompletion" not in service.lower()
+    assert "responses.create" not in service.lower()
+    assert "retrieve_relevant_chunks" not in service
+    assert "Session" not in service
+    assert "sqlalchemy" not in service
 
 
 def test_historical_chat_pilot_readiness_docs_exist():
@@ -5084,7 +5348,10 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -5637,7 +5904,10 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
     )
     assert changed.returncode == 0
 
-    allowed_exact = {"tests/test_domain_baseline_capture_batch.py"}
+    allowed_exact = {
+        "tests/test_domain_baseline_capture_batch.py",
+        "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
+    }
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -5662,7 +5932,7 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
 
     for changed_file in changed_files:
         if changed_file.endswith(".py"):
-            assert changed_file == "tests/test_domain_baseline_capture_batch.py"
+            assert changed_file in allowed_exact
 
     combined = "\n".join(
         _read(path)

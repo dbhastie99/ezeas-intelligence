@@ -28,3 +28,19 @@ It is documentation/test-planning only and does not implement runtime behaviour.
 ## Non-Runtime Boundary
 
 These expected outcomes do not implement runtime retrieval, answer synthesis runtime, citation rendering runtime, chat, endpoint/UI, live LLM calls, database writes, source ingestion, corpus mutation, Code Evidence ingestion, current-truth promotion, runtime answer-use activation, or runtime retrieval activation.
+
+## Read-Only Skeleton Decision Link
+
+The read-only gated retrieval skeleton candidate is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md`.
+
+Its metadata-only decisions map to these expected outcomes:
+
+- `ELIGIBLE_CURRENT_TRUTH` maps to allowed current-truth answer gate handoff only.
+- `ELIGIBLE_HISTORICAL_CONTEXT` maps to allowed historical-context answer gate handoff only.
+- `REFUSED_NOT_ELIGIBLE` maps to refusal not answer-approved or retrieval not eligible.
+- `REFUSED_MISSING_PROVENANCE` maps to refusal missing provenance.
+- `REFUSED_CONFLICTED` maps to refusal conflicted.
+- `REFUSED_SUPERSEDED_CURRENT_TRUTH` maps to refusal superseded.
+- `REFUSED_HISTORICAL_CONTEXT_ONLY` maps to refusal where historical-context-only evidence is requested as current truth.
+
+These are gate decisions only. They do not synthesize answers, render citations, perform retrieval, or expose chat.

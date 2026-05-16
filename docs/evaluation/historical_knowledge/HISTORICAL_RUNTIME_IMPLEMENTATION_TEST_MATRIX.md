@@ -145,6 +145,14 @@ That slice must be small, read-only, and must not expose chat or call live LLM.
 
 If blockers exist, next slice should remediate test matrix/design blockers.
 
+## 17.1 Read-Only Gated Retrieval Skeleton Candidate Link
+
+The first skeleton candidate is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_SKELETON_CANDIDATE.md`.
+
+It implements only an in-memory metadata-only gate evaluator for supplied evidence metadata. It does not implement live retrieval, query a database, call an LLM, expose chat, add endpoint/UI, mutate corpus, ingest source content, create Code Evidence, perform answer synthesis runtime, or render citations.
+
+The skeleton candidate must remain aligned to this test matrix and response contract before any later pilot endpoint/UI or chat exposure is considered.
+
 ## 18. Progress After This Slice
 
 Minerva has moved from runtime implementation design into runtime implementation test-matrix readiness.
