@@ -1,4 +1,4 @@
-# Historical Answer Synthesis Enforcement Guardrails
+# Historical Citation/Refusal Enforcement Guardrails
 
 Version: v0.1
 
@@ -7,7 +7,7 @@ Date: 16 May 2026
 ## Required Guardrails
 
 - The skeleton is in-memory and metadata-only.
-- The skeleton consumes supplied retrieval gate output only.
+- The skeleton consumes supplied answer synthesis skeleton output only.
 - No live retrieval backend is used.
 - No vector search is performed.
 - No corpus query is performed.
@@ -23,6 +23,7 @@ Date: 16 May 2026
 - No DB read/write occurs.
 - No schema migration occurs.
 - No citation rendering runtime is implemented.
+- No final citation rendering is performed.
 - No workforce-platform changes are introduced.
 - No award-configurator-v1 changes are introduced.
 - No ezeas-analytics changes are introduced.
@@ -32,15 +33,4 @@ Date: 16 May 2026
 
 ## Enforcement Rule
 
-The response is for gate enforcement only. It may state an allowed answer mode for a later gate, but it must not generate final answer text, expose chat, call a live LLM, perform live retrieval, write a database, mutate corpus, or make historical sources answerable current truth.
-
-## Citation/Refusal Handoff
-
-The downstream citation/refusal enforcement controls are:
-
-- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md`
-- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT.md`
-- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_FIXTURE_CATALOG.md`
-- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`
-
-This handoff remains metadata-only. It does not implement citation rendering runtime, final answer generation, live retrieval, live LLM calls, endpoint/UI, chat exposure, DB read/write, corpus mutation, or current-truth promotion.
+The response is for citation/refusal gate enforcement only. It may state that metadata is citation-ready for a later renderer, but it must not generate final answer text, render citations, expose chat, call a live LLM, perform live retrieval, write a database, mutate corpus, or make historical sources answerable current truth.

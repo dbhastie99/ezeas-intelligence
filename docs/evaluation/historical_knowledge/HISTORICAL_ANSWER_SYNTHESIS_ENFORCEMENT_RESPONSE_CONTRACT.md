@@ -65,3 +65,14 @@ This document defines the response contract for the Minerva historical answer sy
 The response is for gate enforcement only. It is not a final answer, not a chat response, not citation rendering, not retrieved evidence, not runtime answer-use permission, and not runtime retrieval activation.
 
 The skeleton is in-memory and metadata-only. No live retrieval backend is used, no LLM is called, no final chat answer is generated, no chat is exposed, no endpoint/UI exists, no corpus mutation occurs, and no DB read/write occurs.
+
+## Citation/Refusal Handoff Contract
+
+Allowed non-refusal responses are eligible only for the later metadata-only citation/refusal enforcement skeleton:
+
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_FIXTURE_CATALOG.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`
+
+The citation/refusal gate must still check source fields, governance-chain ids, conflict status, supersession status, and caveat readiness before any future renderer can receive a citation-ready envelope.

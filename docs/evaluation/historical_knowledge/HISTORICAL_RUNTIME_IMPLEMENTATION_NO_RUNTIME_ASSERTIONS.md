@@ -43,3 +43,11 @@ The hardened skeleton contract is `HISTORICAL_READ_ONLY_GATED_RETRIEVAL_CONTRACT
 `HISTORICAL_ANSWER_SYNTHESIS_ENFORCEMENT_SKELETON.md` adds a deterministic metadata-only helper that consumes supplied retrieval gate output. It does not use a live retrieval backend, does not call an LLM, does not generate final answers, does not expose chat, does not create endpoint/UI, does not mutate corpus, and does not perform DB read/write.
 
 The answer synthesis enforcement skeleton response is for gate enforcement only. It does not make historical sources answerable current truth and does not activate runtime answer-use permission or runtime retrieval eligibility beyond evaluating supplied metadata in-memory.
+
+## Citation/Refusal Enforcement Skeleton No-Runtime Statements
+
+`HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md` adds a deterministic metadata-only helper that consumes supplied answer synthesis skeleton output. It does not use a live retrieval backend, does not call an LLM, does not generate final answers, does not expose chat, does not create endpoint/UI, does not mutate corpus, does not render citations, and does not perform DB read/write.
+
+Supporting controls are `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT.md`, `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_FIXTURE_CATALOG.md`, and `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`.
+
+The citation/refusal enforcement skeleton response is for citation/refusal gate enforcement only. It does not make historical sources answerable current truth and does not activate runtime answer-use permission or runtime retrieval eligibility beyond evaluating supplied metadata in-memory.

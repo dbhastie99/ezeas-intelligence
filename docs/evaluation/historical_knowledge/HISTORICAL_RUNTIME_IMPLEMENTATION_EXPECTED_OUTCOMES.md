@@ -69,3 +69,26 @@ Its metadata-only outcomes map as follows:
 - `BLOCKED_RUNTIME_NOT_IMPLEMENTED` maps to explicit runtime-not-implemented blocking.
 
 These are gate enforcement decisions only. They do not generate final answers, call a live LLM, perform live retrieval, render citations, expose chat, mutate corpus, or perform DB read/write.
+
+## Citation/Refusal Enforcement Skeleton Outcomes
+
+The citation/refusal enforcement skeleton is `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md`.
+
+Supporting controls are `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT.md`, `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_FIXTURE_CATALOG.md`, and `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`.
+
+Its metadata-only outcomes map as follows:
+
+- `CITATION_READY_CURRENT_TRUTH` maps to current-truth citation envelope readiness only.
+- `CITATION_READY_HISTORICAL_CONTEXT` maps to historical-context citation envelope readiness only.
+- `CITATION_READY_CAVEATED` maps to caveated citation envelope readiness only.
+- `REFUSE_MISSING_SOURCE_ID` maps to refusal missing provenance.
+- `REFUSE_MISSING_SOURCE_TITLE` maps to refusal missing provenance.
+- `REFUSE_MISSING_SOURCE_DATE_OR_UNKNOWN_MARKER` maps to refusal missing provenance or missing unknown-date caveat marker.
+- `REFUSE_MISSING_GOVERNANCE_CHAIN` maps to refusal not answer-approved.
+- `REFUSE_CONFLICTED_EVIDENCE` maps to refusal conflicted evidence.
+- `REFUSE_SUPERSEDED_EVIDENCE` maps to refusal superseded evidence for current-truth answering.
+- `REFUSE_NOT_ANSWER_APPROVED` maps to refusal not answer-approved.
+- `REFUSE_PRIOR_GATE_REFUSAL` maps to preserved upstream refusal.
+- `BLOCKED_RUNTIME_NOT_IMPLEMENTED` maps to explicit runtime-not-implemented blocking.
+
+These are citation/refusal gate enforcement decisions only. They do not generate final answers, call a live LLM, perform live retrieval, render citations, expose chat, mutate corpus, or perform DB read/write.

@@ -28,3 +28,14 @@ This catalog defines metadata-only fixtures for answer synthesis enforcement ske
 ## Boundary
 
 Fixtures are in-memory and metadata-only. No live retrieval backend is used. No LLM is called. No final answer generation occurs. No chat is exposed. No endpoint/UI exists. No corpus mutation occurs. No DB read/write occurs.
+
+## Citation/Refusal Fixture Handoff
+
+The answer synthesis fixtures feed the metadata-only citation/refusal enforcement fixtures in:
+
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_FIXTURE_CATALOG.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`
+
+Those fixtures add SourceId, SourceTitle, SourceDate or UnknownDateMarker, governance ids, conflict status, supersession status, and caveat readiness checks without performing live retrieval, citation rendering, LLM calls, final answer generation, chat exposure, DB read/write, or corpus mutation.

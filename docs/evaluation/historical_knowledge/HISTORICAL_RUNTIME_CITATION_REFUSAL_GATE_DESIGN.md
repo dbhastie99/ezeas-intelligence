@@ -10,6 +10,15 @@ This document defines the future citation/refusal gate design for a narrow, read
 
 No citation rendering runtime is implemented.
 
+The current implementation-adjacent skeleton for this design is documented in:
+
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_FIXTURE_CATALOG.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`
+
+It is an in-memory metadata-only gate over supplied answer synthesis output and does not render citations or generate final answer text.
+
 ## 2. Required Provenance Fields
 
 - `SourceId`;
@@ -80,6 +89,8 @@ The future citation/refusal gate should output:
 Citation/refusal gate design must be tested through `HISTORICAL_RUNTIME_IMPLEMENTATION_TEST_MATRIX.md`.
 
 The matrix scenarios must cover citation fields present, SourceId missing refusal, SourceDate missing without unknown marker refusal or caveat, RevocationPath missing blocker/refusal, missing citation/provenance refusal, required caveat missing refusal, conflicted evidence refusal, superseded evidence refusal, not-answerable evidence refusal, and the rule that citation must not be fabricated.
+
+The skeleton decision catalog includes `CITATION_READY_CURRENT_TRUTH`, `CITATION_READY_HISTORICAL_CONTEXT`, `CITATION_READY_CAVEATED`, `REFUSE_MISSING_SOURCE_ID`, `REFUSE_MISSING_SOURCE_TITLE`, `REFUSE_MISSING_SOURCE_DATE_OR_UNKNOWN_MARKER`, `REFUSE_MISSING_GOVERNANCE_CHAIN`, `REFUSE_CONFLICTED_EVIDENCE`, `REFUSE_SUPERSEDED_EVIDENCE`, `REFUSE_NOT_ANSWER_APPROVED`, `REFUSE_PRIOR_GATE_REFUSAL`, and `BLOCKED_RUNTIME_NOT_IMPLEMENTED`.
 
 The test matrix link does not implement citation rendering runtime or answer synthesis runtime.
 

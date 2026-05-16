@@ -33,3 +33,14 @@ The response is for gate enforcement only.
 No live retrieval backend is used. No LLM is called. No final answer generation occurs. No chat is exposed. No endpoint/UI exists. No corpus mutation occurs. No DB read/write occurs.
 
 This skeleton does not perform live retrieval, vector search, corpus query, source content ingestion, operational corpus mutation, Code Evidence ingestion, database reads or writes, schema migrations, endpoint changes, UI changes, citation rendering runtime, chat exposure, workforce-platform changes, award-configurator-v1 changes, ezeas-analytics changes, current-truth promotion, runtime answer-use activation, or runtime retrieval activation beyond supplied metadata evaluation.
+
+## Citation/Refusal Enforcement Handoff
+
+The next metadata-only gate is documented by:
+
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_SKELETON.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_RESPONSE_CONTRACT.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_FIXTURE_CATALOG.md`
+- `HISTORICAL_CITATION_REFUSAL_ENFORCEMENT_GUARDRAILS.md`
+
+That gate consumes this skeleton's output, validates citation/provenance and governance-chain readiness, and either prepares a citation-ready metadata envelope or preserves/refines refusal. It remains in-memory and metadata-only and does not render citations or generate final answer text.
