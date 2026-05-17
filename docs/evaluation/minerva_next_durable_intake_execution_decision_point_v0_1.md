@@ -1,34 +1,43 @@
 # Minerva Next Durable Intake Execution Decision Point v0.1
 
 ## Decision Required
-Choose the next controlled Minerva slice after durable evidence intake authorisation gate setup.
+
+Choose the next Minerva durable-intake phase explicitly.
 
 ## Option A: Controlled Durable Intake Execution / Review-Only First Candidate
-Proceed to a separate execution slice for one review-only first candidate, with explicit authorisation and no automatic expansion to corpus-wide ingestion.
+
+Proceed to a review-only first-candidate execution phase with explicit authorisation boundaries and no automatic production/runtime exposure.
 
 ## Option B: External Evidence Summary Catalogue
-Catalogue external evidence summaries without durable ingestion, runtime integration, or corpus mutation.
+
+Create a catalogue of external evidence summaries without durable ingestion, corpus mutation, DB writes, live retrieval, live LLM use, final answers, or chat exposure.
 
 ## Option C: Code Evidence Readiness Planning
-Plan Code Evidence readiness without ingesting Code Evidence or changing runtime retrieval behaviour.
+
+Plan Code Evidence readiness controls without ingesting Code Evidence or mutating the corpus.
 
 ## Option D: Pause Minerva While Demo Stabilisation Continues
-Pause Minerva intake progression and continue demo stabilisation or other non-Minerva work.
+
+Keep Minerva paused while other demo stabilisation work continues.
 
 ## Preconditions For Each Option
-Option A requires a candidate that passes eligibility and authorisation gate checks, explicit execution authorisation, rollback/removal policy, sensitive-data review, and no prohibited claims.
 
-Option B requires catalogue scope, source-status boundaries, and no ingestion or runtime claims.
+Option A requires explicit future execution authorisation, source-reference lock, source-status boundary verification, evidence envelope, audit envelope, rollback/removal policy, sensitive-data review, no-overstatement checks, and reviewer closeout criteria.
 
-Option C requires Code Evidence planning scope, no ingestion authorisation, and no runtime retrieval changes.
+Option B requires a deterministic summary catalogue scope and an explicit no-ingestion/no-mutation boundary.
 
-Option D requires no additional technical preconditions.
+Option C requires a planning-only scope and an explicit no-Code-Evidence-ingestion boundary.
+
+Option D requires no additional Minerva action.
 
 ## What Must Not Be Done Without Explicit Authorisation
-Do not perform durable evidence ingestion, corpus mutation, Code Evidence ingestion, DB reads, DB writes, migrations, live retrieval changes, live LLM calls, final answer generation, chat exposure, API route registration, UI changes, workforce-platform changes, ezeas-analytics changes, deployment readiness claims, runtime readiness claims, or production readiness claims.
+
+Do not perform durable evidence ingestion, corpus mutation, Code Evidence ingestion, DB connection, DB read, DB write, migration, live retrieval, live LLM use, final answer generation, chat exposure, API endpoint or route registration, workforce-platform integration, ezeas-analytics integration, deployment readiness, runtime readiness, or production readiness work.
 
 ## Recommended Default Next Step
-Default to Option A only if a single first candidate is explicitly selected and separately authorised for review-only execution. Otherwise choose Option B or pause.
+
+Option A is the default next decision candidate if the goal is to continue durable intake work, but it must remain review-only until explicitly authorised.
 
 ## Developer Handoff
-The current slice provides the authorisation gate and candidate eligibility metadata only. The next slice must state its chosen option and boundaries before any implementation begins.
+
+Use the closeout ledger and service output as the handoff. Do not treat phase completion as runtime, deployment, production, ingestion, mutation, or exposure approval.
