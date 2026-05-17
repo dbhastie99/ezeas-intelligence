@@ -1,0 +1,26 @@
+{
+  "fixture_id": "controlled-evidence-intake-hardening-log-v0-1",
+  "fixture_purpose": "Hardening Log evidence records controlled findings without proving repair or runtime exposure.",
+  "input_metadata": {
+    "evidence_id": "fixture-hardening-log",
+    "evidence_category": "HARDENING_LOG",
+    "title": "Minerva hardening log evidence",
+    "source_repo": "ezeas-intelligence",
+    "source_phase": "governed corpus intake planning",
+    "source_status": "ANALYSIS_EVIDENCE",
+    "trust_level": "CONTROLLED_INTERNAL",
+    "required_caveats": ["Hardening Log fixture records controlled work or findings only.", "Repair, runtime, deployment, and production claims remain unauthorised."]
+  },
+  "expected_evidence_category": "HARDENING_LOG",
+  "expected_gate_decision": "READY_FOR_INTAKE_PLANNING",
+  "expected_source_status": "ANALYSIS_EVIDENCE",
+  "expected_ingestion_authorised": false,
+  "expected_corpus_mutation_authorised": false,
+  "expected_runtime_claim_permitted": false,
+  "expected_production_claim_permitted": false,
+  "expected_required_caveats": ["Hardening Log fixture records controlled work or findings only.", "Repair, runtime, deployment, and production claims remain unauthorised."],
+  "expected_blocked_reasons": [],
+  "expected_prohibited_inferences": ["repair completed", "fix completed", "deployment readiness", "production readiness"],
+  "expected_no_action_attestation": "No evidence ingestion, corpus mutation, runtime enablement, deployment, production use, DB access, live LLM use, endpoint exposure, final answer generation, or cross-repo runtime integration is authorised by this planning gate.",
+  "expected_summary_terms": ["hardening log", "analysis evidence", "repair not proven"]
+}

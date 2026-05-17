@@ -1,0 +1,25 @@
+{
+  "fixture_id": "controlled-evidence-intake-unknown-requires-review-v0-1",
+  "fixture_purpose": "Unknown evidence requires source, trust, and status review before planning use.",
+  "input_metadata": {
+    "evidence_id": "fixture-unknown-requires-review",
+    "title": "Unregistered external memo",
+    "source_repo": "ezeas-intelligence",
+    "source_phase": "governed corpus intake planning",
+    "source_status": "UNKNOWN_REQUIRES_REVIEW",
+    "trust_level": "UNKNOWN",
+    "required_caveats": ["Unknown fixture requires source, trust, and status review before planning use."]
+  },
+  "expected_evidence_category": "UNKNOWN_REQUIRES_REVIEW",
+  "expected_gate_decision": "UNKNOWN_REQUIRES_REVIEW",
+  "expected_source_status": "UNKNOWN_REQUIRES_REVIEW",
+  "expected_ingestion_authorised": false,
+  "expected_corpus_mutation_authorised": false,
+  "expected_runtime_claim_permitted": false,
+  "expected_production_claim_permitted": false,
+  "expected_required_caveats": ["Unknown fixture requires source, trust, and status review before planning use."],
+  "expected_blocked_reasons": [],
+  "expected_prohibited_inferences": ["implementation truth", "runtime readiness", "deployment readiness", "production readiness"],
+  "expected_no_action_attestation": "No evidence ingestion, corpus mutation, runtime enablement, deployment, production use, DB access, live LLM use, endpoint exposure, final answer generation, or cross-repo runtime integration is authorised by this planning gate.",
+  "expected_summary_terms": ["unknown", "requires review", "no ingestion"]
+}

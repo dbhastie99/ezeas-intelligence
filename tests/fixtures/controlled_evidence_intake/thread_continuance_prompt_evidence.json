@@ -1,0 +1,27 @@
+{
+  "fixture_id": "controlled-evidence-intake-thread-continuance-prompt-v0-1",
+  "fixture_purpose": "Thread continuance prompt evidence remains handoff context only.",
+  "input_metadata": {
+    "evidence_id": "fixture-thread-continuance-prompt",
+    "evidence_category": "THREAD_CONTINUANCE_PROMPT",
+    "title": "Thread continuance prompt for governed evidence intake",
+    "description": "Thread continuance prompt evidence for local planning",
+    "source_repo": "ezeas-intelligence",
+    "source_phase": "governed corpus intake planning",
+    "source_status": "PLANNING_EVIDENCE",
+    "trust_level": "CONTROLLED_HANDOFF",
+    "required_caveats": ["Thread continuance prompt fixture is handoff context only.", "It must not be treated as ingested corpus or runtime truth."]
+  },
+  "expected_evidence_category": "THREAD_CONTINUANCE_PROMPT",
+  "expected_gate_decision": "READY_FOR_INTAKE_PLANNING",
+  "expected_source_status": "PLANNING_EVIDENCE",
+  "expected_ingestion_authorised": false,
+  "expected_corpus_mutation_authorised": false,
+  "expected_runtime_claim_permitted": false,
+  "expected_production_claim_permitted": false,
+  "expected_required_caveats": ["Thread continuance prompt fixture is handoff context only.", "It must not be treated as ingested corpus or runtime truth."],
+  "expected_blocked_reasons": [],
+  "expected_prohibited_inferences": ["implementation completed", "runtime readiness", "production readiness"],
+  "expected_no_action_attestation": "No evidence ingestion, corpus mutation, runtime enablement, deployment, production use, DB access, live LLM use, endpoint exposure, final answer generation, or cross-repo runtime integration is authorised by this planning gate.",
+  "expected_summary_terms": ["thread continuance", "handoff", "planning only"]
+}

@@ -1,0 +1,26 @@
+{
+  "fixture_id": "controlled-evidence-intake-code-evidence-planning-output-v0-1",
+  "fixture_purpose": "Code Evidence planning output remains planning only and does not authorise Code Evidence ingestion.",
+  "input_metadata": {
+    "evidence_id": "fixture-code-evidence-planning-output",
+    "evidence_category": "CODE_EVIDENCE_PLANNING_OUTPUT",
+    "title": "Code Evidence planning output for controlled intake",
+    "source_repo": "ezeas-intelligence",
+    "source_phase": "governed corpus intake planning",
+    "source_status": "PLANNING_EVIDENCE",
+    "trust_level": "CONTROLLED_PLANNING",
+    "required_caveats": ["Code Evidence planning output fixture is planning evidence only.", "It does not authorise Code Evidence ingestion or corpus mutation."]
+  },
+  "expected_evidence_category": "CODE_EVIDENCE_PLANNING_OUTPUT",
+  "expected_gate_decision": "READY_FOR_INTAKE_PLANNING",
+  "expected_source_status": "PLANNING_EVIDENCE",
+  "expected_ingestion_authorised": false,
+  "expected_corpus_mutation_authorised": false,
+  "expected_runtime_claim_permitted": false,
+  "expected_production_claim_permitted": false,
+  "expected_required_caveats": ["Code Evidence planning output fixture is planning evidence only.", "It does not authorise Code Evidence ingestion or corpus mutation."],
+  "expected_blocked_reasons": [],
+  "expected_prohibited_inferences": ["implementation completed", "runtime readiness", "production readiness", "Code Evidence ingestion"],
+  "expected_no_action_attestation": "No evidence ingestion, corpus mutation, runtime enablement, deployment, production use, DB access, live LLM use, endpoint exposure, final answer generation, or cross-repo runtime integration is authorised by this planning gate.",
+  "expected_summary_terms": ["code evidence planning", "no Code Evidence ingestion", "planning only"]
+}

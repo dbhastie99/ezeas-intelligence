@@ -1,0 +1,26 @@
+{
+  "fixture_id": "controlled-evidence-intake-controlled-evaluation-summary-v0-1",
+  "fixture_purpose": "Controlled evaluation summary evidence remains deterministic evaluation metadata only.",
+  "input_metadata": {
+    "evidence_id": "fixture-controlled-evaluation-summary",
+    "evidence_category": "CONTROLLED_EVALUATION_SUMMARY",
+    "title": "Controlled evaluation summary evidence",
+    "source_repo": "ezeas-intelligence",
+    "source_phase": "governed corpus intake planning",
+    "source_status": "PLANNING_EVIDENCE",
+    "trust_level": "CONTROLLED_EVALUATION",
+    "required_caveats": ["Controlled evaluation summary fixture is deterministic evaluation metadata only.", "It does not authorise final answer generation or runtime exposure."]
+  },
+  "expected_evidence_category": "CONTROLLED_EVALUATION_SUMMARY",
+  "expected_gate_decision": "READY_FOR_INTAKE_PLANNING",
+  "expected_source_status": "PLANNING_EVIDENCE",
+  "expected_ingestion_authorised": false,
+  "expected_corpus_mutation_authorised": false,
+  "expected_runtime_claim_permitted": false,
+  "expected_production_claim_permitted": false,
+  "expected_required_caveats": ["Controlled evaluation summary fixture is deterministic evaluation metadata only.", "It does not authorise final answer generation or runtime exposure."],
+  "expected_blocked_reasons": [],
+  "expected_prohibited_inferences": ["implementation completed", "runtime readiness", "production readiness", "final natural-language answer generation"],
+  "expected_no_action_attestation": "No evidence ingestion, corpus mutation, runtime enablement, deployment, production use, DB access, live LLM use, endpoint exposure, final answer generation, or cross-repo runtime integration is authorised by this planning gate.",
+  "expected_summary_terms": ["controlled evaluation summary", "no final answer generation", "deterministic evaluation"]
+}

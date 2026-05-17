@@ -1,0 +1,27 @@
+{
+  "fixture_id": "controlled-evidence-intake-blocked-analysis-claims-repair-complete-v0-1",
+  "fixture_purpose": "Analysis evidence claiming repair complete is held for review and the status boundary prohibits repair-complete inference.",
+  "input_metadata": {
+    "evidence_id": "fixture-blocked-analysis-claims-repair-complete",
+    "evidence_category": "AWARD_RECOVERY_ANALYSIS",
+    "title": "Award recovery analysis claims repair complete",
+    "source_repo": "ezeas-intelligence",
+    "source_phase": "governed corpus intake planning",
+    "source_status": "ANALYSIS_EVIDENCE",
+    "trust_level": "UNKNOWN",
+    "repair_complete_claimed": true,
+    "required_caveats": ["Analysis repair-complete claim fixture is review-gated.", "Analysis evidence does not prove repair, remediation, fix completion, deployment, or production state."]
+  },
+  "expected_evidence_category": "AWARD_RECOVERY_ANALYSIS",
+  "expected_gate_decision": "NEEDS_TRUST_REVIEW",
+  "expected_source_status": "ANALYSIS_EVIDENCE",
+  "expected_ingestion_authorised": false,
+  "expected_corpus_mutation_authorised": false,
+  "expected_runtime_claim_permitted": false,
+  "expected_production_claim_permitted": false,
+  "expected_required_caveats": ["Analysis repair-complete claim fixture is review-gated.", "Analysis evidence does not prove repair, remediation, fix completion, deployment, or production state."],
+  "expected_blocked_reasons": [],
+  "expected_prohibited_inferences": ["repair completed", "fix completed", "deployment readiness", "production readiness"],
+  "expected_no_action_attestation": "No evidence ingestion, corpus mutation, runtime enablement, deployment, production use, DB access, live LLM use, endpoint exposure, final answer generation, or cross-repo runtime integration is authorised by this planning gate.",
+  "expected_summary_terms": ["analysis evidence", "repair not proven", "trust review"]
+}

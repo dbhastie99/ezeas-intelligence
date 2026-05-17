@@ -1,0 +1,26 @@
+{
+  "fixture_id": "controlled-evidence-intake-workforce-controlled-readiness-doc-v0-1",
+  "fixture_purpose": "Workforce controlled-readiness document evidence remains readiness documentation only.",
+  "input_metadata": {
+    "evidence_id": "fixture-workforce-controlled-readiness-doc",
+    "evidence_category": "WORKFORCE_CONTROLLED_READINESS_DOC",
+    "title": "Workforce controlled-readiness document evidence",
+    "source_repo": "ezeas-intelligence",
+    "source_phase": "governed corpus intake planning",
+    "source_status": "CONTROLLED_READINESS_EVIDENCE",
+    "trust_level": "CONTROLLED_READINESS",
+    "required_caveats": ["Workforce controlled-readiness fixture is readiness documentation only.", "It does not enable workforce-platform runtime integration."]
+  },
+  "expected_evidence_category": "WORKFORCE_CONTROLLED_READINESS_DOC",
+  "expected_gate_decision": "READY_FOR_INTAKE_PLANNING",
+  "expected_source_status": "CONTROLLED_READINESS_EVIDENCE",
+  "expected_ingestion_authorised": false,
+  "expected_corpus_mutation_authorised": false,
+  "expected_runtime_claim_permitted": false,
+  "expected_production_claim_permitted": false,
+  "expected_required_caveats": ["Workforce controlled-readiness fixture is readiness documentation only.", "It does not enable workforce-platform runtime integration."],
+  "expected_blocked_reasons": [],
+  "expected_prohibited_inferences": ["runtime readiness", "deployment readiness", "production readiness"],
+  "expected_no_action_attestation": "No evidence ingestion, corpus mutation, runtime enablement, deployment, production use, DB access, live LLM use, endpoint exposure, final answer generation, or cross-repo runtime integration is authorised by this planning gate.",
+  "expected_summary_terms": ["workforce controlled-readiness", "no workforce runtime integration", "readiness documentation"]
+}

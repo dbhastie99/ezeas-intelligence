@@ -1,0 +1,27 @@
+{
+  "fixture_id": "controlled-evidence-intake-blocked-runtime-overstatement-v0-1",
+  "fixture_purpose": "Runtime overstatement is blocked by the planning gate and not permitted by the source-status boundary without proof.",
+  "input_metadata": {
+    "evidence_id": "fixture-blocked-runtime-overstatement",
+    "evidence_category": "PLATFORM_DOCTRINE",
+    "title": "Runtime evidence claim without explicit proof",
+    "source_repo": "ezeas-intelligence",
+    "source_phase": "governed corpus intake planning",
+    "source_status": "RUNTIME_EVIDENCE",
+    "trust_level": "CONTROLLED_DOCTRINE",
+    "runtime_claim_permitted": true,
+    "required_caveats": ["Runtime overstatement fixture is blocked.", "Runtime claims require explicit proof and separate authorisation."]
+  },
+  "expected_evidence_category": "PLATFORM_DOCTRINE",
+  "expected_gate_decision": "BLOCKED_RUNTIME_OR_PRODUCTION_OVERSTATEMENT",
+  "expected_source_status": "RUNTIME_EVIDENCE",
+  "expected_ingestion_authorised": false,
+  "expected_corpus_mutation_authorised": false,
+  "expected_runtime_claim_permitted": false,
+  "expected_production_claim_permitted": false,
+  "expected_required_caveats": ["Runtime overstatement fixture is blocked.", "Runtime claims require explicit proof and separate authorisation."],
+  "expected_blocked_reasons": ["runtime_or_production_overstatement"],
+  "expected_prohibited_inferences": ["runtime claim without explicit proof", "deployment readiness", "production readiness"],
+  "expected_no_action_attestation": "No evidence ingestion, corpus mutation, runtime enablement, deployment, production use, DB access, live LLM use, endpoint exposure, final answer generation, or cross-repo runtime integration is authorised by this planning gate.",
+  "expected_summary_terms": ["runtime overstatement", "blocked", "explicit proof required"]
+}
