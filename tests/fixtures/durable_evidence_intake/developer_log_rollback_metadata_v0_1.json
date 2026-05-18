@@ -1,0 +1,18 @@
+{
+  "rollback_id": "durable-evidence-rollback-metadata-developer-log-v0-1",
+  "source_record_id": "durable-evidence-record-developer-log-v0-1",
+  "rollback_status": "ROLLBACK_METADATA_READY",
+  "removal_supported": true,
+  "removal_scope": "LOCAL_CONTROLLED_FIXTURE_RECORD_ONLY",
+  "removal_reason_required": true,
+  "reviewer_confirmation_required": true,
+  "audit_trail_required": true,
+  "live_corpus_mutation_performed": false,
+  "db_write_performed": false,
+  "required_caveats": [
+    "Rollback/removal applies only to the controlled local fixture/artifact record.",
+    "Reviewer confirmation and audit trail are required before removal.",
+    "No live corpus mutation or DB write is authorised or performed."
+  ],
+  "no_action_attestation": "No evidence ingestion, corpus mutation, Code Evidence ingestion, DB write, live retrieval, live LLM use, final natural-language answer generation, chat exposure, endpoint exposure, route registration, runtime integration, deployment, or production action was performed or authorised by this dry-run."
+}

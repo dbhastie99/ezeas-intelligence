@@ -1,0 +1,23 @@
+{
+  "candidate_id": "developer-log-durable-candidate-v0-1",
+  "candidate_type": "DEVELOPER_LOG",
+  "source_reference": "docs/evaluation/minerva_practical_durable_intake_execution_phase_progress_v0_1.md",
+  "source_status": "CONTROLLED_LOCAL_DURABLE_CANDIDATE_ONLY",
+  "evidence_title": "Minerva First Durable Evidence Intake Execution - Developer Log Candidate v0.1",
+  "evidence_date": "2026-05-18",
+  "repository_context": "ezeas-intelligence",
+  "phase_context": "First practical durable evidence intake execution path",
+  "sections_present": [
+    "Purpose of This Log for Minerva",
+    "Objectives",
+    "Work Completed",
+    "Issues Encountered",
+    "Current Status",
+    "Work Log",
+    "Important Decisions Captured",
+    "Still to Do / Do Not Lose",
+    "User Guide / Rationale & Operating Model"
+  ],
+  "sensitive_data_review_completed": true,
+  "summary": "Safe synthetic Developer Log metadata for a controlled local durable evidence candidate. It contains no secrets, credentials, personal data, raw chat logs, DB connection strings, live corpus mutation claims, runtime readiness claims, deployment readiness claims, or production readiness claims."
+}

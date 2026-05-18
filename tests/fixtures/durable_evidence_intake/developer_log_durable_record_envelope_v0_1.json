@@ -1,0 +1,21 @@
+{
+  "record_id": "durable-evidence-record-developer-log-v0-1",
+  "record_status": "LOCAL_DURABLE_RECORD_PREPARED",
+  "record_storage_mode": "LOCAL_CHECKED_IN_FIXTURE_ONLY",
+  "source_candidate_id": "developer-log-durable-candidate-v0-1",
+  "source_reference": "docs/evaluation/minerva_practical_durable_intake_execution_phase_progress_v0_1.md",
+  "source_status": "CONTROLLED_LOCAL_DURABLE_CANDIDATE_ONLY",
+  "evidence_category": "DEVELOPER_LOG_DURABLE_EVIDENCE_CANDIDATE",
+  "required_caveats": [
+    "Developer Log evidence is a controlled durable candidate only.",
+    "Source status must remain explicit and must not imply runtime, deployment, or production readiness.",
+    "No live corpus mutation, DB write, Code Evidence ingestion, live retrieval, live LLM, final answer generation, or chat exposure is authorised."
+  ],
+  "audit_metadata": {
+    "execution_scope": "FIRST_LOCAL_DURABLE_EVIDENCE_RECORD_ONLY",
+    "rollback_metadata_required": true,
+    "live_corpus_mutation_performed": false,
+    "db_write_performed": false
+  },
+  "no_action_attestation": "No evidence ingestion, corpus mutation, Code Evidence ingestion, DB write, live retrieval, live LLM use, final natural-language answer generation, chat exposure, endpoint exposure, route registration, runtime integration, deployment, or production action was performed or authorised by this dry-run."
+}
