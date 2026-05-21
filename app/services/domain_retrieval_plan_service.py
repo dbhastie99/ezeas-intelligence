@@ -2336,6 +2336,9 @@ PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN = DomainRetrievalPlan(
                 "payroll period",
                 "payment-event lifecycle evidence",
                 "payment event",
+                "ProcessPeriod lifecycle status",
+                "payroll-control truth",
+                "payroll-control object",
                 "not payroll calculation truth",
                 "payroll calculation truth",
                 "not a generic date range",
@@ -2350,6 +2353,9 @@ PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN = DomainRetrievalPlan(
                 "payroll period",
                 "payment-event lifecycle evidence",
                 "payment event",
+                "ProcessPeriod lifecycle status",
+                "payroll-control truth",
+                "payroll-control object",
                 "not payroll calculation truth",
                 "payroll calculation truth",
                 "not a generic date range",
@@ -2360,15 +2366,15 @@ PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN = DomainRetrievalPlan(
         EvidenceGroup(
             group_id="process_period_and_group_context",
             label="Process Periods / PayRun Lifecycle ProcessPeriod and ProcessPeriodGroup context",
-            query_terms=("ProcessPeriod", "Process Period", "ProcessPeriodGroup", "Process Period Group", "recurring calendar policy", "payment policy context"),
-            required_terms_any=("ProcessPeriod", "Process Period", "ProcessPeriodGroup", "Process Period Group", "recurring calendar policy", "payment policy context"),
+            query_terms=("ProcessPeriod", "Process Period", "ProcessPeriodGroup", "Process Period Group", "recurring calendar policy", "payment policy context", "automation policy", "payroll-control contract"),
+            required_terms_any=("ProcessPeriod", "Process Period", "ProcessPeriodGroup", "Process Period Group", "recurring calendar policy", "payment policy context", "automation policy", "payroll-control contract"),
             preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
         ),
         EvidenceGroup(
             group_id="open_not_open_closed_lifecycle",
             label="Process Periods / PayRun Lifecycle open not-open closed lifecycle",
-            query_terms=("open", "not-open", "not open", "closed", "closed dominates open", "period lifecycle"),
-            required_terms_any=("open", "not-open", "not open", "closed", "closed dominates open", "period lifecycle"),
+            query_terms=("open", "not-open", "not open", "closed", "closed dominates open", "period lifecycle", "regular close-for-review", "supplementary close-for-review", "payment/bank batch generation", "payment freeze"),
+            required_terms_any=("open", "not-open", "not open", "closed", "closed dominates open", "period lifecycle", "regular close-for-review", "supplementary close-for-review", "payment/bank batch generation", "payment freeze"),
             preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
         ),
         EvidenceGroup(
@@ -2410,8 +2416,8 @@ PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN = DomainRetrievalPlan(
         EvidenceGroup(
             group_id="payrun_creation_and_admission",
             label="Process Periods / PayRun Lifecycle PayRun creation and admission",
-            query_terms=("PayRun creation", "PayRun admission", "process-period context", "worker inclusion", "admission is not processing", "payment event"),
-            required_terms_any=("PayRun creation", "PayRun admission", "process-period context", "worker inclusion", "admission is not processing", "payment event"),
+            query_terms=("PayRun creation", "PayRun admission", "process-period context", "worker inclusion", "admission is not processing", "payment event", "PayRunActionDecision", "action → decision/policy authority → admission → processing → readiness"),
+            required_terms_any=("PayRun creation", "PayRun admission", "process-period context", "worker inclusion", "admission is not processing", "payment event", "PayRunActionDecision", "action → decision/policy authority → admission → processing → readiness"),
             preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
             max_chunks=4,
         ),
@@ -2453,8 +2459,8 @@ PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN = DomainRetrievalPlan(
         EvidenceGroup(
             group_id="worker_story_admin_queue_and_movement_review_connection",
             label="Process Periods / PayRun Lifecycle Worker Story Admin Queue and Movement Review connection",
-            query_terms=("Worker Story", "PayRun Admin Queue", "Admin Queue", "Movement Review", "worker participation", "readiness", "review implications"),
-            required_terms_any=("Worker Story", "PayRun Admin Queue", "Admin Queue", "Movement Review", "worker participation", "readiness", "review implications"),
+            query_terms=("Worker Story", "PayRun Admin Queue", "Admin Queue", "Movement Review", "Command Centre", "PayRun Detail", "worker participation", "readiness", "review implications"),
+            required_terms_any=("Worker Story", "PayRun Admin Queue", "Admin Queue", "Movement Review", "Command Centre", "PayRun Detail", "worker participation", "readiness", "review implications"),
             preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
         ),
         EvidenceGroup(
@@ -2474,6 +2480,8 @@ PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN = DomainRetrievalPlan(
                 "guardrails",
                 "not implemented",
                 "non-goals",
+                "automation execution",
+                "Adding automation fields does not mean automation is live",
             ),
             required_terms_any=(
                 "outstanding hardening",
@@ -2489,6 +2497,8 @@ PROCESS_PERIOD_PAYRUN_LIFECYCLE_PLAN = DomainRetrievalPlan(
                 "guardrails",
                 "not implemented",
                 "non-goals",
+                "automation execution",
+                "Adding automation fields does not mean automation is live",
             ),
             preferred_source_types=("DEVELOPER_LOG", "PLATFORM_DOCTRINE", "HARDENING_LOG"),
         ),
@@ -3743,6 +3753,10 @@ def detect_domain_retrieval_plan(question: str) -> DomainRetrievalPlan | None:
         or "close rolls forward" in normalized
         or ("admission" in normalized and "processing" in normalized)
         or ("regular" in normalized and "supplementary" in normalized and "retro" in normalized and "payrun" in normalized)
+        or ("automation policy" in normalized and ("processperiod" in normalized or "process period" in normalized or "pay process" in normalized or "payroll" in normalized or "payrun" in normalized))
+        or ("regular close for review" in normalized and "supplementary close for review" in normalized)
+        or "payment/bank batch generation" in normalized
+        or ("payment freeze" in normalized and ("payroll" in normalized or "payrun" in normalized or "pay process" in normalized))
     ) and not (
         "tax / payg" in normalized
         or "tax payg" in normalized

@@ -2054,6 +2054,21 @@ def test_process_period_payrun_lifecycle_detection_does_not_steal_tax_paymentdat
     assert plan.plan_id == "TAX_PAYG"
 
 
+def test_process_period_payrun_lifecycle_detects_automation_policy_foundation_questions():
+    questions = [
+        "Why does Pay Process Orchestration need ProcessPeriod lifecycle status?",
+        "Why does automation policy belong on ProcessPeriodGroup rather than being hidden in code?",
+        "What is the difference between regular close-for-review and supplementary close-for-review?",
+        "Why is payment/bank batch generation treated as a freeze?",
+    ]
+
+    for question in questions:
+        plan = detect_domain_retrieval_plan(question)
+
+        assert plan is not None
+        assert plan.plan_id == "PROCESS_PERIOD_PAYRUN_LIFECYCLE"
+
+
 def test_costing_gl_consequence_domain_retrieval_uses_group_specific_evidence(db_session):
     _ingest(
         db_session,
