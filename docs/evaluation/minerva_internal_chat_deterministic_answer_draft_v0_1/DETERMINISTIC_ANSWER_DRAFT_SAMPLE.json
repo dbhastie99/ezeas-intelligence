@@ -1,0 +1,29 @@
+{
+  "DraftStatus": "DRAFT_READY",
+  "IsFinalAnswer": false,
+  "DeterministicDraftAvailable": true,
+  "FinalAnswerGenerationPermitted": false,
+  "LiveLlmUsed": false,
+  "Role": "PAYROLL_ADMINISTRATOR",
+  "DisclosureMode": "IMPLEMENTATION_CONFIRMATION",
+  "SupportStatus": "SUPPORTED",
+  "DraftText": "Answer: Current implementation evidence supports this capability.\nEvidence support: Evidence supports the position. Implementation confirmation summary: evidence may be translated without raw code snippets.\nCaveats: Code evidence can support implementation confidence, but code evidence alone cannot prove production availability, runtime enablement, customer access, deployed schema state, permissions, live object state, payroll correctness, payment, or finalisation.\nNext step: Use this deterministic draft only for internal review.",
+  "EvidenceSummaryText": "Implementation confirmation summary: evidence may be translated without raw code snippets.",
+  "CaveatsText": "Code evidence can support implementation confidence, but code evidence alone cannot prove production availability, runtime enablement, customer access, deployed schema state, permissions, live object state, payroll correctness, payment, or finalisation.",
+  "BlockedClaimsText": "None.",
+  "NoActionAttestationText": "No live LLM called; no DB accessed; no external repo mutated; no payroll calculation performed; no write action performed; no runtime object evidence fetched; no final answer generation performed; no UI exposed; no chat persistence performed.",
+  "WithheldEvidenceNotice": "No role-safe evidence was withheld from this draft.",
+  "SuggestedNextStep": "Use this deterministic draft only for internal review.",
+  "SafetyFlags": [
+    "DETERMINISTIC_DRAFT_AVAILABLE",
+    "IS_FINAL_ANSWER_FALSE",
+    "FINAL_ANSWER_GENERATION_PERMITTED_FALSE",
+    "LIVE_LLM_USED_FALSE",
+    "NO_DB_ACCESSED",
+    "NO_PAYROLL_CALCULATION_PERFORMED",
+    "NO_WRITE_ACTION_PERFORMED",
+    "NO_RUNTIME_OBJECT_EVIDENCE_FETCHED",
+    "RAW_CODE_SNIPPETS_EXCLUDED",
+    "DRAFT_READY"
+  ]
+}
