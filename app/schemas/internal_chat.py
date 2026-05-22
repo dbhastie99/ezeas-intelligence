@@ -15,6 +15,9 @@ class InternalChatStubRequest(BaseModel):
     AllowLiveLlm: bool = False
     IncludeDeterministicDraft: bool = True
     FixtureKey: str | None = None
+    IncludePanelResponse: bool = False
+    PanelMode: str = "STANDARD"
+    IncludeTechnicalDetails: bool = False
 
 
 class InternalChatStubResponse(BaseModel):
@@ -38,3 +41,4 @@ class InternalChatStubResponse(BaseModel):
     Boundaries: list[str]
     Diagnostics: dict[str, Any]
     AuditSummary: dict[str, Any]
+    PanelResponse: dict[str, Any] | None = None

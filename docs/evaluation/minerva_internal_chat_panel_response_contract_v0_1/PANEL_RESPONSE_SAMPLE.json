@@ -1,0 +1,412 @@
+{
+  "Version": "MINERVA_INTERNAL_CHAT_PANEL_RESPONSE_CONTRACT_V0_1",
+  "FixtureOnly": true,
+  "LiveLlmUsed": false,
+  "FinalAnswerGenerationPermitted": false,
+  "RuntimeObjectEvidenceFetched": false,
+  "DatabaseAccessed": false,
+  "WriteActionPerformed": false,
+  "Samples": [
+    {
+      "CaseName": "payroll administrator asphalt",
+      "Request": {
+        "Question": "Is the Asphalt safe classRates seeding aligned now?",
+        "Role": "PAYROLL_ADMINISTRATOR",
+        "FixtureKey": "ASPHALT_SAFE_CLASSRATES_SEEDED_WITH_GATES",
+        "IncludePanelResponse": true
+      },
+      "PanelResponse": {
+        "PanelStatus": "PANEL_READY",
+        "Role": "PAYROLL_ADMINISTRATOR",
+        "DisclosureMode": "IMPLEMENTATION_CONFIRMATION",
+        "Headline": "Implementation evidence supports this, with runtime caveats.",
+        "Summary": "Implementation confirmation summary: evidence may be translated without raw code snippets.",
+        "DraftText": "Current implementation evidence supports this capability. This is a non-final deterministic draft with runtime caveats.",
+        "IsFinalAnswer": false,
+        "FinalAnswerGenerationPermitted": false,
+        "LiveLlmUsed": false,
+        "EvidenceChips": [
+          "Fixture evidence",
+          "Synthetic/internal",
+          "Implementation-state",
+          "Code evidence",
+          "Test evidence",
+          "Live LLM disabled",
+          "No payroll calculation",
+          "No write action",
+          "Final answer disabled"
+        ],
+        "CaveatBanners": [
+          {
+            "Type": "RUNTIME_AVAILABILITY_CAVEAT",
+            "Severity": "INFO",
+            "Text": "Runtime, tenant, customer, production, and live object availability require separate authorised evidence."
+          },
+          {
+            "Type": "FIXTURE_SYNTHETIC_EVIDENCE_CAVEAT",
+            "Severity": "INFO",
+            "Text": "Fixture evidence is synthetic/internal and must not be treated as production or customer evidence."
+          },
+          {
+            "Type": "CODE_EVIDENCE_LIMITATION",
+            "Severity": "INFO",
+            "Text": "Code evidence may support implementation confidence but cannot prove runtime availability."
+          },
+          {
+            "Type": "TEST_EVIDENCE_LIMITATION",
+            "Severity": "INFO",
+            "Text": "Test evidence is behavioural test-level evidence and does not prove production deployment."
+          },
+          {
+            "Type": "FINAL_ANSWER_DISABLED",
+            "Severity": "INFO",
+            "Text": "Final answer generation is disabled for this internal MVP stub."
+          },
+          {
+            "Type": "LIVE_LLM_DISABLED",
+            "Severity": "INFO",
+            "Text": "Live LLM calls are disabled for this internal MVP stub."
+          }
+        ],
+        "BoundaryBanners": [
+          "Internal/demo/test support only",
+          "Final answer generation disabled",
+          "Live LLM disabled",
+          "Runtime evidence not fetched",
+          "Database access disabled",
+          "No payroll calculation",
+          "No write action"
+        ],
+        "BlockedClaims": [],
+        "UnsupportedScopes": [],
+        "FixtureEvidenceNotice": "Synthetic fixture evidence was used for this internal response.",
+        "RuntimeEvidenceNotice": "No live runtime object evidence was fetched.",
+        "RoleRestrictionNotice": "No additional role restriction applies to the panel packet.",
+        "SuggestedNextStep": "Use this envelope for internal review or a later controlled Ask Minerva answer-generation slice.",
+        "PrimaryDisplaySections": [
+          "Headline",
+          "Summary",
+          "DraftText",
+          "EvidenceChips",
+          "CaveatBanners"
+        ],
+        "SecondaryDisplaySections": [
+          "BoundaryBanners",
+          "FixtureEvidenceNotice",
+          "RuntimeEvidenceNotice",
+          "RoleRestrictionNotice",
+          "SuggestedNextStep",
+          "NoActionAttestation"
+        ],
+        "TechnicalDetailsAvailable": false,
+        "TechnicalDetails": null,
+        "NoActionAttestation": {
+          "LiveLlmCalled": false,
+          "DatabaseAccessed": false,
+          "ExternalApiCalled": false,
+          "ExternalRepoMutated": false,
+          "PayrollCalculationPerformed": false,
+          "WriteActionPerformed": false,
+          "RuntimeObjectEvidenceFetched": false,
+          "FinalAnswerGenerated": false,
+          "FinalAnswerGenerationPerformed": false,
+          "ChatPersistencePerformed": false,
+          "UiExposed": false
+        }
+      }
+    },
+    {
+      "CaseName": "payroll user objecttime",
+      "Request": {
+        "Question": "What should I do with this post-finalisation ObjectTime action?",
+        "Role": "PAYROLL_USER",
+        "FixtureKey": "POST_FINALISATION_OBJECTTIME_ACTION_SURFACED",
+        "IncludePanelResponse": true
+      },
+      "PanelResponse": {
+        "PanelStatus": "PANEL_READY",
+        "Role": "PAYROLL_USER",
+        "DisclosureMode": "BACKGROUND_CONFIDENCE_ONLY",
+        "Headline": "The workflow is supported where the platform makes it available.",
+        "Summary": "Operational confidence summary: code and test evidence may inform confidence but internal identifiers are withheld.",
+        "DraftText": "The platform can support this workflow where the action is available and backend guardrails mark it eligible.",
+        "IsFinalAnswer": false,
+        "FinalAnswerGenerationPermitted": false,
+        "LiveLlmUsed": false,
+        "EvidenceChips": [
+          "Fixture evidence",
+          "Synthetic/internal",
+          "Implementation-state",
+          "Code evidence",
+          "Test evidence",
+          "Live LLM disabled",
+          "No payroll calculation",
+          "No write action",
+          "Final answer disabled"
+        ],
+        "CaveatBanners": [
+          {
+            "Type": "RUNTIME_AVAILABILITY_CAVEAT",
+            "Severity": "INFO",
+            "Text": "Runtime, tenant, customer, production, and live object availability require separate authorised evidence."
+          },
+          {
+            "Type": "FIXTURE_SYNTHETIC_EVIDENCE_CAVEAT",
+            "Severity": "INFO",
+            "Text": "Fixture evidence is synthetic/internal and must not be treated as production or customer evidence."
+          },
+          {
+            "Type": "CODE_EVIDENCE_LIMITATION",
+            "Severity": "INFO",
+            "Text": "Code evidence may support implementation confidence but cannot prove runtime availability."
+          },
+          {
+            "Type": "FINAL_ANSWER_DISABLED",
+            "Severity": "INFO",
+            "Text": "Final answer generation is disabled for this internal MVP stub."
+          },
+          {
+            "Type": "LIVE_LLM_DISABLED",
+            "Severity": "INFO",
+            "Text": "Live LLM calls are disabled for this internal MVP stub."
+          }
+        ],
+        "BoundaryBanners": [
+          "Internal/demo/test support only",
+          "Final answer generation disabled",
+          "Live LLM disabled",
+          "Runtime evidence not fetched",
+          "Database access disabled",
+          "No payroll calculation",
+          "No write action"
+        ],
+        "BlockedClaims": [],
+        "UnsupportedScopes": [],
+        "FixtureEvidenceNotice": "Synthetic fixture evidence was used for this internal response.",
+        "RuntimeEvidenceNotice": "No live runtime object evidence was fetched.",
+        "RoleRestrictionNotice": "No additional role restriction applies to the panel packet.",
+        "SuggestedNextStep": "Use this envelope for internal review or a later controlled Ask Minerva answer-generation slice.",
+        "PrimaryDisplaySections": [
+          "Headline",
+          "Summary",
+          "DraftText",
+          "EvidenceChips",
+          "CaveatBanners"
+        ],
+        "SecondaryDisplaySections": [
+          "BoundaryBanners",
+          "FixtureEvidenceNotice",
+          "RuntimeEvidenceNotice",
+          "RoleRestrictionNotice",
+          "SuggestedNextStep",
+          "NoActionAttestation"
+        ],
+        "TechnicalDetailsAvailable": false,
+        "TechnicalDetails": null,
+        "NoActionAttestation": {
+          "LiveLlmCalled": false,
+          "DatabaseAccessed": false,
+          "ExternalApiCalled": false,
+          "ExternalRepoMutated": false,
+          "PayrollCalculationPerformed": false,
+          "WriteActionPerformed": false,
+          "RuntimeObjectEvidenceFetched": false,
+          "FinalAnswerGenerated": false,
+          "FinalAnswerGenerationPerformed": false,
+          "ChatPersistencePerformed": false,
+          "UiExposed": false
+        }
+      }
+    },
+    {
+      "CaseName": "worker code evidence",
+      "Request": {
+        "Question": "What does code evidence confirm, and what does it not confirm?",
+        "Role": "WORKER",
+        "FixtureKey": "CODE_EVIDENCE_CANNOT_PROVE_RUNTIME",
+        "IncludePanelResponse": true
+      },
+      "PanelResponse": {
+        "PanelStatus": "PANEL_ROLE_RESTRICTED",
+        "Role": "WORKER",
+        "DisclosureMode": "NO_CODE_EVIDENCE",
+        "Headline": "This evidence is not available for this role.",
+        "Summary": "The current role can receive only a restricted, non-technical explanation.",
+        "DraftText": "This information is not available in the current role-safe mode.",
+        "IsFinalAnswer": false,
+        "FinalAnswerGenerationPermitted": false,
+        "LiveLlmUsed": false,
+        "EvidenceChips": [
+          "Fixture evidence",
+          "Synthetic/internal",
+          "Implementation-state",
+          "Code evidence",
+          "Test evidence",
+          "Runtime evidence required",
+          "Live LLM disabled",
+          "No payroll calculation",
+          "No write action",
+          "Final answer disabled"
+        ],
+        "CaveatBanners": [
+          {
+            "Type": "RUNTIME_AVAILABILITY_CAVEAT",
+            "Severity": "INFO",
+            "Text": "Runtime, tenant, customer, production, and live object availability require separate authorised evidence."
+          },
+          {
+            "Type": "ROLE_RESTRICTION",
+            "Severity": "INFO",
+            "Text": "This role cannot receive internal code evidence."
+          },
+          {
+            "Type": "FINAL_ANSWER_DISABLED",
+            "Severity": "INFO",
+            "Text": "Final answer generation is disabled for this internal MVP stub."
+          },
+          {
+            "Type": "LIVE_LLM_DISABLED",
+            "Severity": "INFO",
+            "Text": "Live LLM calls are disabled for this internal MVP stub."
+          }
+        ],
+        "BoundaryBanners": [
+          "Internal/demo/test support only",
+          "Final answer generation disabled",
+          "Live LLM disabled",
+          "Runtime evidence not fetched",
+          "Database access disabled",
+          "No payroll calculation",
+          "No write action"
+        ],
+        "BlockedClaims": [],
+        "UnsupportedScopes": [],
+        "FixtureEvidenceNotice": "Synthetic fixture evidence was used for this internal response.",
+        "RuntimeEvidenceNotice": "Authorised runtime object evidence is required; no runtime object evidence was fetched.",
+        "RoleRestrictionNotice": "Worker-facing mode does not expose internal code, test, prompt, file, function, or route evidence.",
+        "SuggestedNextStep": "Use a role with permitted evidence disclosure or provide a worker-safe explanation path.",
+        "PrimaryDisplaySections": [
+          "Headline",
+          "Summary",
+          "DraftText",
+          "EvidenceChips",
+          "CaveatBanners",
+          "BlockedClaims"
+        ],
+        "SecondaryDisplaySections": [
+          "BoundaryBanners",
+          "FixtureEvidenceNotice",
+          "RuntimeEvidenceNotice",
+          "RoleRestrictionNotice",
+          "SuggestedNextStep",
+          "NoActionAttestation"
+        ],
+        "TechnicalDetailsAvailable": false,
+        "TechnicalDetails": null,
+        "NoActionAttestation": {
+          "LiveLlmCalled": false,
+          "DatabaseAccessed": false,
+          "ExternalApiCalled": false,
+          "ExternalRepoMutated": false,
+          "PayrollCalculationPerformed": false,
+          "WriteActionPerformed": false,
+          "RuntimeObjectEvidenceFetched": false,
+          "FinalAnswerGenerated": false,
+          "FinalAnswerGenerationPerformed": false,
+          "ChatPersistencePerformed": false,
+          "UiExposed": false
+        }
+      }
+    },
+    {
+      "CaseName": "invalid fixture key",
+      "Request": {
+        "Question": "Can the platform manually process an admitted draft action?",
+        "Role": "PAYROLL_ADMINISTRATOR",
+        "FixtureKey": "NOT_A_FIXTURE",
+        "IncludePanelResponse": true
+      },
+      "PanelResponse": {
+        "PanelStatus": "PANEL_INVALID_FIXTURE",
+        "Role": "PAYROLL_ADMINISTRATOR",
+        "DisclosureMode": "IMPLEMENTATION_CONFIRMATION",
+        "Headline": "The requested internal fixture key was not found.",
+        "Summary": "No fixture evidence was supplied and no live retrieval was attempted.",
+        "DraftText": "No answer draft is available because the fixture key is invalid.",
+        "IsFinalAnswer": false,
+        "FinalAnswerGenerationPermitted": false,
+        "LiveLlmUsed": false,
+        "EvidenceChips": [
+          "Live LLM disabled",
+          "No payroll calculation",
+          "No write action",
+          "Final answer disabled"
+        ],
+        "CaveatBanners": [
+          {
+            "Type": "FIXTURE_SYNTHETIC_EVIDENCE_CAVEAT",
+            "Severity": "INFO",
+            "Text": "Fixture evidence is synthetic/internal and must not be treated as production or customer evidence."
+          },
+          {
+            "Type": "FINAL_ANSWER_DISABLED",
+            "Severity": "INFO",
+            "Text": "Final answer generation is disabled for this internal MVP stub."
+          },
+          {
+            "Type": "LIVE_LLM_DISABLED",
+            "Severity": "INFO",
+            "Text": "Live LLM calls are disabled for this internal MVP stub."
+          }
+        ],
+        "BoundaryBanners": [
+          "Internal/demo/test support only",
+          "Final answer generation disabled",
+          "Live LLM disabled",
+          "Runtime evidence not fetched",
+          "Database access disabled",
+          "No payroll calculation",
+          "No write action"
+        ],
+        "BlockedClaims": [
+          "unsupported fixture key: NOT_A_FIXTURE"
+        ],
+        "UnsupportedScopes": [],
+        "FixtureEvidenceNotice": "No fixture evidence was used because the fixture key is invalid.",
+        "RuntimeEvidenceNotice": "No live runtime object evidence was fetched.",
+        "RoleRestrictionNotice": "No additional role restriction applies to the panel packet.",
+        "SuggestedNextStep": "Use one of the listed internal fixture keys or omit FixtureKey.",
+        "PrimaryDisplaySections": [
+          "Headline",
+          "Summary",
+          "DraftText",
+          "EvidenceChips",
+          "CaveatBanners"
+        ],
+        "SecondaryDisplaySections": [
+          "BoundaryBanners",
+          "FixtureEvidenceNotice",
+          "RuntimeEvidenceNotice",
+          "RoleRestrictionNotice",
+          "SuggestedNextStep",
+          "NoActionAttestation"
+        ],
+        "TechnicalDetailsAvailable": false,
+        "TechnicalDetails": null,
+        "NoActionAttestation": {
+          "LiveLlmCalled": false,
+          "DatabaseAccessed": false,
+          "ExternalApiCalled": false,
+          "ExternalRepoMutated": false,
+          "PayrollCalculationPerformed": false,
+          "WriteActionPerformed": false,
+          "RuntimeObjectEvidenceFetched": false,
+          "FinalAnswerGenerated": false,
+          "FinalAnswerGenerationPerformed": false,
+          "ChatPersistencePerformed": false,
+          "UiExposed": false
+        }
+      }
+    }
+  ]
+}

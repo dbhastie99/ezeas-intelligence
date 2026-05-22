@@ -25,13 +25,14 @@ class SmokeCase:
     source_scopes: list[str] = field(default_factory=list)
     expected_rejection: bool = False
 
-    def request_payload(self) -> dict[str, Any]:
+    def request_payload(self, *, include_panel_response: bool = False) -> dict[str, Any]:
         return {
             "Question": self.question,
             "Role": self.role,
             "FixtureKey": self.fixture_key,
             "SourceScopes": list(self.source_scopes),
             "IncludeDeterministicDraft": True,
+            "IncludePanelResponse": include_panel_response,
             "AllowLiveLlm": False,
             "AllowFinalAnswerGeneration": False,
         }
@@ -92,16 +93,20 @@ SMOKE_CASES = [
 ]
 
 
-def run_smoke_harness(mode: str = "service") -> dict[str, Any]:
+def run_smoke_harness(mode: str = "service", *, include_panel_response: bool = False) -> dict[str, Any]:
     if mode not in {"service", "route"}:
         raise ValueError("mode must be 'service' or 'route'")
 
-    cases = [_run_case(case, mode=mode) for case in SMOKE_CASES]
+    cases = [
+        _run_case(case, mode=mode, include_panel_response=include_panel_response)
+        for case in SMOKE_CASES
+    ]
     passed = all(case["Pass"] for case in cases)
     return {
         "HarnessName": HARNESS_NAME,
         "Version": HARNESS_VERSION,
         "Mode": mode,
+        "IncludePanelResponse": include_panel_response,
         "RoutePath": INTERNAL_ROUTE if mode == "route" else None,
         "CaseCount": len(cases),
         "Pass": passed,
@@ -119,9 +124,9 @@ def run_smoke_harness(mode: str = "service") -> dict[str, Any]:
     }
 
 
-def _run_case(case: SmokeCase, *, mode: str) -> dict[str, Any]:
+def _run_case(case: SmokeCase, *, mode: str, include_panel_response: bool) -> dict[str, Any]:
     try:
-        response = _call_stub(case.request_payload(), mode=mode)
+        response = _call_stub(case.request_payload(include_panel_response=include_panel_response), mode=mode)
         checks = _evaluate_case(case, response)
         request_status = "EXPECTED_REJECTION" if case.expected_rejection else "REQUEST_ACCEPTED"
         return _case_result(case, response, checks, request_status=request_status)
@@ -276,7 +281,7 @@ def _case_result(
     attestation = response.get("NoActionAttestation") or {}
     caveats = list(response.get("RequiredCaveats") or [])
     passed = not failures
-    return {
+    result = {
         "CaseName": case.name,
         "Question": case.question,
         "Role": case.role,
@@ -298,6 +303,15 @@ def _case_result(
         "Pass": passed,
         "FailureReason": None if passed else "; ".join(failures),
     }
+    panel = response.get("PanelResponse") or {}
+    if panel:
+        result["PanelStatus"] = panel.get("PanelStatus")
+        result["PanelHeadline"] = panel.get("Headline")
+        result["PanelEvidenceChips"] = panel.get("EvidenceChips")
+        result["PanelCaveatBannerTypes"] = [
+            item.get("Type") for item in panel.get("CaveatBanners", [])
+        ]
+    return result
 
 
 def _exception_case_result(case: SmokeCase, failure: str) -> dict[str, Any]:
@@ -343,10 +357,11 @@ def write_output(report: dict[str, Any], output_path: str | Path | None) -> None
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run the internal Minerva chat stub smoke harness.")
     parser.add_argument("--mode", choices=["service", "route"], default="service")
+    parser.add_argument("--include-panel-response", action="store_true")
     parser.add_argument("--output", help="Optional path to write the concise JSON smoke result.")
     args = parser.parse_args(argv)
 
-    report = run_smoke_harness(mode=args.mode)
+    report = run_smoke_harness(mode=args.mode, include_panel_response=args.include_panel_response)
     write_output(report, args.output)
     print(json.dumps(report, indent=2))
     return 0 if report["Pass"] else 1

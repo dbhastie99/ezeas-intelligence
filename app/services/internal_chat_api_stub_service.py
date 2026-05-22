@@ -85,6 +85,9 @@ class InternalChatApiStubRequest:
     allow_live_llm: bool = False
     include_deterministic_draft: bool = True
     fixture_key: str | None = None
+    include_panel_response: bool = False
+    panel_mode: str = "STANDARD"
+    include_technical_details: bool = False
 
     def model_dump(self) -> dict[str, Any]:
         return {
@@ -99,6 +102,9 @@ class InternalChatApiStubRequest:
             "AllowLiveLlm": self.allow_live_llm,
             "IncludeDeterministicDraft": self.include_deterministic_draft,
             "FixtureKey": self.fixture_key,
+            "IncludePanelResponse": self.include_panel_response,
+            "PanelMode": self.panel_mode,
+            "IncludeTechnicalDetails": self.include_technical_details,
         }
 
 
@@ -124,6 +130,7 @@ class InternalChatApiStubResponse:
     boundaries: list[str]
     diagnostics: dict[str, Any]
     audit_summary: dict[str, Any]
+    panel_response: dict[str, Any] | None = None
 
     def model_dump(self) -> dict[str, Any]:
         envelope = self.orchestrator_envelope.model_dump()
@@ -149,6 +156,7 @@ class InternalChatApiStubResponse:
             "Boundaries": list(self.boundaries),
             "Diagnostics": dict(self.diagnostics),
             "AuditSummary": dict(self.audit_summary),
+            "PanelResponse": dict(self.panel_response) if self.panel_response else None,
         }
 
 
@@ -172,12 +180,13 @@ class InternalChatApiStubService:
         fixture_resolution = _resolve_fixture(normalized_request.fixture_key)
         if fixture_resolution["Invalid"]:
             scopes = _validate_scopes(normalized_request.source_scopes_requested)
-            return _invalid_fixture_key_response(
+            invalid_response = _invalid_fixture_key_response(
                 normalized_request,
                 role=role,
                 scopes=scopes,
                 fixture_resolution=fixture_resolution,
             )
+            return _with_panel_response_if_requested(invalid_response, normalized_request, role)
 
         explicit_evidence_count = len(_candidate_evidence_list(normalized_request.candidate_evidence_metadata))
         normalized_request, fixture_metadata = _request_with_fixture_evidence(
@@ -215,7 +224,7 @@ class InternalChatApiStubService:
             fixture_metadata=fixture_metadata,
         )
 
-        return InternalChatApiStubResponse(
+        response = InternalChatApiStubResponse(
             status=InternalChatApiStubStatus.STUB_RESPONSE_BUILT.value,
             request_echo=request_echo,
             orchestrator_envelope=envelope,
@@ -251,6 +260,7 @@ class InternalChatApiStubService:
                 "NoExternalCallsOrWritesPerformed": True,
             },
         )
+        return _with_panel_response_if_requested(response, normalized_request, role)
 
 
 def _api_request_from_any(
@@ -271,6 +281,9 @@ def _api_request_from_any(
             allow_live_llm=request.allow_live_llm,
             include_deterministic_draft=True,
             fixture_key=None,
+            include_panel_response=False,
+            panel_mode="STANDARD",
+            include_technical_details=False,
         )
     return InternalChatApiStubRequest(
         question_text=str(request.get("question_text") or request.get("Question") or ""),
@@ -307,6 +320,11 @@ def _api_request_from_any(
             request.get("include_deterministic_draft", request.get("IncludeDeterministicDraft", True))
         ),
         fixture_key=_optional_fixture_key(request.get("fixture_key") or request.get("FixtureKey")),
+        include_panel_response=bool(request.get("include_panel_response") or request.get("IncludePanelResponse")),
+        panel_mode=str(request.get("panel_mode") or request.get("PanelMode") or "STANDARD"),
+        include_technical_details=bool(
+            request.get("include_technical_details") or request.get("IncludeTechnicalDetails")
+        ),
     )
 
 
@@ -718,6 +736,24 @@ def _fixture_required_caveats(fixture_metadata: dict[str, Any]) -> list[str]:
         FIXTURE_EVIDENCE_WARNING,
         "No live runtime object evidence was fetched; fixture evidence must not be treated as production, customer, tenant, or live object evidence.",
     ]
+
+
+def _with_panel_response_if_requested(
+    response: InternalChatApiStubResponse,
+    request: InternalChatApiStubRequest,
+    role: InternalChatRole,
+) -> InternalChatApiStubResponse:
+    if not request.include_panel_response:
+        return response
+    from app.services.internal_chat_panel_response_service import InternalChatPanelResponseService
+
+    panel_response = InternalChatPanelResponseService().build_panel_response(
+        response,
+        role=role.value,
+        panel_mode=request.panel_mode,
+        include_technical_details=request.include_technical_details,
+    )
+    return replace(response, panel_response=panel_response.model_dump())
 
 
 def _enum_value(value: Any) -> str:
