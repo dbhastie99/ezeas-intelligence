@@ -1,0 +1,40 @@
+{
+  "Status": "ANSWER_SUPPORT_BUILT",
+  "Question": "Where is the manual admitted draft processing endpoint implemented?",
+  "Role": "DEVELOPER",
+  "DisclosureMode": "TECHNICAL_DISCLOSURE",
+  "SourceScopesRequested": [
+    "PLATFORM_KNOWLEDGE",
+    "IMPLEMENTATION_STATE",
+    "CODE_EVIDENCE",
+    "TEST_EVIDENCE",
+    "PROMPT_ARTEFACTS",
+    "EVALUATION_BASELINES"
+  ],
+  "SourceScopesUsed": [
+    "PLATFORM_KNOWLEDGE",
+    "IMPLEMENTATION_STATE",
+    "CODE_EVIDENCE",
+    "TEST_EVIDENCE",
+    "PROMPT_ARTEFACTS",
+    "EVALUATION_BASELINES"
+  ],
+  "UnsupportedScopes": [],
+  "AnswerPermitted": true,
+  "FinalAnswerGenerationPermitted": false,
+  "LiveLlmUsed": false,
+  "FinalAnswerText": null,
+  "SuggestedDeterministicSummary": "Deterministic envelope status ANSWER_SUPPORT_BUILT; answer support SUPPORTED; final answer generation disabled.",
+  "NoActionAttestation": {
+    "LiveLlmCalled": false,
+    "DatabaseAccessed": false,
+    "ExternalRepoMutated": false,
+    "PayrollCalculationPerformed": false,
+    "WriteActionPerformed": false,
+    "RuntimeObjectEvidenceFetched": false,
+    "FinalAnswerGenerationPerformed": false,
+    "UiExposed": false,
+    "ChatPersistencePerformed": false
+  },
+  "NoActionAttestationText": "No live LLM called; no DB accessed; no external repo mutated; no payroll calculation performed; no write action performed; no runtime object evidence fetched; no final answer generation performed; no UI exposed; no chat persistence performed."
+}
