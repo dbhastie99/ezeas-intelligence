@@ -1,0 +1,108 @@
+{
+  "Status": "STUB_RESPONSE_BUILT",
+  "RequestEcho": {
+    "Question": "Can the platform manually process an admitted draft action?",
+    "Role": "PAYROLL_ADMINISTRATOR",
+    "SourceScopes": [
+      "IMPLEMENTATION_STATE",
+      "CODE_EVIDENCE",
+      "TEST_EVIDENCE"
+    ],
+    "DomainTags": [
+      "manual",
+      "admitted",
+      "draft",
+      "processing"
+    ],
+    "SurfaceContextKeys": [],
+    "CandidateEvidenceCount": 3,
+    "ClaimToValidateSupplied": false,
+    "AllowFinalAnswerGenerationRequested": false,
+    "AllowLiveLlmRequested": false,
+    "IncludeDeterministicDraft": true
+  },
+  "OrchestratorEnvelope": {
+    "Status": "ANSWER_SUPPORT_BUILT",
+    "Role": "PAYROLL_ADMINISTRATOR",
+    "DisclosureMode": "IMPLEMENTATION_CONFIRMATION",
+    "FinalAnswerGenerationPermitted": false,
+    "LiveLlmUsed": false,
+    "FinalAnswerText": null
+  },
+  "EvidenceSupportPacket": {
+    "support_status": "SUPPORTED",
+    "disclosure_mode": "IMPLEMENTATION_CONFIRMATION",
+    "answer_permitted": true,
+    "final_answer_generation_permitted": false
+  },
+  "DeterministicDraft": {
+    "DraftStatus": "DRAFT_READY",
+    "IsFinalAnswer": false,
+    "DeterministicDraftAvailable": true,
+    "FinalAnswerGenerationPermitted": false,
+    "LiveLlmUsed": false,
+    "DraftText": "Answer: Current implementation evidence supports this capability."
+  },
+  "FinalAnswerText": null,
+  "IsFinalAnswer": false,
+  "LiveLlmUsed": false,
+  "FinalAnswerGenerationPermitted": false,
+  "NoActionAttestation": {
+    "LiveLlmCalled": false,
+    "DatabaseAccessed": false,
+    "ExternalApiCalled": false,
+    "CodeExecuted": false,
+    "ExternalRepoMutated": false,
+    "PayrollCalculationPerformed": false,
+    "WriteActionPerformed": false,
+    "RuntimeObjectEvidenceFetched": false,
+    "FinalAnswerGenerated": false,
+    "FinalAnswerGenerationPerformed": false,
+    "ChatPersistencePerformed": false,
+    "UiExposed": false
+  },
+  "NoActionAttestationText": "No live LLM called; no DB accessed; no external API called; no code executed; no external repo mutated; no payroll calculation performed; no write action performed; no runtime object evidence fetched; no final answer generated; no chat persistence performed; no UI exposed.",
+  "RequiredCaveats": [
+    "Code evidence can support implementation confidence, but code evidence alone cannot prove production availability, runtime enablement, customer access, deployed schema state, permissions, live object state, payroll correctness, payment, or finalisation.",
+    "Final answer generation remains disabled; deterministic draft text is non-final internal review text only."
+  ],
+  "BlockedClaims": [],
+  "UnsupportedScopes": [],
+  "DisclosureMetadata": {
+    "RawCodeSnippetsIncluded": false,
+    "CodeEvidenceMayProveRuntimeAvailability": false,
+    "CustomerAvailabilityConfirmed": false,
+    "ProductionAvailabilityConfirmed": false,
+    "RuntimeObjectEvidenceFetched": false,
+    "FinalUserFacingAnswerGenerated": false
+  },
+  "Boundaries": [
+    "INTERNAL_STUB_ONLY",
+    "LIVE_LLM_DISABLED",
+    "FINAL_ANSWER_GENERATION_DISABLED",
+    "DATABASE_ACCESS_DISABLED",
+    "EXTERNAL_API_CALLS_DISABLED",
+    "CODE_EXECUTION_DISABLED",
+    "RUNTIME_OBJECT_FETCH_DISABLED",
+    "WRITE_ACTIONS_DISABLED",
+    "PAYROLL_CALCULATION_DISABLED",
+    "CHAT_PERSISTENCE_DISABLED",
+    "WORKFORCE_PLATFORM_INTEGRATION_DISABLED",
+    "RAW_CODE_SNIPPETS_DISABLED"
+  ],
+  "Diagnostics": {
+    "ApiStubVersion": "MINERVA_INTERNAL_CHAT_API_STUB_V0_1",
+    "LiveLlmUsed": false,
+    "FinalAnswerGenerationPerformed": false,
+    "DatabaseAccessed": false,
+    "ExternalApiCalled": false,
+    "RuntimeObjectEvidenceFetched": false,
+    "WriteActionPerformed": false
+  },
+  "AuditSummary": {
+    "ApiStubVersion": "MINERVA_INTERNAL_CHAT_API_STUB_V0_1",
+    "InternalOnly": true,
+    "RouteCustomerFacing": false,
+    "NoExternalCallsOrWritesPerformed": true
+  }
+}
