@@ -1,0 +1,37 @@
+{
+  "slice": "Minerva Code Evidence Answer Support v0.1",
+  "question": "Where is the manual admitted draft processing endpoint implemented?",
+  "role": "DEVELOPER",
+  "expected_support_status": "SUPPORTED",
+  "expected_disclosure_mode": "TECHNICAL_DISCLOSURE",
+  "final_answer_generation_permitted": false,
+  "runtime_availability_caveat_required": true,
+  "evidence_categories": [
+    "DoctrineEvidence",
+    "ImplementationStateEvidence",
+    "CodeEvidence",
+    "TestEvidence",
+    "PromptEvidence",
+    "KnowledgeEvidence"
+  ],
+  "required_caveats": [
+    "Code evidence cannot prove production availability, customer availability, runtime enablement, deployed schema state, permissions, live object state, payroll result correctness, payment, or finalisation.",
+    "Test evidence is behavioural test-level evidence only and does not prove production deployment."
+  ],
+  "prohibited_claims": [
+    "code evidence proves production readiness",
+    "code evidence proves customer availability",
+    "code evidence proves migration applied",
+    "code evidence proves payroll result correctness",
+    "tests passing means production enabled",
+    "route file means route is deployed"
+  ],
+  "no_action_attestation": [
+    "No code executed",
+    "No DB accessed",
+    "No external repo mutated",
+    "No live LLM called",
+    "No final user-facing answer generated",
+    "No payroll calculation performed"
+  ]
+}
