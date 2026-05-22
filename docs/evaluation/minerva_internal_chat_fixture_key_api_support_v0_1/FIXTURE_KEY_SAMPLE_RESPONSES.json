@@ -1,0 +1,144 @@
+{
+  "FixtureKeyApiSupportVersion": "MINERVA_INTERNAL_CHAT_FIXTURE_KEY_API_SUPPORT_V0_1",
+  "ResponsesAreSamplesOnly": true,
+  "FixtureEvidenceSynthetic": true,
+  "LiveLlmUsed": false,
+  "IsFinalAnswer": false,
+  "FinalAnswerGenerationPermitted": false,
+  "RuntimeObjectEvidenceFetched": false,
+  "Samples": [
+    {
+      "Name": "developer manual admitted draft fixture key",
+      "Request": {
+        "Question": "What evidence supports manual admitted draft action processing?",
+        "Role": "DEVELOPER",
+        "FixtureKey": "ADMITTED_DRAFT_MANUAL_PROCESSING_IMPLEMENTED"
+      },
+      "ExpectedResponse": {
+        "Status": "STUB_RESPONSE_BUILT",
+        "AnswerPermitted": true,
+        "IsFinalAnswer": false,
+        "LiveLlmUsed": false,
+        "FixtureEvidence": {
+          "FixtureKey": "ADMITTED_DRAFT_MANUAL_PROCESSING_IMPLEMENTED",
+          "FixtureEvidenceUsed": true,
+          "FixtureEvidenceSynthetic": true,
+          "FixtureEvidenceStatus": "SUPPORTED",
+          "FixtureEvidenceWarning": "Fixture evidence is synthetic/internal test evidence and does not prove runtime/customer availability."
+        },
+        "ExpectedDraftStatus": "DRAFT_READY",
+        "RoleSafeDisclosure": "Developer may see policy-permitted technical evidence references; raw code snippets remain absent."
+      }
+    },
+    {
+      "Name": "payroll administrator asphalt safe classRates fixture key",
+      "Request": {
+        "Question": "Is the Asphalt safe classRates seeding aligned now?",
+        "Role": "PAYROLL_ADMINISTRATOR",
+        "FixtureKey": "ASPHALT_SAFE_CLASSRATES_SEEDED_WITH_GATES"
+      },
+      "ExpectedResponse": {
+        "Status": "STUB_RESPONSE_BUILT",
+        "AnswerPermitted": true,
+        "IsFinalAnswer": false,
+        "LiveLlmUsed": false,
+        "FixtureEvidence": {
+          "FixtureKey": "ASPHALT_SAFE_CLASSRATES_SEEDED_WITH_GATES",
+          "FixtureEvidenceUsed": true,
+          "FixtureEvidenceSynthetic": true,
+          "FixtureEvidenceStatus": "SUPPORTED"
+        },
+        "ExpectedDraftStatus": "DRAFT_READY",
+        "ExpectedCaveat": "Fixture evidence is synthetic/internal test evidence and does not prove runtime/customer availability.",
+        "RoleSafeDisclosure": "Implementation confirmation; raw code snippets are not included."
+      }
+    },
+    {
+      "Name": "payroll user post-finalisation ObjectTime fixture key",
+      "Request": {
+        "Question": "What should I do with this post-finalisation ObjectTime action?",
+        "Role": "PAYROLL_USER",
+        "FixtureKey": "POST_FINALISATION_OBJECTTIME_ACTION_SURFACED"
+      },
+      "ExpectedResponse": {
+        "Status": "STUB_RESPONSE_BUILT",
+        "AnswerPermitted": true,
+        "IsFinalAnswer": false,
+        "LiveLlmUsed": false,
+        "FixtureEvidence": {
+          "FixtureKey": "POST_FINALISATION_OBJECTTIME_ACTION_SURFACED",
+          "FixtureEvidenceUsed": true,
+          "FixtureEvidenceSynthetic": true,
+          "FixtureEvidenceStatus": "SUPPORTED"
+        },
+        "ExpectedDraftStatus": "DRAFT_READY",
+        "RoleSafeDisclosure": "No file, function, route, symbol, or test names are exposed."
+      }
+    },
+    {
+      "Name": "worker code evidence cannot prove runtime fixture key",
+      "Request": {
+        "Question": "What does code evidence confirm, and what does it not confirm?",
+        "Role": "WORKER",
+        "FixtureKey": "CODE_EVIDENCE_CANNOT_PROVE_RUNTIME"
+      },
+      "ExpectedResponse": {
+        "Status": "STUB_RESPONSE_BUILT",
+        "AnswerPermitted": true,
+        "IsFinalAnswer": false,
+        "LiveLlmUsed": false,
+        "FixtureEvidence": {
+          "FixtureKey": "CODE_EVIDENCE_CANNOT_PROVE_RUNTIME",
+          "FixtureEvidenceUsed": true,
+          "FixtureEvidenceSynthetic": true,
+          "FixtureEvidenceStatus": "NEEDS_RUNTIME_EVIDENCE",
+          "RuntimeObjectEvidenceFetched": false,
+          "RuntimeObjectEvidenceSupplied": false
+        },
+        "ExpectedDraftStatus": "DRAFT_ROLE_RESTRICTED",
+        "RoleSafeDisclosure": "Worker mode does not expose internal code/test/prompt evidence."
+      }
+    },
+    {
+      "Name": "invalid fixture key",
+      "Request": {
+        "Question": "Can the platform manually process an admitted draft action?",
+        "Role": "PAYROLL_ADMINISTRATOR",
+        "FixtureKey": "NOT_A_FIXTURE"
+      },
+      "ExpectedResponse": {
+        "Status": "INVALID_FIXTURE_KEY",
+        "AnswerPermitted": false,
+        "OrchestratorEnvelopeStatus": "ANSWER_NOT_PERMITTED",
+        "DeterministicDraft": null,
+        "IsFinalAnswer": false,
+        "LiveLlmUsed": false,
+        "FinalAnswerText": null,
+        "FixtureEvidence": {
+          "FixtureKey": "NOT_A_FIXTURE",
+          "FixtureEvidenceUsed": false,
+          "FixtureEvidenceSynthetic": true,
+          "FixtureEvidenceStatus": "INVALID_FIXTURE_KEY",
+          "FixtureEvidenceSources": [],
+          "FixtureEvidenceWarning": "Fixture evidence is synthetic/internal test evidence and does not prove runtime/customer availability."
+        },
+        "AvailableFixtureKeysIncluded": true,
+        "NoActionAttestationIncluded": true
+      }
+    }
+  ],
+  "NoActionAttestation": {
+    "LiveLlmCalled": false,
+    "DatabaseAccessed": false,
+    "ExternalApiCalled": false,
+    "CodeExecuted": false,
+    "ExternalRepoMutated": false,
+    "PayrollCalculationPerformed": false,
+    "WriteActionPerformed": false,
+    "RuntimeObjectEvidenceFetched": false,
+    "FinalAnswerGenerated": false,
+    "FinalAnswerGenerationPerformed": false,
+    "ChatPersistencePerformed": false,
+    "UiExposed": false
+  }
+}

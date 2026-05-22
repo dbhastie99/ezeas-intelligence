@@ -14,6 +14,7 @@ class InternalChatStubRequest(BaseModel):
     AllowFinalAnswerGeneration: bool = False
     AllowLiveLlm: bool = False
     IncludeDeterministicDraft: bool = True
+    FixtureKey: str | None = None
 
 
 class InternalChatStubResponse(BaseModel):
@@ -23,9 +24,11 @@ class InternalChatStubResponse(BaseModel):
     EvidenceSupportPacket: dict[str, Any]
     DeterministicDraft: dict[str, Any] | None
     FinalAnswerText: str | None
+    AnswerPermitted: bool
     IsFinalAnswer: bool
     LiveLlmUsed: bool
     FinalAnswerGenerationPermitted: bool
+    FixtureEvidence: dict[str, Any]
     NoActionAttestation: dict[str, bool]
     NoActionAttestationText: str
     RequiredCaveats: list[str]
