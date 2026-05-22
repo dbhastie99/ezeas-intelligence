@@ -1,0 +1,30 @@
+{
+  "slice": "minerva_code_evidence_role_model_v0_1",
+  "metadata_only": true,
+  "raw_code_snippets_included": false,
+  "targets": [
+    {
+      "repo_name": "ezeas-intelligence",
+      "status": "ACTIVE"
+    },
+    {
+      "repo_name": "workforce-platform",
+      "status": "ACTIVE_IF_CONFIGURED"
+    },
+    {
+      "repo_name": "award-configurator-v1",
+      "status": "ACTIVE_IF_CONFIGURED"
+    },
+    {
+      "repo_name": "ezeas-analytics",
+      "status": "REGISTERED_OPTIONAL"
+    }
+  ],
+  "attestation": {
+    "read_only": true,
+    "database_access_performed": false,
+    "live_llm_calls_performed": false,
+    "code_execution_performed": false,
+    "repo_mutation_performed": false
+  }
+}
