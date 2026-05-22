@@ -1,0 +1,137 @@
+{
+  "version": "WORKFORCE_ASK_MINERVA_PANEL_INTEGRATION_DESIGN_V0_1",
+  "recommendedInitialSurface": {
+    "surface": "PAYRUN_ADMIN_QUEUE",
+    "label": "PayRun Admin Queue",
+    "reason": "Admin Queue is the focused operator workbench with concrete review/action items and is the first safe location for role-safe explanatory help."
+  },
+  "supportedRoles": [
+    "DEVELOPER",
+    "PAYROLL_ADMINISTRATOR",
+    "PAYROLL_MANAGER",
+    "PAYROLL_USER",
+    "CUSTOMER_ADMINISTRATOR"
+  ],
+  "knownButNotSupportedInAdminQueueV0": [
+    "WORKER"
+  ],
+  "roleMappings": {
+    "developerOrPlatformAdmin": "DEVELOPER",
+    "payrollAdministrator": "PAYROLL_ADMINISTRATOR",
+    "payrollManager": "PAYROLL_MANAGER",
+    "payrollUser": "PAYROLL_USER",
+    "customerAdministrator": "CUSTOMER_ADMINISTRATOR",
+    "worker": "WORKER"
+  },
+  "supportedSourceScopesV0": [
+    "PLATFORM_KNOWLEDGE",
+    "IMPLEMENTATION_STATE",
+    "CODE_EVIDENCE",
+    "TEST_EVIDENCE",
+    "PROMPT_ARTEFACTS",
+    "EVALUATION_BASELINES",
+    "RUNTIME_OBJECT_EVIDENCE_SUPPLIED_ONLY_IN_LATER_SLICE"
+  ],
+  "deferredSourceScopes": [
+    "ANALYTICS_EVIDENCE_LIVE_INTERPRETATION",
+    "LIVE_DB_OBJECT_EVIDENCE_FETCH",
+    "LIVE_LLM",
+    "VECTOR_SEARCH_EMBEDDINGS",
+    "CHAT_PERSISTENCE"
+  ],
+  "requestContract": {
+    "endpoint": "POST /api/v1/internal/minerva/chat/stub",
+    "fields": {
+      "Question": "Required operator question text.",
+      "Role": "Required Minerva role after Workforce role mapping.",
+      "SourceScopes": "Required list of allowed source scopes for this panel.",
+      "SurfaceContext": "Required surface metadata for Workforce context; non-sensitive in v0.1.",
+      "DomainTags": "Recommended tags for payroll/surface/topic retrieval.",
+      "FixtureKey": "Optional; internal/demo v0.1 only.",
+      "CandidateEvidence": "Optional; reserved for future Workforce-supplied runtime evidence packets.",
+      "ClaimToValidate": "Optional claim for deterministic support validation.",
+      "IncludeDeterministicDraft": true,
+      "IncludePanelResponse": true,
+      "AllowLiveLlm": false,
+      "AllowFinalAnswerGeneration": false,
+      "PanelMode": "STANDARD",
+      "IncludeTechnicalDetails": "true only for DEVELOPER when technical details are explicitly allowed"
+    }
+  },
+  "responseFieldsForPanel": [
+    "Headline",
+    "Summary",
+    "DraftText",
+    "EvidenceChips",
+    "CaveatBanners",
+    "BoundaryBanners",
+    "RoleRestrictionNotice",
+    "RuntimeEvidenceNotice",
+    "SuggestedNextStep",
+    "TechnicalDetails",
+    "NoActionAttestation"
+  ],
+  "fixtureMode": {
+    "enabledForInternalDemoAndUiWiringOnly": true,
+    "fixtureKeys": [
+      "POST_FINALISATION_OBJECTTIME_ACTION_SURFACED",
+      "POST_FINALISATION_TREATMENT_WORKSPACE_REVIEW_ONLY",
+      "CODE_EVIDENCE_CANNOT_PROVE_RUNTIME",
+      "RUNTIME_OBJECT_EVIDENCE_REQUIRED",
+      "ADMITTED_DRAFT_MANUAL_PROCESSING_IMPLEMENTED"
+    ],
+    "fixtureEvidenceIsSyntheticInternal": true,
+    "fixtureEvidenceIsRuntimeEvidence": false,
+    "fixtureEvidenceProvesProductionState": false
+  },
+  "safetyBoundaries": {
+    "liveLlmEnabled": false,
+    "finalAnswerGenerationEnabled": false,
+    "databaseAccessEnabled": false,
+    "runtimeObjectEvidenceFetchedByMinervaV0": false,
+    "payrollCalculationEnabled": false,
+    "writeActionsEnabled": false,
+    "treatmentDecisioningByMinervaEnabled": false,
+    "paymentFinalisationBankingEnabled": false,
+    "chatPersistenceEnabled": false,
+    "customerProductionExposureEnabled": false
+  },
+  "runtimeEvidenceGap": {
+    "summary": "Object-specific questions require Workforce-supplied runtime evidence in a future slice. Minerva does not fetch runtime object evidence in v0.1.",
+    "futureEvidenceExamples": [
+      "PayRunId",
+      "PayRunContactId",
+      "ProcessPeriodId",
+      "Worker/contact label",
+      "Admin Queue item/action metadata",
+      "Worker Story excerpt",
+      "Pay Process status",
+      "Calculation story chapters",
+      "Allowed evidence scope"
+    ]
+  },
+  "recommendedNextSlices": [
+    "Workforce Ask Minerva Panel Shell v0.1",
+    "Workforce Ask Minerva Surface Context Packet v0.1",
+    "Workforce Runtime Evidence Packet for Admin Queue v0.1",
+    "Minerva Runtime Evidence Answer Support v0.1",
+    "Live LLM / richer answer generation later, only after gates"
+  ],
+  "nonGoals": [
+    "No Workforce Platform code changes",
+    "No UI implementation",
+    "No live LLM calls",
+    "No DB connection",
+    "No database migrations",
+    "No chat persistence",
+    "No live runtime evidence fetch",
+    "No operational payroll evidence ingestion",
+    "No vector search or embeddings",
+    "No external API calls",
+    "No code execution",
+    "No mutation of external repos",
+    "No payroll calculation",
+    "No write actions",
+    "No customer production exposure"
+  ]
+}
