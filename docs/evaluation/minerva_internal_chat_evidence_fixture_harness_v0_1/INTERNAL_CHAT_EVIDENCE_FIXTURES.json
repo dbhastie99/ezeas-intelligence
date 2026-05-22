@@ -1,0 +1,162 @@
+{
+  "FixtureHarnessVersion": "MINERVA_INTERNAL_CHAT_EVIDENCE_FIXTURE_HARNESS_V0_1",
+  "FixtureOnly": true,
+  "LiveLlmCalled": false,
+  "DatabaseAccessed": false,
+  "ExternalApiCalled": false,
+  "RuntimeEvidenceFetched": false,
+  "WriteActionPerformed": false,
+  "FinalAnswerGenerated": false,
+  "ApiStubRequestExtendedWithFixtureKey": false,
+  "IntegrationMode": "Tests call InternalChatEvidenceFixtureHarnessService directly and pass CandidateEvidence into InternalChatApiStubService.",
+  "Fixtures": [
+    {
+      "Key": "ADMITTED_DRAFT_MANUAL_PROCESSING_IMPLEMENTED",
+      "ExpectedSupportStatus": "SUPPORTED",
+      "DomainTags": ["manual", "admitted", "draft", "processing", "payrun", "action"],
+      "ExpectedSourceScopes": ["PLATFORM_KNOWLEDGE", "IMPLEMENTATION_STATE", "CODE_EVIDENCE", "TEST_EVIDENCE", "PROMPT_ARTEFACTS", "EVALUATION_BASELINES"],
+      "SampleQuestions": [
+        "Can the platform manually process an admitted draft action?",
+        "What evidence supports manual admitted draft action processing?"
+      ],
+      "RequiredCaveats": [
+        "Requires active PayRunActionDecision, authorised admission, and existing PayRunContact.",
+        "Delegates through AdmittedDraftPayRunProcessingBridgeService.",
+        "PayRunProcessingService.process(..., target_contact_id=...) remains the processing entrypoint.",
+        "Not automation, not process-all, not finalisation/payment/banking."
+      ],
+      "CandidateEvidenceHighlights": [
+        "POST /api/v1/pay-runs/{id}/pay-process/admitted-draft-actions/process",
+        "PayRun Detail/Admin Queue action wiring",
+        "manual admitted draft processing guardrail tests"
+      ]
+    },
+    {
+      "Key": "POST_FINALISATION_OBJECTTIME_ACTION_SURFACED",
+      "ExpectedSupportStatus": "SUPPORTED",
+      "DomainTags": ["post", "finalisation", "objecttime", "source", "truth", "action", "review"],
+      "ExpectedSourceScopes": ["PLATFORM_KNOWLEDGE", "IMPLEMENTATION_STATE", "CODE_EVIDENCE", "TEST_EVIDENCE", "PROMPT_ARTEFACTS", "EVALUATION_BASELINES"],
+      "SampleQuestions": [
+        "What evidence supports the post-finalisation ObjectTime action?",
+        "What should I do with this post-finalisation ObjectTime action?"
+      ],
+      "RequiredCaveats": [
+        "ObjectTime/source truth changed after finalisation is surfaced in Admin Queue.",
+        "Finalised PayRun remains protected.",
+        "Action is worker-period scoped.",
+        "Treatment review is required.",
+        "No finalised mutation occurs."
+      ]
+    },
+    {
+      "Key": "POST_FINALISATION_TREATMENT_WORKSPACE_REVIEW_ONLY",
+      "ExpectedSupportStatus": "PARTIALLY_SUPPORTED",
+      "DomainTags": ["post", "finalisation", "treatment", "workspace", "review", "objecttime"],
+      "ExpectedSourceScopes": ["PLATFORM_KNOWLEDGE", "IMPLEMENTATION_STATE", "CODE_EVIDENCE", "TEST_EVIDENCE", "PROMPT_ARTEFACTS", "EVALUATION_BASELINES"],
+      "SampleQuestions": [
+        "What is available in the treatment workspace after finalisation?",
+        "Can ObjectTime be reviewed through the existing source-truth path?"
+      ],
+      "RequiredCaveats": [
+        "Review treatment is in place.",
+        "ObjectTime can be reviewed/edited through the existing source-truth path where allowed.",
+        "Worker Story and finalisation details are review surfaces.",
+        "Treatment execution remains not implemented.",
+        "Supplementary/retro/payment/finalisation execution is not performed."
+      ]
+    },
+    {
+      "Key": "ASPHALT_SAFE_CLASSRATES_SEEDED_WITH_GATES",
+      "ExpectedSupportStatus": "SUPPORTED",
+      "DomainTags": ["asphalt", "safe", "classrates", "ratesource", "DAY1", "OT1", "OT2", "SAT1", "SUN1", "PHOL1"],
+      "ExpectedSourceScopes": ["PLATFORM_KNOWLEDGE", "IMPLEMENTATION_STATE", "CODE_EVIDENCE", "TEST_EVIDENCE", "PROMPT_ARTEFACTS", "EVALUATION_BASELINES"],
+      "SampleQuestions": [
+        "Is the Asphalt safe classRates seeding aligned now?",
+        "Which safe Asphalt RateSource columns are materialised?"
+      ],
+      "RequiredCaveats": [
+        "DAY1, OT1, OT2, SAT1, SUN1, and PHOL1 are aligned from parsed universe to materialised RateSource evidence.",
+        "Step 06 wrote 30 safe classRates rows.",
+        "Diagnostic status is SAFE_CLASSRATES_SEEDED_WITH_REMAINING_GATES.",
+        "Remaining confirmation-gated RateSource columns remain blocked."
+      ]
+    },
+    {
+      "Key": "ASPHALT_CONDITIONAL_SHIFTWORK_REMAINS_GATED",
+      "ExpectedSupportStatus": "PARTIALLY_SUPPORTED",
+      "DomainTags": ["asphalt", "conditional", "shiftwork", "AFT1", "AFT2", "NGT1", "NGT2", "gated"],
+      "ExpectedSourceScopes": ["PLATFORM_KNOWLEDGE", "IMPLEMENTATION_STATE", "CODE_EVIDENCE", "TEST_EVIDENCE", "PROMPT_ARTEFACTS", "EVALUATION_BASELINES"],
+      "SampleQuestions": [
+        "What is still deferred for conditional shiftwork?",
+        "Are AFT1, AFT2, NGT1, and NGT2 ready for dynamic shift treatment?"
+      ],
+      "RequiredCaveats": [
+        "AFT1, AFT2, NGT1, and NGT2 exist as placeholders.",
+        "RateSource.IsShiftWorker exists and propagation has been hardened.",
+        "ObjectTime source ShiftType is exposed in canonical input.",
+        "Dynamic shift treatment engine remains future/deferred.",
+        "Non-rotating night shift, unrelieved shiftworker overtime, and break/change-to-shift continuation remain gated."
+      ]
+    },
+    {
+      "Key": "CODE_EVIDENCE_CANNOT_PROVE_RUNTIME",
+      "ExpectedSupportStatus": "NEEDS_RUNTIME_EVIDENCE",
+      "DomainTags": ["code", "evidence", "runtime", "production", "customer", "availability", "caveat"],
+      "ExpectedSourceScopes": ["PLATFORM_KNOWLEDGE", "IMPLEMENTATION_STATE", "CODE_EVIDENCE", "TEST_EVIDENCE", "PROMPT_ARTEFACTS", "EVALUATION_BASELINES"],
+      "SampleQuestions": [
+        "Why can code evidence not prove production/customer runtime availability?",
+        "What does code evidence confirm, and what does it not confirm?"
+      ],
+      "RequiredCaveats": [
+        "Code evidence confirms implementation support.",
+        "Code cannot prove production deployment.",
+        "Code cannot prove customer availability.",
+        "Code cannot prove migration applied, runtime object state, or payroll correctness."
+      ]
+    },
+    {
+      "Key": "ANALYTICS_EVIDENCE_DEFERRED",
+      "ExpectedSupportStatus": "DEFERRED_INACTIVE",
+      "DomainTags": ["analytics", "trend", "chart", "deferred", "inactive", "future"],
+      "ExpectedSourceScopes": ["ANALYTICS_EVIDENCE"],
+      "SampleQuestions": [
+        "Can Minerva interpret this trend chart?",
+        "Is analytics evidence active in v0.1?"
+      ],
+      "RequiredCaveats": [
+        "Analytics is registered as a future/optional evidence target.",
+        "Full analytics evidence intake is deferred/inactive in v0.1."
+      ]
+    },
+    {
+      "Key": "RUNTIME_OBJECT_EVIDENCE_REQUIRED",
+      "ExpectedSupportStatus": "NEEDS_RUNTIME_EVIDENCE",
+      "DomainTags": ["runtime", "object", "evidence", "tenant", "customer", "availability", "needs_evidence"],
+      "ExpectedSourceScopes": ["RUNTIME_OBJECT_EVIDENCE"],
+      "SampleQuestions": [
+        "Is this feature enabled for my tenant?",
+        "Why did this worker get overtime?",
+        "Was this object available in production?"
+      ],
+      "RequiredCaveats": [
+        "Object-specific questions require runtime object evidence.",
+        "Without runtime object evidence, Minerva must say needs evidence.",
+        "Fixture evidence is synthetic and does not prove tenant, customer, live, or production state."
+      ]
+    }
+  ],
+  "NoActionAttestation": {
+    "LiveLlmCalled": false,
+    "DatabaseAccessed": false,
+    "ExternalApiCalled": false,
+    "CodeExecuted": false,
+    "ExternalRepoMutated": false,
+    "PayrollCalculationPerformed": false,
+    "WriteActionPerformed": false,
+    "RuntimeObjectEvidenceFetched": false,
+    "FinalAnswerGenerated": false,
+    "FinalAnswerGenerationPerformed": false,
+    "ChatPersistencePerformed": false,
+    "UiExposed": false
+  }
+}

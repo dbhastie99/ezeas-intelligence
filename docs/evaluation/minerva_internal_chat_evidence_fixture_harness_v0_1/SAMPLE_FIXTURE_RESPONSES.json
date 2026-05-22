@@ -1,0 +1,83 @@
+{
+  "FixtureHarnessVersion": "MINERVA_INTERNAL_CHAT_EVIDENCE_FIXTURE_HARNESS_V0_1",
+  "ResponsesAreSamplesOnly": true,
+  "IsFinalAnswer": false,
+  "LiveLlmUsed": false,
+  "FinalAnswerGenerationPermitted": false,
+  "Samples": [
+    {
+      "Name": "developer manual admitted draft processing",
+      "FixtureKey": "ADMITTED_DRAFT_MANUAL_PROCESSING_IMPLEMENTED",
+      "Question": "What evidence supports manual admitted draft action processing?",
+      "Role": "DEVELOPER",
+      "ExpectedStatus": "STUB_RESPONSE_BUILT",
+      "ExpectedDraftStatus": "DRAFT_READY",
+      "ExpectedDraftTextFragment": "Implementation evidence supports this, with role-visible technical references where supplied.",
+      "RoleSafeBehaviour": "Developer may see technical evidence references; raw code snippets remain absent."
+    },
+    {
+      "Name": "payroll administrator manual admitted draft processing",
+      "FixtureKey": "ADMITTED_DRAFT_MANUAL_PROCESSING_IMPLEMENTED",
+      "Question": "Can the platform manually process an admitted draft action?",
+      "Role": "PAYROLL_ADMINISTRATOR",
+      "ExpectedStatus": "STUB_RESPONSE_BUILT",
+      "ExpectedDraftStatus": "DRAFT_READY",
+      "ExpectedDraftTextFragment": "Current implementation evidence supports this capability.",
+      "RequiredCaveat": "This does not prove production/customer availability, payroll correctness, payment, or finalisation."
+    },
+    {
+      "Name": "payroll user post-finalisation ObjectTime action",
+      "FixtureKey": "POST_FINALISATION_OBJECTTIME_ACTION_SURFACED",
+      "Question": "What should I do with this post-finalisation ObjectTime action?",
+      "Role": "PAYROLL_USER",
+      "ExpectedStatus": "STUB_RESPONSE_BUILT",
+      "ExpectedDraftStatus": "DRAFT_READY",
+      "ExpectedDraftTextFragment": "The platform can support this workflow where the action is available and backend guardrails mark it eligible.",
+      "RoleSafeBehaviour": "No technical file, function, route, symbol, or test names are exposed."
+    },
+    {
+      "Name": "customer administrator tenant availability",
+      "FixtureKey": "CODE_EVIDENCE_CANNOT_PROVE_RUNTIME",
+      "Question": "Is this implementation enabled for my tenant in production?",
+      "Role": "CUSTOMER_ADMINISTRATOR",
+      "ExpectedStatus": "STUB_RESPONSE_BUILT",
+      "ExpectedDraftStatus": "DRAFT_RUNTIME_EVIDENCE_REQUIRED",
+      "ExpectedDraftTextFragment": "tenant or customer availability cannot be confirmed from the current evidence.",
+      "RequiredCaveat": "Supply authorised runtime object, tenant, permission, deployment, or configuration evidence before answering."
+    },
+    {
+      "Name": "worker asks for code",
+      "FixtureKey": "ADMITTED_DRAFT_MANUAL_PROCESSING_IMPLEMENTED",
+      "Question": "What evidence supports manual admitted draft action processing?",
+      "Role": "WORKER",
+      "ExpectedStatus": "STUB_RESPONSE_BUILT",
+      "ExpectedDraftStatus": "DRAFT_ROLE_RESTRICTED",
+      "ExpectedDraftTextFragment": "This information is not available in the current role-safe mode.",
+      "RoleSafeBehaviour": "Worker-facing mode does not expose internal code evidence."
+    },
+    {
+      "Name": "analytics user trend chart",
+      "FixtureKey": "ANALYTICS_EVIDENCE_DEFERRED",
+      "Question": "Explain this payroll trend chart.",
+      "Role": "ANALYTICS_USER",
+      "ExpectedOrchestratorStatus": "UNSUPPORTED_SCOPE",
+      "ExpectedDraftStatus": "DRAFT_UNSUPPORTED_SCOPE",
+      "ExpectedDraftTextFragment": "analytics interpretation is not active by default unless safe analytics metadata is supplied.",
+      "RequiredCaveat": "Analytics evidence is recognised as a registered future scope and is inactive by default in v0.1 unless safe synthetic metadata is supplied."
+    }
+  ],
+  "NoActionAttestation": {
+    "LiveLlmCalled": false,
+    "DatabaseAccessed": false,
+    "ExternalApiCalled": false,
+    "CodeExecuted": false,
+    "ExternalRepoMutated": false,
+    "PayrollCalculationPerformed": false,
+    "WriteActionPerformed": false,
+    "RuntimeObjectEvidenceFetched": false,
+    "FinalAnswerGenerated": false,
+    "FinalAnswerGenerationPerformed": false,
+    "ChatPersistencePerformed": false,
+    "UiExposed": false
+  }
+}
