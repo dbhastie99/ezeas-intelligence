@@ -13,3 +13,4 @@ Durable Minerva knowledge sources preserve platform doctrine, implementation con
 ## Minerva
 
 - [Minerva Contextual Explanation Contract v0.1](minerva_contextual_explanation_contract_v0_1.md)
+- [Minerva Demo LLM Bridge v0.1](minerva_demo_llm_bridge_v0_1.md)

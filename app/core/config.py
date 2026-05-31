@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     )
     env: str = "local"
     llm_provider: str = "stub"
+    llm_base_url: str | None = None
+    llm_api_key: str | None = None
+    llm_model: str | None = None
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174"
     chunk_size: int = 1200
     chunk_overlap: int = 150
 
