@@ -8,3 +8,7 @@ venv/
 *.sqlite
 incoming/*
 !incoming/.gitkeep
+
+# Local/generated run artifacts
+artifacts/
+
