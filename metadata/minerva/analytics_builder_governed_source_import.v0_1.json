@@ -1,0 +1,194 @@
+{
+  "import_id": "analytics_builder_governed_source_import_v0_1",
+  "import_version": "v0_1",
+  "import_status": "governed_static_source_import_executed",
+  "domain_key": "analytics_builder_guide",
+  "source_repo": "ezeas-analytics",
+  "source_repo_path_checked": "C:/Projects/ezeas-analytics",
+  "source_tag_or_commit_checked": {
+    "expected_tag": "analytics-builder-static-omg-v0.2-20260624",
+    "expected_tag_commit": "ec6728fda1fbf107b2be0253066c55ac2a242675",
+    "current_head_commit_inspected": "177fa0533e9758d349f6ef009f5ffcfa98cb91c9",
+    "current_head_exact_tag": null,
+    "lineage_note": "The expected v0.2 tag exists, but local inspected HEAD is later than the tag and contains the mature cockpit/access/refresh contract stream. This import records both the v0.2 tag anchor and the exact current source commit inspected."
+  },
+  "source_status_at_import": {
+    "git_status_short": "clean",
+    "modified_source_files_detected": false,
+    "source_repo_modified_by_this_slice": false
+  },
+  "m1_source_manifest_ref": "metadata/minerva/analytics_builder_source_manifest.v0_1.json",
+  "m2_retrieval_domain_ref": "metadata/minerva/analytics_builder_retrieval_domain.v0_1.json",
+  "m3_knowledge_pack_ref": "metadata/minerva/analytics_builder_knowledge_pack.v0_1.json",
+  "m4_source_path_reconciliation_ref": "metadata/minerva/analytics_builder_source_path_reconciliation.v0_1.json",
+  "m5_governed_import_manifest_ref": "metadata/minerva/analytics_builder_governed_import_manifest.v0_1.json",
+  "m6_answer_baseline_stubs_ref": "metadata/minerva/analytics_builder_answer_baseline_stubs.v0_1.json",
+  "m7_safety_harness_ref": "metadata/minerva/analytics_builder_safety_regression_harness.v0_1.json",
+  "m8_demo_readiness_ref": "metadata/minerva/analytics_builder_demo_readiness_pack.v0_1.json",
+  "imported_artifact_groups": [
+    {
+      "artifact_group_id": "dataset_catalogue",
+      "availability_status": "compact_extract_created",
+      "source_paths": [
+        "metadata/analytics_builder/dataset_catalogue.v0_1.json",
+        "metadata/analytics_builder/dataset_cards/*.json",
+        "docs/analytics_builder_guide/dataset_cards/*.md"
+      ],
+      "extract_ref": "docs/knowledge/minerva/analytics_builder/imported_corpus/dataset_catalogue_extract.md"
+    },
+    {
+      "artifact_group_id": "visual_recipe_library",
+      "availability_status": "compact_extract_created",
+      "source_paths": [
+        "metadata/analytics_builder/visual_recipe_library.v0_1.json",
+        "metadata/analytics_builder/visual_recipes/*.json",
+        "docs/analytics_builder_guide/visual_recipes/*.md"
+      ],
+      "extract_ref": "docs/knowledge/minerva/analytics_builder/imported_corpus/visual_recipe_extract.md"
+    },
+    {
+      "artifact_group_id": "validation_and_certification",
+      "availability_status": "compact_extract_created",
+      "source_paths": [
+        "metadata/analytics_builder/validation_manifest.v0_1.json",
+        "metadata/analytics_builder/certification_evidence_packets.v0_1.json",
+        "metadata/analytics_builder/certification_readiness_report.v0_1.json",
+        "metadata/analytics_builder/certification_rules.v0_1.json",
+        "metadata/analytics_builder/prohibited_claims.v0_1.json"
+      ],
+      "extract_ref": "docs/knowledge/minerva/analytics_builder/imported_corpus/validation_and_certification_extract.md"
+    },
+    {
+      "artifact_group_id": "blocked_gaps",
+      "availability_status": "compact_extract_created",
+      "source_paths": [
+        "metadata/analytics_builder/blocked_gap_roadmap.v0_1.json",
+        "metadata/analytics_builder/blocked_gap_action_pack.v0_1.json"
+      ],
+      "extract_ref": "docs/knowledge/minerva/analytics_builder/imported_corpus/blocked_gap_extract.md"
+    },
+    {
+      "artifact_group_id": "cockpit_contracts",
+      "availability_status": "compact_extract_created",
+      "source_paths": [
+        "metadata/analytics_builder/cockpit_functional_contract.v0_1.json",
+        "metadata/analytics_builder/cockpit_data_contract.v0_1.json",
+        "metadata/analytics_builder/cockpit_export_contract.v0_1.json",
+        "metadata/analytics_builder/cockpit_module_connector_contract.v0_1.json",
+        "metadata/analytics_builder/cockpit_runtime_entrypoint_contract.v0_1.json",
+        "metadata/analytics_builder/access_control_doctrine.v0_1.json",
+        "metadata/analytics_builder/refresh_model_doctrine.v0_1.json",
+        "metadata/analytics_builder/standalone_cockpit_architecture_discovery.v0_1.json"
+      ],
+      "extract_ref": "docs/knowledge/minerva/analytics_builder/imported_corpus/cockpit_contract_extract.md"
+    },
+    {
+      "artifact_group_id": "minerva_safety",
+      "availability_status": "compact_extract_created",
+      "source_paths": [
+        "metadata/analytics_builder/minerva_consumption_contract.v0_1.json",
+        "metadata/analytics_builder/minerva_explanation_contract.v0_1.json",
+        "metadata/analytics_builder/prohibited_claims.v0_1.json",
+        "metadata/minerva/analytics_builder_answer_safety_contract.v0_1.json",
+        "metadata/minerva/analytics_builder_safety_regression_harness.v0_1.json"
+      ],
+      "extract_ref": "docs/knowledge/minerva/analytics_builder/imported_corpus/minerva_safety_extract.md"
+    }
+  ],
+  "imported_source_references": [
+    "metadata/analytics_builder/dataset_catalogue.v0_1.json",
+    "metadata/analytics_builder/dataset_cards/candidate_gap_datasets_v0_1.json",
+    "metadata/analytics_builder/dataset_cards/objecttime_enriched_payroll_outcome_line_v0_2.json",
+    "metadata/analytics_builder/dataset_cards/payroll_context_dimensions_v0_1.json",
+    "metadata/analytics_builder/dataset_cards/payroll_ledger_calcinterpreterline_bridge_v0_2.json",
+    "metadata/analytics_builder/dataset_cards/payroll_outcome_line_v0_1.json",
+    "metadata/analytics_builder/dataset_cards/worker_worksite_context_dimensions_v0_1.json",
+    "metadata/analytics_builder/visual_recipe_library.v0_1.json",
+    "metadata/analytics_builder/visual_recipes/blocked_visual_recipes_v0_1.json",
+    "metadata/analytics_builder/visual_recipes/award_outcome_breakdown.json",
+    "metadata/analytics_builder/visual_recipes/objecttime_source_context_coverage.json",
+    "metadata/analytics_builder/visual_recipes/payroll_cost_by_rate_type.json",
+    "metadata/analytics_builder/visual_recipes/payroll_cost_by_worksite.json",
+    "metadata/analytics_builder/visual_recipes/payroll_ledger_to_calculation_detail_reconciliation.json",
+    "metadata/analytics_builder/visual_recipes/payroll_outcome_line_drillthrough.json",
+    "metadata/analytics_builder/visual_recipes/process_period_payroll_review_summary.json",
+    "metadata/analytics_builder/visual_recipes/rate_type_mix.json",
+    "metadata/analytics_builder/visual_recipes/worker_pay_story.json",
+    "metadata/analytics_builder/validation_manifest.v0_1.json",
+    "metadata/analytics_builder/certification_evidence_packets.v0_1.json",
+    "metadata/analytics_builder/certification_readiness_report.v0_1.json",
+    "metadata/analytics_builder/blocked_gap_roadmap.v0_1.json",
+    "metadata/analytics_builder/blocked_gap_action_pack.v0_1.json",
+    "metadata/analytics_builder/cockpit_functional_contract.v0_1.json",
+    "metadata/analytics_builder/cockpit_data_contract.v0_1.json",
+    "metadata/analytics_builder/cockpit_export_contract.v0_1.json",
+    "metadata/analytics_builder/cockpit_module_connector_contract.v0_1.json",
+    "metadata/analytics_builder/cockpit_runtime_entrypoint_contract.v0_1.json",
+    "metadata/analytics_builder/access_control_doctrine.v0_1.json",
+    "metadata/analytics_builder/refresh_model_doctrine.v0_1.json",
+    "metadata/analytics_builder/standalone_cockpit_architecture_discovery.v0_1.json"
+  ],
+  "compact_extracts_created": [
+    "docs/knowledge/minerva/analytics_builder/imported_corpus/README.md",
+    "docs/knowledge/minerva/analytics_builder/imported_corpus/source_lineage.md",
+    "docs/knowledge/minerva/analytics_builder/imported_corpus/dataset_catalogue_extract.md",
+    "docs/knowledge/minerva/analytics_builder/imported_corpus/visual_recipe_extract.md",
+    "docs/knowledge/minerva/analytics_builder/imported_corpus/validation_and_certification_extract.md",
+    "docs/knowledge/minerva/analytics_builder/imported_corpus/blocked_gap_extract.md",
+    "docs/knowledge/minerva/analytics_builder/imported_corpus/cockpit_contract_extract.md",
+    "docs/knowledge/minerva/analytics_builder/imported_corpus/minerva_safety_extract.md"
+  ],
+  "artifacts_not_copied": [
+    {
+      "path": "docs/generated/analytics_builder_guide/**/*.html",
+      "reason": "Generated HTML is presentation output only, reference-only, and not source truth."
+    },
+    {
+      "path": "bulk source metadata snapshots",
+      "reason": "Compact extracts and source path references are sufficient for Beautiful Slice 2 without copying entire source metadata payloads."
+    }
+  ],
+  "generated_html_reference_policy": {
+    "bulk_copied": false,
+    "source_truth": false,
+    "allowed_use": "reference_only_for_static_guide_navigation",
+    "warning": "Generated HTML must not be cited as certification proof, final-paid proof, or canonical source truth."
+  },
+  "source_lineage_policy": {
+    "required_fields_for_future_answers": ["source_repo", "source_path", "source_tag_or_commit", "artifact_group_id", "extract_ref", "safety_warnings"],
+    "canonical_source_truth": "ezeas-analytics metadata/analytics_builder and docs/analytics_builder_guide markdown, not generated HTML",
+    "lineage_required_before_production_answer_use": true
+  },
+  "answer_baseline_readiness_after_import": {
+    "beautiful_slice_2_evaluated_answer_baselines_can_proceed": true,
+    "allowed_scope": "evaluated_non_production_answer_baselines_only",
+    "production_passed_baselines_allowed": false,
+    "reason": "Governed compact extracts and source references now exist for all required Analytics Builder answer groups, but answers have not yet been evaluated against the M7 safety harness."
+  },
+  "production_answer_use_status": "not_allowed_pending_evaluated_baselines_and_safety_promotion",
+  "safety_requirements": [
+    "Current Certified asset count is zero.",
+    "Final-paid payroll truth remains UNPROVEN / Blocked.",
+    "PayrollLedger is not bank-paid proof.",
+    "CalcInterpreterLine is calculation/detail evidence, not payment execution proof.",
+    "ObjectTime is source-context evidence, not payment finality proof.",
+    "PayRun finalisation or SUCCEEDED alone does not prove settlement, bank acceptance, remittance, or final-paid truth.",
+    "Visual rendering is not certification proof.",
+    "Validation passing is evidence, not automatic certification.",
+    "Refresh/update is not certification.",
+    "Export is not publishing unless a governed publishing workflow says so.",
+    "Blocked gaps are safety controls, not failures.",
+    "Minerva must preserve Diagnostic / Transitional / Blocked / Certified language.",
+    "Minerva must preserve PROVEN / LIKELY / POSSIBLE / DISPROVEN / UNPROVEN language.",
+    "Minerva must say not enough governed proof rather than inventing proof."
+  ],
+  "unresolved_import_gaps": [
+    "Production answer use remains blocked until Beautiful Slice 2 evaluated answer baselines and a later safety promotion gate pass.",
+    "Authentication mechanism for analytics.ezeas.com remains pending cross-platform auth alignment.",
+    "Final bank-paid payroll truth remains blocked.",
+    "No source metadata changes were made in ezeas-analytics during this import."
+  ],
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "no_source_repo_modification": true
+}
