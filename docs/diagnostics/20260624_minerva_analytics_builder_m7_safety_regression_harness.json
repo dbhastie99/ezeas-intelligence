@@ -1,0 +1,19 @@
+{
+  "diagnostic_id": "20260624_minerva_analytics_builder_m7_safety_regression_harness",
+  "status": "completed_planned_static_safety_harness",
+  "domain_key": "analytics_builder_guide",
+  "metadata_created": "metadata/minerva/analytics_builder_safety_regression_harness.v0_1.json",
+  "harness_status": "planned_static_safety_harness",
+  "safety_rule_count": 12,
+  "negative_test_case_count": 10,
+  "positive_requirement_case_count": 7,
+  "production_answer_use_status": "not_allowed_pending_governed_source_ingestion_and_evaluation",
+  "production_passed": false,
+  "runtime_enabled": false,
+  "live_llm_evaluation_enabled": false,
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "no_source_repo_modification": true,
+  "certified_asset_count": 0,
+  "final_paid_truth": "UNPROVEN / Blocked"
+}
