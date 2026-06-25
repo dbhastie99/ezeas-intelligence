@@ -1,0 +1,426 @@
+{
+  "import_manifest_id": "analytics_builder_governed_import_manifest_v0_1",
+  "import_manifest_version": "v0_1",
+  "source_repo": "ezeas-analytics",
+  "source_repo_path_checked": "C:/Projects/ezeas-analytics",
+  "source_tag_checked": "analytics-builder-static-omg-v0.2-20260624",
+  "source_tag_found": true,
+  "m1_source_manifest_ref": "metadata/minerva/analytics_builder_source_manifest.v0_1.json",
+  "m3_knowledge_pack_ref": "metadata/minerva/analytics_builder_knowledge_pack.v0_1.json",
+  "m4_reconciliation_ref": "metadata/minerva/analytics_builder_source_path_reconciliation.v0_1.json",
+  "required_safety_contract_ref": "metadata/minerva/analytics_builder_answer_safety_contract.v0_1.json",
+  "required_retrieval_domain_ref": "metadata/minerva/analytics_builder_retrieval_domain.v0_1.json",
+  "import_readiness_status": "governed_import_manifest_ready_for_restricted_m6_baseline_stubs",
+  "answer_baseline_readiness": {
+    "m6_can_proceed": true,
+    "readiness_level": "restricted_baseline_stubs_only",
+    "production_passed_baselines_allowed": false,
+    "reason": "Dataset and visual recipe counts are reconciled by combining governed active card files with blocked/gap registers and certification readiness metadata. No source content has been imported yet, so M6 may create planned/pending baseline stubs only."
+  },
+  "production_answer_use_status": "not_allowed_pending_governed_source_import_and_answer_evaluation",
+  "no_source_repo_modification": true,
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "dataset_count_reconciliation": {
+    "expected_count_from_m1": 9,
+    "catalogue_count": 5,
+    "dataset_card_file_count": 6,
+    "governed_dataset_card_count": 5,
+    "candidate_gap_dataset_count": 4,
+    "dataset_packet_count": 9,
+    "certification_readiness_dataset_count": 9,
+    "exact_dataset_ids_from_catalogue": [
+      "payroll_outcome_line_v0_1",
+      "payroll_context_dimensions_v0_1",
+      "worker_worksite_context_dimensions_v0_1",
+      "payroll_ledger_calcinterpreterline_bridge_v0_2",
+      "objecttime_enriched_payroll_outcome_line_v0_2"
+    ],
+    "exact_dataset_card_ids_files": [
+      {
+        "dataset_id": "payroll_outcome_line_v0_1",
+        "file": "metadata/analytics_builder/dataset_cards/payroll_outcome_line_v0_1.json"
+      },
+      {
+        "dataset_id": "payroll_context_dimensions_v0_1",
+        "file": "metadata/analytics_builder/dataset_cards/payroll_context_dimensions_v0_1.json"
+      },
+      {
+        "dataset_id": "worker_worksite_context_dimensions_v0_1",
+        "file": "metadata/analytics_builder/dataset_cards/worker_worksite_context_dimensions_v0_1.json"
+      },
+      {
+        "dataset_id": "payroll_ledger_calcinterpreterline_bridge_v0_2",
+        "file": "metadata/analytics_builder/dataset_cards/payroll_ledger_calcinterpreterline_bridge_v0_2.json"
+      },
+      {
+        "dataset_id": "objecttime_enriched_payroll_outcome_line_v0_2",
+        "file": "metadata/analytics_builder/dataset_cards/objecttime_enriched_payroll_outcome_line_v0_2.json"
+      },
+      {
+        "dataset_id": "candidate_gap_datasets_register",
+        "file": "metadata/analytics_builder/dataset_cards/candidate_gap_datasets_v0_1.json"
+      }
+    ],
+    "ids_with_card_files": [
+      "payroll_outcome_line_v0_1",
+      "payroll_context_dimensions_v0_1",
+      "worker_worksite_context_dimensions_v0_1",
+      "payroll_ledger_calcinterpreterline_bridge_v0_2",
+      "objecttime_enriched_payroll_outcome_line_v0_2"
+    ],
+    "ids_without_individual_card_files": [
+      "standalone_calc_interpreter_line_detail",
+      "review_exception_required_review",
+      "roster_vs_actual_objecttime_scheduling",
+      "final_bank_paid_payroll_truth"
+    ],
+    "explanation_of_discrepancy": "The M1 count of 9 datasets is correct for the v0.2 portfolio, but only 5 governed active dataset cards exist as individual files. A sixth file, candidate_gap_datasets_v0_1.json, is a register containing 4 blocked/gap dataset assets. Certification readiness and certification packet metadata count 5 governed datasets plus 4 blocked/gap datasets, giving 9 total.",
+    "import_decisions": [
+      {
+        "dataset_id": "payroll_outcome_line_v0_1",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/dataset_cards/payroll_outcome_line_v0_1.json"]
+      },
+      {
+        "dataset_id": "payroll_context_dimensions_v0_1",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/dataset_cards/payroll_context_dimensions_v0_1.json"]
+      },
+      {
+        "dataset_id": "worker_worksite_context_dimensions_v0_1",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/dataset_cards/worker_worksite_context_dimensions_v0_1.json"]
+      },
+      {
+        "dataset_id": "payroll_ledger_calcinterpreterline_bridge_v0_2",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/dataset_cards/payroll_ledger_calcinterpreterline_bridge_v0_2.json"],
+        "safety_note": "PayrollLedger does not prove bank-paid truth; CalcInterpreterLine is calculation/detail evidence."
+      },
+      {
+        "dataset_id": "objecttime_enriched_payroll_outcome_line_v0_2",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/dataset_cards/objecttime_enriched_payroll_outcome_line_v0_2.json"],
+        "safety_note": "ObjectTime is source-context evidence, not payment finality."
+      },
+      {
+        "dataset_id": "standalone_calc_interpreter_line_detail",
+        "import_decision": "reference_blocked_gap_register_and_packet",
+        "source_paths": [
+          "metadata/analytics_builder/dataset_cards/candidate_gap_datasets_v0_1.json",
+          "metadata/analytics_builder/certification_packets/cert-packet-dataset-standalone-calc-interpreter-line-detail-v0.1.json"
+        ]
+      },
+      {
+        "dataset_id": "review_exception_required_review",
+        "import_decision": "reference_blocked_gap_register_and_packet",
+        "source_paths": [
+          "metadata/analytics_builder/dataset_cards/candidate_gap_datasets_v0_1.json",
+          "metadata/analytics_builder/certification_packets/cert-packet-dataset-review-exception-required-review-v0.1.json"
+        ]
+      },
+      {
+        "dataset_id": "roster_vs_actual_objecttime_scheduling",
+        "import_decision": "reference_blocked_gap_register_and_packet",
+        "source_paths": [
+          "metadata/analytics_builder/dataset_cards/candidate_gap_datasets_v0_1.json",
+          "metadata/analytics_builder/certification_packets/cert-packet-dataset-roster-vs-actual-objecttime-scheduling-v0.1.json"
+        ]
+      },
+      {
+        "dataset_id": "final_bank_paid_payroll_truth",
+        "import_decision": "reference_blocked_gap_register_and_packet",
+        "source_paths": [
+          "metadata/analytics_builder/dataset_cards/candidate_gap_datasets_v0_1.json",
+          "metadata/analytics_builder/certification_packets/cert-packet-dataset-final-bank-paid-payroll-truth-v0.1.json"
+        ],
+        "safety_note": "Final-paid payroll truth remains UNPROVEN / Blocked."
+      }
+    ]
+  },
+  "visual_recipe_count_reconciliation": {
+    "expected_count_from_m1": 13,
+    "visual_recipe_library_count": 9,
+    "visual_recipe_file_count": 10,
+    "governed_recipe_card_count": 9,
+    "blocked_recipe_count": 4,
+    "recipe_packet_count": 13,
+    "certification_readiness_recipe_count": 13,
+    "exact_recipe_ids_from_library": [
+      "payroll_cost_by_rate_type",
+      "payroll_cost_by_worksite",
+      "rate_type_mix",
+      "objecttime_source_context_coverage",
+      "worker_pay_story",
+      "award_outcome_breakdown",
+      "payroll_ledger_to_calculation_detail_reconciliation",
+      "process_period_payroll_review_summary",
+      "payroll_outcome_line_drillthrough"
+    ],
+    "exact_recipe_file_ids_files": [
+      {
+        "recipe_id": "payroll_cost_by_rate_type",
+        "file": "metadata/analytics_builder/visual_recipes/payroll_cost_by_rate_type.json"
+      },
+      {
+        "recipe_id": "payroll_cost_by_worksite",
+        "file": "metadata/analytics_builder/visual_recipes/payroll_cost_by_worksite.json"
+      },
+      {
+        "recipe_id": "rate_type_mix",
+        "file": "metadata/analytics_builder/visual_recipes/rate_type_mix.json"
+      },
+      {
+        "recipe_id": "objecttime_source_context_coverage",
+        "file": "metadata/analytics_builder/visual_recipes/objecttime_source_context_coverage.json"
+      },
+      {
+        "recipe_id": "worker_pay_story",
+        "file": "metadata/analytics_builder/visual_recipes/worker_pay_story.json"
+      },
+      {
+        "recipe_id": "award_outcome_breakdown",
+        "file": "metadata/analytics_builder/visual_recipes/award_outcome_breakdown.json"
+      },
+      {
+        "recipe_id": "payroll_ledger_to_calculation_detail_reconciliation",
+        "file": "metadata/analytics_builder/visual_recipes/payroll_ledger_to_calculation_detail_reconciliation.json"
+      },
+      {
+        "recipe_id": "process_period_payroll_review_summary",
+        "file": "metadata/analytics_builder/visual_recipes/process_period_payroll_review_summary.json"
+      },
+      {
+        "recipe_id": "payroll_outcome_line_drillthrough",
+        "file": "metadata/analytics_builder/visual_recipes/payroll_outcome_line_drillthrough.json"
+      },
+      {
+        "recipe_id": "blocked_visual_recipes_register",
+        "file": "metadata/analytics_builder/visual_recipes/blocked_visual_recipes_v0_1.json"
+      }
+    ],
+    "ids_with_recipe_files": [
+      "payroll_cost_by_rate_type",
+      "payroll_cost_by_worksite",
+      "rate_type_mix",
+      "objecttime_source_context_coverage",
+      "worker_pay_story",
+      "award_outcome_breakdown",
+      "payroll_ledger_to_calculation_detail_reconciliation",
+      "process_period_payroll_review_summary",
+      "payroll_outcome_line_drillthrough"
+    ],
+    "ids_without_individual_recipe_files": [
+      "review_required_lines",
+      "correction_retro_impact",
+      "final_bank_paid_payroll_truth",
+      "roster_vs_actual_scheduling_coverage"
+    ],
+    "explanation_of_discrepancy": "The M1 count of 13 visual recipes is correct for the v0.2 portfolio, but only 9 governed active recipe cards exist as individual files. A tenth file, blocked_visual_recipes_v0_1.json, is a register containing 4 blocked recipe assets. Certification readiness and certification packet metadata count 9 governed recipes plus 4 blocked recipes, giving 13 total.",
+    "import_decisions": [
+      {
+        "recipe_id": "payroll_cost_by_rate_type",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/payroll_cost_by_rate_type.json"]
+      },
+      {
+        "recipe_id": "payroll_cost_by_worksite",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/payroll_cost_by_worksite.json"]
+      },
+      {
+        "recipe_id": "rate_type_mix",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/rate_type_mix.json"]
+      },
+      {
+        "recipe_id": "objecttime_source_context_coverage",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/objecttime_source_context_coverage.json"]
+      },
+      {
+        "recipe_id": "worker_pay_story",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/worker_pay_story.json"]
+      },
+      {
+        "recipe_id": "award_outcome_breakdown",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/award_outcome_breakdown.json"]
+      },
+      {
+        "recipe_id": "payroll_ledger_to_calculation_detail_reconciliation",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/payroll_ledger_to_calculation_detail_reconciliation.json"]
+      },
+      {
+        "recipe_id": "process_period_payroll_review_summary",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/process_period_payroll_review_summary.json"]
+      },
+      {
+        "recipe_id": "payroll_outcome_line_drillthrough",
+        "import_decision": "metadata_copy",
+        "source_paths": ["metadata/analytics_builder/visual_recipes/payroll_outcome_line_drillthrough.json"]
+      },
+      {
+        "recipe_id": "review_required_lines",
+        "import_decision": "reference_blocked_recipe_register_and_packet",
+        "source_paths": [
+          "metadata/analytics_builder/visual_recipes/blocked_visual_recipes_v0_1.json",
+          "metadata/analytics_builder/certification_packets/cert-packet-recipe-review-required-lines-v0.1.json"
+        ]
+      },
+      {
+        "recipe_id": "correction_retro_impact",
+        "import_decision": "reference_blocked_recipe_register_and_packet",
+        "source_paths": [
+          "metadata/analytics_builder/visual_recipes/blocked_visual_recipes_v0_1.json",
+          "metadata/analytics_builder/certification_packets/cert-packet-recipe-correction-retro-impact-v0.1.json"
+        ]
+      },
+      {
+        "recipe_id": "final_bank_paid_payroll_truth",
+        "import_decision": "reference_blocked_recipe_register_and_packet",
+        "source_paths": [
+          "metadata/analytics_builder/visual_recipes/blocked_visual_recipes_v0_1.json",
+          "metadata/analytics_builder/certification_packets/cert-packet-recipe-final-bank-paid-payroll-truth-v0.1.json"
+        ],
+        "safety_note": "Final-paid payroll truth remains UNPROVEN / Blocked."
+      },
+      {
+        "recipe_id": "roster_vs_actual_scheduling_coverage",
+        "import_decision": "reference_blocked_recipe_register_and_packet",
+        "source_paths": [
+          "metadata/analytics_builder/visual_recipes/blocked_visual_recipes_v0_1.json",
+          "metadata/analytics_builder/certification_packets/cert-packet-recipe-roster-vs-actual-scheduling-coverage-v0.1.json"
+        ]
+      }
+    ]
+  },
+  "source_artifacts_to_reference": [
+    "metadata/analytics_builder/dataset_catalogue.v0_1.json",
+    "metadata/analytics_builder/visual_recipe_library.v0_1.json",
+    "metadata/analytics_builder/certification_evidence_packets.v0_1.json",
+    "metadata/analytics_builder/certification_readiness_report.v0_1.json",
+    "metadata/analytics_builder/blocked_gap_roadmap.v0_1.json",
+    "metadata/analytics_builder/blocked_gap_action_pack.v0_1.json",
+    "metadata/analytics_builder/v0_2_closeout.v0_1.json",
+    "metadata/analytics_builder/validation_manifest.v0_1.json",
+    "docs/generated/analytics_builder_guide/index.html"
+  ],
+  "source_artifacts_to_extract": [
+    "docs/analytics_builder_guide/*.md",
+    "docs/analytics_builder_guide/demo_walkthroughs/*.md",
+    "metadata/analytics_builder/dataset_cards/*.json",
+    "metadata/analytics_builder/visual_recipes/*.json",
+    "metadata/analytics_builder/certification_packets/*.json"
+  ],
+  "source_artifacts_not_to_copy": [
+    {
+      "source_path": "docs/generated/analytics_builder_guide/**/*.html",
+      "reason": "Generated HTML is presentation output only, not source truth, validation proof, or certification proof."
+    },
+    {
+      "source_path": "sql/**",
+      "reason": "SQL is outside this static Minerva corpus import and must not create write paths or a second analytics truth path."
+    }
+  ],
+  "source_artifacts_unresolved": [
+    "No unresolved count mismatch remains for M6 restricted baseline stubs.",
+    "Production answer use remains unresolved because no governed source import execution has occurred."
+  ],
+  "canonical_import_units": [
+    {
+      "unit_id": "dataset-catalogue-json",
+      "source_path": "metadata/analytics_builder/dataset_catalogue.v0_1.json",
+      "source_type": "json_metadata",
+      "import_method": "metadata_copy",
+      "purpose_for_minerva": "Ground dataset inventory and active governed dataset card paths.",
+      "safety_requirements": ["preserve proof status", "do not infer certification"],
+      "required_before_answer_baselines": "Required for dataset selection baseline stubs.",
+      "required_before_production_answer_use": "Must be imported with source tag and review status."
+    },
+    {
+      "unit_id": "candidate-gap-datasets-json",
+      "source_path": "metadata/analytics_builder/dataset_cards/candidate_gap_datasets_v0_1.json",
+      "source_type": "json_metadata",
+      "import_method": "metadata_copy",
+      "purpose_for_minerva": "Ground blocked/gap dataset IDs counted in the 9 dataset total.",
+      "safety_requirements": ["Blocked gaps are safety controls, not failures", "preserve UNPROVEN"],
+      "required_before_answer_baselines": "Required for blocked-gap and zero-certified baseline stubs.",
+      "required_before_production_answer_use": "Must be imported with prohibited-claims safety gate."
+    },
+    {
+      "unit_id": "visual-recipe-library-json",
+      "source_path": "metadata/analytics_builder/visual_recipe_library.v0_1.json",
+      "source_type": "json_metadata",
+      "import_method": "metadata_copy",
+      "purpose_for_minerva": "Ground active governed recipe inventory.",
+      "safety_requirements": ["Visual rendering is not certification proof"],
+      "required_before_answer_baselines": "Required for visual recipe baseline stubs.",
+      "required_before_production_answer_use": "Must be imported with source tag and review status."
+    },
+    {
+      "unit_id": "blocked-visual-recipes-json",
+      "source_path": "metadata/analytics_builder/visual_recipes/blocked_visual_recipes_v0_1.json",
+      "source_type": "json_metadata",
+      "import_method": "metadata_copy",
+      "purpose_for_minerva": "Ground blocked recipe IDs counted in the 13 recipe total.",
+      "safety_requirements": ["Blocked gaps are safety controls, not failures", "do not certify blocked recipes"],
+      "required_before_answer_baselines": "Required for blocked recipe baseline stubs.",
+      "required_before_production_answer_use": "Must be imported with safety gate."
+    },
+    {
+      "unit_id": "certification-evidence-packets-json",
+      "source_path": "metadata/analytics_builder/certification_evidence_packets.v0_1.json",
+      "source_type": "json_metadata",
+      "import_method": "metadata_copy",
+      "purpose_for_minerva": "Ground packet counts, packet paths, and blocked/gap packet grouping.",
+      "safety_requirements": ["packet existence does not mean Certified", "current Certified asset count is zero"],
+      "required_before_answer_baselines": "Required for certification and reviewer baseline stubs.",
+      "required_before_production_answer_use": "Must be imported with packet path review."
+    },
+    {
+      "unit_id": "certification-readiness-report-json",
+      "source_path": "metadata/analytics_builder/certification_readiness_report.v0_1.json",
+      "source_type": "json_metadata",
+      "import_method": "metadata_copy",
+      "purpose_for_minerva": "Ground 9 dataset, 13 recipe, zero Certified, LIKELY/UNPROVEN, and status counts.",
+      "safety_requirements": ["Current Certified asset count is zero", "Final-paid payroll truth remains UNPROVEN / Blocked"],
+      "required_before_answer_baselines": "Required for all status and proof posture baseline stubs.",
+      "required_before_production_answer_use": "Must be imported with answer safety contract."
+    },
+    {
+      "unit_id": "prohibited-claims-json",
+      "source_path": "metadata/analytics_builder/prohibited_claims.v0_1.json",
+      "source_type": "json_metadata",
+      "import_method": "metadata_copy",
+      "purpose_for_minerva": "Ground answer refusals and prohibited overclaims.",
+      "safety_requirements": ["not enough governed proof", "do not invent proof"],
+      "required_before_answer_baselines": "Required before any baseline answer text.",
+      "required_before_production_answer_use": "Must be enforced as safety gate."
+    },
+    {
+      "unit_id": "guide-markdown",
+      "source_path": "docs/analytics_builder_guide/*.md",
+      "source_type": "markdown_doc",
+      "import_method": "compact_extract",
+      "purpose_for_minerva": "Ground static guide explanations and reviewer-facing context.",
+      "safety_requirements": ["markdown does not override metadata status"],
+      "required_before_answer_baselines": "Useful for explanatory baseline stubs.",
+      "required_before_production_answer_use": "Extracts must include source lineage."
+    },
+    {
+      "unit_id": "generated-guide-html-reference",
+      "source_path": "docs/generated/analytics_builder_guide/**/*.html",
+      "source_type": "generated_html_reference",
+      "import_method": "do_not_copy_reference_only",
+      "purpose_for_minerva": "Reference rendering lineage only.",
+      "safety_requirements": ["Visual rendering is not certification proof", "generated HTML is not source truth"],
+      "required_before_answer_baselines": "Not required for content baselines.",
+      "required_before_production_answer_use": "Reference only after source metadata and markdown are imported."
+    }
+  ]
+}

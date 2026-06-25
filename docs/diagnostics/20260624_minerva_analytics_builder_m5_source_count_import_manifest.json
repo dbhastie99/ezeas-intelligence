@@ -1,0 +1,22 @@
+{
+  "diagnostic_id": "20260624_minerva_analytics_builder_m5_source_count_import_manifest",
+  "status": "count_mismatch_reconciled_import_manifest_created",
+  "source_repo": "ezeas-analytics",
+  "source_repo_path_checked": "C:/Projects/ezeas-analytics",
+  "source_tag_checked": "analytics-builder-static-omg-v0.2-20260624",
+  "dataset_count_reconciled": true,
+  "visual_recipe_count_reconciled": true,
+  "m6_restricted_baseline_stubs_allowed": true,
+  "production_answer_use_allowed": false,
+  "source_repo_modified": false,
+  "runtime_behavior_changed": false,
+  "app_routes_created": false,
+  "runtime_ui_created": false,
+  "bi_dashboards_created": false,
+  "sql_write_paths_created": false,
+  "stored_procedures_created": false,
+  "final_paid_truth_changed": false,
+  "certification_posture_changed": false,
+  "trust_posture_changed": false,
+  "certified_assets_count": 0
+}
