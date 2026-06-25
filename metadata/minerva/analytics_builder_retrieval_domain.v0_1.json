@@ -1,0 +1,281 @@
+{
+  "retrieval_domain_id": "analytics_builder_retrieval_domain_v0_1",
+  "domain_key": "analytics_builder_guide",
+  "domain_status": "planned_static_corpus_pending",
+  "registry_update_made": false,
+  "not_production_enabled": true,
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "source_manifest_ref": "metadata/minerva/analytics_builder_source_manifest.v0_1.json",
+  "answer_safety_contract_ref": "metadata/minerva/analytics_builder_answer_safety_contract.v0_1.json",
+  "benchmark_question_plan_ref": "metadata/minerva/analytics_builder_benchmark_questions.v0_1.json",
+  "retrieval_intent": "Route Analytics Builder Guide questions to a dedicated planned domain so dataset, visual recipe, certification, validation, review, blocked-gap, and safety questions do not collapse into generic payroll, ObjectTime, payment, or source-truth retrieval.",
+  "source_artifact_groups": [
+    "analytics_builder_guide_spine",
+    "dataset_catalogue",
+    "dataset_cards",
+    "visual_recipe_library",
+    "visual_recipe_cards",
+    "certification_rules",
+    "prohibited_claims",
+    "validation_manifest",
+    "certification_evidence_packets",
+    "certification_readiness_report",
+    "internal_review_demo_walkthrough_pack",
+    "blocked_gap_roadmap",
+    "blocked_gap_action_pack",
+    "v0_2_closeout",
+    "generated_static_guide"
+  ],
+  "safety_critical_terms": [
+    "Certified",
+    "Diagnostic",
+    "Transitional",
+    "Blocked",
+    "PROVEN",
+    "LIKELY",
+    "POSSIBLE",
+    "DISPROVEN",
+    "UNPROVEN",
+    "not enough governed proof",
+    "Final-paid payroll truth remains UNPROVEN / Blocked",
+    "PayrollLedger does not prove bank-paid truth",
+    "CalcInterpreterLine is calculation/detail evidence",
+    "ObjectTime is source-context evidence, not payment finality",
+    "Visual rendering is not certification proof",
+    "Blocked gaps are safety controls, not failures"
+  ],
+  "related_domains": [
+    {
+      "domain_key": "objecttime_source_truth",
+      "relationship": "Related source-context domain, but not a substitute for Analytics Builder roster-vs-actual/ObjectTime scheduling proof."
+    },
+    {
+      "domain_key": "payment_execution_remittance",
+      "relationship": "Related payment evidence domain, but Analytics Builder v0.2 does not certify final-paid or bank-paid truth."
+    },
+    {
+      "domain_key": "finalisation_readiness",
+      "relationship": "Related readiness domain, but PayRun finalisation alone is not settlement, remittance, bank acceptance, or final-paid proof."
+    },
+    {
+      "domain_key": "payroll_output",
+      "relationship": "Related payroll outcome domain, but Analytics Builder questions require static guide status and proof metadata."
+    },
+    {
+      "domain_key": "payroll_bases_and_totals",
+      "relationship": "Related payroll analytics domain, but dataset/recipe routing must preserve Analytics Builder certification and proof status."
+    },
+    {
+      "domain_key": "gross_to_net",
+      "relationship": "Related payroll calculation explanation domain, but not a bank-paid or final-paid truth source."
+    },
+    {
+      "domain_key": "process_period_payrun_lifecycle",
+      "relationship": "Related PayRun lifecycle domain, but lifecycle status must not be treated as final-paid proof."
+    }
+  ],
+  "routing_examples": [
+    {
+      "question": "Which dataset should I use for payroll cost by worksite?",
+      "route_to_domain": "analytics_builder_guide",
+      "primary_term_group_ids": ["dataset_selection"],
+      "benchmark_question_ids": ["dataset-payroll-cost-by-worksite"],
+      "required_safety": ["state certification status", "state proof status", "not enough governed proof if source metadata is missing"]
+    },
+    {
+      "question": "Why is final-paid truth blocked?",
+      "route_to_domain": "analytics_builder_guide",
+      "primary_term_group_ids": ["final_paid_truth_safety", "blocked_gap_roadmap"],
+      "benchmark_question_ids": ["why-final-paid-blocked"],
+      "required_safety": ["Final-paid payroll truth remains UNPROVEN / Blocked", "not enough governed proof", "blocked gaps are safety controls"]
+    },
+    {
+      "question": "Can PayrollLedger prove bank-paid truth?",
+      "route_to_domain": "analytics_builder_guide",
+      "primary_term_group_ids": ["payrollledger_bridge_safety", "prohibited_claims"],
+      "benchmark_question_ids": ["payrollledger-bank-paid-proof"],
+      "required_safety": ["PayrollLedger does not prove bank-paid truth", "not enough governed proof"]
+    },
+    {
+      "question": "What validations exist?",
+      "route_to_domain": "analytics_builder_guide",
+      "primary_term_group_ids": ["validation_manifest", "certification_evidence_packets"],
+      "benchmark_question_ids": ["payroll-outcome-validations"],
+      "required_safety": ["validation assets do not prove final-paid truth", "state proof status"]
+    },
+    {
+      "question": "Why are there zero Certified assets?",
+      "route_to_domain": "analytics_builder_guide",
+      "primary_term_group_ids": ["certification_status", "certification_readiness"],
+      "benchmark_question_ids": ["zero-certified-assets"],
+      "required_safety": ["Current Certified asset count is zero", "Certified only if source metadata says Certified"]
+    },
+    {
+      "question": "What should a reviewer look at first?",
+      "route_to_domain": "analytics_builder_guide",
+      "primary_term_group_ids": ["certification_readiness", "internal_review_demo_walkthroughs", "prohibited_claims"],
+      "benchmark_question_ids": ["reviewer-first-look"],
+      "required_safety": ["review aid is not certification proof", "zero Certified assets"]
+    },
+    {
+      "question": "What blocked gaps need upstream proof?",
+      "route_to_domain": "analytics_builder_guide",
+      "primary_term_group_ids": ["blocked_gap_roadmap", "blocked_gap_action_pack"],
+      "benchmark_question_ids": ["blocked-gaps-upstream-proof"],
+      "required_safety": ["upstream proof is required", "not enough governed proof"]
+    }
+  ],
+  "prohibited_routing_confusions": [
+    "Do not route final-paid proof questions only to generic payroll lifecycle material.",
+    "Do not route payment execution questions as if Analytics Builder has certified final-paid proof.",
+    "Do not route ObjectTime scheduling questions as if roster-vs-actual is proven.",
+    "Do not route CalcInterpreterLine questions as if it is final-paid proof.",
+    "Do not route rendered visual questions as certification proof.",
+    "Do not route blocked-gap questions as defects/failures."
+  ],
+  "escalation_rules": [
+    "If a question asks for certification, retrieve certification rules, certification readiness, evidence packets, prohibited claims, and answer safety contract before answering.",
+    "If a question asks for final-paid, bank-paid, settlement, bank acceptance, remittance, or payment finality, retrieve final-paid truth safety and prohibited claims before any payroll or payment lifecycle material.",
+    "If a question asks about PayrollLedger, CalcInterpreterLine, or ObjectTime proof, retrieve the matching safety group and prohibited claims before related payroll or ObjectTime domains.",
+    "If reviewed Analytics Builder source metadata is missing, answer with planned/static-corpus-pending caveats and say there is not enough governed proof.",
+    "Escalate to source review before production answer use."
+  ],
+  "retrieval_term_groups": [
+    {
+      "group_id": "dataset_selection",
+      "purpose": "Route dataset recommendation questions to dataset catalogue/cards and preserve status caveats.",
+      "positive_terms": ["dataset", "dataset catalogue", "dataset card", "payroll cost by worksite", "worksite", "which dataset", "Analytics Builder Guide"],
+      "negative_or_confusion_terms": ["generic payroll output only", "Certified without source metadata", "final-paid payroll truth"],
+      "required_source_artifact_groups": ["dataset_catalogue", "dataset_cards", "certification_readiness_report"],
+      "required_safety_rules": ["state certification status", "state proof status", "not enough governed proof if source metadata is missing"],
+      "benchmark_question_ids_supported": ["dataset-payroll-cost-by-worksite"]
+    },
+    {
+      "group_id": "visual_recipe_selection",
+      "purpose": "Route visual recommendation questions to recipe library/cards without treating rendering as proof.",
+      "positive_terms": ["visual recipe", "recipe card", "recipe library", "payroll cost by rate type", "chart", "visual", "rate type"],
+      "negative_or_confusion_terms": ["rendered visual proves certification", "visual proves final-paid truth", "dashboard truth path"],
+      "required_source_artifact_groups": ["visual_recipe_library", "visual_recipe_cards", "dataset_cards"],
+      "required_safety_rules": ["Visual rendering is not certification proof", "state certification status", "state proof status"],
+      "benchmark_question_ids_supported": ["recipe-payroll-cost-by-rate-type"]
+    },
+    {
+      "group_id": "certification_status",
+      "purpose": "Route questions about Certified, Diagnostic, Transitional, and Blocked status.",
+      "positive_terms": ["Certified", "certification status", "Diagnostic", "Transitional", "Blocked", "zero Certified assets"],
+      "negative_or_confusion_terms": ["Transitional means Certified", "Diagnostic is Certified", "Blocked is failure"],
+      "required_source_artifact_groups": ["certification_rules", "certification_readiness_report"],
+      "required_safety_rules": ["Current Certified asset count is zero", "Certified only if source metadata says Certified", "Diagnostic, Transitional, and Blocked are not Certified"],
+      "benchmark_question_ids_supported": ["zero-certified-assets", "status-differences"]
+    },
+    {
+      "group_id": "validation_manifest",
+      "purpose": "Route validation inventory and validation gap questions.",
+      "positive_terms": ["validation", "validation manifest", "validation assets", "validation gaps", "payroll outcome analytics"],
+      "negative_or_confusion_terms": ["validation proves bank-paid settlement", "validation certifies all assets"],
+      "required_source_artifact_groups": ["validation_manifest", "certification_evidence_packets"],
+      "required_safety_rules": ["validation assets do not prove final-paid truth", "state proof status", "not enough governed proof"],
+      "benchmark_question_ids_supported": ["payroll-outcome-validations", "remaining-validation-gaps"]
+    },
+    {
+      "group_id": "certification_evidence_packets",
+      "purpose": "Route evidence packet questions and reviewer evidence triage.",
+      "positive_terms": ["certification evidence packet", "evidence packet", "evidence packets", "review evidence", "22 certification evidence packets"],
+      "negative_or_confusion_terms": ["evidence packet existence means Certified", "packet proves final-paid truth"],
+      "required_source_artifact_groups": ["certification_evidence_packets", "certification_rules", "prohibited_claims"],
+      "required_safety_rules": ["Evidence packet existence does not mean Certified", "Certified only if source metadata says Certified"],
+      "benchmark_question_ids_supported": ["zero-certified-assets", "payroll-outcome-validations", "reviewer-first-look"]
+    },
+    {
+      "group_id": "certification_readiness",
+      "purpose": "Route portfolio readiness and zero Certified asset questions.",
+      "positive_terms": ["certification readiness", "readiness report", "portfolio status", "0 Certified", "zero Certified", "v0.2 status"],
+      "negative_or_confusion_terms": ["readiness report certifies all assets", "closeout changed trust posture"],
+      "required_source_artifact_groups": ["certification_readiness_report", "v0_2_closeout"],
+      "required_safety_rules": ["Current Certified asset count is zero", "no trust posture change", "source metadata required"],
+      "benchmark_question_ids_supported": ["zero-certified-assets", "reviewer-first-look", "next-stream-after-static-v0-2"]
+    },
+    {
+      "group_id": "internal_review_demo_walkthroughs",
+      "purpose": "Route reviewer-first and demo walkthrough questions.",
+      "positive_terms": ["reviewer", "look at first", "internal review", "demo walkthrough", "walkthrough pack", "review pack"],
+      "negative_or_confusion_terms": ["demo proves certification", "walkthrough is governed proof"],
+      "required_source_artifact_groups": ["internal_review_demo_walkthrough_pack", "certification_readiness_report", "prohibited_claims"],
+      "required_safety_rules": ["review aid is not certification proof", "zero Certified assets"],
+      "benchmark_question_ids_supported": ["reviewer-first-look"]
+    },
+    {
+      "group_id": "blocked_gap_roadmap",
+      "purpose": "Route blocked-gap explanation and upstream proof questions.",
+      "positive_terms": ["blocked gap", "blocked-gap roadmap", "review/exception analytics", "roster-vs-actual", "ObjectTime scheduling", "standalone CalcInterpreterLine", "final bank-paid payroll truth"],
+      "negative_or_confusion_terms": ["blocked gaps are failures", "blocked gaps are already closed", "roster-vs-actual proven"],
+      "required_source_artifact_groups": ["blocked_gap_roadmap", "validation_manifest"],
+      "required_safety_rules": ["Blocked gaps are safety controls, not failures", "not enough governed proof", "upstream proof is required"],
+      "benchmark_question_ids_supported": ["why-final-paid-blocked", "remaining-validation-gaps", "blocked-gaps-upstream-proof", "explain-blocked-gaps"]
+    },
+    {
+      "group_id": "blocked_gap_action_pack",
+      "purpose": "Route next actions and next stream questions for blocked proof gaps.",
+      "positive_terms": ["blocked-gap action pack", "next stream", "recommended next stream", "upstream proof", "post static v0.2"],
+      "negative_or_confusion_terms": ["action pack means complete", "create dashboard", "change payroll runtime", "SQL write path"],
+      "required_source_artifact_groups": ["blocked_gap_action_pack", "v0_2_closeout", "certification_readiness_report"],
+      "required_safety_rules": ["planned/pending source ingestion", "upstream proof required", "no second analytics truth path"],
+      "benchmark_question_ids_supported": ["blocked-gaps-upstream-proof", "next-stream-after-static-v0-2"]
+    },
+    {
+      "group_id": "final_paid_truth_safety",
+      "purpose": "Route final-paid, bank-paid, settlement, remittance, bank acceptance, and payment-finality safety questions before generic payment domains.",
+      "positive_terms": ["final-paid", "final paid", "bank-paid", "settlement", "bank acceptance", "remittance", "payment finality", "UNPROVEN", "Blocked"],
+      "negative_or_confusion_terms": ["PayRun finalisation proves settlement", "SUCCEEDED status proves bank acceptance", "final-paid payroll truth is proven"],
+      "required_source_artifact_groups": ["prohibited_claims", "blocked_gap_roadmap", "blocked_gap_action_pack"],
+      "required_safety_rules": ["Final-paid payroll truth remains UNPROVEN / Blocked", "not enough governed proof", "PayRun finalisation or SUCCEEDED status alone does not prove settlement, bank acceptance, remittance, or final-paid truth"],
+      "benchmark_question_ids_supported": ["why-final-paid-blocked", "final-paid-prohibited-claims"]
+    },
+    {
+      "group_id": "payrollledger_bridge_safety",
+      "purpose": "Route PayrollLedger proof-boundary questions.",
+      "positive_terms": ["PayrollLedger", "payroll ledger", "bank-paid proof", "calculated ledger evidence", "bridge"],
+      "negative_or_confusion_terms": ["PayrollLedger is bank-paid proof", "PayrollLedger proves settlement", "PayrollLedger proves remittance"],
+      "required_source_artifact_groups": ["prohibited_claims", "certification_rules", "blocked_gap_roadmap"],
+      "required_safety_rules": ["PayrollLedger does not prove bank-paid truth", "not enough governed proof", "not standalone settlement, remittance, bank acceptance, or final-paid evidence"],
+      "benchmark_question_ids_supported": ["payrollledger-bank-paid-proof"]
+    },
+    {
+      "group_id": "calcinterpreterline_safety",
+      "purpose": "Route CalcInterpreterLine proof-boundary questions.",
+      "positive_terms": ["CalcInterpreterLine", "calculation detail", "calculation/detail evidence", "payment execution", "final-paid truth"],
+      "negative_or_confusion_terms": ["CalcInterpreterLine proves payment execution", "CalcInterpreterLine proves final-paid truth", "CalcInterpreterLine proves bank-paid truth"],
+      "required_source_artifact_groups": ["prohibited_claims", "certification_rules", "dataset_cards"],
+      "required_safety_rules": ["CalcInterpreterLine is calculation/detail evidence", "not payment execution", "not final-paid truth", "not enough governed proof"],
+      "benchmark_question_ids_supported": ["calcinterpreterline-payment-execution"]
+    },
+    {
+      "group_id": "objecttime_safety",
+      "purpose": "Route ObjectTime source-context and payment-finality boundary questions.",
+      "positive_terms": ["ObjectTime", "source-context evidence", "source context", "scheduling coverage", "roster-vs-actual", "payment finality"],
+      "negative_or_confusion_terms": ["ObjectTime proves payment finality", "ObjectTime proves final bank-paid payroll truth", "roster-vs-actual is proven"],
+      "required_source_artifact_groups": ["prohibited_claims", "blocked_gap_roadmap", "dataset_cards"],
+      "required_safety_rules": ["ObjectTime is source-context evidence, not payment finality", "not bank-paid, settlement, remittance, final-paid, or certification proof", "not enough governed proof"],
+      "benchmark_question_ids_supported": ["objecttime-payment-finality", "blocked-gaps-upstream-proof"]
+    },
+    {
+      "group_id": "prohibited_claims",
+      "purpose": "Route prohibited-claim and refusal-boundary questions.",
+      "positive_terms": ["prohibited claims", "must not claim", "not enough governed proof", "overclaim", "safety contract"],
+      "negative_or_confusion_terms": ["invent proof", "upgrade LIKELY to PROVEN", "upgrade UNPROVEN to PROVEN"],
+      "required_source_artifact_groups": ["prohibited_claims", "certification_rules"],
+      "required_safety_rules": ["preserve proof statuses", "do not invent proof", "do not mark anything Certified"],
+      "benchmark_question_ids_supported": ["final-paid-prohibited-claims", "explain-blocked-gaps", "payrollledger-bank-paid-proof", "calcinterpreterline-payment-execution", "objecttime-payment-finality"]
+    },
+    {
+      "group_id": "next_stream_decision",
+      "purpose": "Route questions about recommended next work after static v0.2.",
+      "positive_terms": ["next stream", "recommended next stream", "after static v0.2", "post-v0.2", "source ingestion", "blocked gap proof"],
+      "negative_or_confusion_terms": ["create SQL write paths", "build BI dashboard", "change payroll runtime", "second analytics truth path"],
+      "required_source_artifact_groups": ["v0_2_closeout", "blocked_gap_action_pack", "certification_readiness_report"],
+      "required_safety_rules": ["planned/pending source ingestion", "upstream proof required", "no second analytics truth path", "no runtime behavior change"],
+      "benchmark_question_ids_supported": ["next-stream-after-static-v0-2"]
+    }
+  ]
+}
