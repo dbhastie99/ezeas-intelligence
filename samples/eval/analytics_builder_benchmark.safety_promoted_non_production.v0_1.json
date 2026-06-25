@@ -1,0 +1,21 @@
+{
+  "name": "Analytics Builder Guide safety-promoted non-production benchmark",
+  "description": "Static safety promotion marker for Analytics Builder evaluated baselines. Controlled demo only; not runtime-enabled, not production-passed, and not production answer use.",
+  "domain_key": "analytics_builder_guide",
+  "benchmark_status": "safety_promoted_non_production",
+  "controlled_demo_answer_use_status": "controlled_demo_answer_use_allowed",
+  "production_answer_use_status": "not_allowed_pending_runtime_ingestion_and_production_evaluation",
+  "production_passed": false,
+  "runtime_enabled": false,
+  "live_llm_evaluation_used": false,
+  "source_safety_promotion_gate_ref": "metadata/minerva/analytics_builder_safety_promotion_gate.v0_1.json",
+  "source_evaluated_baseline_ref": "metadata/minerva/analytics_builder_evaluated_answer_baselines.v0_1.json",
+  "questions_promoted_for_controlled_demo": 15,
+  "production_blockers_remaining": [
+    "runtime_ingestion_not_implemented",
+    "live_llm_production_evaluation_not_run",
+    "production_answer_serving_not_enabled",
+    "authentication_and_entitlement_enforcement_not_implemented",
+    "runtime_audit_not_implemented"
+  ]
+}

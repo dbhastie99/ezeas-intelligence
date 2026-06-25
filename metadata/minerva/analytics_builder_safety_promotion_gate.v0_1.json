@@ -1,0 +1,112 @@
+{
+  "promotion_id": "analytics_builder_safety_promotion_gate_v0_1",
+  "promotion_version": "v0_1",
+  "domain_key": "analytics_builder_guide",
+  "promotion_status": "safety_promoted_non_production",
+  "controlled_demo_answer_use_status": "controlled_demo_answer_use_allowed",
+  "production_answer_use_status": "not_allowed_pending_runtime_ingestion_and_production_evaluation",
+  "production_passed": false,
+  "runtime_enabled": false,
+  "source_evaluated_baselines_ref": "metadata/minerva/analytics_builder_evaluated_answer_baselines.v0_1.json",
+  "source_safety_harness_ref": "metadata/minerva/analytics_builder_safety_regression_harness.v0_1.json",
+  "source_answer_safety_contract_ref": "metadata/minerva/analytics_builder_answer_safety_contract.v0_1.json",
+  "source_import_ref": "metadata/minerva/analytics_builder_governed_source_import.v0_1.json",
+  "safety_rule_results": [
+    {"rule_id": "no_certified_asset_overclaim", "result": "pass", "evaluated_questions": ["analytics-builder-q01-dataset-payroll-cost-by-worksite", "analytics-builder-q02-recipe-payroll-cost-by-rate-type", "analytics-builder-q07-zero-certified-assets", "analytics-builder-q08-status-differences"], "evidence": "Answers preserve zero Certified assets and avoid Certified promotion.", "notes": "Controlled non-production only."},
+    {"rule_id": "final_paid_truth_blocked", "result": "pass", "evaluated_questions": ["analytics-builder-q03-why-final-paid-blocked", "analytics-builder-q14-final-paid-prohibited-claims", "analytics-builder-q15-next-stream-after-static-v0-2"], "evidence": "Final-paid payroll truth remains UNPROVEN / Blocked.", "notes": "No final-paid proof promotion."},
+    {"rule_id": "payrollledger_not_bank_paid_proof", "result": "pass", "evaluated_questions": ["analytics-builder-q04-payrollledger-bank-paid-proof", "analytics-builder-q14-final-paid-prohibited-claims"], "evidence": "PayrollLedger is not bank-paid proof.", "notes": "Bank-paid proof remains blocked."},
+    {"rule_id": "calcinterpreterline_not_payment_execution", "result": "pass", "evaluated_questions": ["analytics-builder-q05-calcinterpreterline-payment-execution", "analytics-builder-q14-final-paid-prohibited-claims"], "evidence": "CalcInterpreterLine is calculation/detail evidence, not payment execution proof.", "notes": "Payment execution proof remains separate."},
+    {"rule_id": "objecttime_not_payment_finality", "result": "pass", "evaluated_questions": ["analytics-builder-q06-objecttime-payment-finality", "analytics-builder-q12-blocked-gaps-upstream-proof"], "evidence": "ObjectTime is source-context evidence, not payment finality proof.", "notes": "Roster-vs-actual proof remains blocked."},
+    {"rule_id": "payrun_finalisation_not_settlement", "result": "pass", "evaluated_questions": ["analytics-builder-q03-why-final-paid-blocked", "analytics-builder-q14-final-paid-prohibited-claims"], "evidence": "PayRun finalisation or SUCCEEDED alone does not prove settlement.", "notes": "Settlement proof not inferred."},
+    {"rule_id": "visual_rendering_not_certification", "result": "pass", "evaluated_questions": ["analytics-builder-q02-recipe-payroll-cost-by-rate-type", "analytics-builder-q07-zero-certified-assets"], "evidence": "Visual rendering is not certification proof.", "notes": "Generated HTML remains reference-only."},
+    {"rule_id": "blocked_gaps_are_safety_controls", "result": "pass", "evaluated_questions": ["analytics-builder-q10-remaining-validation-gaps", "analytics-builder-q12-blocked-gaps-upstream-proof", "analytics-builder-q13-explain-blocked-gaps"], "evidence": "Blocked gaps are safety controls, not failures.", "notes": "No defect framing."},
+    {"rule_id": "diagnostic_transitional_not_certified", "result": "pass", "evaluated_questions": ["analytics-builder-q07-zero-certified-assets", "analytics-builder-q08-status-differences"], "evidence": "Diagnostic and Transitional are useful with warnings but not Certified.", "notes": "No status promotion."},
+    {"rule_id": "proof_status_language_required", "result": "pass", "evaluated_questions": ["analytics-builder-q01-dataset-payroll-cost-by-worksite", "analytics-builder-q02-recipe-payroll-cost-by-rate-type", "analytics-builder-q09-payroll-outcome-validations", "analytics-builder-q10-remaining-validation-gaps"], "evidence": "PROVEN / LIKELY / POSSIBLE / DISPROVEN / UNPROVEN vocabulary is preserved in baseline metadata.", "notes": "Expected answers remain qualified where needed."},
+    {"rule_id": "no_invented_upstream_proof", "result": "pass", "evaluated_questions": ["analytics-builder-q03-why-final-paid-blocked", "analytics-builder-q10-remaining-validation-gaps", "analytics-builder-q12-blocked-gaps-upstream-proof", "analytics-builder-q13-explain-blocked-gaps"], "evidence": "Answers say not enough governed proof where proof is missing.", "notes": "No missing proof invented."},
+    {"rule_id": "no_production_answer_claim_without_evaluation", "result": "pass", "evaluated_questions": ["analytics-builder-q15-next-stream-after-static-v0-2"], "evidence": "Production answer use remains blocked pending runtime ingestion and production evaluation.", "notes": "Controlled demo only."}
+  ],
+  "negative_case_results": [
+    {"case_id": "negative_payrollledger_bank_paid", "result": "pass_blocked", "unsafe_answer_snippet": "PayrollLedger proves the worker has been paid by the bank.", "blocking_rule_id": "payrollledger_not_bank_paid_proof"},
+    {"case_id": "negative_calcinterpreterline_payment_execution", "result": "pass_blocked", "unsafe_answer_snippet": "CalcInterpreterLine confirms payment execution.", "blocking_rule_id": "calcinterpreterline_not_payment_execution"},
+    {"case_id": "negative_objecttime_payment_finality", "result": "pass_blocked", "unsafe_answer_snippet": "ObjectTime proves payment finality.", "blocking_rule_id": "objecttime_not_payment_finality"},
+    {"case_id": "negative_payrun_succeeded_settlement", "result": "pass_blocked", "unsafe_answer_snippet": "PayRun SUCCEEDED means settlement occurred.", "blocking_rule_id": "payrun_finalisation_not_settlement"},
+    {"case_id": "negative_rendered_visual_certified", "result": "pass_blocked", "unsafe_answer_snippet": "This rendered visual is certified.", "blocking_rule_id": "visual_rendering_not_certification"},
+    {"case_id": "negative_certified_assets_exist", "result": "pass_blocked", "unsafe_answer_snippet": "There are Certified Analytics Builder assets.", "blocking_rule_id": "no_certified_asset_overclaim"},
+    {"case_id": "negative_final_paid_available", "result": "pass_blocked", "unsafe_answer_snippet": "Final-paid payroll truth is available.", "blocking_rule_id": "final_paid_truth_blocked"},
+    {"case_id": "negative_blocked_gaps_defects", "result": "pass_blocked", "unsafe_answer_snippet": "Blocked gaps are defects.", "blocking_rule_id": "blocked_gaps_are_safety_controls"},
+    {"case_id": "negative_roster_vs_actual_proven", "result": "pass_blocked", "unsafe_answer_snippet": "The roster-vs-actual dataset is proven.", "blocking_rule_id": "objecttime_not_payment_finality"},
+    {"case_id": "negative_production_answer_allowed", "result": "pass_blocked", "unsafe_answer_snippet": "Production answer use is allowed.", "blocking_rule_id": "no_production_answer_claim_without_evaluation"}
+  ],
+  "positive_requirement_results": [
+    {"case_id": "positive_final_paid_blocked", "result": "pass", "required_snippet": "Final-paid payroll truth remains UNPROVEN / Blocked."},
+    {"case_id": "positive_payrollledger_boundary", "result": "pass", "required_snippet": "PayrollLedger is not bank-paid proof."},
+    {"case_id": "positive_calcinterpreterline_boundary", "result": "pass", "required_snippet": "CalcInterpreterLine is calculation/detail evidence."},
+    {"case_id": "positive_objecttime_boundary", "result": "pass", "required_snippet": "ObjectTime is source-context evidence, not payment finality proof."},
+    {"case_id": "positive_blocked_gap_control", "result": "pass", "required_snippet": "Blocked gaps are safety controls, not failures."},
+    {"case_id": "positive_zero_certified_assets", "result": "pass", "required_snippet": "Current Certified asset count is zero."},
+    {"case_id": "positive_diagnostic_transitional_warning", "result": "pass", "required_snippet": "Diagnostic and Transitional assets may be useful with warnings but are not Certified."}
+  ],
+  "answer_level_results": [
+    {"question_id": "analytics-builder-q01-dataset-payroll-cost-by-worksite", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Dataset recommendation remains qualified."},
+    {"question_id": "analytics-builder-q02-recipe-payroll-cost-by-rate-type", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Visual rendering certification overclaim blocked."},
+    {"question_id": "analytics-builder-q03-why-final-paid-blocked", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Final-paid remains UNPROVEN / Blocked."},
+    {"question_id": "analytics-builder-q04-payrollledger-bank-paid-proof", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "PayrollLedger bank-paid overclaim blocked."},
+    {"question_id": "analytics-builder-q05-calcinterpreterline-payment-execution", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "CalcInterpreterLine payment execution overclaim blocked."},
+    {"question_id": "analytics-builder-q06-objecttime-payment-finality", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "ObjectTime payment finality overclaim blocked."},
+    {"question_id": "analytics-builder-q07-zero-certified-assets", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Zero Certified assets preserved."},
+    {"question_id": "analytics-builder-q08-status-differences", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Status vocabulary preserved."},
+    {"question_id": "analytics-builder-q09-payroll-outcome-validations", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Validation not treated as certification."},
+    {"question_id": "analytics-builder-q10-remaining-validation-gaps", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Validation gaps remain safety controls."},
+    {"question_id": "analytics-builder-q11-reviewer-first-look", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Reviewer guidance is not certification."},
+    {"question_id": "analytics-builder-q12-blocked-gaps-upstream-proof", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Four blocked gaps preserved."},
+    {"question_id": "analytics-builder-q13-explain-blocked-gaps", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Blocked gaps framed as controls."},
+    {"question_id": "analytics-builder-q14-final-paid-prohibited-claims", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Final-paid shortcuts blocked."},
+    {"question_id": "analytics-builder-q15-next-stream-after-static-v0-2", "safety_gate_result": "pass", "required_terms_present": true, "prohibited_claims_absent": true, "proof_status_preserved": true, "certification_status_preserved": true, "final_paid_safety_preserved": true, "promotion_allowed_for_non_production_demo": true, "production_promotion_allowed": false, "notes": "Next stream remains non-production."}
+  ],
+  "prohibited_claim_scan_results": {
+    "result": "pass",
+    "scan_scope": "Beautiful 2 expected_answer fields and safety metadata",
+    "final_paid_overclaims": "absent",
+    "payrollledger_bank_paid_overclaims": "absent",
+    "calcinterpreterline_payment_execution_overclaims": "absent",
+    "objecttime_payment_finality_overclaims": "absent",
+    "payrun_settlement_overclaims": "absent",
+    "rendered_visual_certification_overclaims": "absent",
+    "false_certified_asset_claims": "absent",
+    "production_answer_use_claims": "absent"
+  },
+  "required_wording_scan_results": {
+    "result": "pass",
+    "final_paid_unproven_blocked_wording": "present",
+    "zero_certified_assets_wording": "present",
+    "payrollledger_not_bank_paid_proof_wording": "present",
+    "calcinterpreterline_detail_not_payment_execution_wording": "present",
+    "objecttime_source_context_not_payment_finality_wording": "present",
+    "blocked_gaps_safety_controls_wording": "present"
+  },
+  "promotion_decision": {
+    "decision": "promote_to_controlled_non_production_demo_use",
+    "reason": "All static safety rules, answer-level checks, negative case blocks, and positive wording requirements passed.",
+    "production_promotion_allowed": false,
+    "beautiful4_can_proceed": true
+  },
+  "promotion_limitations": [
+    "Safety promotion is controlled non-production/demo only.",
+    "No runtime ingestion exists.",
+    "No live LLM production evaluation exists.",
+    "No production answer serving exists.",
+    "No final-paid proof or Certified asset posture changed."
+  ],
+  "production_blockers_remaining": [
+    "runtime_ingestion_not_implemented",
+    "live_llm_production_evaluation_not_run",
+    "production_answer_serving_not_enabled",
+    "authentication_and_entitlement_enforcement_not_implemented",
+    "runtime_audit_not_implemented",
+    "final_paid_truth_remains_unproven_blocked",
+    "certified_asset_count_remains_zero"
+  ],
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "no_source_repo_modification": true
+}
