@@ -1,0 +1,17 @@
+{
+  "diagnostic_id": "20260624_minerva_analytics_builder_m8_demo_readiness_pack",
+  "status": "completed_static_non_production_demo_readiness",
+  "domain_key": "analytics_builder_guide",
+  "metadata_created": "metadata/minerva/analytics_builder_demo_readiness_pack.v0_1.json",
+  "demo_status": "static_non_production_demo_readiness",
+  "demo_question_count": 15,
+  "production_answer_use_status": "not_allowed_pending_governed_source_ingestion_and_evaluation",
+  "production_passed": false,
+  "runtime_enabled": false,
+  "live_llm_evaluation_enabled": false,
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "no_source_repo_modification": true,
+  "certified_asset_count": 0,
+  "final_paid_truth": "UNPROVEN / Blocked"
+}
