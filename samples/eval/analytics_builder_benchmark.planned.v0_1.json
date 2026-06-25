@@ -1,0 +1,33 @@
+{
+  "name": "Analytics Builder Guide planned benchmark stubs",
+  "description": "Planned/pending benchmark targets for Analytics Builder Guide answers. These are not production-passed baselines and must not be used as evidence that Minerva can answer from the Analytics Builder corpus in production.",
+  "domain_key": "analytics_builder_guide",
+  "benchmark_status": "planned_pending_governed_source_import",
+  "production_passed": false,
+  "runtime_enabled": false,
+  "production_answer_use_status": "not_allowed_pending_governed_source_ingestion_and_evaluation",
+  "source_baseline_stub_ref": "metadata/minerva/analytics_builder_answer_baseline_stubs.v0_1.json",
+  "questions": [
+    {"id": "analytics-builder-q01-dataset-payroll-cost-by-worksite", "question": "Which dataset should I use for payroll cost by worksite?", "status": "planned_pending"},
+    {"id": "analytics-builder-q02-recipe-payroll-cost-by-rate-type", "question": "Which visual recipe should I use for payroll cost by rate type?", "status": "planned_pending"},
+    {"id": "analytics-builder-q03-why-final-paid-blocked", "question": "Why is final-paid payroll truth blocked?", "status": "planned_pending"},
+    {"id": "analytics-builder-q04-payrollledger-bank-paid-proof", "question": "Can I use PayrollLedger as bank-paid proof?", "status": "planned_pending"},
+    {"id": "analytics-builder-q05-calcinterpreterline-payment-execution", "question": "Does CalcInterpreterLine prove payment execution?", "status": "planned_pending"},
+    {"id": "analytics-builder-q06-objecttime-payment-finality", "question": "Does ObjectTime prove payment finality?", "status": "planned_pending"},
+    {"id": "analytics-builder-q07-zero-certified-assets", "question": "Why are there zero Certified assets?", "status": "planned_pending"},
+    {"id": "analytics-builder-q08-status-differences", "question": "What is the difference between Diagnostic, Transitional, Blocked, and Certified?", "status": "planned_pending"},
+    {"id": "analytics-builder-q09-payroll-outcome-validations", "question": "What validations exist for payroll outcome analytics?", "status": "planned_pending"},
+    {"id": "analytics-builder-q10-remaining-validation-gaps", "question": "What validation gaps remain?", "status": "planned_pending"},
+    {"id": "analytics-builder-q11-reviewer-first-look", "question": "What should a reviewer look at first?", "status": "planned_pending"},
+    {"id": "analytics-builder-q12-blocked-gaps-upstream-proof", "question": "What blocked gaps need upstream proof?", "status": "planned_pending"},
+    {"id": "analytics-builder-q13-explain-blocked-gaps", "question": "How should Minerva explain blocked gaps?", "status": "planned_pending"},
+    {"id": "analytics-builder-q14-final-paid-prohibited-claims", "question": "What claims are prohibited for final-paid truth?", "status": "planned_pending"},
+    {"id": "analytics-builder-q15-next-stream-after-static-v0-2", "question": "What is the recommended next stream after static v0.2?", "status": "planned_pending"}
+  ],
+  "safety_requirements": [
+    "Current Certified asset count remains zero.",
+    "Final-paid payroll truth remains UNPROVEN / Blocked.",
+    "Generated visual rendering is not certification proof.",
+    "These entries are evaluation targets only, not generated production answers."
+  ]
+}

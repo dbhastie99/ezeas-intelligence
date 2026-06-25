@@ -1,0 +1,24 @@
+{
+  "diagnostic_id": "20260624_minerva_analytics_builder_m6_answer_baseline_stubs",
+  "status": "completed_planned_pending_only",
+  "domain_key": "analytics_builder_guide",
+  "metadata_created": "metadata/minerva/analytics_builder_answer_baseline_stubs.v0_1.json",
+  "sample_eval_created": "samples/eval/analytics_builder_benchmark.planned.v0_1.json",
+  "benchmark_questions_covered": 15,
+  "baseline_status": "planned_pending_governed_source_import",
+  "production_answer_use_status": "not_allowed_pending_governed_source_ingestion_and_evaluation",
+  "production_passed": false,
+  "runtime_enabled": false,
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "no_source_repo_modification": true,
+  "safety_posture": {
+    "certified_asset_count": 0,
+    "final_paid_truth": "UNPROVEN / Blocked",
+    "payrollledger_bank_paid_proof": "not_proof",
+    "calcinterpreterline_payment_execution": "not_proof",
+    "objecttime_payment_finality": "not_proof",
+    "visual_rendering_certification": "not_proof",
+    "blocked_gaps": "safety_controls_not_failures"
+  }
+}
