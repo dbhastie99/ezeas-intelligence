@@ -1,0 +1,374 @@
+{
+  "reconciliation_id": "analytics_builder_source_path_reconciliation_v0_1",
+  "reconciliation_version": "v0_1",
+  "source_repo": "ezeas-analytics",
+  "source_repo_path_checked": "C:/Projects/ezeas-analytics",
+  "analytics_tag_expected": "analytics-builder-static-omg-v0.2-20260624",
+  "analytics_tag_found": true,
+  "m1_manifest_ref": "metadata/minerva/analytics_builder_source_manifest.v0_1.json",
+  "m3_knowledge_pack_ref": "metadata/minerva/analytics_builder_knowledge_pack.v0_1.json",
+  "m2_retrieval_domain_ref": "metadata/minerva/analytics_builder_retrieval_domain.v0_1.json",
+  "answer_safety_contract_ref": "metadata/minerva/analytics_builder_answer_safety_contract.v0_1.json",
+  "reconciliation_status": "actual_paths_discovered_import_plan_required_before_m5",
+  "production_answer_use_allowed": false,
+  "readiness_for_answer_baselines": "blocked_until_governed_import_manifest_is_created_and_reviewed",
+  "no_source_repo_modification": true,
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "expected_artifact_groups": [
+    "analytics_builder_guide_spine",
+    "dataset_catalogue",
+    "dataset_cards",
+    "visual_recipe_library",
+    "visual_recipe_cards",
+    "certification_rules",
+    "prohibited_claims",
+    "validation_manifest",
+    "certification_evidence_packets",
+    "certification_readiness_report",
+    "internal_review_demo_walkthrough_pack",
+    "blocked_gap_roadmap",
+    "blocked_gap_action_pack",
+    "v0_2_closeout",
+    "generated_static_guide"
+  ],
+  "discovered_actual_paths": {
+    "metadata_root": "metadata/analytics_builder/",
+    "guide_markdown_root": "docs/analytics_builder_guide/",
+    "demo_walkthrough_root": "docs/analytics_builder_guide/demo_walkthroughs/",
+    "generated_html_root": "docs/generated/analytics_builder_guide/",
+    "dataset_card_count_discovered": 6,
+    "visual_recipe_file_count_discovered": 10,
+    "certification_packet_count_discovered": 22,
+    "generated_html_count_discovered": 38
+  },
+  "recommended_import_manifest_updates": [
+    "Replace M1 docs/analytics_builder/... expected paths with metadata/analytics_builder/*.v0_1.json and docs/analytics_builder_guide/*.md canonical paths.",
+    "Represent dataset cards as metadata/analytics_builder/dataset_cards/*.json plus metadata/analytics_builder/dataset_catalogue.v0_1.json and metadata/analytics_builder/builder_asset_index.v0_1.json.",
+    "Represent visual recipes as metadata/analytics_builder/visual_recipes/*.json plus metadata/analytics_builder/visual_recipe_library.v0_1.json.",
+    "Represent certification evidence packets as metadata/analytics_builder/certification_packets/*.json and the aggregate metadata/analytics_builder/certification_evidence_packets.v0_1.json.",
+    "Register generated HTML as reference-only presentation artifacts under docs/generated/analytics_builder_guide/**/*.html; do not bulk-copy or treat as source truth."
+  ],
+  "import_method_recommendations": {
+    "primary_method": "reference_canonical_json_and_markdown_paths_then_create_compact_extracts_after_review",
+    "metadata_json": "metadata_copy_or_reference_by_path",
+    "guide_markdown": "compact_extract_after_source_review",
+    "generated_html": "reference_only_do_not_copy_generated_artifact",
+    "tests": "reference_as_validation_support_not_answer_source_truth",
+    "production_gate": "M5 answer baselines remain blocked until a governed import manifest points to reviewed source paths and preserves safety requirements."
+  },
+  "artifacts_safe_to_copy_as_extracts": [
+    "docs/analytics_builder_guide/*.md after review",
+    "docs/analytics_builder_guide/demo_walkthroughs/*.md after review",
+    "metadata/analytics_builder/*.v0_1.json as compact summarized extracts after schema/status review",
+    "metadata/analytics_builder/dataset_cards/*.json as compact summarized extracts after count reconciliation",
+    "metadata/analytics_builder/visual_recipes/*.json as compact summarized extracts after count reconciliation",
+    "metadata/analytics_builder/certification_packets/*.json as compact summarized extracts after packet count/status review"
+  ],
+  "artifacts_safe_to_reference_by_path": [
+    "metadata/analytics_builder/analytics_builder_manifest.v0_1.json",
+    "metadata/analytics_builder/dataset_catalogue.v0_1.json",
+    "metadata/analytics_builder/dataset_cards/*.json",
+    "metadata/analytics_builder/visual_recipe_library.v0_1.json",
+    "metadata/analytics_builder/visual_recipes/*.json",
+    "metadata/analytics_builder/certification_rules.v0_1.json",
+    "metadata/analytics_builder/certification_statuses.v0_1.json",
+    "metadata/analytics_builder/prohibited_claims.v0_1.json",
+    "metadata/analytics_builder/validation_manifest.v0_1.json",
+    "metadata/analytics_builder/certification_evidence_packets.v0_1.json",
+    "metadata/analytics_builder/certification_packets/*.json",
+    "metadata/analytics_builder/certification_readiness_report.v0_1.json",
+    "metadata/analytics_builder/internal_review_demo_pack.v0_1.json",
+    "metadata/analytics_builder/blocked_gap_roadmap.v0_1.json",
+    "metadata/analytics_builder/blocked_gap_action_pack.v0_1.json",
+    "metadata/analytics_builder/v0_2_closeout.v0_1.json",
+    "docs/analytics_builder_guide/*.md",
+    "docs/analytics_builder_guide/demo_walkthroughs/*.md"
+  ],
+  "artifacts_not_safe_to_copy": [
+    {
+      "path": "docs/generated/analytics_builder_guide/**/*.html",
+      "reason": "Generated presentation output can go stale and must not become source truth or certification proof."
+    },
+    {
+      "path": "sql/**",
+      "reason": "SQL files are outside this Minerva static corpus import slice and must not create write paths or a second analytics truth path."
+    },
+    {
+      "path": "docs/generated/analytics_builder_guide/**/*",
+      "reason": "Generated guide assets should be referenced only after source markdown and metadata lineage is verified."
+    }
+  ],
+  "missing_or_unresolved_artifacts": [
+    "M1 expected docs/analytics_builder/... paths are stale or wrong.",
+    "Dataset portfolio count is 9, but metadata/analytics_builder/dataset_cards contains 6 files; candidate_gap_datasets_v0_1.json and certification packets appear to cover blocked/gap datasets and must be reconciled before M5.",
+    "Visual recipe portfolio count is 13, but metadata/analytics_builder/visual_recipes contains 10 files; blocked_visual_recipes_v0_1.json appears to cover blocked recipes and must be reconciled before M5."
+  ],
+  "expected_path_results": [
+    {
+      "artifact_group_id": "analytics_builder_guide_spine",
+      "expected_paths": ["docs/analytics_builder/guide_spine.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "docs/analytics_builder_guide/README.md",
+        "docs/analytics_builder_guide/00_big_picture.md",
+        "docs/analytics_builder_guide/01_roles.md",
+        "docs/analytics_builder_guide/02_builder_journey.md",
+        "docs/analytics_builder_guide/03_dataset_catalogue_shell.md",
+        "docs/analytics_builder_guide/04_visual_recipe_library_shell.md",
+        "docs/analytics_builder_guide/05_validation_and_certification_concepts.md",
+        "docs/analytics_builder_guide/06_minerva_and_future_builder_cockpit.md",
+        "docs/analytics_builder_guide/99_glossary.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "docs/analytics_builder_guide/README.md",
+        "docs/analytics_builder_guide/00_big_picture.md",
+        "docs/analytics_builder_guide/01_roles.md",
+        "docs/analytics_builder_guide/02_builder_journey.md",
+        "docs/analytics_builder_guide/03_dataset_catalogue_shell.md",
+        "docs/analytics_builder_guide/04_visual_recipe_library_shell.md",
+        "docs/analytics_builder_guide/05_validation_and_certification_concepts.md",
+        "docs/analytics_builder_guide/06_minerva_and_future_builder_cockpit.md",
+        "docs/analytics_builder_guide/99_glossary.md"
+      ],
+      "import_recommendation": "compact_extract",
+      "reason": "Guide spine exists as multiple compact markdown sections rather than a single guide_spine.md.",
+      "required_before_m5_answer_baselines": "Create reviewed compact extracts or source references for the guide spine sections."
+    },
+    {
+      "artifact_group_id": "dataset_catalogue",
+      "expected_paths": ["docs/analytics_builder/datasets/catalogue.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/dataset_catalogue.v0_1.json",
+        "metadata/analytics_builder/builder_asset_index.v0_1.json",
+        "docs/analytics_builder_guide/03_dataset_catalogue_shell.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/dataset_catalogue.v0_1.json",
+        "metadata/analytics_builder/builder_asset_index.v0_1.json",
+        "docs/analytics_builder_guide/03_dataset_catalogue_shell.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "The catalogue is canonical JSON with a markdown shell for guide presentation.",
+      "required_before_m5_answer_baselines": "Verify the catalogue count and relationship to dataset cards and blocked/gap datasets."
+    },
+    {
+      "artifact_group_id": "dataset_cards",
+      "expected_paths": ["docs/analytics_builder/datasets/cards/*.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/dataset_cards/*.json",
+        "metadata/analytics_builder/dataset_cards/candidate_gap_datasets_v0_1.json",
+        "metadata/analytics_builder/certification_packets/cert-packet-dataset-*.json"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/dataset_cards/*.json",
+        "metadata/analytics_builder/certification_packets/cert-packet-dataset-*.json"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Dataset cards are JSON metadata, not markdown cards. Six card files were found; blocked/gap datasets appear represented by candidate_gap_datasets and certification packets.",
+      "required_before_m5_answer_baselines": "Reconcile 9-dataset portfolio status against the 6 dataset card files plus gap dataset metadata."
+    },
+    {
+      "artifact_group_id": "visual_recipe_library",
+      "expected_paths": ["docs/analytics_builder/visual_recipes/library.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/visual_recipe_library.v0_1.json",
+        "metadata/analytics_builder/visual_recipe_certification_requirements.v0_1.json",
+        "docs/analytics_builder_guide/04_visual_recipe_library_shell.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/visual_recipe_library.v0_1.json",
+        "docs/analytics_builder_guide/04_visual_recipe_library_shell.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "The visual recipe library is canonical JSON with a markdown shell.",
+      "required_before_m5_answer_baselines": "Verify the 13-recipe portfolio count against recipe files and blocked recipe metadata."
+    },
+    {
+      "artifact_group_id": "visual_recipe_cards",
+      "expected_paths": ["docs/analytics_builder/visual_recipes/cards/*.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/visual_recipes/*.json",
+        "metadata/analytics_builder/visual_recipes/blocked_visual_recipes_v0_1.json",
+        "metadata/analytics_builder/certification_packets/cert-packet-recipe-*.json"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/visual_recipes/*.json",
+        "metadata/analytics_builder/certification_packets/cert-packet-recipe-*.json"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Visual recipe cards are JSON metadata, not markdown cards. Ten recipe files were found; blocked_visual_recipes likely accounts for blocked recipes.",
+      "required_before_m5_answer_baselines": "Reconcile 13 visual recipes against the 10 recipe files plus blocked recipe metadata."
+    },
+    {
+      "artifact_group_id": "certification_rules",
+      "expected_paths": ["docs/analytics_builder/certification/rules.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/certification_rules.v0_1.json",
+        "metadata/analytics_builder/certification_statuses.v0_1.json",
+        "metadata/analytics_builder/dataset_certification_requirements.v0_1.json",
+        "metadata/analytics_builder/visual_recipe_certification_requirements.v0_1.json",
+        "docs/analytics_builder_guide/05_validation_and_certification_concepts.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/certification_rules.v0_1.json",
+        "metadata/analytics_builder/certification_statuses.v0_1.json",
+        "docs/analytics_builder_guide/05_validation_and_certification_concepts.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Certification rules are JSON plus explanatory markdown concepts.",
+      "required_before_m5_answer_baselines": "Verify zero Certified posture and status definitions."
+    },
+    {
+      "artifact_group_id": "prohibited_claims",
+      "expected_paths": ["docs/analytics_builder/certification/prohibited_claims.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": ["metadata/analytics_builder/prohibited_claims.v0_1.json"],
+      "recommended_canonical_source_paths": ["metadata/analytics_builder/prohibited_claims.v0_1.json"],
+      "import_recommendation": "metadata_copy",
+      "reason": "Prohibited claims are canonical JSON and should be imported as safety metadata.",
+      "required_before_m5_answer_baselines": "Load or reference prohibited claims before any answer baseline wording is approved."
+    },
+    {
+      "artifact_group_id": "validation_manifest",
+      "expected_paths": ["docs/analytics_builder/validation/manifest.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/validation_manifest.v0_1.json",
+        "docs/analytics_builder_guide/20260624_validation_manifest.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/validation_manifest.v0_1.json",
+        "docs/analytics_builder_guide/20260624_validation_manifest.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Validation manifest exists as both canonical JSON and compact markdown report.",
+      "required_before_m5_answer_baselines": "Verify 6 validation assets and 4 validation gaps."
+    },
+    {
+      "artifact_group_id": "certification_evidence_packets",
+      "expected_paths": ["docs/analytics_builder/certification/evidence_packets/*.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/certification_evidence_packets.v0_1.json",
+        "metadata/analytics_builder/certification_packets/*.json",
+        "docs/analytics_builder_guide/20260624_certification_evidence_packets.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/certification_evidence_packets.v0_1.json",
+        "metadata/analytics_builder/certification_packets/*.json",
+        "docs/analytics_builder_guide/20260624_certification_evidence_packets.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Twenty-two packet JSON files were found with aggregate JSON and markdown summary.",
+      "required_before_m5_answer_baselines": "Verify packet count, status, and proof caveats."
+    },
+    {
+      "artifact_group_id": "certification_readiness_report",
+      "expected_paths": ["docs/analytics_builder/certification/readiness_report.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/certification_readiness_report.v0_1.json",
+        "docs/analytics_builder_guide/20260624_certification_readiness_report.md",
+        "metadata/analytics_builder/certification_matrix.v0_1.json"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/certification_readiness_report.v0_1.json",
+        "metadata/analytics_builder/certification_matrix.v0_1.json",
+        "docs/analytics_builder_guide/20260624_certification_readiness_report.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Readiness exists as detailed JSON with markdown report.",
+      "required_before_m5_answer_baselines": "Verify status counts and zero Certified wording."
+    },
+    {
+      "artifact_group_id": "internal_review_demo_walkthrough_pack",
+      "expected_paths": ["docs/analytics_builder/review/internal_demo_walkthrough_pack.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/internal_review_demo_pack.v0_1.json",
+        "docs/analytics_builder_guide/20260624_internal_review_demo_pack.md",
+        "docs/analytics_builder_guide/demo_walkthroughs/*.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/internal_review_demo_pack.v0_1.json",
+        "docs/analytics_builder_guide/20260624_internal_review_demo_pack.md",
+        "docs/analytics_builder_guide/demo_walkthroughs/*.md"
+      ],
+      "import_recommendation": "compact_extract",
+      "reason": "Demo pack is useful as compact reviewer guidance, not source proof.",
+      "required_before_m5_answer_baselines": "Verify walkthrough wording preserves safety caveats."
+    },
+    {
+      "artifact_group_id": "blocked_gap_roadmap",
+      "expected_paths": ["docs/analytics_builder/blocked_gaps/roadmap.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/blocked_gap_roadmap.v0_1.json",
+        "docs/analytics_builder_guide/20260624_blocked_gap_roadmap.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/blocked_gap_roadmap.v0_1.json",
+        "docs/analytics_builder_guide/20260624_blocked_gap_roadmap.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Blocked gap roadmap exists as canonical JSON plus markdown report.",
+      "required_before_m5_answer_baselines": "Verify blocked gaps remain safety controls, not failures."
+    },
+    {
+      "artifact_group_id": "blocked_gap_action_pack",
+      "expected_paths": ["docs/analytics_builder/blocked_gaps/action_pack.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/blocked_gap_action_pack.v0_1.json",
+        "docs/analytics_builder_guide/20260624_blocked_gap_action_pack.md",
+        "docs/analytics_builder_guide/20260624_post_v0_2_next_stream_decision.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/blocked_gap_action_pack.v0_1.json",
+        "docs/analytics_builder_guide/20260624_blocked_gap_action_pack.md",
+        "docs/analytics_builder_guide/20260624_post_v0_2_next_stream_decision.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Action pack exists as detailed JSON and compact markdown next-stream docs.",
+      "required_before_m5_answer_baselines": "Verify action recommendations do not imply proof completion."
+    },
+    {
+      "artifact_group_id": "v0_2_closeout",
+      "expected_paths": ["docs/analytics_builder/closeout/v0_2_closeout.md"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "metadata/analytics_builder/v0_2_closeout.v0_1.json",
+        "docs/analytics_builder_guide/20260624_v0_2_closeout.md",
+        "docs/analytics_builder_guide/20260624_v0_2_milestone_tag_readiness.md",
+        "docs/analytics_builder_guide/20260624_six_slice_closeout.md"
+      ],
+      "recommended_canonical_source_paths": [
+        "metadata/analytics_builder/v0_2_closeout.v0_1.json",
+        "docs/analytics_builder_guide/20260624_v0_2_closeout.md",
+        "docs/analytics_builder_guide/20260624_v0_2_milestone_tag_readiness.md"
+      ],
+      "import_recommendation": "metadata_copy",
+      "reason": "Closeout exists as canonical JSON plus markdown reports.",
+      "required_before_m5_answer_baselines": "Verify source tag, counts, and no posture change."
+    },
+    {
+      "artifact_group_id": "generated_static_guide",
+      "expected_paths": ["dist/analytics_builder_guide_static/index.html"],
+      "found_exact_paths": [],
+      "discovered_alternative_paths": [
+        "docs/generated/analytics_builder_guide/index.html",
+        "docs/generated/analytics_builder_guide/**/*.html"
+      ],
+      "recommended_canonical_source_paths": ["docs/generated/analytics_builder_guide/index.html"],
+      "import_recommendation": "do_not_copy_generated_artifact",
+      "reason": "Generated HTML was found in docs/generated, with 38 HTML files. It is presentation output only and must not be bulk-copied or treated as source truth.",
+      "required_before_m5_answer_baselines": "Reference generated guide only for presentation lineage after metadata/markdown source is reviewed."
+    }
+  ]
+}
