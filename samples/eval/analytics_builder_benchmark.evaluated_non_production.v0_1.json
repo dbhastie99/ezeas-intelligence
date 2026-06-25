@@ -1,0 +1,30 @@
+{
+  "name": "Analytics Builder Guide evaluated non-production benchmark",
+  "description": "Curated static evaluated baselines for Analytics Builder Guide answers. This file is non-production, not production-passed, not runtime-enabled, and pending Beautiful Slice 3 safety promotion.",
+  "domain_key": "analytics_builder_guide",
+  "benchmark_status": "evaluated_non_production_pending_safety_promotion",
+  "production_passed": false,
+  "runtime_enabled": false,
+  "live_llm_evaluation_used": false,
+  "production_answer_use_status": "not_allowed_pending_safety_promotion",
+  "source_evaluated_baseline_ref": "metadata/minerva/analytics_builder_evaluated_answer_baselines.v0_1.json",
+  "source_import_ref": "metadata/minerva/analytics_builder_governed_source_import.v0_1.json",
+  "questions": [
+    {"id": "analytics-builder-q01-dataset-payroll-cost-by-worksite", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q02-recipe-payroll-cost-by-rate-type", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q03-why-final-paid-blocked", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q04-payrollledger-bank-paid-proof", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q05-calcinterpreterline-payment-execution", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q06-objecttime-payment-finality", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q07-zero-certified-assets", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q08-status-differences", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q09-payroll-outcome-validations", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q10-remaining-validation-gaps", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q11-reviewer-first-look", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q12-blocked-gaps-upstream-proof", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q13-explain-blocked-gaps", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q14-final-paid-prohibited-claims", "status": "evaluated_non_production"},
+    {"id": "analytics-builder-q15-next-stream-after-static-v0-2", "status": "evaluated_non_production"}
+  ],
+  "beautiful3_safety_promotion_required": true
+}
