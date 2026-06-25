@@ -1,0 +1,208 @@
+{
+  "knowledge_pack_id": "analytics_builder_knowledge_pack_v0_1",
+  "pack_version": "v0_1",
+  "domain_key": "analytics_builder_guide",
+  "source_manifest_ref": "metadata/minerva/analytics_builder_source_manifest.v0_1.json",
+  "answer_safety_contract_ref": "metadata/minerva/analytics_builder_answer_safety_contract.v0_1.json",
+  "retrieval_domain_ref": "metadata/minerva/analytics_builder_retrieval_domain.v0_1.json",
+  "benchmark_question_plan_ref": "metadata/minerva/analytics_builder_benchmark_questions.v0_1.json",
+  "analytics_source_tag": "analytics-builder-static-omg-v0.2-20260624",
+  "source_repo": "ezeas-analytics",
+  "local_source_repo_detected": true,
+  "pack_status": "static_corpus_registered_metadata_only",
+  "ingestion_method": "metadata_registration_only",
+  "source_content_copied": false,
+  "generated_content_copied": false,
+  "production_answer_use_status": "not_allowed_pending_governed_source_ingestion",
+  "no_runtime_behavior": true,
+  "no_trust_posture_change": true,
+  "no_source_repo_modification": true,
+  "registered_static_knowledge_files": [
+    "docs/knowledge/minerva/analytics_builder/README.md",
+    "docs/knowledge/minerva/analytics_builder/static_corpus_index.md",
+    "docs/knowledge/minerva/analytics_builder/source_artifact_groups.md",
+    "docs/knowledge/minerva/analytics_builder/safety_summary.md"
+  ],
+  "missing_source_artifacts": [
+    "analytics_builder_guide_spine",
+    "dataset_catalogue",
+    "dataset_cards",
+    "visual_recipe_library",
+    "visual_recipe_cards",
+    "certification_rules",
+    "prohibited_claims",
+    "validation_manifest",
+    "certification_evidence_packets",
+    "certification_readiness_report",
+    "internal_review_demo_walkthrough_pack",
+    "blocked_gap_roadmap",
+    "blocked_gap_action_pack",
+    "v0_2_closeout",
+    "generated_static_guide"
+  ],
+  "safety_requirements": [
+    "Current Certified asset count is zero.",
+    "Final-paid payroll truth remains UNPROVEN / Blocked.",
+    "PayrollLedger does not prove bank-paid truth.",
+    "CalcInterpreterLine is calculation/detail evidence, not payment execution or final-paid truth.",
+    "ObjectTime is source-context evidence, not payment finality.",
+    "PayRun finalisation or SUCCEEDED status alone does not prove settlement, bank acceptance, remittance, or final-paid truth.",
+    "Visual rendering is not certification proof.",
+    "Blocked gaps are safety controls, not failures.",
+    "Preserve proof statuses: PROVEN / LIKELY / POSSIBLE / DISPROVEN / UNPROVEN.",
+    "Distinguish Diagnostic, Transitional, Blocked, and Certified.",
+    "Say not enough governed proof rather than inventing proof."
+  ],
+  "source_artifact_groups": [
+    {
+      "artifact_group_id": "analytics_builder_guide_spine",
+      "source_paths_expected": ["docs/analytics_builder/guide_spine.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Guide navigation and canonical Analytics Builder topic routing.",
+      "safety_notes": "Guide structure is not certification evidence.",
+      "required_before_baseline_answers": "Verify source path at the analytics source tag and map guide sections to knowledge chunks.",
+      "required_before_production_answer_use": "Governed source ingestion and safety review."
+    },
+    {
+      "artifact_group_id": "dataset_catalogue",
+      "source_paths_expected": ["docs/analytics_builder/datasets/catalogue.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Dataset selection and dataset inventory answers.",
+      "safety_notes": "Dataset presence does not prove Certified status or final-paid truth.",
+      "required_before_baseline_answers": "Verify all 9 dataset entries and status metadata.",
+      "required_before_production_answer_use": "Governed source ingestion and source-status review."
+    },
+    {
+      "artifact_group_id": "dataset_cards",
+      "source_paths_expected": ["docs/analytics_builder/datasets/cards/*.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Per-dataset caveats, grains, joins, validation references, and proof status.",
+      "safety_notes": "Dataset cards must not infer bank-paid settlement.",
+      "required_before_baseline_answers": "Verify each card's proof and certification status.",
+      "required_before_production_answer_use": "Governed source ingestion and answer-safety evaluation."
+    },
+    {
+      "artifact_group_id": "visual_recipe_library",
+      "source_paths_expected": ["docs/analytics_builder/visual_recipes/library.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Visual recipe selection routing.",
+      "safety_notes": "Visual rendering is not validation or certification proof.",
+      "required_before_baseline_answers": "Verify all 13 recipe references.",
+      "required_before_production_answer_use": "Governed source ingestion and safety review."
+    },
+    {
+      "artifact_group_id": "visual_recipe_cards",
+      "source_paths_expected": ["docs/analytics_builder/visual_recipes/cards/*.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Per-recipe dataset dependencies and chart interpretation guidance.",
+      "safety_notes": "A rendered visual cannot upgrade proof or certification status.",
+      "required_before_baseline_answers": "Verify recipe dependencies and caveats.",
+      "required_before_production_answer_use": "Governed source ingestion and visual-proof boundary checks."
+    },
+    {
+      "artifact_group_id": "certification_rules",
+      "source_paths_expected": ["docs/analytics_builder/certification/rules.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Diagnostic, Transitional, Blocked, and Certified definitions.",
+      "safety_notes": "Certified only when source metadata says Certified.",
+      "required_before_baseline_answers": "Verify status definitions and zero Certified count.",
+      "required_before_production_answer_use": "Governed certification-rule ingestion."
+    },
+    {
+      "artifact_group_id": "prohibited_claims",
+      "source_paths_expected": ["docs/analytics_builder/certification/prohibited_claims.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Answer refusal and overclaim prevention.",
+      "safety_notes": "Must gate final-paid, certification, payment-finality, and visual-proof claims.",
+      "required_before_baseline_answers": "Verify prohibited claim wording.",
+      "required_before_production_answer_use": "Apply as answer safety gate."
+    },
+    {
+      "artifact_group_id": "validation_manifest",
+      "source_paths_expected": ["docs/analytics_builder/validation/manifest.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Validation asset and validation gap answers.",
+      "safety_notes": "Validation assets do not certify all assets or prove final bank-paid truth.",
+      "required_before_baseline_answers": "Verify 6 validation assets and 4 validation gaps.",
+      "required_before_production_answer_use": "Governed validation manifest ingestion."
+    },
+    {
+      "artifact_group_id": "certification_evidence_packets",
+      "source_paths_expected": ["docs/analytics_builder/certification/evidence_packets/*.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Evidence packet triage and reviewer-first answers.",
+      "safety_notes": "Packet existence does not mean Certified.",
+      "required_before_baseline_answers": "Verify 22 packets and asset-level statuses.",
+      "required_before_production_answer_use": "Governed packet ingestion and status review."
+    },
+    {
+      "artifact_group_id": "certification_readiness_report",
+      "source_paths_expected": ["docs/analytics_builder/certification/readiness_report.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Portfolio readiness and zero Certified asset answers.",
+      "safety_notes": "Readiness is not certification.",
+      "required_before_baseline_answers": "Verify portfolio status counts.",
+      "required_before_production_answer_use": "Governed readiness report ingestion."
+    },
+    {
+      "artifact_group_id": "internal_review_demo_walkthrough_pack",
+      "source_paths_expected": ["docs/analytics_builder/review/internal_demo_walkthrough_pack.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Reviewer triage and demo walkthrough guidance.",
+      "safety_notes": "Demo walkthroughs are review aids, not governed proof.",
+      "required_before_baseline_answers": "Verify reviewer order and caveats.",
+      "required_before_production_answer_use": "Governed source ingestion."
+    },
+    {
+      "artifact_group_id": "blocked_gap_roadmap",
+      "source_paths_expected": ["docs/analytics_builder/blocked_gaps/roadmap.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Blocked-gap explanation and upstream proof routing.",
+      "safety_notes": "Blocked gaps are safety controls, not failures.",
+      "required_before_baseline_answers": "Verify four blocked gaps and required proof.",
+      "required_before_production_answer_use": "Governed blocked-gap roadmap ingestion."
+    },
+    {
+      "artifact_group_id": "blocked_gap_action_pack",
+      "source_paths_expected": ["docs/analytics_builder/blocked_gaps/action_pack.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Next-stream and upstream proof action guidance.",
+      "safety_notes": "Action pack does not mean proof is complete.",
+      "required_before_baseline_answers": "Verify next-stream recommendations.",
+      "required_before_production_answer_use": "Governed source ingestion."
+    },
+    {
+      "artifact_group_id": "v0_2_closeout",
+      "source_paths_expected": ["docs/analytics_builder/closeout/v0_2_closeout.md"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification",
+      "minerva_use": "Static OMG v0.2 closeout summary.",
+      "safety_notes": "Closeout is a snapshot and does not change trust posture.",
+      "required_before_baseline_answers": "Verify tag alignment and counts.",
+      "required_before_production_answer_use": "Governed closeout ingestion."
+    },
+    {
+      "artifact_group_id": "generated_static_guide",
+      "source_paths_expected": ["dist/analytics_builder_guide_static/index.html"],
+      "local_expected_path_exists": false,
+      "knowledge_pack_status": "registered_expected_source_pending_path_verification_no_bulk_copy",
+      "minerva_use": "Presentation reference only after source lineage is verified.",
+      "safety_notes": "Generated HTML is not certification or final-paid evidence.",
+      "required_before_baseline_answers": "Trace generated guide back to reviewed source markdown and metadata.",
+      "required_before_production_answer_use": "Governed source ingestion; do not bulk-copy generated output blindly."
+    }
+  ]
+}
