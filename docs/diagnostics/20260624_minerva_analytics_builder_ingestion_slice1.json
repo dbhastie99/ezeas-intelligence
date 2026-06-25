@@ -1,0 +1,30 @@
+{
+  "diagnostic_id": "20260624_minerva_analytics_builder_ingestion_slice1",
+  "status": "planned_ingestion_readiness_only",
+  "domain_key": "analytics_builder_guide",
+  "created_artifacts": [
+    "docs/codex_prompts/20260624_minerva_analytics_builder_ingestion_slice1.md",
+    "docs/knowledge/20260624_minerva_analytics_builder_ingestion_slice1_knowledge.md",
+    "docs/minerva/analytics_builder/20260624_ingestion_plan.md",
+    "docs/minerva/analytics_builder/20260624_source_corpus_manifest.md",
+    "docs/minerva/analytics_builder/20260624_answer_safety_contract.md",
+    "docs/minerva/analytics_builder/20260624_benchmark_question_plan.md",
+    "metadata/minerva/analytics_builder_source_manifest.v0_1.json",
+    "metadata/minerva/analytics_builder_answer_safety_contract.v0_1.json",
+    "metadata/minerva/analytics_builder_benchmark_questions.v0_1.json"
+  ],
+  "retrieval_registry_changed": false,
+  "source_documents_ingested": false,
+  "runtime_index_created": false,
+  "app_routes_created": false,
+  "runtime_ui_created": false,
+  "bi_dashboards_created": false,
+  "sql_write_paths_created": false,
+  "stored_procedures_created": false,
+  "runtime_behavior_changed": false,
+  "external_repositories_modified": false,
+  "ezeas_analytics_modified": false,
+  "final_paid_truth_changed": false,
+  "certification_posture_changed": false,
+  "certified_assets_count": 0
+}

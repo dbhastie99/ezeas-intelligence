@@ -1,0 +1,158 @@
+{
+  "benchmark_plan_id": "analytics_builder_benchmark_questions_v0_1",
+  "domain_key": "analytics_builder_guide",
+  "status": "planned_pending_source_ingestion",
+  "actual_answer_baselines_created": false,
+  "questions": [
+    {
+      "id": "dataset-payroll-cost-by-worksite",
+      "question": "Which dataset should I use for payroll cost by worksite?",
+      "expected_answer_intent": "Recommend the reviewed dataset only after source ingestion; include dataset status, proof status, and any blocked caveats.",
+      "required_source_artifact_types": ["dataset_catalogue", "dataset_cards", "certification_readiness_report"],
+      "required_safety_wording": ["state certification status", "state proof status", "not enough governed proof if source metadata is missing"],
+      "prohibited_wording": ["Certified unless source metadata says Certified", "final-paid payroll truth is proven"],
+      "expected_status_terms": ["Diagnostic", "Transitional", "Blocked", "Certified", "LIKELY", "UNPROVEN"],
+      "answer_definitiveness": "must_be_qualified"
+    },
+    {
+      "id": "recipe-payroll-cost-by-rate-type",
+      "question": "Which visual recipe should I use for payroll cost by rate type?",
+      "expected_answer_intent": "Recommend the reviewed recipe and its dataset dependency while stating that visual rendering is not certification proof.",
+      "required_source_artifact_types": ["visual_recipe_library", "visual_recipe_cards", "dataset_cards"],
+      "required_safety_wording": ["visual rendering is not certification proof", "state certification status", "state proof status", "not enough governed proof"],
+      "prohibited_wording": ["rendered visual proves certification", "visual proves final-paid truth"],
+      "expected_status_terms": ["Diagnostic", "Transitional", "Blocked", "Certified", "LIKELY", "UNPROVEN"],
+      "answer_definitiveness": "must_be_qualified"
+    },
+    {
+      "id": "why-final-paid-blocked",
+      "question": "Why is final-paid payroll truth blocked?",
+      "expected_answer_intent": "Explain that final-paid payroll truth lacks governed bank-paid proof and remains UNPROVEN / Blocked.",
+      "required_source_artifact_types": ["blocked_gap_roadmap", "blocked_gap_action_pack", "prohibited_claims"],
+      "required_safety_wording": ["Final-paid payroll truth remains UNPROVEN / Blocked", "not enough governed proof", "blocked gaps are safety controls"],
+      "prohibited_wording": ["final-paid payroll truth is proven", "PayRun finalisation proves settlement"],
+      "expected_status_terms": ["Blocked", "UNPROVEN"],
+      "answer_definitiveness": "may_be_definitive_about_current_blocked_status"
+    },
+    {
+      "id": "payrollledger-bank-paid-proof",
+      "question": "Can I use PayrollLedger as bank-paid proof?",
+      "expected_answer_intent": "Refuse the proof upgrade and explain PayrollLedger does not prove bank-paid truth.",
+      "required_source_artifact_types": ["prohibited_claims", "certification_rules", "blocked_gap_roadmap"],
+      "required_safety_wording": ["PayrollLedger does not prove bank-paid truth", "not enough governed proof"],
+      "prohibited_wording": ["PayrollLedger is bank-paid proof", "PayrollLedger proves settlement"],
+      "expected_status_terms": ["UNPROVEN", "Blocked"],
+      "answer_definitiveness": "may_be_definitive_about_prohibited_claim"
+    },
+    {
+      "id": "calcinterpreterline-payment-execution",
+      "question": "Does CalcInterpreterLine prove payment execution?",
+      "expected_answer_intent": "Explain CalcInterpreterLine is calculation/detail evidence and not payment execution or final-paid proof.",
+      "required_source_artifact_types": ["prohibited_claims", "certification_rules", "dataset_cards"],
+      "required_safety_wording": ["CalcInterpreterLine is calculation/detail evidence", "not payment execution", "not final-paid truth", "not enough governed proof"],
+      "prohibited_wording": ["CalcInterpreterLine proves payment execution", "CalcInterpreterLine proves final-paid truth"],
+      "expected_status_terms": ["UNPROVEN", "Blocked"],
+      "answer_definitiveness": "may_be_definitive_about_prohibited_claim"
+    },
+    {
+      "id": "objecttime-payment-finality",
+      "question": "Does ObjectTime prove payment finality?",
+      "expected_answer_intent": "Explain ObjectTime is source-context evidence and not payment finality.",
+      "required_source_artifact_types": ["prohibited_claims", "blocked_gap_roadmap", "dataset_cards"],
+      "required_safety_wording": ["ObjectTime is source-context evidence", "not payment finality", "not enough governed proof"],
+      "prohibited_wording": ["ObjectTime proves payment finality", "ObjectTime proves final bank-paid payroll truth"],
+      "expected_status_terms": ["UNPROVEN", "Blocked"],
+      "answer_definitiveness": "may_be_definitive_about_prohibited_claim"
+    },
+    {
+      "id": "zero-certified-assets",
+      "question": "Why are there zero Certified assets?",
+      "expected_answer_intent": "Explain current v0.2 readiness status, blocked gaps, and that Certified requires source metadata that no current asset has.",
+      "required_source_artifact_types": ["certification_readiness_report", "certification_rules", "certification_evidence_packets"],
+      "required_safety_wording": ["Current Certified asset count is zero", "Certified only if source metadata says Certified"],
+      "prohibited_wording": ["some assets are Certified", "Transitional means Certified"],
+      "expected_status_terms": ["Diagnostic", "Transitional", "Blocked", "Certified"],
+      "answer_definitiveness": "may_be_definitive_about_current_zero_count"
+    },
+    {
+      "id": "status-differences",
+      "question": "What is the difference between Diagnostic, Transitional, Blocked, and Certified?",
+      "expected_answer_intent": "Define each certification status from source rules and avoid upgrading Diagnostic, Transitional, or Blocked to Certified.",
+      "required_source_artifact_types": ["certification_rules", "certification_readiness_report"],
+      "required_safety_wording": ["Diagnostic, Transitional, and Blocked are not Certified", "Certified only if source metadata says Certified"],
+      "prohibited_wording": ["Diagnostic is Certified", "Transitional is Certified", "Blocked is failure"],
+      "expected_status_terms": ["Diagnostic", "Transitional", "Blocked", "Certified"],
+      "answer_definitiveness": "must_be_qualified_by_source_rules"
+    },
+    {
+      "id": "payroll-outcome-validations",
+      "question": "What validations exist for payroll outcome analytics?",
+      "expected_answer_intent": "Summarize reviewed validation assets and keep validation separate from certification and final-paid truth.",
+      "required_source_artifact_types": ["validation_manifest", "certification_evidence_packets"],
+      "required_safety_wording": ["validation assets do not prove final-paid truth", "state proof status", "not enough governed proof"],
+      "prohibited_wording": ["validation proves bank-paid settlement", "validation certifies all assets"],
+      "expected_status_terms": ["LIKELY", "UNPROVEN", "Diagnostic", "Transitional", "Blocked"],
+      "answer_definitiveness": "must_be_qualified"
+    },
+    {
+      "id": "remaining-validation-gaps",
+      "question": "What validation gaps remain?",
+      "expected_answer_intent": "List the four known blocked gaps and describe them as safety controls requiring upstream proof.",
+      "required_source_artifact_types": ["validation_manifest", "blocked_gap_roadmap"],
+      "required_safety_wording": ["blocked gaps are safety controls", "not enough governed proof"],
+      "prohibited_wording": ["no validation gaps remain", "blocked gaps are failures"],
+      "expected_status_terms": ["Blocked", "UNPROVEN"],
+      "answer_definitiveness": "may_be_definitive_about_known_v0_2_gaps"
+    },
+    {
+      "id": "reviewer-first-look",
+      "question": "What should a reviewer look at first?",
+      "expected_answer_intent": "Direct reviewers to readiness report, prohibited claims, blocked-gap roadmap, validation manifest, and relevant evidence packets.",
+      "required_source_artifact_types": ["certification_readiness_report", "prohibited_claims", "blocked_gap_roadmap", "validation_manifest", "internal_review_demo_walkthrough_pack"],
+      "required_safety_wording": ["review aid is not certification proof", "zero Certified assets"],
+      "prohibited_wording": ["demo proves certification", "review walkthrough is governed proof"],
+      "expected_status_terms": ["Diagnostic", "Transitional", "Blocked", "Certified"],
+      "answer_definitiveness": "must_be_qualified"
+    },
+    {
+      "id": "blocked-gaps-upstream-proof",
+      "question": "What blocked gaps need upstream proof?",
+      "expected_answer_intent": "Name review/exception analytics, roster-vs-actual/ObjectTime scheduling coverage, standalone CalcInterpreterLine detail, and final bank-paid payroll truth.",
+      "required_source_artifact_types": ["blocked_gap_roadmap", "blocked_gap_action_pack"],
+      "required_safety_wording": ["upstream proof is required", "not enough governed proof"],
+      "prohibited_wording": ["blocked gaps are already closed", "final bank-paid payroll truth is proven"],
+      "expected_status_terms": ["Blocked", "UNPROVEN"],
+      "answer_definitiveness": "may_be_definitive_about_known_v0_2_gaps"
+    },
+    {
+      "id": "explain-blocked-gaps",
+      "question": "How should Minerva explain blocked gaps?",
+      "expected_answer_intent": "Use safety-control wording and avoid failure framing or invented proof.",
+      "required_source_artifact_types": ["blocked_gap_roadmap", "prohibited_claims", "certification_rules"],
+      "required_safety_wording": ["blocked gaps are safety controls, not failures", "not enough governed proof"],
+      "prohibited_wording": ["blocked means broken", "infer proof"],
+      "expected_status_terms": ["Blocked", "UNPROVEN"],
+      "answer_definitiveness": "may_be_definitive_about_answer_wording"
+    },
+    {
+      "id": "final-paid-prohibited-claims",
+      "question": "What claims are prohibited for final-paid truth?",
+      "expected_answer_intent": "List prohibited final-paid, bank-paid, settlement, remittance, and bank-acceptance claims.",
+      "required_source_artifact_types": ["prohibited_claims", "certification_rules"],
+      "required_safety_wording": ["Final-paid payroll truth remains UNPROVEN / Blocked", "PayRun finalisation or SUCCEEDED status alone does not prove settlement, bank acceptance, remittance, or final-paid truth"],
+      "prohibited_wording": ["PayRun finalisation proves bank settlement", "SUCCEEDED status proves bank acceptance"],
+      "expected_status_terms": ["Blocked", "UNPROVEN"],
+      "answer_definitiveness": "may_be_definitive_about_prohibited_claims"
+    },
+    {
+      "id": "next-stream-after-static-v0-2",
+      "question": "What is the recommended next stream after static v0.2?",
+      "expected_answer_intent": "Recommend source ingestion/review and blocked-gap proof streams, not runtime dashboard or second truth-path work.",
+      "required_source_artifact_types": ["v0_2_closeout", "blocked_gap_action_pack", "certification_readiness_report"],
+      "required_safety_wording": ["planned/pending source ingestion", "upstream proof required", "no second analytics truth path"],
+      "prohibited_wording": ["create SQL write paths", "build BI dashboard", "change payroll runtime"],
+      "expected_status_terms": ["Blocked", "UNPROVEN", "LIKELY"],
+      "answer_definitiveness": "must_be_qualified"
+    }
+  ]
+}

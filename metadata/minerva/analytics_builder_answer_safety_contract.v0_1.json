@@ -1,0 +1,85 @@
+{
+  "contract_id": "analytics_builder_answer_safety_contract_v0_1",
+  "domain_key": "analytics_builder_guide",
+  "status": "planned_static_corpus_pending",
+  "production_answer_use_allowed": false,
+  "required_status_terms": {
+    "proof_statuses": ["PROVEN", "LIKELY", "POSSIBLE", "DISPROVEN", "UNPROVEN"],
+    "certification_statuses": ["Diagnostic", "Transitional", "Blocked", "Certified"]
+  },
+  "portfolio_guardrails": {
+    "certified_assets_count": 0,
+    "certified_asset_claim_rule": "Say there are zero Certified assets unless reviewed source metadata explicitly says an asset is Certified.",
+    "final_paid_truth_status": "UNPROVEN / Blocked"
+  },
+  "allowed_answer_patterns": [
+    "Use the dataset or visual recipe recommended by the reviewed Analytics Builder Guide source, then state the asset certification status and proof status.",
+    "Say an answer is based on static v0.2 guide readiness when source ingestion has not been production-approved.",
+    "Say blocked gaps are safety controls that identify missing governed proof.",
+    "Say there is not enough governed proof when final-paid, settlement, certification, or source-finality evidence is absent.",
+    "Distinguish visualization guidance from validation proof and certification proof."
+  ],
+  "required_disclaimers": [
+    "Static Analytics Builder v0.2 corpus is pending governed source ingestion for production answer use.",
+    "No asset is Certified unless source metadata explicitly says Certified.",
+    "Current Certified asset count is zero.",
+    "Final-paid payroll truth remains UNPROVEN / Blocked.",
+    "PayrollLedger does not prove bank-paid truth.",
+    "CalcInterpreterLine is calculation/detail evidence, not payment execution or final-paid truth.",
+    "ObjectTime is source-context evidence, not payment finality.",
+    "PayRun finalisation or SUCCEEDED status alone does not prove settlement, bank acceptance, remittance, or final-paid truth.",
+    "Visual rendering is not certification proof."
+  ],
+  "required_blocked_gap_wording": [
+    "Blocked gaps are safety controls, not failures.",
+    "The blocked gap means there is not enough governed proof for that claim yet.",
+    "Upstream proof is required before Minerva can treat the claim as proven or certified."
+  ],
+  "prohibited_claims": [
+    "Any Analytics Builder asset is Certified when source metadata does not say Certified.",
+    "There are Certified assets in v0.2.",
+    "Final-paid payroll truth is proven.",
+    "PayrollLedger is bank-paid proof.",
+    "PayrollLedger proves settlement, bank acceptance, or remittance.",
+    "CalcInterpreterLine proves payment execution.",
+    "CalcInterpreterLine proves final-paid truth.",
+    "ObjectTime proves payment finality.",
+    "ObjectTime proves final bank-paid payroll truth.",
+    "PayRun finalisation proves bank settlement.",
+    "SUCCEEDED status proves bank acceptance.",
+    "A rendered visual proves certification.",
+    "A static guide page creates a second analytics truth path."
+  ],
+  "final_paid_safety_rules": [
+    "Final-paid payroll truth must remain UNPROVEN / Blocked until governed bank-paid proof exists in reviewed source metadata.",
+    "Use 'not enough governed proof' for final-paid, bank-paid, settlement, bank acceptance, remittance, or payment-finality claims.",
+    "Do not combine PayRun finalisation, SUCCEEDED status, PayrollLedger, CalcInterpreterLine, ObjectTime, or visual rendering into inferred final-paid proof."
+  ],
+  "calc_interpreter_line_safety_rules": [
+    "CalcInterpreterLine may be described as calculation/detail evidence.",
+    "CalcInterpreterLine must not be described as payment execution evidence.",
+    "CalcInterpreterLine must not be described as final-paid, bank-paid, settlement, remittance, or bank-acceptance proof."
+  ],
+  "objecttime_safety_rules": [
+    "ObjectTime may be described as source-context or scheduling/source evidence when supported by source metadata.",
+    "ObjectTime must not be described as payment finality.",
+    "ObjectTime must not be described as bank-paid, settlement, remittance, final-paid, or certification proof."
+  ],
+  "payrollledger_bridge_safety_rules": [
+    "PayrollLedger may bridge calculated payroll ledger evidence when source metadata supports that scope.",
+    "PayrollLedger does not prove bank-paid truth.",
+    "PayrollLedger must not be used as standalone settlement, remittance, bank acceptance, or final-paid evidence."
+  ],
+  "certification_safety_rules": [
+    "Certified may be used only when source metadata says Certified for the specific asset.",
+    "Current v0.2 Certified asset count is zero.",
+    "Diagnostic, Transitional, and Blocked are not Certified.",
+    "LIKELY and UNPROVEN proof statuses must not be upgraded by inference."
+  ],
+  "visual_rendering_safety_rules": [
+    "Visual rendering may demonstrate presentation readiness only.",
+    "Visual rendering is not validation proof.",
+    "Visual rendering is not certification proof.",
+    "Visual rendering is not final-paid or payment-finality proof."
+  ]
+}

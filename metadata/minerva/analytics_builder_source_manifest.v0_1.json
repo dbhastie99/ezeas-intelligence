@@ -1,0 +1,193 @@
+{
+  "manifest_id": "analytics_builder_source_manifest_v0_1",
+  "domain_key": "analytics_builder_guide",
+  "source_repo": "ezeas-analytics",
+  "recommended_source_tag": "analytics-builder-static-omg-v0.2-20260624",
+  "slice": "Minerva Analytics Builder Ingestion - Slice 1",
+  "created_for_repo": "ezeas-intelligence",
+  "portfolio_status": {
+    "datasets": 9,
+    "visual_recipes": 13,
+    "validation_assets": 6,
+    "validation_gaps": 4,
+    "certification_evidence_packets": 22,
+    "certified_assets": 0,
+    "certification_status_counts": {
+      "Transitional": 10,
+      "Diagnostic": 4,
+      "Blocked": 8,
+      "Certified": 0
+    },
+    "proof_status_counts": {
+      "LIKELY": 14,
+      "UNPROVEN": 8
+    }
+  },
+  "ingestion_state": {
+    "status": "static_corpus_pending",
+    "actual_source_content_copied": false,
+    "runtime_indexing_performed": false,
+    "production_answer_use_allowed": false,
+    "reason": "This slice defines expected source artifacts and safety controls only. Source content must be reviewed from ezeas-analytics at the recommended tag before production answer use."
+  },
+  "blocked_gaps": [
+    "review/exception analytics",
+    "roster-vs-actual/ObjectTime scheduling coverage",
+    "standalone CalcInterpreterLine detail",
+    "final bank-paid payroll truth"
+  ],
+  "required_proof_status_terms": ["PROVEN", "LIKELY", "POSSIBLE", "DISPROVEN", "UNPROVEN"],
+  "required_certification_status_terms": ["Diagnostic", "Transitional", "Blocked", "Certified"],
+  "source_artifacts": [
+    {
+      "artifact_group": "analytics_builder_guide_spine",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/guide_spine.md",
+      "expected_purpose": "Guide structure, navigation, intended audience, and canonical Analytics Builder topic order.",
+      "expected_minerva_use": "Route analytics-builder questions to the right catalogue, recipe, validation, or safety source.",
+      "trust_finality_warning_requirement": "Must not be treated as certification evidence by itself.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Confirm path and content at analytics-builder-static-omg-v0.2-20260624 and map sections to approved source chunks."
+    },
+    {
+      "artifact_group": "dataset_catalogue",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/datasets/catalogue.md",
+      "expected_purpose": "Catalogue of Analytics Builder datasets and their intended analytic use.",
+      "expected_minerva_use": "Answer dataset selection questions with source-scoped confidence and proof-status caveats.",
+      "trust_finality_warning_requirement": "Dataset presence does not prove Certified status or final-paid truth.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Verify all 9 dataset entries, status fields, and proof-status metadata."
+    },
+    {
+      "artifact_group": "dataset_cards",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/datasets/cards/*.md",
+      "expected_purpose": "Per-dataset purpose, grains, joins, caveats, validations, and recommended visual pairings.",
+      "expected_minerva_use": "Ground answers about which dataset to use and what claims it can or cannot support.",
+      "trust_finality_warning_requirement": "Cards must preserve proof status and cannot be used to infer bank-paid settlement.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Review each card for certification status, proof status, blocked warnings, and prohibited claims."
+    },
+    {
+      "artifact_group": "visual_recipe_library",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/visual_recipes/library.md",
+      "expected_purpose": "Index of visual recipes and their intended analytic questions.",
+      "expected_minerva_use": "Route visual-recipe questions and distinguish visualization guidance from proof.",
+      "trust_finality_warning_requirement": "Visual rendering is not validation proof or certification proof.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Verify all 13 visual recipes and their status metadata."
+    },
+    {
+      "artifact_group": "visual_recipe_cards",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/visual_recipes/cards/*.md",
+      "expected_purpose": "Per-recipe setup, dataset dependencies, chart intent, and interpretation warnings.",
+      "expected_minerva_use": "Ground visual recipe recommendations while preserving safety wording.",
+      "trust_finality_warning_requirement": "A rendered chart cannot upgrade proof status or certification status.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Confirm source recipe dependencies, caveats, and validation references."
+    },
+    {
+      "artifact_group": "certification_rules",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/certification/rules.md",
+      "expected_purpose": "Rules for Diagnostic, Transitional, Blocked, and Certified statuses.",
+      "expected_minerva_use": "Explain certification status boundaries and avoid Certified overclaims.",
+      "trust_finality_warning_requirement": "Certified must only be stated when source metadata says Certified.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Verify status definitions and current zero Certified count."
+    },
+    {
+      "artifact_group": "prohibited_claims",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/certification/prohibited_claims.md",
+      "expected_purpose": "Claims Minerva and reviewers must not make from the static guide corpus.",
+      "expected_minerva_use": "Block final-paid, settlement, certification, and proof-status overclaims.",
+      "trust_finality_warning_requirement": "Must be applied as an answer safety gate, not merely cited as background.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Confirm prohibited wording and map it into answer-evaluation checks."
+    },
+    {
+      "artifact_group": "validation_manifest",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/validation/manifest.md",
+      "expected_purpose": "Validation asset inventory and validation-gap list.",
+      "expected_minerva_use": "Answer what validations exist and what gaps remain.",
+      "trust_finality_warning_requirement": "Validation assets do not certify all analytics assets and do not prove final bank-paid truth.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Verify 6 validation assets and 4 validation gaps."
+    },
+    {
+      "artifact_group": "certification_evidence_packets",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/certification/evidence_packets/*.md",
+      "expected_purpose": "Evidence packets for dataset and recipe readiness review.",
+      "expected_minerva_use": "Support status-specific answers and reviewer-first recommendations.",
+      "trust_finality_warning_requirement": "Evidence packet existence does not mean Certified.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Confirm 22 packets and their asset-level status/proof metadata."
+    },
+    {
+      "artifact_group": "certification_readiness_report",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/certification/readiness_report.md",
+      "expected_purpose": "Portfolio readiness summary for certification review.",
+      "expected_minerva_use": "Ground portfolio-status summaries and zero-Certified wording.",
+      "trust_finality_warning_requirement": "Must preserve Diagnostic, Transitional, Blocked, and Certified distinctions.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Verify status counts and blocker explanations against source metadata."
+    },
+    {
+      "artifact_group": "internal_review_demo_walkthrough_pack",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/review/internal_demo_walkthrough_pack.md",
+      "expected_purpose": "Reviewer walkthrough and demo flow for static guide assessment.",
+      "expected_minerva_use": "Answer reviewer triage questions without implying production certification.",
+      "trust_finality_warning_requirement": "Demo walkthroughs are review aids, not governed proof by themselves.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Confirm reviewer order and caveats."
+    },
+    {
+      "artifact_group": "blocked_gap_roadmap",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/blocked_gaps/roadmap.md",
+      "expected_purpose": "Roadmap for the four blocked proof gaps.",
+      "expected_minerva_use": "Explain blocked gaps as safety controls and next proof streams.",
+      "trust_finality_warning_requirement": "Blocked gaps must not be framed as failures or silently bypassed.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Verify each blocked gap, owner expectation, and required upstream proof."
+    },
+    {
+      "artifact_group": "blocked_gap_action_pack",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/blocked_gaps/action_pack.md",
+      "expected_purpose": "Actionable follow-up pack for closing blocked gaps.",
+      "expected_minerva_use": "Answer recommended next stream questions while preserving planned/pending language.",
+      "trust_finality_warning_requirement": "Actions are not completion evidence until source metadata changes.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Confirm next-stream wording and dependency list."
+    },
+    {
+      "artifact_group": "v0_2_closeout",
+      "source_repo": "ezeas-analytics",
+      "source_path": "docs/analytics_builder/closeout/v0_2_closeout.md",
+      "expected_purpose": "Closeout of static OMG v0.2 milestone and known portfolio status.",
+      "expected_minerva_use": "Ground milestone summary, counts, and no-certification-change posture.",
+      "trust_finality_warning_requirement": "Closeout is a snapshot, not continuing proof of changed source truth.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Verify counts and tag alignment."
+    },
+    {
+      "artifact_group": "generated_static_guide",
+      "source_repo": "ezeas-analytics",
+      "source_path": "dist/analytics_builder_guide_static/index.html",
+      "expected_purpose": "Generated static guide output for review/demo distribution.",
+      "expected_minerva_use": "Reference only after source markdown and metadata are linked; do not treat generated rendering as proof.",
+      "trust_finality_warning_requirement": "Generated HTML is presentation, not certification or final-paid evidence.",
+      "ingestion_status": "expected_source_pending_review",
+      "required_before_production_answer_use": "Verify it was generated from the reviewed source at the recommended tag."
+    }
+  ]
+}
