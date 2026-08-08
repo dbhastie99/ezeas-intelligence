@@ -17,7 +17,9 @@ PROMPT_ARTEFACT = (
 MINERVA_QG_LSL_ASSIST1_AUTHORIZED_APP_FILES = frozenset(
     {
         "app/services/minerva_qld_lsl_answer_planner.py",
+        "app/services/minerva_qld_lsl_openai_renderer.py",
         "app/services/governed_knowledge_pack_service.py",
+        "app/core/config.py",
         "app/schemas/minerva_leave.py",
         "app/services/minerva_leave_proposal_service.py",
         "app/api/v1/minerva_leave.py",

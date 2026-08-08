@@ -15,6 +15,12 @@ class Settings(BaseSettings):
     llm_base_url: str | None = None
     llm_api_key: str | None = None
     llm_model: str | None = None
+    openai_rendering_enabled: bool = False
+    openai_rendering_model: str | None = None
+    openai_rendering_base_url: str | None = None
+    openai_rendering_api_key: str | None = None
+    openai_rendering_timeout_seconds: float = Field(default=5.0, gt=0, le=10)
+    openai_rendering_max_output_chars: int = Field(default=4000, gt=0, le=12000)
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174"
     chunk_size: int = 1200
     chunk_overlap: int = 150

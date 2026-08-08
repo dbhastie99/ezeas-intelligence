@@ -5,11 +5,14 @@ from pathlib import Path
 MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES = frozenset(
     {
         "app/services/minerva_qld_lsl_answer_planner.py",
+        "app/services/minerva_qld_lsl_openai_renderer.py",
         "app/services/governed_knowledge_pack_service.py",
+        "app/core/config.py",
         "app/schemas/minerva_leave.py",
         "app/services/minerva_leave_proposal_service.py",
         "app/api/v1/minerva_leave.py",
         "tests/test_minerva_qld_lsl_answer_planner.py",
+        "tests/test_minerva_qld_lsl_openai_renderer.py",
         "tests/test_workforce_ask_minerva_panel_integration_design.py",
         ".gitignore",
     }
@@ -17,7 +20,7 @@ MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES = frozenset(
 
 
 def test_minerva_qld_lsl_assist_inventory_is_explicit():
-    assert len(MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES) == 8
+    assert len(MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES) == 11
     assert "app/services/unrelated_runtime.py" not in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
 
 

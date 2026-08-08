@@ -36,6 +36,7 @@ from app.services.minerva_qld_lsl_answer_planner import (
     classify_question,
     render_answer,
 )
+from app.services.minerva_qld_lsl_openai_renderer import render_optional_answer
 
 
 PACK_KEY = "queensland-general-lsl-v1"
@@ -652,6 +653,9 @@ def ask_published_pack(
         manifest_fingerprint=pack.manifest_fingerprint,
     )
     answer = render_answer(plan)
+    rendered = render_optional_answer(plan)
+    if rendered.used and rendered.answer is not None:
+        answer = rendered.answer
     fact_ids = list(selected_fact_ids)
     audit_identity = _identity("aud", request_identity, *fact_ids, *sorted(source_ids))
     audit_id = None
