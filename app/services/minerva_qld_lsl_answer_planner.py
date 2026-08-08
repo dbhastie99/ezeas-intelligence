@@ -209,14 +209,14 @@ _CONTENT: dict[AnswerMode, dict[str, Any]] = {
         "safe_next_step": "Use the cited provisions and have the relevant employment and rate facts checked by an authorised payroll or qualified legal reviewer.",
     },
     "APPLICABILITY_OR_PORTABLE_SCHEME_BOUNDARY": {
-        "direct_answer": "It could be a QLeave matter, but this pack cannot decide scheme eligibility. QLeave is identified as a portable long service leave scheme for eligible workers in specified industries; Queensland General LSL must not be applied automatically when the external-scheme context is missing. QLeave operations are outside this pack.",
+        "direct_answer": "It could be a QLeave matter, but this pack cannot decide scheme eligibility. QLeave is identified as a portable long service leave scheme for eligible workers in specified industries; Queensland General LSL must not be applied automatically when the external-scheme context is missing. QLeave eligibility and operations remain ON HOLD in this assistant.",
         "relevance": "This gives a useful boundary between the cited Queensland General LSL framework and QLeave without turning the question into a QLeave operation or eligibility determination.",
         "material_facts": [
             "The industry and worker circumstances relevant to any portable scheme.",
             "Whether the cited Queensland General LSL framework or an external scheme applies.",
             "The external QLeave context, which is not present in this pack.",
         ],
-        "capability_boundary": "Minerva can explain the boundary. It cannot determine QLeave eligibility and cannot register, levy, lodge returns, make claims, seek reimbursement or make QLeave payments.",
+        "capability_boundary": "QLeave eligibility and operations remain ON HOLD. Minerva can explain the boundary, but it cannot determine QLeave eligibility and cannot register, levy, lodge returns, make claims, seek reimbursement or make QLeave payments.",
         "safe_next_step": "Confirm the applicable scheme with the relevant Queensland Government material or qualified adviser; do not treat this pack as a QLeave operations guide.",
     },
     "OUT_OF_EVIDENCE": {
@@ -227,10 +227,10 @@ _CONTENT: dict[AnswerMode, dict[str, Any]] = {
         "safe_next_step": "Ask a focused question about the published framework, ten-year overview, continuity and absence, termination pro-rata boundary, taking/payment boundary, or QLeave applicability boundary.",
     },
     "REFUSED_QLEAVE_OPERATION": {
-        "direct_answer": "I cannot provide QLeave registration, levy, return, claim, reimbursement, payment or other operational instructions from this pack.",
+        "direct_answer": "QLeave eligibility and operations remain ON HOLD in this assistant. I cannot provide QLeave registration, levy, return, claim, reimbursement, payment or other operational instructions from this pack.",
         "relevance": "The question requests an excluded QLeave operation rather than the pack’s boundary explanation.",
         "material_facts": [],
-        "capability_boundary": "QLeave operations are outside this published Queensland General LSL pack; no operational procedure is supplied.",
+        "capability_boundary": "QLeave eligibility and operations remain ON HOLD. QLeave operations are outside this published Queensland General LSL pack; no operational procedure is supplied.",
         "safe_next_step": "Use the relevant official QLeave channel or qualified adviser for operational guidance.",
     },
     "REFUSED_UNSAFE_REQUEST": {
@@ -305,7 +305,7 @@ def render_answer(plan: LeaveAnswerPlan) -> str:
     lines.extend(
         [
             "",
-            "**What Minerva can and cannot determine**",
+            "**Capability boundary**",
             plan.capability_boundary,
             f"Safe next step: {plan.safe_next_step}",
             "",
