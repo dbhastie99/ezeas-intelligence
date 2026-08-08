@@ -22,6 +22,7 @@ from sqlalchemy.orm import Session
 from app.models.knowledge import KnowledgeDocument
 from app.schemas.common import SourceReference
 from app.schemas.minerva_leave import (
+    LeaveAnswerPlan,
     LeaveAskResponse,
     PackCitationResponse,
     PackIdentityResponse,
@@ -29,6 +30,12 @@ from app.schemas.minerva_leave import (
 from app.services.audit_service import write_ai_interaction_audit
 from app.services.ingestion_service import ingest_file_bytes
 from app.services.knowledge_retrieval_service import RetrievalResult, retrieve_relevant_chunks
+from app.services.minerva_qld_lsl_answer_planner import (
+    MODE_FACT_IDS,
+    build_answer_plan,
+    classify_question,
+    render_answer,
+)
 
 
 PACK_KEY = "queensland-general-lsl-v1"
@@ -163,6 +170,12 @@ def _require_url(value: Any, label: str) -> str:
     return url
 
 
+def _source_content_bytes(path: Path) -> bytes:
+    """Hash and ingest the committed LF content consistently on Windows checkouts."""
+
+    return path.read_bytes().replace(b"\r\n", b"\n")
+
+
 def validate_pack(data: dict[str, Any], root: Path) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise PackValidationError("Pack manifest root must be an object.")
@@ -219,7 +232,7 @@ def validate_pack(data: dict[str, Any], root: Path) -> dict[str, Any]:
         if not resolved.is_file():
             raise PackValidationError(f"Missing reviewed source content: {content_path}.")
         fingerprint = _require_string(source.get("content_fingerprint"), f"{source_id}.content_fingerprint")
-        actual = _sha256(resolved.read_bytes())
+        actual = _sha256(_source_content_bytes(resolved))
         if actual != fingerprint:
             raise PackValidationError(f"Source content fingerprint mismatch: {source_id}.")
         if fingerprint in source_fingerprints:
@@ -286,7 +299,7 @@ def ingest_pack(db: Session, manifest_path: Path = DEFAULT_MANIFEST_PATH) -> Pac
         source_path = pack.root / source["content_path"]
         document, duplicate = ingest_file_bytes(
             db=db,
-            content=source_path.read_bytes(),
+            content=_source_content_bytes(source_path),
             original_file_name=source_path.name,
             source_type="OTHER",
             capability_status="DOCTRINE",
@@ -389,7 +402,56 @@ def _source_references(results: list[RetrievalResult]) -> list[SourceReference]:
     ]
 
 
-def ask_published_pack(
+def _minimum_audit_payload(
+    *,
+    request_identity: str,
+    audit_identity: str,
+    plan: LeaveAnswerPlan,
+) -> str:
+    return json.dumps(
+        {
+            "audit_identity": audit_identity,
+            "request_identity": request_identity,
+            "pack_key": plan.pack_key,
+            "semantic_version": plan.semantic_version,
+            "manifest_fingerprint": plan.manifest_fingerprint,
+            "answer_mode": plan.answer_mode,
+            "outcome": plan.outcome,
+            "selected_fact_ids": plan.selected_fact_ids,
+            "citation_ids": sorted({f"{item.fact_id}:{item.source_id}" for item in plan.citations}),
+        },
+        sort_keys=True,
+    )
+
+
+def _persist_minimum_audit(
+    *,
+    db: Session,
+    request_identity: str,
+    audit_identity: str,
+    plan: LeaveAnswerPlan,
+    pack_key: str,
+    semantic_version: str,
+) -> str:
+    """Persist one redacted audit outcome; persistence errors deliberately propagate."""
+
+    audit = write_ai_interaction_audit(
+        db=db,
+        user_question=f"MINERVA_QG_LSL_REQUEST:{request_identity}",
+        response_text=_minimum_audit_payload(
+            request_identity=request_identity,
+            audit_identity=audit_identity,
+            plan=plan,
+        ),
+        source_references=[],
+        model_name="DETERMINISTIC_GOVERNED_PACK",
+        prompt_policy=f"{PROMPT_POLICY}:{pack_key}:{semantic_version}",
+    )
+    db.commit()
+    return audit.AIInteractionAuditId
+
+
+def _ask_published_pack_legacy(
     db: Session,
     question: str,
     pack_key: str,
@@ -489,4 +551,129 @@ def ask_published_pack(
         source_ids=source_ids,
         citations=deduped_citations,
         scope_limitations=scope_limitations,
+    )
+
+
+def ask_published_pack(
+    db: Session,
+    question: str,
+    pack_key: str,
+    semantic_version: str,
+    *,
+    persist_audit: bool = False,
+    manifest_path: Path = DEFAULT_MANIFEST_PATH,
+) -> LeaveAskResponse:
+    """Answer from one explicitly requested published pack and a typed plan."""
+
+    if not question.strip() or len(question) > 2000:
+        raise UnsupportedPackRequest("Question must be non-empty and within the governed length limit.")
+    answer_mode = classify_question(question)
+    if answer_mode == "REFUSED_UNSAFE_REQUEST" and not persist_audit:
+        raise UnsupportedPackRequest("Prompt-injected requests are not supported by the governed pack assistant.")
+
+    pack = load_pack(manifest_path)
+    require_requested_pack(pack, pack_key, semantic_version)
+    request_identity = _identity("req", pack_key, semantic_version, question.strip())
+    scope_limitations = [
+        pack.data["scope_statement"],
+        pack.data["excluded_scope"],
+        pack.data["advisory_notice"],
+        "This pack is not a service-history calculator, entitlement engine, payroll valuation engine, or QLeave operational implementation.",
+    ]
+
+
+    if answer_mode in {"REFUSED_QLEAVE_OPERATION", "REFUSED_UNSAFE_REQUEST", "OUT_OF_EVIDENCE"}:
+        plan = build_answer_plan(
+            mode=answer_mode,
+            selected_facts=[],
+            citations=[],
+            pack_key=pack.pack_key,
+            semantic_version=pack.semantic_version,
+            manifest_fingerprint=pack.manifest_fingerprint,
+        )
+        answer = render_answer(plan)
+        audit_suffix = {
+            "REFUSED_QLEAVE_OPERATION": "REFUSED_QLEAVE",
+            "REFUSED_UNSAFE_REQUEST": "REFUSED_UNSAFE",
+            "OUT_OF_EVIDENCE": "OUT_OF_EVIDENCE",
+        }[answer_mode]
+        audit_identity = _identity("aud", request_identity, audit_suffix)
+        audit_id = (
+            _persist_minimum_audit(
+                db=db,
+                request_identity=request_identity,
+                audit_identity=audit_identity,
+                plan=plan,
+                pack_key=pack_key,
+                semantic_version=semantic_version,
+            )
+            if persist_audit
+            else None
+        )
+        return LeaveAskResponse(
+            request_identity=request_identity,
+            audit_identity=audit_identity,
+            audit_id=audit_id,
+            outcome=plan.outcome,
+            pack=pack.identity_response(),
+            answer=answer,
+            fact_ids=[],
+            source_ids=[],
+            citations=[],
+            scope_limitations=scope_limitations,
+            answer_plan=plan,
+        )
+
+    source_documents = _source_document_ids(db, pack)
+    results = retrieve_relevant_chunks(
+        db=db,
+        query=question,
+        top_k=8,
+        include_samples=False,
+        document_ids=list(source_documents.values()),
+    )
+    facts_by_id = {fact["fact_id"]: fact for fact in pack.data["facts"]}
+    selected_fact_ids = MODE_FACT_IDS[answer_mode]
+    selected_facts = [facts_by_id[fact_id] for fact_id in selected_fact_ids]
+    source_by_id = {source["source_id"]: source for source in pack.data["sources"]}
+    source_ids = sorted({source_id for fact in selected_facts for source_id in fact["source_refs"]})
+    citations = [
+        _citation(pack, fact, source_by_id[source_id])
+        for fact in selected_facts
+        for source_id in fact["source_refs"]
+    ]
+    deduped_citations = list({(item.fact_id, item.source_id): item for item in citations}.values())
+    plan = build_answer_plan(
+        mode=answer_mode,
+        selected_facts=selected_facts,
+        citations=deduped_citations,
+        pack_key=pack.pack_key,
+        semantic_version=pack.semantic_version,
+        manifest_fingerprint=pack.manifest_fingerprint,
+    )
+    answer = render_answer(plan)
+    fact_ids = list(selected_fact_ids)
+    audit_identity = _identity("aud", request_identity, *fact_ids, *sorted(source_ids))
+    audit_id = None
+    if persist_audit:
+        audit_id = _persist_minimum_audit(
+            db=db,
+            request_identity=request_identity,
+            audit_identity=audit_identity,
+            plan=plan,
+            pack_key=pack_key,
+            semantic_version=semantic_version,
+        )
+    return LeaveAskResponse(
+        request_identity=request_identity,
+        audit_identity=audit_identity,
+        audit_id=audit_id,
+        outcome=plan.outcome,
+        pack=pack.identity_response(),
+        answer=answer,
+        fact_ids=fact_ids,
+        source_ids=source_ids,
+        citations=deduped_citations,
+        scope_limitations=scope_limitations,
+        answer_plan=plan,
     )

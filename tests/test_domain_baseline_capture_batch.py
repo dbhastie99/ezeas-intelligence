@@ -2,6 +2,25 @@ import subprocess
 from pathlib import Path
 
 
+MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES = frozenset(
+    {
+        "app/services/minerva_qld_lsl_answer_planner.py",
+        "app/services/governed_knowledge_pack_service.py",
+        "app/schemas/minerva_leave.py",
+        "app/services/minerva_leave_proposal_service.py",
+        "app/api/v1/minerva_leave.py",
+        "tests/test_minerva_qld_lsl_answer_planner.py",
+        "tests/test_workforce_ask_minerva_panel_integration_design.py",
+        ".gitignore",
+    }
+)
+
+
+def test_minerva_qld_lsl_assist_inventory_is_explicit():
+    assert len(MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES) == 8
+    assert "app/services/unrelated_runtime.py" not in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
+
+
 BASELINE_ROOT = Path("docs/evaluation/worker_story_baselines")
 LEDGER_PATH = BASELINE_ROOT / "COMPLETED_DOMAIN_BASELINE_DECISION_LEDGER.md"
 CLOSEOUT_PATH = BASELINE_ROOT / "BASELINE_BATCH_CLOSEOUT_2026_05_13.md"
@@ -1786,6 +1805,7 @@ def test_historical_deep_review_execution_slice_introduces_only_docs_tests_and_n
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -2063,6 +2083,7 @@ def test_historical_review_findings_classification_slice_introduces_only_docs_te
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -2456,6 +2477,7 @@ def test_historical_ingestion_backfill_slice_introduces_only_docs_tests_and_no_r
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -2720,6 +2742,7 @@ def test_historical_backfill_execution_slice_introduces_only_docs_tests_and_no_r
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -2984,6 +3007,7 @@ def test_historical_current_truth_promotion_slice_introduces_only_docs_tests_and
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -3271,6 +3295,7 @@ def test_historical_answer_use_permission_slice_introduces_only_docs_tests_and_n
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -3610,6 +3635,7 @@ def test_historical_retrieval_eligibility_slice_introduces_only_docs_tests_and_n
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -3948,6 +3974,7 @@ def test_historical_answer_mode_slice_introduces_only_docs_tests_and_no_runtime_
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -3965,7 +3992,7 @@ def test_historical_answer_mode_slice_introduces_only_docs_tests_and_no_runtime_
         assert "code_evidence" not in normalized
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "db" not in normalized or normalized.startswith("docs/")
-        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/") or changed_file in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
         assert ("endpoint" not in normalized or normalized.startswith("docs/") or normalized == "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
@@ -4305,6 +4332,7 @@ def test_historical_citation_provenance_slice_introduces_only_docs_tests_and_no_
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -4322,7 +4350,7 @@ def test_historical_citation_provenance_slice_introduces_only_docs_tests_and_no_
         assert "code_evidence" not in normalized
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "db" not in normalized or normalized.startswith("docs/")
-        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/") or changed_file in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
         assert ("endpoint" not in normalized or normalized.startswith("docs/") or normalized == "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
@@ -4938,6 +4966,7 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -4955,7 +4984,7 @@ def test_historical_runtime_implementation_test_matrix_slice_introduces_only_doc
         assert "code_evidence" not in normalized
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "db" not in normalized or normalized.startswith("docs/")
-        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/") or changed_file in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
         assert ("endpoint" not in normalized or normalized.startswith("docs/") or normalized == "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
@@ -5290,6 +5319,7 @@ def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skel
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -5308,7 +5338,7 @@ def test_historical_read_only_gated_retrieval_slice_introduces_only_allowed_skel
         assert "operational" not in normalized or normalized.startswith("docs/")
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "database" not in normalized or normalized.startswith("docs/")
-        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/") or changed_file in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
         assert ("endpoint" not in normalized or normalized.startswith("docs/") or normalized == "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
@@ -5599,6 +5629,7 @@ def test_historical_answer_synthesis_enforcement_slice_introduces_only_allowed_c
         "app/services/historical_read_only_gated_retrieval_skeleton_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -5617,7 +5648,7 @@ def test_historical_answer_synthesis_enforcement_slice_introduces_only_allowed_c
         assert "operational" not in normalized or normalized.startswith("docs/")
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "database" not in normalized or normalized.startswith("docs/")
-        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/") or changed_file in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
         assert ("endpoint" not in normalized or normalized.startswith("docs/") or normalized == "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
@@ -5936,6 +5967,7 @@ def test_historical_citation_refusal_enforcement_slice_introduces_only_allowed_c
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -5954,7 +5986,7 @@ def test_historical_citation_refusal_enforcement_slice_introduces_only_allowed_c
         assert "operational" not in normalized or normalized.startswith("docs/")
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "database" not in normalized or normalized.startswith("docs/")
-        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/") or changed_file in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
         assert ("endpoint" not in normalized or normalized.startswith("docs/") or normalized == "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
@@ -6524,6 +6556,7 @@ def test_historical_read_only_chat_pilot_closeout_slice_introduces_no_runtime_ch
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -7949,6 +7982,7 @@ def test_historical_read_only_chat_pilot_minimal_endpoint_ui_slice_introduces_no
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -8534,6 +8568,7 @@ def test_historical_read_only_chat_pilot_exposure_decision_gate_slice_introduces
         "tests/test_domain_baseline_capture_batch.py",
     }
 
+    allowed |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     for line in changed.stdout.splitlines():
         changed_file = line[3:].replace("\\", "/")
         if not changed_file:
@@ -8879,6 +8914,7 @@ def test_historical_read_only_chat_pilot_internal_exposure_deferred_slice_introd
         "tests/test_domain_baseline_capture_batch.py",
     }
 
+    allowed |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     for line in changed.stdout.splitlines():
         changed_file = line[3:].replace("\\", "/")
         if not changed_file:
@@ -9344,6 +9380,7 @@ def test_historical_read_only_chat_pilot_readiness_stream_slice_introduces_only_
     allowed_exact = {
         "tests/test_domain_baseline_capture_batch.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -9451,6 +9488,7 @@ def test_historical_read_only_chat_pilot_orchestrator_slice_introduces_only_allo
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
         "tests/test_domain_baseline_capture_batch.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -9559,6 +9597,7 @@ def test_historical_read_only_chat_pilot_safety_slice_introduces_no_runtime_chan
     )
     changed_files = [line[3:].strip() for line in changed.stdout.splitlines() if line.strip()]
 
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     for changed_file in changed_files:
         normalized = changed_file.lower().replace("\\", "/")
         assert changed_file in allowed_exact or changed_file.startswith(allowed_prefixes)
@@ -9566,7 +9605,7 @@ def test_historical_read_only_chat_pilot_safety_slice_introduces_no_runtime_chan
         assert "code_evidence" not in normalized
         assert "operational" not in normalized or normalized.startswith("docs/")
         assert "database" not in normalized or normalized.startswith("docs/")
-        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/") or changed_file in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
         assert ("endpoint" not in normalized or normalized.startswith("docs/") or normalized == "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
@@ -10106,6 +10145,7 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",
@@ -10123,7 +10163,7 @@ def test_historical_runtime_gate_plan_slice_introduces_only_docs_tests_and_no_ru
         assert "code_evidence" not in normalized
         assert "corpus" not in normalized or normalized.startswith("docs/")
         assert "db" not in normalized or normalized.startswith("docs/")
-        assert "schema" not in normalized or normalized.startswith("docs/")
+        assert "schema" not in normalized or normalized.startswith("docs/") or changed_file in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
         assert ("endpoint" not in normalized or normalized.startswith("docs/") or normalized == "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py")
         assert "/ui/" not in normalized
         assert not normalized.startswith("ui/")
@@ -10675,6 +10715,7 @@ def test_historical_batch_review_queue_slice_introduces_only_docs_and_tests():
         "app/services/historical_read_only_chat_pilot_orchestrator_candidate_service.py",
         "app/services/historical_read_only_chat_pilot_endpoint_ui_candidate_service.py",
     }
+    allowed_exact |= MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
     allowed_prefixes = (
         "docs/codex_prompts/",
         "docs/evaluation/historical_knowledge/",

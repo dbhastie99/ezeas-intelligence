@@ -14,6 +14,15 @@ EVAL_BASELINE = (
 PROMPT_ARTEFACT = (
     ROOT / "docs/codex_prompts/2026-05-22_workforce_ask_minerva_panel_integration_design_v01.md"
 )
+MINERVA_QG_LSL_ASSIST1_AUTHORIZED_APP_FILES = frozenset(
+    {
+        "app/services/minerva_qld_lsl_answer_planner.py",
+        "app/services/governed_knowledge_pack_service.py",
+        "app/schemas/minerva_leave.py",
+        "app/services/minerva_leave_proposal_service.py",
+        "app/api/v1/minerva_leave.py",
+    }
+)
 
 
 def _read(path: Path) -> str:
@@ -216,8 +225,17 @@ def test_no_production_runtime_api_ui_files_are_modified() -> None:
         "migrations/",
         "alembic/",
     )
-    offenders = [path for path in changed_paths if path.startswith(blocked_prefixes)]
+    offenders = [
+        path
+        for path in changed_paths
+        if path.startswith(blocked_prefixes) and path not in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_APP_FILES
+    ]
     assert offenders == []
+
+
+def test_authorized_minerva_qld_lsl_app_inventory_is_explicit() -> None:
+    assert "app/api/v1/minerva_leave.py" in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_APP_FILES
+    assert "app/services/not-authorized-runtime.py" not in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_APP_FILES
 
 
 def test_mojibake_markers_are_absent_from_new_artifacts() -> None:

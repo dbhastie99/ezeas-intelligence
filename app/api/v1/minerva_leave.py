@@ -28,7 +28,7 @@ def ask_queensland_general_lsl(request: LeaveAskRequest, db: Session = Depends(g
             question=request.message,
             pack_key=request.pack_key,
             semantic_version=request.semantic_version,
-            persist_audit=False,
+            persist_audit=True,
         )
     except PackNotIngestedError as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
@@ -45,6 +45,7 @@ def draft_queensland_general_lsl_proposal(request: LeaveProposalRequest) -> Leav
             fact_ids=request.fact_ids,
             pack_key=request.pack_key,
             semantic_version=request.semantic_version,
+            answer_plan=request.answer_plan,
         )
     except (PackValidationError, UnsupportedPackRequest, ProposalRequestError) as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc

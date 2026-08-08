@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from app.schemas.minerva_leave import LeavePolicyContext, LeaveProposalResponse, ProposalAssertionResponse
+from app.schemas.minerva_leave import LeaveAnswerPlan, LeavePolicyContext, LeaveProposalResponse, ProposalAssertionResponse
 from app.services.governed_knowledge_pack_service import (
     DEFAULT_MANIFEST_PATH,
     ProposalRequestError,
@@ -12,6 +12,7 @@ from app.services.governed_knowledge_pack_service import (
     load_pack,
     require_requested_pack,
 )
+from app.services.minerva_qld_lsl_answer_planner import SUPPORTED_ANSWER_MODES
 
 
 INJECTION_TERMS = ("ignore previous", "system prompt", "prompt injection", "json patch", '"op":')
@@ -40,6 +41,7 @@ def build_draft_leave_proposal(
     fact_ids: list[str],
     pack_key: str,
     semantic_version: str,
+    answer_plan: LeaveAnswerPlan | None = None,
     manifest_path: Path = DEFAULT_MANIFEST_PATH,
 ) -> LeaveProposalResponse:
     if _contains_injection(requested_change) or not requested_change.strip():
@@ -52,6 +54,15 @@ def build_draft_leave_proposal(
     facts_by_id = {fact["fact_id"]: fact for fact in pack.data["facts"]}
     if any(fact_id not in facts_by_id for fact_id in fact_ids):
         raise ProposalRequestError("Every proposal fact identity must belong to the explicitly requested pack/version.")
+    if answer_plan is not None:
+        if answer_plan.pack_key != pack_key or answer_plan.semantic_version != semantic_version:
+            raise ProposalRequestError("A proposal answer plan must belong to the explicitly requested pack/version.")
+        if answer_plan.manifest_fingerprint != pack.manifest_fingerprint:
+            raise ProposalRequestError("A proposal answer plan has the wrong manifest fingerprint.")
+        if answer_plan.answer_mode not in SUPPORTED_ANSWER_MODES or answer_plan.outcome != "ANSWERED_FROM_PUBLISHED_PACK":
+            raise ProposalRequestError("A proposal cannot be built from an unsupported or refused answer plan.")
+        if answer_plan.selected_fact_ids != fact_ids:
+            raise ProposalRequestError("Proposal fact identities must exactly match the cited answer plan.")
     if "qleave" not in requested_change.lower() and "portable" not in requested_change.lower():
         raise ProposalRequestError("This proof proposal must explicitly address the external portable-scheme/QLeave boundary.")
     source_by_id = {source["source_id"]: source for source in pack.data["sources"]}
@@ -71,6 +82,11 @@ def build_draft_leave_proposal(
                 }
             )
     unique_citations = list({(item["fact_id"], item["source_id"]): item for item in citations}.values())
+    if answer_plan is not None:
+        expected_citations = {(item["fact_id"], item["source_id"]) for item in unique_citations}
+        plan_citations = {(item.fact_id, item.source_id) for item in answer_plan.citations}
+        if plan_citations != expected_citations:
+            raise ProposalRequestError("Proposal answer-plan citations must remain within the selected pack facts.")
     request_identity = _identity(
         "req",
         pack_key,
@@ -123,4 +139,5 @@ def build_draft_leave_proposal(
             no_publication=True,
             non_persisted=True,
         ),
+        answer_plan=answer_plan,
     )

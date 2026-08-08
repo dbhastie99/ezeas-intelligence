@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -28,6 +30,7 @@ class LeaveProposalRequest(BaseModel):
     context: LeavePolicyContext
     requested_change: str = Field(min_length=1, max_length=1000)
     fact_ids: list[str] = Field(min_length=1, max_length=10)
+    answer_plan: LeaveAnswerPlan | None = None
 
 
 class PackIdentityResponse(BaseModel):
@@ -46,6 +49,37 @@ class PackCitationResponse(BaseModel):
     locator: str
 
 
+AnswerMode = Literal[
+    "GENERAL_FRAMEWORK",
+    "ENTITLEMENT_OVERVIEW",
+    "CONTINUITY_AND_ABSENCE",
+    "TERMINATION_AND_PRO_RATA",
+    "TAKING_OR_PAYMENT_BOUNDARY",
+    "APPLICABILITY_OR_PORTABLE_SCHEME_BOUNDARY",
+    "OUT_OF_EVIDENCE",
+    "REFUSED_QLEAVE_OPERATION",
+    "REFUSED_UNSAFE_REQUEST",
+]
+
+
+class LeaveAnswerPlan(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    answer_mode: AnswerMode
+    outcome: str
+    pack_key: str
+    semantic_version: str
+    manifest_fingerprint: str
+    selected_fact_ids: list[str]
+    citations: list[PackCitationResponse]
+    direct_answer: str
+    relevance: str
+    material_facts: list[str]
+    capability_boundary: str
+    safe_next_step: str
+    reason: str | None = None
+
+
 class LeaveAskResponse(BaseModel):
     request_identity: str
     audit_identity: str
@@ -57,6 +91,7 @@ class LeaveAskResponse(BaseModel):
     source_ids: list[str]
     citations: list[PackCitationResponse]
     scope_limitations: list[str]
+    answer_plan: LeaveAnswerPlan
 
 
 class ProposalAssertionResponse(BaseModel):
@@ -83,3 +118,4 @@ class LeaveProposalResponse(BaseModel):
     fact_ids: list[str]
     citations: list[PackCitationResponse]
     assertions: ProposalAssertionResponse
+    answer_plan: LeaveAnswerPlan | None = None
