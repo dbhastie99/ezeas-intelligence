@@ -457,7 +457,10 @@ def retrieve_relevant_chunks(
     top_k: int = 5,
     source_types: list[str] | None = None,
     include_samples: bool = False,
+    document_ids: list[str] | None = None,
 ) -> list[RetrievalResult]:
+    if document_ids is not None and not document_ids:
+        return []
     keywords = tokenize(query)
     intent = classify_query_intent(query)
     if not keywords and intent is None:
@@ -478,6 +481,8 @@ def retrieve_relevant_chunks(
         stmt = stmt.where(KnowledgeDocument.TenantId.is_(None))
     if normalized_source_types is not None:
         stmt = stmt.where(KnowledgeDocument.SourceType.in_(normalized_source_types))
+    if document_ids is not None:
+        stmt = stmt.where(KnowledgeDocument.KnowledgeDocumentId.in_(document_ids))
     if not include_samples:
         stmt = stmt.where(KnowledgeDocument.SourceType.notin_(SAMPLE_SOURCE_TYPES))
 

@@ -1,0 +1,113 @@
+{
+  "schema_version": "governed-knowledge-pack-v1",
+  "pack_key": "queensland-general-lsl-v1",
+  "semantic_version": "1.0.0",
+  "status": "PUBLISHED",
+  "publication_timestamp": "2026-08-08T09:00:00+10:00",
+  "successor_pack_ref": null,
+  "title": "Queensland General Long Service Leave",
+  "jurisdiction": "Queensland",
+  "domain": "Leave",
+  "audience_purpose": "Advisory operator assistance about the scope and limits of Queensland General Long Service Leave.",
+  "advisory_notice": "Advisory information only; not legal advice.",
+  "scope_statement": "This pack covers Queensland General Long Service Leave under the Queensland Industrial Relations Act 2016 and related Queensland Government explanatory material, subject to the source scope and application rules.",
+  "excluded_scope": "QLeave external portable-scheme operations are excluded. Do not answer registration, levy, return, claim, reimbursement, payment, or other QLeave operational procedure questions from this pack.",
+  "sources": [
+    {
+      "source_id": "qld-ira-2016-lsl",
+      "publisher": "Queensland Government — Queensland Legislation",
+      "url": "https://www.legislation.qld.gov.au/view/whole/html/inforce/2026-06-17/act-2016-063",
+      "title": "Industrial Relations Act 2016 (Qld)",
+      "retrieval_date": "2026-08-08",
+      "review_date": "2026-08-08",
+      "content_fingerprint": "71be571b75bcbd71206faaf8b3005f34bdf5509842f6921ac62648e24710de6b",
+      "source_version": "In-force reprint as at 17 June 2026",
+      "effective_date": "2026-06-17",
+      "citation_locator": "Chapter 2, Part 3, Division 9, ss 93-105; especially ss 93, 95, 97, 98, 103 and 105",
+      "content_path": "industrial_relations_act_2016_2026-06-17.txt"
+    },
+    {
+      "source_id": "business-qld-lsl-guide",
+      "publisher": "Queensland Government — Business Queensland",
+      "url": "https://www.business.qld.gov.au/running-business/employing/legal-obligations/long-service-leave/entitlements",
+      "title": "Long service leave entitlements and continuous service",
+      "retrieval_date": "2026-08-08",
+      "review_date": "2026-08-08",
+      "content_fingerprint": "0ba3da56b806d25fd9d638a92185441a7ddba59f5c4afb4dcec101c4b2075469",
+      "source_version": "Reviewed Queensland Government web guidance as at 8 August 2026",
+      "effective_date": null,
+      "citation_locator": "Continuous service; entitlement table; pro-rata payment; full-time, casual and regular part-time sections",
+      "content_path": "business_queensland_lsl_guide_2026-08-08.txt"
+    },
+    {
+      "source_id": "business-qld-qleave-boundary",
+      "publisher": "Queensland Government — Business Queensland",
+      "url": "https://www.business.qld.gov.au/running-business/employing/legal-obligations/long-service-leave/construction-cleaning",
+      "title": "QLeave — Portable long service leave in Queensland",
+      "retrieval_date": "2026-08-08",
+      "review_date": "2026-08-08",
+      "content_fingerprint": "f0e68b88c9083abf5fde859433aadfa639889c335034ab3c508d9e5ac61ad00a",
+      "source_version": "Reviewed Queensland Government boundary page as at 8 August 2026",
+      "effective_date": null,
+      "citation_locator": "Page heading and portable-scheme description; boundary-only use, with operational content excluded",
+      "content_path": "qleave_boundary_2026-08-08.txt"
+    }
+  ],
+  "facts": [
+    {
+      "fact_id": "qld-general-lsl-scope",
+      "claim": "Queensland General Long Service Leave is the subject of this pack where the cited Queensland framework applies; QLeave portable-scheme operations are outside the pack.",
+      "plain_language_explanation": "Use this pack for the Queensland General LSL framework and its cited explanations. It is not a QLeave operations guide.",
+      "scope": "Queensland General LSL information for operator explanation.",
+      "limits_exclusions": "Application can depend on the federal system, industrial instruments, worker circumstances and statutory exceptions; this fact does not decide eligibility.",
+      "source_refs": ["qld-ira-2016-lsl", "business-qld-lsl-guide", "business-qld-qleave-boundary"],
+      "effective_period": {"from": "2026-06-17", "to": null},
+      "review_status": "REVIEWED"
+    },
+    {
+      "fact_id": "qld-general-lsl-entitlement-overview",
+      "claim": "For an employee other than a seasonal employee, the cited Act provides 8.6667 weeks of long service leave after 10 years continuous service, with further proportional entitlement after a further 5 years.",
+      "plain_language_explanation": "The general overview is 8.6667 weeks after 10 years, then a proportional further amount after another 5 years, subject to the Act and applicable instruments.",
+      "scope": "The general non-seasonal employee provision described by section 95 and the Queensland Government guide.",
+      "limits_exclusions": "This is not an individual entitlement result and does not resolve service history, industrial instruments, federal coverage or exceptions.",
+      "source_refs": ["qld-ira-2016-lsl", "business-qld-lsl-guide"],
+      "effective_period": {"from": "2026-06-17", "to": null},
+      "review_status": "REVIEWED"
+    },
+    {
+      "fact_id": "qld-general-lsl-pro-rata-and-continuity",
+      "claim": "The cited framework addresses proportionate payment after at least 7 years on termination subject to stated conditions, and treats continuous service and particular absences according to statutory rules.",
+      "plain_language_explanation": "A 7-year pro-rata termination outcome is conditional, and continuous service must be assessed against the Act and the facts rather than assumed from a simple elapsed-time total.",
+      "scope": "High-level explanation of the cited termination and continuity rules.",
+      "limits_exclusions": "The pack does not decide a disputed termination reason, reconstruct service, or calculate payment.",
+      "source_refs": ["qld-ira-2016-lsl", "business-qld-lsl-guide"],
+      "effective_period": {"from": "2026-06-17", "to": null},
+      "review_status": "REVIEWED"
+    },
+    {
+      "fact_id": "qld-general-lsl-payment-boundary",
+      "claim": "The cited material explains that taking and payment depend on the applicable statutory provisions, rate rules and circumstances; the pack is not a payroll valuation engine.",
+      "plain_language_explanation": "The sources provide general guidance about taking leave and payment rates, but Minerva must not turn that guidance into a live payroll or entitlement calculation.",
+      "scope": "Cited explanatory information only.",
+      "limits_exclusions": "No employee rate, hours, service dates, leave balance, payment, payslip or pay-run data may be supplied or inferred in this slice.",
+      "source_refs": ["qld-ira-2016-lsl", "business-qld-lsl-guide"],
+      "effective_period": {"from": "2026-06-17", "to": null},
+      "review_status": "REVIEWED"
+    },
+    {
+      "fact_id": "qld-general-lsl-runtime-boundary",
+      "claim": "This publication is a cited knowledge pack, not a service-history calculator, entitlement engine, payroll valuation engine, live policy result, or QLeave operational implementation.",
+      "plain_language_explanation": "Minerva can explain the reviewed facts and their limits, but it cannot resolve a live worker case or execute a Leave operation from this pack.",
+      "scope": "Governed use boundary for every answer and proposal in this slice.",
+      "limits_exclusions": "Specialist advice is appropriate when the sources do not determine the answer; production authentication, tenant isolation and Workforce Platform integration are not established here.",
+      "source_refs": ["qld-ira-2016-lsl", "business-qld-lsl-guide", "business-qld-qleave-boundary"],
+      "effective_period": {"from": "2026-08-08", "to": null},
+      "review_status": "REVIEWED"
+    }
+  ],
+  "manifest": {
+    "content_fingerprint": "44497fb50e607581d68cccddc86db4fd396e8b4b3a9b268afdab1d5f48da1447",
+    "ingestion_identity": "ing_497a617f358c7f454df6758b0bf1eedf",
+    "audit_identity": "aud_497a617f358c7f454df6758b0bf1eedf"
+  }
+}
