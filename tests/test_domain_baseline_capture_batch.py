@@ -11,13 +11,22 @@ MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES = frozenset(
         "app/api/v1/minerva_leave.py",
         "tests/test_minerva_qld_lsl_answer_planner.py",
         "tests/test_workforce_ask_minerva_panel_integration_design.py",
+        "app/main.py",
+        "app/fixtures/",
+        "app/api/v1/minerva_admin_configuration.py",
+        "app/fixtures/minerva_qld_lsl_admin_configuration_packet.json",
+        "app/schemas/minerva_admin_configuration.py",
+        "app/services/minerva_admin_configuration_service.py",
+        "docs/contracts/leave_policy_configuration_evidence_packet_v1.json",
+        "docs/contracts/",
+        "tests/test_minerva_admin_configuration_context.py",
         ".gitignore",
     }
 )
 
 
 def test_minerva_qld_lsl_assist_inventory_is_explicit():
-    assert len(MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES) == 8
+    assert len(MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES) == 17
     assert "app/services/unrelated_runtime.py" not in MINERVA_QG_LSL_ASSIST1_AUTHORIZED_FILES
 
 

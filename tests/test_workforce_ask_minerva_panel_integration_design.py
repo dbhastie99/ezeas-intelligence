@@ -21,6 +21,12 @@ MINERVA_QG_LSL_ASSIST1_AUTHORIZED_APP_FILES = frozenset(
         "app/schemas/minerva_leave.py",
         "app/services/minerva_leave_proposal_service.py",
         "app/api/v1/minerva_leave.py",
+        "app/main.py",
+        "app/fixtures/",
+        "app/api/v1/minerva_admin_configuration.py",
+        "app/fixtures/minerva_qld_lsl_admin_configuration_packet.json",
+        "app/schemas/minerva_admin_configuration.py",
+        "app/services/minerva_admin_configuration_service.py",
     }
 )
 

@@ -1,0 +1,17 @@
+{
+  "schema_name": "LeavePolicyConfigurationEvidencePacket",
+  "schema_version": "1.0.0",
+  "fixture_id": "qld-general-lsl-admin-v1",
+  "packet_id": "lpcep-85aa226c47c7217f1df6fc0a",
+  "packet_fingerprint": "9d81c00d1064edab7a7a76d3564f275eb90a62bcf1e3d94510cde8e5c240a4c0",
+  "producer_repository": "dbhastie99/workforce-platform",
+  "producer_ref": "refs/heads/leave/qld-lsl-foundation2-20260806",
+  "producer_sha": "1d912eff59109f74af20367285fb698ed7915f96",
+  "knowledge_pack_key": "queensland-general-lsl-v1",
+  "knowledge_pack_version": "1.0.0",
+  "knowledge_pack_fingerprint": "44497fb50e607581d68cccddc86db4fd396e8b4b3a9b268afdab1d5f48da1447",
+  "runtime_support_declared_flag": 0,
+  "fixture_only": true,
+  "read_only": true,
+  "proposal_preview_only": true
+}

@@ -15,6 +15,7 @@ from app.services.governed_knowledge_pack_service import (
     ask_published_pack,
 )
 from app.services.minerva_leave_proposal_service import ProposalRequestError, build_draft_leave_proposal
+from app.api.v1.minerva_admin_configuration import router as admin_configuration_router
 
 
 router = APIRouter()
@@ -49,3 +50,9 @@ def draft_queensland_general_lsl_proposal(request: LeaveProposalRequest) -> Leav
         )
     except (PackValidationError, UnsupportedPackRequest, ProposalRequestError) as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+router.include_router(
+    admin_configuration_router,
+    tags=["governed-queensland-lsl-administrator-configuration"],
+)
