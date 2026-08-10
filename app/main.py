@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.v1 import chat, ingest, internal_chat_stub, minerva_leave
+from app.api.v1 import chat, ingest, internal_chat_stub, leave_studio_minerva, minerva_leave
 from app.core.config import get_settings
 
 app = FastAPI(
@@ -35,3 +35,8 @@ app.include_router(ingest.router, prefix="/api/v1/ingest", tags=["ingest"])
 app.include_router(chat.router, prefix="/api/v1/chat", tags=["chat"])
 app.include_router(internal_chat_stub.router, prefix="/api/v1/internal", tags=["internal-chat-stub"])
 app.include_router(minerva_leave.router, prefix="/api/v1/minerva", tags=["governed-queensland-lsl"])
+app.include_router(
+    leave_studio_minerva.router,
+    prefix="/api/v1/minerva",
+    tags=["governed-leave-studio-configuration"],
+)
