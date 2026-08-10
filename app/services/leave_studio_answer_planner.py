@@ -238,6 +238,16 @@ def _select(context: LeaveStudioContextV1, classification: QuestionClassificatio
                 "CANONICAL_STORED_FACT",
                 "Readiness assessment",
             )
+    if classification == "READINESS":
+        existing_ids = {fact.FactId for fact in facts}
+        for context_fact in context.Facts:
+            if context_fact.Key in {"AmbiguityDispositionCode", "FailureDispositionCode"} and context_fact.Key not in existing_ids:
+                material, reference = _material_fact(context_fact)
+                facts.append(material)
+                references.append(reference)
+        hold_facts, hold_refs = _section_material("Case-level holds", context.CaseLevelHolds)
+        facts.extend(hold_facts)
+        references.extend(hold_refs)
     if classification == "VERSION_LINEAGE":
         add_synthetic("version_code", "Exact policy version", context.VersionCode, "CANONICAL_STORED_FACT")
         if context.PredecessorLeaveTypeVersionId:
@@ -334,6 +344,19 @@ def _direct_answer(
     if classification == "APPLICABILITY_SCOPE" and any(term in text for term in ("john", "employee", "worker", "person entitled")):
         return f"The configured policy scope can be explained, but this context cannot determine whether a particular worker is covered. {context.WorkerApplicabilityStatement}"
     if classification == "READINESS":
+        if "hold" in text:
+            hold_labels = [item.Label for item in context.CaseLevelHolds]
+            hold_labels.extend(
+                fact.Label
+                for fact in context.Facts
+                if fact.Key in {"AmbiguityDispositionCode", "FailureDispositionCode"}
+                and "hold" in fact.DisplayValue.lower()
+            )
+            hold_text = ", ".join(dict.fromkeys(hold_labels)) or "missing or unresolved governed facts"
+            return (
+                f"Configuration readiness is {context.ConfigurationReadiness}, but that does not clear the configured HOLD paths: "
+                f"{hold_text}. Runtime support is separately recorded as {context.RuntimeSupport}; no worker entitlement is calculated."
+            )
         return f"Configuration readiness is {context.ConfigurationReadiness}. Runtime support is separately recorded as {context.RuntimeSupport}. These are different states, so configuration readiness alone is not a runtime calculation claim."
     if classification == "RUNTIME_SUPPORT":
         return f"The exact policy version reports: {context.RuntimeSupport}. Ask Minerva can explain its configuration but cannot activate, calculate, publish, or post it."

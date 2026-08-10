@@ -281,6 +281,10 @@ def test_fdv_exact_version_basis_privacy_and_non_accumulation() -> None:
 
 def test_qld_lsl_and_qleave_boundaries() -> None:
     lsl = qld_lsl_context()
+    readiness = build_answer_plan(request(lsl, "Why is this policy on HOLD?"))
+    assert "configured HOLD paths" in readiness.DirectDeterministicAnswer
+    assert "Runtime not yet supported" in readiness.DirectDeterministicAnswer
+    assert any(item.startswith("case-level holds:") for item in readiness.FactIds)
     service = build_answer_plan(request(lsl, "What service facts are needed?"))
     assert any(item.startswith("required facts:") for item in service.FactIds)
     worker = build_answer_plan(request(lsl, "Is this employee entitled to LSL?"))
