@@ -18,6 +18,11 @@ class Settings(BaseSettings):
     leave_studio_rendering_enabled: bool = False
     leave_studio_rendering_timeout_seconds: float = Field(default=5.0, gt=0, le=10)
     leave_studio_rendering_max_output_chars: int = Field(default=4000, gt=0, le=12000)
+    leave_studio_conversation_enabled: bool = False
+    leave_studio_conversation_timeout_seconds: float = Field(default=8.0, gt=0, le=18)
+    leave_studio_conversation_max_output_chars: int = Field(default=4000, gt=0, le=8000)
+    leave_studio_conversation_max_history_turns: int = Field(default=8, gt=0, le=12)
+    leave_studio_conversation_max_history_chars: int = Field(default=12000, gt=0, le=24000)
     cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174"
     chunk_size: int = 1200
     chunk_overlap: int = 150

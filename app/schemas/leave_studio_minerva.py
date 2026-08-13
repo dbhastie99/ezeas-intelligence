@@ -274,3 +274,104 @@ class RendererDocument(ContractModel):
     SafeNextStep: str
     EvidenceReferenceIds: list[str]
     FactIds: list[str]
+
+
+ExplanationPersona = Literal["ADMINISTRATOR", "LEGAL", "MANAGER", "WORKER"]
+
+
+class ConversationHistoryTurn(ContractModel):
+    TurnIdentity: str = Field(min_length=8, max_length=128)
+    Role: Literal["USER", "MINERVA"]
+    Content: str = Field(min_length=1, max_length=2000)
+    Persona: ExplanationPersona
+    PolicyKey: str = Field(min_length=1, max_length=160)
+    LeaveTypeVersionId: str = Field(min_length=1, max_length=128)
+    BaselineContentHash: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class LeaveStudioLlmContextV3(ContractModel):
+    ContractVersion: Literal["LEAVE_STUDIO_LLM_CONTEXT_V3"]
+    PolicyKey: str
+    PackageCode: str
+    LeaveTypeVersionId: str
+    VersionCode: str
+    VersionNumber: int
+    EffectiveFrom: str
+    BaselineContentHash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    PolicyContentHash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    Persona: ExplanationPersona
+    Ownership: str
+    PolicyStory: dict[str, Any]
+    OperationalStory: dict[str, Any]
+    AtAGlance: list[dict[str, Any]]
+    PreparedScenarios: list[dict[str, Any]]
+    ManagementCategories: list[dict[str, Any]]
+    Holds: list[dict[str, Any]]
+    AuthorityIdentities: list[str]
+    EvidenceIdentities: list[str]
+    AvailableGovernedActions: list[dict[str, Any]]
+    CapabilityBoundaries: dict[str, str]
+    TargetFieldIdentity: str | None = None
+    TargetScenarioCode: str | None = None
+    ConfidentialDataIncluded: Literal[False]
+    WorkerSpecificContextIncluded: Literal[False]
+
+
+class LeaveStudioConversationRequest(ContractModel):
+    ContractVersion: Literal["LEAVE_STUDIO_LIVE_MINERVA_REQUEST_V1"]
+    RequestIdentity: str = Field(min_length=8, max_length=128)
+    ConversationTurnIdentity: str = Field(min_length=8, max_length=128)
+    Question: str = Field(min_length=1, max_length=2000)
+    Persona: ExplanationPersona
+    ContextPacketFingerprint: str = Field(pattern=r"^[0-9a-f]{64}$")
+    ContextPacket: LeaveStudioLlmContextV3
+    ConversationHistory: list[ConversationHistoryTurn] = Field(default_factory=list, max_length=8)
+
+    @model_validator(mode="after")
+    def validate_pinned_context(self) -> "LeaveStudioConversationRequest":
+        if self.Persona != self.ContextPacket.Persona:
+            raise ValueError("request persona must equal the governed context persona")
+        if sum(len(turn.Content) for turn in self.ConversationHistory) > 12_000:
+            raise ValueError("conversation history exceeds the governed character limit")
+        if any(
+            turn.PolicyKey != self.ContextPacket.PolicyKey
+            or turn.LeaveTypeVersionId != self.ContextPacket.LeaveTypeVersionId
+            or turn.BaselineContentHash != self.ContextPacket.BaselineContentHash
+            for turn in self.ConversationHistory
+        ):
+            raise ValueError("conversation history must be pinned to the current governed policy context")
+        return self
+
+
+class LeaveStudioLiveModelDocument(ContractModel):
+    Answer: str = Field(min_length=1, max_length=4000)
+    KeyPoints: list[str] = Field(default_factory=list, max_length=5)
+    Boundary: str = Field(min_length=1, max_length=1200)
+    GroundingIdentities: list[str] = Field(default_factory=list, max_length=30)
+    SuggestedFollowUps: list[str] = Field(default_factory=list, max_length=3)
+    Persona: ExplanationPersona
+
+
+class LeaveStudioConversationResponse(ContractModel):
+    ContractVersion: Literal["EZEAS_INTELLIGENCE_LEAVE_STUDIO_RESPONSE_V1"]
+    RequestIdentity: str
+    ConversationTurnIdentity: str
+    PolicyKey: str
+    LeaveTypeVersionId: str
+    BaselineContentHash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    ContextPacketFingerprint: str = Field(pattern=r"^[0-9a-f]{64}$")
+    Persona: ExplanationPersona
+    Answer: str = Field(min_length=1, max_length=4000)
+    KeyPoints: list[str] = Field(default_factory=list, max_length=5)
+    Boundary: str = Field(min_length=1, max_length=1200)
+    GroundingIdentities: list[str] = Field(default_factory=list, max_length=30)
+    SuggestedFollowUps: list[str] = Field(default_factory=list, max_length=3)
+    LiveLlmAttempted: bool
+    LiveLlmUsed: bool
+    ModelIdentifier: str | None = None
+    PromptInstructionVersion: str
+    ProviderLatencyMs: int | None = Field(None, ge=0)
+    AuditIdentity: str
+    OutputFingerprint: str = Field(pattern=r"^[0-9a-f]{64}$")
+    FallbackReason: str | None = None
+    NoChangesMade: Literal[True]

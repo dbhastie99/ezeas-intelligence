@@ -1,0 +1,6 @@
+{
+  "status": "PENDING_FINAL_SERIAL_CONVERGENCE",
+  "feature_branch": "minerva/leave-studio-minerva-llm1-20260813",
+  "target_branch": "minerva/leavestudiominervademo1-20260810",
+  "starting_sha": "e8fb20c7cafce377feba544d7ad63f1a3f854b72"
+}

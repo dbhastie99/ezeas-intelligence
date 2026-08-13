@@ -1,0 +1,9 @@
+{
+  "classification": "ACCEPTED_MINERVA_CONSUMER_AUTHORITY_RESOLVED",
+  "repository": "dbhastie99/ezeas-intelligence",
+  "starting_branch": "minerva/leavestudiominervademo1-20260810",
+  "starting_sha": "e8fb20c7cafce377feba544d7ad63f1a3f854b72",
+  "convergence_target": "minerva/leavestudiominervademo1-20260810",
+  "v19_authority_reference": "Accepted final ezeas-intelligence authority in Leave Context Pack v1.9",
+  "qld_renderer_lineage": "inspected and reused as a bounded renderer design reference"
+}

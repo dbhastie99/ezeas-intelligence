@@ -1,0 +1,16 @@
+{
+  "source": "workforce-platform/evidence/LEAVESTUDIOMINERVALLM1/live_acceptance_matrix.json",
+  "models": 5,
+  "personas": 4,
+  "calls": 20,
+  "live_attempted": 20,
+  "live_accepted": 20,
+  "fallbacks": 0,
+  "model": "gpt-4.1-mini",
+  "prompt_instruction_version": "LEAVE_STUDIO_LIVE_CONVERSATION_V1",
+  "average_provider_latency_ms": 7216,
+  "minimum_provider_latency_ms": 4692,
+  "maximum_provider_latency_ms": 12745,
+  "all_grounded": true,
+  "all_no_changes_made": true
+}

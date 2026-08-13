@@ -1,0 +1,14 @@
+{
+  "authority": "existing AIInteractionAudit table and audit service",
+  "parallel_audit_store_created": false,
+  "request_identity_recorded": true,
+  "policy_version_identity_recorded": true,
+  "baseline_and_context_fingerprint_recorded": true,
+  "persona_model_prompt_version_recorded": true,
+  "live_attempt_used_fallback_recorded": true,
+  "grounding_and_output_fingerprint_recorded": true,
+  "provider_latency_recorded": true,
+  "raw_question_or_answer_recorded_by_new_path": false,
+  "credential_or_authorization_recorded": false,
+  "permitted_mutation": "MINERVA_AUDIT_PERSISTENCE_ONLY"
+}

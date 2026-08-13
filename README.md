@@ -82,11 +82,19 @@ Set `MINERVA_DATABASE_URL` for local SQL Server. Example for Windows Integrated 
 MINERVA_DATABASE_URL=mssql+pyodbc:///?odbc_connect=Driver%3D%7BODBC+Driver+18+for+SQL+Server%7D%3BServer%3Dlocalhost%3BDatabase%3Dezeas-intelligence-db%3BTrusted_Connection%3Dyes%3BEncrypt%3Dyes%3BTrustServerCertificate%3Dyes%3B
 MINERVA_ENV=local
 MINERVA_LLM_PROVIDER=stub
+MINERVA_LEAVE_STUDIO_CONVERSATION_ENABLED=false
 MINERVA_CHUNK_SIZE=1200
 MINERVA_CHUNK_OVERLAP=150
 ```
 
 `TrustServerCertificate=yes` is for local development. Keep the actual operational payroll database separate and do not point Minerva at it.
+
+Leave Studio conversation is disabled by default. When explicitly enabled with a
+server-side OpenAI-compatible provider, the service accepts only a Workforce-generated
+`LEAVE_STUDIO_LLM_CONTEXT_V3` packet, returns strict JSON, validates grounding identities,
+and records a metadata-only interaction audit. Provider failure or response-validation
+failure returns the governed deterministic answer. Browser clients never receive provider
+credentials, and Minerva cannot mutate Leave, worker, payroll, or security state.
 
 ### C. Install And Run The Proof
 

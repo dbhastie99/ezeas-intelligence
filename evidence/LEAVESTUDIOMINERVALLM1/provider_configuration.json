@@ -1,0 +1,15 @@
+{
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "base_url": "https://api.openai.com/v1",
+  "credential_configured": true,
+  "credential_value_recorded": false,
+  "conversation_enabled": true,
+  "intelligence_timeout_seconds": 18,
+  "workforce_gateway_timeout_seconds": 20,
+  "automatic_retries": 0,
+  "tools_enabled": false,
+  "browsing_enabled": false,
+  "provider_storage_metadata": false,
+  "configuration_fingerprint": "d8d3a1a107e8786bd259ddf1befef5f4c20d7da27fc28ea51ff2dec9b57c17ca"
+}

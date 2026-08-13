@@ -15,6 +15,7 @@ from app.schemas.leave_studio_minerva import (
     RendererDocument,
     RendererPayload,
 )
+from app.services.openai_compatible_json_client import OpenAICompatibleJsonClient
 
 
 RENDERER_INSTRUCTION_VERSION = "LEAVE_STUDIO_CONFIGURATION_RENDERER_V1"
@@ -50,8 +51,7 @@ class RenderingOutcome:
 
 class HttpxOpenAIWordingClient:
     def __init__(self, *, base_url: str, api_key: str):
-        self.base_url = base_url.rstrip("/")
-        self.api_key = api_key
+        self.client = OpenAICompatibleJsonClient(base_url=base_url, api_key=api_key)
 
     def render(
         self,
@@ -69,25 +69,14 @@ class HttpxOpenAIWordingClient:
             "WhatMatters, Boundary, SafeNextStep, EvidenceReferenceIds, and FactIds. Preserve every "
             "field except Answer byte-for-byte from the payload. Answer may only restate supplied facts."
         )
-        response = httpx.post(
-            f"{self.base_url}/chat/completions",
-            headers={"Authorization": f"Bearer {self.api_key}"},
-            json={
-                "model": model,
-                "temperature": 0,
-                "max_tokens": min(1200, max(64, max_output_chars // 4)),
-                "response_format": {"type": "json_object"},
-                "messages": [
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": payload.model_dump_json()},
-                ],
-                "metadata": {"renderer_instruction": instruction_version},
-            },
-            timeout=timeout_seconds,
-        )
-        response.raise_for_status()
-        body = response.json()
-        return body["choices"][0]["message"]["content"]
+        return self.client.complete(
+            system_instruction=system,
+            user_payload=payload.model_dump_json(),
+            model=model,
+            timeout_seconds=timeout_seconds,
+            max_tokens=min(1200, max(64, max_output_chars // 4)),
+            metadata={"renderer_instruction": instruction_version},
+        ).content
 
 
 def _sha256(value: bytes) -> str:
@@ -125,7 +114,7 @@ def _configuration_fingerprint(settings: Settings) -> str:
 
 
 def default_client_factory(settings: Settings) -> WordingClient | None:
-    if settings.llm_provider.lower() not in {"openai", "openai-compatible"}:
+    if settings.llm_provider.lower().replace("_", "-") not in {"openai", "openai-compatible"}:
         return None
     if not settings.llm_api_key or not settings.llm_model:
         return None

@@ -1,0 +1,12 @@
+{
+  "malformed_json_rejected": true,
+  "wrong_persona_rejected": true,
+  "foreign_grounding_rejected": true,
+  "url_or_markup_rejected": true,
+  "unsupported_number_rejected": true,
+  "mutation_claim_rejected": true,
+  "unsupported_persistence_claim_rejected": true,
+  "tool_or_secret_envelope_rejected": true,
+  "fallback_used_after_rejection": true,
+  "unvalidated_output_returned": false
+}

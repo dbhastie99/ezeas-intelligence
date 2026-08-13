@@ -193,11 +193,12 @@ class FakeRenderer:
 
 
 def test_pinned_fixture_and_context_fingerprint_are_stable() -> None:
-    assert hashlib.sha256(FIXTURE.read_bytes()).hexdigest() == FIXTURE_SHA256
+    # Git may materialise CRLF on Windows; fixture authority is the repository-normalised LF stream.
+    assert hashlib.sha256(FIXTURE.read_bytes().replace(b"\r\n", b"\n")).hexdigest() == FIXTURE_SHA256
     context = annual_context()
     assert context.SchemaVersion == "LEAVE_STUDIO_CONTEXT_V1"
     assert canonical_context_fingerprint(context) == "4c279802b6470a8ce5ae2d13a794e93ecba527f92b46a35d82b44d950a962ddc"
-    assert hashlib.sha256(REQUEST_FIXTURE.read_bytes()).hexdigest() == REQUEST_FIXTURE_SHA256
+    assert hashlib.sha256(REQUEST_FIXTURE.read_bytes().replace(b"\r\n", b"\n")).hexdigest() == REQUEST_FIXTURE_SHA256
     request_value = LeaveStudioQuestionRequest.model_validate_json(REQUEST_FIXTURE.read_text(encoding="utf-8"))
     assert request_value.StudioContext == context
     assert request_value.model_dump_json() == REQUEST_FIXTURE.read_text(encoding="utf-8").strip()

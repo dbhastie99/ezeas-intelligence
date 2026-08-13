@@ -1,0 +1,10 @@
+{
+  "context_contract": "LEAVE_STUDIO_LLM_CONTEXT_V3",
+  "packet_fingerprint_verified": true,
+  "allowed_identity_classes": ["policy", "package", "LeaveTypeVersionId", "version", "authority", "evidence", "field", "configured-value source", "provenance source", "scenario", "HOLD"],
+  "grounding_subset_required": true,
+  "empty_grounding_rejected": true,
+  "foreign_policy_grounding_rejected": true,
+  "live_matrix_all_grounded": true,
+  "live_matrix_calls": 20
+}
