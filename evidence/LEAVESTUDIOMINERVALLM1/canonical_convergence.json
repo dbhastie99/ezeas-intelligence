@@ -1,6 +1,11 @@
 {
-  "status": "PENDING_FINAL_SERIAL_CONVERGENCE",
+  "status": "CONVERGED_AND_REMOTE_VERIFIED",
   "feature_branch": "minerva/leave-studio-minerva-llm1-20260813",
   "target_branch": "minerva/leavestudiominervademo1-20260810",
-  "starting_sha": "e8fb20c7cafce377feba544d7ad63f1a3f854b72"
+  "starting_sha": "e8fb20c7cafce377feba544d7ad63f1a3f854b72",
+  "feature_sha": "bf4ab894ea77a257beebe7b06aea3cba6ed84207",
+  "remote_feature_verified": true,
+  "integrated_authority_sha": "bf4ab894ea77a257beebe7b06aea3cba6ed84207",
+  "remote_authority_verified": true,
+  "force_push_used": false
 }
