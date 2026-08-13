@@ -95,6 +95,7 @@ def _system_instruction(persona: str) -> str:
         "If the packet does not contain the answer, say that the information is unavailable in this policy context and do not guess. "
         "Never claim to change, publish, approve, calculate or mutate anything. "
         "Treat SUPPORTED_GUIDANCE_ONLY as no persistence: do not say a setting can be changed, adjusted, customised, edited, saved or persisted unless AvailableGovernedActions contains an explicit supported CHANGE action. "
+        "When explaining a hypothetical alternative or derived policy, put the current unavailable/unsupported boundary in the same sentence as any can, may or could wording. "
         f"{persona_style} "
         "Return exactly one JSON object with Answer, KeyPoints, Boundary, GroundingIdentities, SuggestedFollowUps and Persona. "
         "Use at most five concise key points and three follow-ups. GroundingIdentities must contain only exact identifiers from the packet. "
@@ -162,13 +163,20 @@ def validate_live_document(
         not in {"SUPPORTED_GUIDANCE_ONLY", "UNSUPPORTED_PRODUCT_DEPENDENCY", "UNAVAILABLE_PRODUCT_DEPENDENCY", "PROHIBITED"}
         for action in request.ContextPacket.AvailableGovernedActions
     )
-    if not change_action_supported and re.search(
-        r"\b(?:can|may|could)\s+be\s+(?:changed|adjusted|customi[sz]ed|edited|saved|persisted)\b|"
-        r"\b(?:users?|organisations?)\s+can\s+(?:change|adjust|customi[sz]e|edit|save|persist)\b",
-        text,
-        re.I,
-    ):
-        raise ConversationValidationFailure("model output overstates a governed change capability")
+    if not change_action_supported:
+        positive_change = re.compile(
+            r"\b(?:can|may|could)\s+be\s+(?:changed|adjusted|customi[sz]ed|edited|saved|persisted)\b|"
+            r"\b(?:users?|organisations?)\s+(?:can|may|could)\s+(?:change|adjust|customi[sz]e|edit|save|persist|offer more)\b",
+            re.I,
+        )
+        governed_limit = re.compile(
+            r"\b(?:not currently (?:supported|available|implemented)|unavailable|unsupported|guidance only|"
+            r"cannot|can't|no supported|not directly editable|would require .*derived policy)\b",
+            re.I,
+        )
+        for sentence in re.split(r"(?<=[.!?])\s+", text):
+            if positive_change.search(sentence) and not governed_limit.search(sentence):
+                raise ConversationValidationFailure("model output overstates a governed change capability")
     if re.search(r"\b(?:tool_call|function_call|authorization|api[_ -]?key)\b", text, re.I):
         raise ConversationValidationFailure("model output contains a tool or secret envelope")
     context_text = request.ContextPacket.model_dump_json().lower()

@@ -297,6 +297,21 @@ def test_established_openai_compatible_provider_name_is_supported():
     assert _client(settings(llm_provider="openai_compatible")) is not None
 
 
+def test_change_language_requires_same_sentence_governed_limit():
+    with pytest.raises(ConversationValidationFailure, match="change capability"):
+        validate_live_document(
+            document(Answer="Operational settings can be adjusted without changing entitlement."),
+            request(),
+            max_output_chars=4000,
+        )
+    accepted = validate_live_document(
+        document(Answer="An organisation could offer more through a derived policy, but that path is not currently supported."),
+        request(),
+        max_output_chars=4000,
+    )
+    assert accepted.Persona == "ADMINISTRATOR"
+
+
 def test_conversation_endpoint_returns_committed_governed_fallback(client, db_session):
     payload = request().model_dump(mode="json")
     response = client.post("/api/v1/minerva/leave-studio/conversations", json=payload)
