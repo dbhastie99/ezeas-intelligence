@@ -6,6 +6,8 @@
   "unsupported_number_rejected": true,
   "mutation_claim_rejected": true,
   "unsupported_persistence_claim_rejected": true,
+  "sentence_scoped_governed_limitation_accepted": true,
+  "post_hardening_relevant_tests_passed": 259,
   "tool_or_secret_envelope_rejected": true,
   "fallback_used_after_rejection": true,
   "unvalidated_output_returned": false

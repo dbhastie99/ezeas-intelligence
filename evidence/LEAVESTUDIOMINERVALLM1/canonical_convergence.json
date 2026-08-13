@@ -6,6 +6,9 @@
   "feature_sha": "bf4ab894ea77a257beebe7b06aea3cba6ed84207",
   "remote_feature_verified": true,
   "integrated_authority_sha": "bf4ab894ea77a257beebe7b06aea3cba6ed84207",
+  "post_integration_evidence_sha": "ad321a458d4219819b2d3b91ac349e80f34d80b4",
+  "final_capability_validation_code_sha": "ab7a1d06f51670528f407f9928032a8cb53922ec",
+  "final_evidence_commit_is_successor_only": true,
   "remote_authority_verified": true,
   "force_push_used": false
 }
