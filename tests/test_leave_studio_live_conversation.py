@@ -26,6 +26,21 @@ from app.services.openai_compatible_json_client import JsonCompletion
 
 
 PERSONAS = ["ADMINISTRATOR", "LEGAL", "MANAGER", "WORKER"]
+ENTITLEMENT_PRECISION_QUESTIONS = [
+    "Does my entitlement start from employment regardless of age?",
+    "Does service start from my first day?",
+    "Am I entitled after seven years?",
+    "Does age affect long service leave?",
+    "If I started at 17, when does my entitlement begin?",
+    "When do I qualify for long service leave?",
+    "I have worked here for ten years. Am I entitled now?",
+]
+SAFE_PRECISION_ANSWER = (
+    "Age is not identified as a factor in this governed policy context. "
+    "Recognised service may begin at the governed service commencement, but that does not itself establish "
+    "entitlement access, which depends on the service threshold and other governed conditions. "
+    "Worker-specific governed facts were not included, so Minerva cannot determine your individual entitlement."
+)
 
 
 def packet(persona="ADMINISTRATOR", policy="annual") -> LeaveStudioLlmContextV3:
@@ -155,11 +170,18 @@ def test_live_composition_is_persona_pinned_grounded_audited_and_no_tools(person
     call = client.calls[0]
     assert "sole factual authority" in call["system_instruction"]
     assert "prior assistant turns are never factual authority" in call["system_instruction"]
+    assert "Facts asserted in the user's question" in call["system_instruction"]
+    assert "Absence is not proof of the opposite" in call["system_instruction"]
+    assert "Keep recognised service commencement" in call["system_instruction"]
+    assert "WorkerSpecificContextIncluded=false" in call["system_instruction"]
     assert "invoke tools" in call["system_instruction"]
     assert "tools" not in call
     assert call["response_schema"]["strict"] is True
     payload = json.loads(call["user_payload"])
     assert "auth-annual" in payload["allowed_grounding_identities"]
+    assert payload["mandatory_precision_constraints"]["worker_specific_context_included"] is False
+    assert payload["mandatory_precision_constraints"]["individual_outcome_determination_permitted"] is False
+    assert payload["mandatory_precision_constraints"]["recognised_service_is_entitlement_access"] is False
     audit = db_session.get(AIInteractionAudit, response.AuditIdentity)
     assert audit is not None
     audit_data = json.loads(audit.ResponseText)
@@ -310,6 +332,138 @@ def test_change_language_requires_same_sentence_governed_limit():
         max_output_chars=4000,
     )
     assert accepted.Persona == "ADMINISTRATOR"
+
+
+@pytest.mark.parametrize("persona", PERSONAS)
+@pytest.mark.parametrize("question", ENTITLEMENT_PRECISION_QUESTIONS)
+def test_entitlement_precision_matrix_accepts_policy_explanation_with_worker_boundary(persona, question):
+    validated = validate_live_document(
+        document(persona=persona, grounding=["auth-qld_lsl"], Answer=SAFE_PRECISION_ANSWER),
+        request(persona=persona, policy="qld_lsl", Question=question),
+        max_output_chars=4000,
+    )
+    assert validated.Persona == persona
+    assert "cannot determine your individual entitlement" in validated.Answer
+
+
+@pytest.mark.parametrize(
+    "answer,error",
+    [
+        (
+            "The policy does not mention age, so your entitlement starts from employment regardless of your age.",
+            "absent criteria",
+        ),
+        (
+            "Your entitlement starts from your first day of employment.",
+            "recognised service with entitlement access",
+        ),
+        ("You are entitled after seven years.", "worker-specific outcome"),
+        ("Age cannot affect long service leave entitlement.", "absent criteria"),
+        ("You have vested and can access the entitlement.", "worker-specific outcome"),
+        ("You qualify for long service leave.", "worker-specific outcome"),
+        ("Your payable entitlement is available now.", "worker-specific outcome"),
+    ],
+)
+def test_entitlement_overclaims_fail_closed(answer, error):
+    with pytest.raises(ConversationValidationFailure, match=error):
+        validate_live_document(
+            document(grounding=["auth-qld_lsl"], Answer=answer),
+            request(policy="qld_lsl", Question="Does my entitlement start from employment regardless of age?"),
+            max_output_chars=4000,
+        )
+
+
+def test_personal_question_requires_explicit_worker_context_boundary():
+    with pytest.raises(ConversationValidationFailure, match="omits the worker-specific context boundary"):
+        validate_live_document(
+            document(
+                grounding=["auth-qld_lsl"],
+                Answer=(
+                    "Under this policy, recognised service is counted under the governing source. "
+                    "Entitlement access depends on the service threshold and other governed conditions."
+                )
+            ),
+            request(policy="qld_lsl", Question="When do I qualify for long service leave?"),
+            max_output_chars=4000,
+        )
+
+
+def test_rejecting_the_users_compound_assumption_is_not_a_negative_inference_claim():
+    validated = validate_live_document(
+        document(
+            grounding=["auth-qld_lsl"],
+            Answer=(
+                "The policy does not establish access simply from employment regardless of age. "
+                "Age is not identified as a factor in this governed policy context. "
+                "Recognised service is counted under the governing source, while entitlement access depends on the "
+                "service threshold and other governed conditions."
+            ),
+            Boundary=(
+                "Worker-specific governed facts were not included, so Minerva cannot determine your individual entitlement."
+            ),
+        ),
+        request(
+            policy="qld_lsl",
+            Question="Does my entitlement start from employment regardless of age?",
+        ),
+        max_output_chars=4000,
+    )
+    assert validated.Persona == "ADMINISTRATOR"
+
+
+def test_explicit_governed_universal_age_proposition_may_be_explained():
+    explicit_context = packet("ADMINISTRATOR", "qld_lsl").model_copy(
+        update={
+            "PolicyStory": {
+                "Title": "How this policy works",
+                "Introduction": "The governed rule expressly states that age does not affect entitlement access.",
+                "Chapters": [],
+                "Closing": "",
+            }
+        }
+    )
+    validated = validate_live_document(
+        document(
+            grounding=["auth-qld_lsl"],
+            Answer="Under the express governed rule, entitlement access is the same regardless of age.",
+            Boundary=(
+                "Worker-specific governed facts were not included, so Minerva cannot determine your individual entitlement."
+            ),
+        ),
+        request(
+            policy="qld_lsl",
+            Question="Does my entitlement start from employment regardless of age?",
+            ContextPacket=explicit_context,
+        ),
+        max_output_chars=4000,
+    )
+    assert validated.Persona == "ADMINISTRATOR"
+
+
+@pytest.mark.parametrize(
+    "answer,reason",
+    [
+        ("Age cannot affect long service leave entitlement.", "validation_negative_inference_claim"),
+        ("Your entitlement starts from your first day of employment.", "validation_service_entitlement_conflation"),
+        ("You are entitled now.", "validation_personal_outcome_claim"),
+        (
+            "Under this policy, access depends on the governed service threshold.",
+            "validation_worker_context_boundary",
+        ),
+    ],
+)
+def test_entitlement_precision_rejections_use_stable_fallback_reasons(answer, reason, db_session):
+    client = FakeClient(document(grounding=["auth-qld_lsl"], Answer=answer))
+    response = ask_leave_studio_conversation(
+        request(policy="qld_lsl", Question="When do I qualify for long service leave?"),
+        db=db_session,
+        settings=settings(),
+        client_factory=lambda _: client,
+    )
+    assert response.LiveLlmAttempted is True
+    assert response.LiveLlmUsed is False
+    assert response.FallbackReason == reason
+    assert response.NoChangesMade is True
 
 
 def test_conversation_endpoint_returns_committed_governed_fallback(client, db_session):
