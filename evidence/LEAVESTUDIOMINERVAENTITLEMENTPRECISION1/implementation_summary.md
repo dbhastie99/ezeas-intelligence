@@ -18,4 +18,6 @@ Implementation files:
 - `app/services/leave_studio_conversation_service.py`
 - `tests/test_leave_studio_live_conversation.py`
 
-Immutable implementation commit: `99976986967333bda74e14a0dc426a1b970d4d05`.
+Initial implementation commit: `99976986967333bda74e14a0dc426a1b970d4d05`.
+
+Owner-runtime smoke exposed the equivalent unsupported form “rather than age”. The final hardening commit `10d32831da46f4d7dbfac67df9ae14f16a5bb5d4` adds that form (and “not age”) to the same explicit-governed-support boundary.

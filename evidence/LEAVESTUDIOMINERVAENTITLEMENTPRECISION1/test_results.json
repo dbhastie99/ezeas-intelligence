@@ -7,7 +7,7 @@
       "tests/test_minerva_qld_lsl_answer_planner.py",
       "tests/test_minerva_admin_configuration_context.py"
     ],
-    "passed": 164,
+    "passed": 165,
     "failed": 0,
     "duration_seconds": 0.93,
     "includes_7_question_4_persona_deterministic_matrix": true,
@@ -16,9 +16,9 @@
   "broader_relevant_regression": {
     "selected_test_files": 16,
     "selection": "Leave, LSL, Queensland General LSL, Minerva administrator and Minerva QLD focused tests",
-    "passed": 260,
+    "passed": 261,
     "failed": 0,
-    "duration_seconds": 9.63
+    "duration_seconds": 9.74
   },
   "retained_representative_coverage": {
     "source_precedence": "PASS",

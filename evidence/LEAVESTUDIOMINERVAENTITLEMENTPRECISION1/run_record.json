@@ -15,6 +15,7 @@
   "intelligence_starting_remote_sha": "362679d8a2cae37e7322f33f9ac237447578899a",
   "workforce_starting_remote_sha": "930eb907db3f14325bc2cd7974a2ccab6d709314",
   "feature_implementation_sha": "99976986967333bda74e14a0dc426a1b970d4d05",
+  "final_hardening_sha": "10d32831da46f4d7dbfac67df9ae14f16a5bb5d4",
   "feature_evidence_sha": "85e669421d54ec70b1bb160ecd7ebf654e30dba1",
   "integrated_target_sha": "85e669421d54ec70b1bb160ecd7ebf654e30dba1",
   "implementation_repository": "dbhastie99/ezeas-intelligence",

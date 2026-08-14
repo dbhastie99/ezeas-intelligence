@@ -9,38 +9,47 @@
     "personas": 4,
     "calls": 28,
     "live_attempted": 28,
-    "live_accepted": 20,
-    "fallbacks": 8,
+    "live_accepted": 18,
+    "fallbacks": 10,
     "fallback_reasons": {
-      "validation_negative_inference_claim": 3,
-      "validation_service_entitlement_conflation": 4,
-      "validation_unsupported_number": 1
+      "validation_negative_inference_claim": 8,
+      "validation_service_entitlement_conflation": 2
     },
     "provider_latency_ms": {
-      "minimum": 3433,
-      "maximum": 5354,
-      "average": 4344.5
+      "minimum": 4167,
+      "maximum": 6643,
+      "average": 4887.83
     },
-    "all_questions_had_at_least_one_live_acceptance": true,
+    "all_questions_had_at_least_one_live_acceptance": false,
     "all_grounded": true,
     "all_no_changes_made": true,
-    "fallbacks_are_correct_governed_outcomes": true
+    "all_audit_identity_present": true,
+    "fallbacks_are_correct_governed_outcomes": true,
+    "questions_with_all_persona_fallback": [4, 5]
   },
   "fallback_rows": [
-    {"call": 2, "question": 1, "persona": "LEGAL", "reason": "validation_negative_inference_claim"},
-    {"call": 3, "question": 1, "persona": "MANAGER", "reason": "validation_negative_inference_claim"},
-    {"call": 9, "question": 3, "persona": "ADMINISTRATOR", "reason": "validation_service_entitlement_conflation"},
-    {"call": 10, "question": 3, "persona": "LEGAL", "reason": "validation_service_entitlement_conflation"},
+    {"call": 1, "question": 1, "persona": "ADMINISTRATOR", "reason": "validation_negative_inference_claim"},
+    {"call": 8, "question": 2, "persona": "WORKER", "reason": "validation_service_entitlement_conflation"},
+    {"call": 13, "question": 4, "persona": "ADMINISTRATOR", "reason": "validation_negative_inference_claim"},
+    {"call": 14, "question": 4, "persona": "LEGAL", "reason": "validation_negative_inference_claim"},
+    {"call": 15, "question": 4, "persona": "MANAGER", "reason": "validation_negative_inference_claim"},
+    {"call": 16, "question": 4, "persona": "WORKER", "reason": "validation_negative_inference_claim"},
     {"call": 17, "question": 5, "persona": "ADMINISTRATOR", "reason": "validation_negative_inference_claim"},
-    {"call": 19, "question": 5, "persona": "MANAGER", "reason": "validation_unsupported_number"},
-    {"call": 20, "question": 5, "persona": "WORKER", "reason": "validation_service_entitlement_conflation"},
-    {"call": 28, "question": 7, "persona": "WORKER", "reason": "validation_service_entitlement_conflation"}
+    {"call": 18, "question": 5, "persona": "LEGAL", "reason": "validation_negative_inference_claim"},
+    {"call": 19, "question": 5, "persona": "MANAGER", "reason": "validation_service_entitlement_conflation"},
+    {"call": 20, "question": 5, "persona": "WORKER", "reason": "validation_negative_inference_claim"}
   ],
   "preliminary_matrix": {
     "calls": 28,
     "live_accepted": 16,
     "fallbacks": 12,
     "preserved_at": "live_provider_matrix_preliminary.json"
+  },
+  "pre_residual_guard_matrix": {
+    "calls": 28,
+    "live_accepted": 20,
+    "fallbacks": 8,
+    "preserved_at": "live_provider_matrix_before_rather_than_age_guard.json"
   },
   "credential_value_recorded": false,
   "raw_provider_answers_persisted": false,
