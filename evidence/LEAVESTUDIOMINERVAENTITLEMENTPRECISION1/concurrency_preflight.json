@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "classification": "PROCEED_CONCURRENTLY_ISOLATED",
+  "final_disposition": "PROCEED_CONCURRENTLY_ISOLATED",
+  "main_checkout": {
+    "path": "C:\\Projects\\ezeas-intelligence",
+    "branch": "main",
+    "head": "109a256c4f8587bff9eedfb9afaa3a23984ad21b",
+    "dirty": true,
+    "state": "one tracked modification plus extensive unrelated untracked Minerva work; preserved and untouched"
+  },
+  "accepted_target_checkout": {
+    "path": "C:\\Projects\\_wt-minerva-leavestudiominervademo1-20260810",
+    "branch": "minerva/leavestudiominervademo1-20260810",
+    "head": "362679d8a2cae37e7322f33f9ac237447578899a",
+    "dirty": false
+  },
+  "protected_owner_review_runtime": {
+    "path": "C:\\Projects\\ezeas-intelligence-leave-runtime-20260814",
+    "branch": "DETACHED",
+    "head": "362679d8a2cae37e7322f33f9ac237447578899a",
+    "dirty": false,
+    "listen_address": "127.0.0.1",
+    "port": 8001,
+    "initial_owning_process_id": 29012,
+    "initial_uvicorn_parent_process_id": 27232,
+    "preserved_during_engineering": true
+  },
+  "prior_live_feature_checkout": {
+    "path": "C:\\Projects\\ezeas-intelligence-leave-studio-minerva-llm1-20260813",
+    "branch": "minerva/leave-studio-minerva-llm1-20260813",
+    "head": "bf4ab894ea77a257beebe7b06aea3cba6ed84207",
+    "dirty": false
+  },
+  "active_codex_scopes_observed": [
+    "C:\\Projects\\_context",
+    "C:\\Projects\\workforce-platform",
+    "C:\\Projects\\wfp-demo-candidate-20260812",
+    "C:\\Projects\\ezeas-intelligence"
+  ],
+  "same_file_intelligence_writer_observed": false,
+  "relevant_git_locks_found": false,
+  "shared_branch_written_during_engineering": false,
+  "shared_runtime_restarted_during_engineering": false,
+  "shared_database_business_state_mutated": false,
+  "isolated_intelligence_runtime_port": 8123,
+  "isolated_workforce_read_only_runtime_port": 8050,
+  "serialisation_required_before_target_update": true
+}

@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "intelligence_only_change": true,
+  "workforce_source_mutation": false,
+  "leave_policy_mutation": false,
+  "worker_mutation": false,
+  "payroll_mutation": false,
+  "financial_mutation": false,
+  "account_mutation": false,
+  "security_mutation": false,
+  "database_schema_mutation": false,
+  "browser_direct_provider_call": false,
+  "tool_enablement": false,
+  "browsing_enablement": false,
+  "retrieval_enablement": false,
+  "model_memory_authority": false,
+  "permitted_runtime_persistence": "EXISTING_INTELLIGENCE_AI_INTERACTION_AUDIT_ONLY",
+  "raw_question_or_provider_answer_persisted_by_new_path": false,
+  "credential_persisted": false,
+  "no_changes_made_all_28_calls": true
+}

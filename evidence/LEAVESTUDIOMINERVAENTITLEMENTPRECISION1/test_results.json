@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "focused": {
+    "command_scope": [
+      "tests/test_leave_studio_live_conversation.py",
+      "tests/test_leave_studio_minerva_questions.py",
+      "tests/test_minerva_qld_lsl_answer_planner.py",
+      "tests/test_minerva_admin_configuration_context.py"
+    ],
+    "passed": 164,
+    "failed": 0,
+    "duration_seconds": 0.93,
+    "includes_7_question_4_persona_deterministic_matrix": true,
+    "includes_stable_fallback_reason_tests": true
+  },
+  "broader_relevant_regression": {
+    "selected_test_files": 16,
+    "selection": "Leave, LSL, Queensland General LSL, Minerva administrator and Minerva QLD focused tests",
+    "passed": 260,
+    "failed": 0,
+    "duration_seconds": 9.63
+  },
+  "retained_representative_coverage": {
+    "source_precedence": "PASS",
+    "hold_explanation": "PASS",
+    "service_thresholds": "PASS",
+    "valuation": "PASS",
+    "evidence_support": "PASS",
+    "field_and_scenario_fallback_and_audit": "PASS"
+  },
+  "static": {
+    "python_compileall": "PASS",
+    "git_diff_check": "PASS",
+    "standalone_linter": "NOT_CONFIGURED_OR_INSTALLED",
+    "standalone_type_checker": "NOT_CONFIGURED_OR_INSTALLED"
+  },
+  "secret_scan": {
+    "files_scanned": "all changed and untracked slice files",
+    "credential_patterns_found": 0,
+    "credential_configured": true,
+    "credential_value_recorded": false
+  }
+}

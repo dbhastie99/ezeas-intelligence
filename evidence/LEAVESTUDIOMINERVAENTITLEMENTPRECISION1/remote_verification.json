@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "status": "PENDING_SERIAL_CANONICAL_CONVERGENCE",
+  "feature_branch": "minerva/leave-studio-entitlement-precision1-20260814",
+  "feature_implementation_sha": "99976986967333bda74e14a0dc426a1b970d4d05",
+  "accepted_target_branch": "minerva/leavestudiominervademo1-20260810",
+  "pre_integration_remote_target_sha": "362679d8a2cae37e7322f33f9ac237447578899a",
+  "force_push": false
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "classification": "PACK_RELEVANT_DELTA_REQUIRES_RECONCILIATION",
+  "reconciliation_status": "COMPLETE_BEFORE_IMPLEMENTATION",
+  "certified_pack_version": "1.9",
+  "certified_pack_fingerprint_expected": "995f5f7bd0ad3cf6de56e9288d39f3229768fd565e9d3011cec248a0d80d4682",
+  "certified_pack_fingerprint_actual": "995f5f7bd0ad3cf6de56e9288d39f3229768fd565e9d3011cec248a0d80d4682",
+  "certified_pack_checksum_manifest_sha256": "673b80780b869d76f722b45c20682504bf4de6acc187ab10c96a5091dac9e019",
+  "certified_pack_checksum_entries": 151,
+  "certified_pack_checksum_failures": 0,
+  "pack_workforce_sha": "572b1153be8aa05504b84432eeea303ab7d5abea",
+  "fetched_workforce_remote_sha": "930eb907db3f14325bc2cd7974a2ccab6d709314",
+  "fetched_intelligence_remote_sha": "362679d8a2cae37e7322f33f9ac237447578899a",
+  "relevant_delta": {
+    "slice": "LEAVESTUDIOMINERVALLM1",
+    "intelligence_live_feature_sha": "bf4ab894ea77a257beebe7b06aea3cba6ed84207",
+    "intelligence_accepted_target_sha": "362679d8a2cae37e7322f33f9ac237447578899a",
+    "workforce_live_conversation_commit": "026855dc",
+    "prior_context_disposition": "CONTEXT_DELTA_PENDING_OWNER_ACCEPTANCE",
+    "reconciled_sources": [
+      "C:\\Projects\\ezeas-intelligence-leave-studio-minerva-llm1-20260813\\evidence\\LEAVESTUDIOMINERVALLM1",
+      "C:\\Projects\\wfp-leave-studio-minerva-llm1-20260813\\evidence\\LEAVESTUDIOMINERVALLM1\\context_delta_candidate.md",
+      "C:\\Projects\\wfp-leave-studio-minerva-llm1-20260813\\evidence\\LEAVESTUDIOMINERVALLM1\\verification.json"
+    ]
+  },
+  "v1_9_mutated": false,
+  "reconciliation_conclusion": "The live governed conversation delta is legitimate successor implementation context. Workforce remains policy/context authority; Intelligence remains an untrusted composition layer with audit-only persistence."
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "prompt_instruction_version": "LEAVE_STUDIO_LIVE_CONVERSATION_V2",
+  "context_contract_version": "LEAVE_STUDIO_LLM_CONTEXT_V3",
+  "final_fixed_matrix": {
+    "questions": 7,
+    "personas": 4,
+    "calls": 28,
+    "live_attempted": 28,
+    "live_accepted": 20,
+    "fallbacks": 8,
+    "fallback_reasons": {
+      "validation_negative_inference_claim": 3,
+      "validation_service_entitlement_conflation": 4,
+      "validation_unsupported_number": 1
+    },
+    "provider_latency_ms": {
+      "minimum": 3433,
+      "maximum": 5354,
+      "average": 4344.5
+    },
+    "all_questions_had_at_least_one_live_acceptance": true,
+    "all_grounded": true,
+    "all_no_changes_made": true,
+    "fallbacks_are_correct_governed_outcomes": true
+  },
+  "fallback_rows": [
+    {"call": 2, "question": 1, "persona": "LEGAL", "reason": "validation_negative_inference_claim"},
+    {"call": 3, "question": 1, "persona": "MANAGER", "reason": "validation_negative_inference_claim"},
+    {"call": 9, "question": 3, "persona": "ADMINISTRATOR", "reason": "validation_service_entitlement_conflation"},
+    {"call": 10, "question": 3, "persona": "LEGAL", "reason": "validation_service_entitlement_conflation"},
+    {"call": 17, "question": 5, "persona": "ADMINISTRATOR", "reason": "validation_negative_inference_claim"},
+    {"call": 19, "question": 5, "persona": "MANAGER", "reason": "validation_unsupported_number"},
+    {"call": 20, "question": 5, "persona": "WORKER", "reason": "validation_service_entitlement_conflation"},
+    {"call": 28, "question": 7, "persona": "WORKER", "reason": "validation_service_entitlement_conflation"}
+  ],
+  "preliminary_matrix": {
+    "calls": 28,
+    "live_accepted": 16,
+    "fallbacks": 12,
+    "preserved_at": "live_provider_matrix_preliminary.json"
+  },
+  "credential_value_recorded": false,
+  "raw_provider_answers_persisted": false,
+  "permitted_mutation": "INTELLIGENCE_INTERACTION_AUDIT_ONLY"
+}

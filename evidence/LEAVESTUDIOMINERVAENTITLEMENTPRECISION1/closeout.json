@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "slice": "LEAVESTUDIOMINERVAENTITLEMENTPRECISION1",
+  "status": "IMPLEMENTED_AND_VERIFIED_PENDING_SERIAL_CANONICAL_CONVERGENCE",
+  "context_compatibility": "PACK_RELEVANT_DELTA_REQUIRES_RECONCILIATION",
+  "context_reconciliation": "COMPLETE",
+  "concurrency_disposition": "PROCEED_CONCURRENTLY_ISOLATED",
+  "feature_implementation_sha": "99976986967333bda74e14a0dc426a1b970d4d05",
+  "focused_tests_passed": 164,
+  "broader_relevant_tests_passed": 260,
+  "final_live_calls": 28,
+  "final_live_accepted": 20,
+  "final_live_fallbacks": 8,
+  "all_live_matrix_responses_grounded": true,
+  "all_live_matrix_responses_no_changes_made": true,
+  "workforce_disposition": "INTELLIGENCE_ONLY_CHANGE",
+  "context_disposition": "CONTEXT_DELTA_PENDING_OWNER_ACCEPTANCE",
+  "owner_acceptance_claimed": false,
+  "certification_claimed": false,
+  "canonical_convergence": "PENDING",
+  "owner_review_runtime": "PENDING_CANONICAL_CONVERGENCE"
+}
