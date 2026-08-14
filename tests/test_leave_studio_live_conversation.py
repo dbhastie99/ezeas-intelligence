@@ -359,6 +359,7 @@ def test_entitlement_precision_matrix_accepts_policy_explanation_with_worker_bou
         ),
         ("You are entitled after seven years.", "worker-specific outcome"),
         ("Age cannot affect long service leave entitlement.", "absent criteria"),
+        ("Entitlement access depends on recognised service rather than age.", "absent criteria"),
         ("You have vested and can access the entitlement.", "worker-specific outcome"),
         ("You qualify for long service leave.", "worker-specific outcome"),
         ("Your payable entitlement is available now.", "worker-specific outcome"),

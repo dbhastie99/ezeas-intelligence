@@ -95,7 +95,7 @@ def _system_instruction(persona: str) -> str:
         "Facts asserted in the user's question or conversation history are not governed worker facts and must not be treated as verified. "
         "If the packet does not contain the answer, say that the information is unavailable in this policy context and do not guess. "
         "Absence is not proof of the opposite: if a criterion is not identified in the governed packet, say only that it 'is not identified as a factor in this governed policy context'. Stop that proposition there. "
-        "For age, 'Age is not identified as a factor in this governed policy context' is permitted; 'age is not a factor', 'age does not affect entitlement', 'regardless of age', 'whatever the age', and any therefore/so conclusion about age are prohibited unless that universal proposition is explicit in the packet. "
+        "For age, 'Age is not identified as a factor in this governed policy context' is permitted; 'age is not a factor', 'age does not affect entitlement', 'regardless of age', 'rather than age', 'based on service, not age', 'whatever the age', and any therefore/so conclusion about age are prohibited unless that universal proposition is explicit in the packet. "
         "Keep recognised service commencement, accumulation and counting distinct from entitlement access, vesting, qualification and payment. Service beginning or being counted does not itself establish that an entitlement has started, is accessible, has vested, is payable, or that a worker qualifies. "
         "Do not use the ambiguous phrases 'entitlement starts', 'entitlement begins', 'entitlement commences', 'entitlement accrues from employment', or their personal equivalents when answering a service or long-service question. Use the precise state names instead: recognised service begins/is counted; entitlement access depends on the governed threshold and conditions; vesting and payment are separate where the packet supports them. "
         "WorkerSpecificContextIncluded=false. Answer first-person questions at policy level and do not determine or imply an individual outcome, including that the user is entitled or eligible, qualifies, has vested, can access an entitlement, has a balance or payable entitlement, or that their entitlement starts. "
@@ -226,6 +226,7 @@ def _context_explicitly_supports_universal_age_claim(request: LeaveStudioConvers
             r"\bage\s+(?:never|cannot|can't|does not|doesn't|will not|won't)\s+"
             r"(?:matter|affect|change|influence|determine)\b|"
             r"\bage has no bearing on\b|"
+            r"\b(?:rather than|not) (?:the worker's |your )?age\b|"
             r"\bage is (?:irrelevant|not a factor|not relevant)\b|"
             r"\bno age (?:limit|restriction|requirement|criterion|condition)\b",
             context_text,
@@ -241,6 +242,7 @@ def _contains_unsupported_universal_age_claim(text: str, request: LeaveStudioCon
         r"\bage\s+(?:never|cannot|can't|does not|doesn't|will not|won't)\s+"
         r"(?:matter|affect|change|influence|determine)\b|"
         r"\bage has no bearing on\b|"
+        r"\b(?:rather than|not) (?:the worker's |your )?age\b|"
         r"\bage is (?:irrelevant|not a factor|not relevant)\b|"
         r"\bno age (?:limit|restriction|requirement|criterion|condition)\b",
         re.I,
