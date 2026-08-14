@@ -9,7 +9,11 @@
   "pre_integration_remote_target_sha": "362679d8a2cae37e7322f33f9ac237447578899a",
   "integrated_target_sha": "85e669421d54ec70b1bb160ecd7ebf654e30dba1",
   "integrated_target_remote_sha_verified": "85e669421d54ec70b1bb160ecd7ebf654e30dba1",
+  "post_attestation_target_sha": "54ce0ca6a6727f73d6ac2e7a7e4c105fdc6a510b",
+  "final_hardening_feature_sha_verified": "65831b0983e83096db889ea4447169d88843ad63",
+  "final_hardening_target_sha_verified": "65831b0983e83096db889ea4447169d88843ad63",
   "integration_method": "FAST_FORWARD",
   "target_advancement_during_slice": false,
+  "final_remote_parity_before_metadata_only_closeout": true,
   "force_push": false
 }

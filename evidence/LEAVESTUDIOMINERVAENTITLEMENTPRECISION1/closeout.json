@@ -1,12 +1,13 @@
 {
   "schema_version": 1,
   "slice": "LEAVESTUDIOMINERVAENTITLEMENTPRECISION1",
-  "status": "FINAL_HARDENING_VERIFIED_PENDING_RECONVERGENCE",
+  "status": "IMPLEMENTED_VERIFIED_CONVERGED_AND_OWNER_REVIEW_READY",
   "context_compatibility": "PACK_RELEVANT_DELTA_REQUIRES_RECONCILIATION",
   "context_reconciliation": "COMPLETE",
   "concurrency_disposition": "PROCEED_CONCURRENTLY_ISOLATED",
   "feature_implementation_sha": "99976986967333bda74e14a0dc426a1b970d4d05",
   "final_hardening_sha": "10d32831da46f4d7dbfac67df9ae14f16a5bb5d4",
+  "final_hardening_evidence_sha": "65831b0983e83096db889ea4447169d88843ad63",
   "feature_evidence_sha": "85e669421d54ec70b1bb160ecd7ebf654e30dba1",
   "integrated_target_sha": "85e669421d54ec70b1bb160ecd7ebf654e30dba1",
   "focused_tests_passed": 165,
@@ -20,6 +21,12 @@
   "context_disposition": "CONTEXT_DELTA_PENDING_OWNER_ACCEPTANCE",
   "owner_acceptance_claimed": false,
   "certification_claimed": false,
-  "canonical_convergence": "PENDING_FINAL_HARDENING_RECONVERGENCE",
-  "owner_review_runtime": "PENDING_CANONICAL_CONVERGENCE"
+  "canonical_convergence": "PASS_FINAL_HARDENING_FAST_FORWARD_REMOTE_VERIFIED",
+  "owner_review_runtime": "READY_AT_C:\\Projects\\ezeas-intelligence-leave-runtime-20260814_ON_127.0.0.1:8001",
+  "owner_review_runtime_product_sha": "65831b0983e83096db889ea4447169d88843ad63",
+  "owner_review_health": "PASS_OK",
+  "owner_review_openapi_conversation_route": "PASS",
+  "owner_review_live_smoke_status": "DETERMINISTIC_FALLBACK",
+  "owner_review_live_smoke_fallback_reason": "validation_negative_inference_claim",
+  "owner_review_live_smoke_audit_identity_present": true
 }

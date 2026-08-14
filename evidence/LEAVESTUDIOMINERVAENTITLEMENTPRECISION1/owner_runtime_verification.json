@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "runtime_location": "C:\\Projects\\ezeas-intelligence-leave-runtime-20260814",
+  "listen_address": "127.0.0.1",
+  "port": 8001,
+  "product_authority_sha": "65831b0983e83096db889ea4447169d88843ad63",
+  "checkout_clean": true,
+  "health_status": "ok",
+  "openapi_conversation_route": "/api/v1/minerva/leave-studio/conversations",
+  "openapi_conversation_route_exposed": true,
+  "provider": "openai",
+  "model": "gpt-4.1-mini",
+  "credential_configured": true,
+  "credential_value_recorded": false,
+  "conversation_enabled": true,
+  "owner_question_smoke": {
+    "question": "Does my entitlement start from employment regardless of age?",
+    "persona": "ADMINISTRATOR",
+    "status": "DETERMINISTIC_FALLBACK",
+    "live_llm_attempted": true,
+    "live_llm_used": false,
+    "fallback_reason": "validation_negative_inference_claim",
+    "audit_identity_present": true,
+    "grounding_identity_count": 2,
+    "no_changes_made": true
+  },
+  "owner_acceptance_claimed": false
+}
