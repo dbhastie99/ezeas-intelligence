@@ -15,6 +15,8 @@
   "intelligence_starting_remote_sha": "362679d8a2cae37e7322f33f9ac237447578899a",
   "workforce_starting_remote_sha": "930eb907db3f14325bc2cd7974a2ccab6d709314",
   "feature_implementation_sha": "99976986967333bda74e14a0dc426a1b970d4d05",
+  "feature_evidence_sha": "85e669421d54ec70b1bb160ecd7ebf654e30dba1",
+  "integrated_target_sha": "85e669421d54ec70b1bb160ecd7ebf654e30dba1",
   "implementation_repository": "dbhastie99/ezeas-intelligence",
   "implementation_branch": "minerva/leave-studio-entitlement-precision1-20260814",
   "implementation_worktree": "C:\\Projects\\_wt-leave-minerva-entitlement-precision1-20260814",
