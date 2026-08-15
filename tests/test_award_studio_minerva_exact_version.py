@@ -127,6 +127,24 @@ def ma000027_projection() -> AwardVersionExplainableContextV1:
             "HELD",
             ["evidence:damaged-clothing"],
         ),
+        _node(
+            "semantic:employment:part-time",
+            "EMPLOYMENT_TYPE_PROVISION",
+            "PART_TIME_AGREED_HOURS",
+            "Part-time agreed hours",
+            "EXPLICIT_STRUCTURED",
+            ["evidence:part-time"],
+            applicability={"employmentTypes": ["PART_TIME"]},
+        ),
+        _node(
+            "semantic:employment:casual",
+            "EMPLOYMENT_TYPE_PROVISION",
+            "CASUAL_LOADING",
+            "Casual loading",
+            "EXPLICIT_STRUCTURED",
+            ["evidence:casual"],
+            applicability={"employmentTypes": ["CASUAL"]},
+        ),
     ]
     evidence = [
         _evidence("evidence:award", "semantic:award", "MA000027 source package", SHA_A, 1),
@@ -136,6 +154,8 @@ def ma000027_projection() -> AwardVersionExplainableContextV1:
         _evidence("evidence:ot1", "semantic:ot1", "MA000027 governed proposition", SHA_C, 8),
         _evidence("evidence:allowance", "semantic:allowance", "MA000027 allowance table", SHA_D, 40),
         _evidence("evidence:damaged-clothing", "semantic:damaged-clothing", "MA000027 allowance table", SHA_D, 41),
+        _evidence("evidence:part-time", "semantic:employment:part-time", "MA000027 clause 10", SHA_A, 10),
+        _evidence("evidence:casual", "semantic:employment:casual", "MA000027 clause 11", SHA_A, 11),
     ]
     payload = {
         "schemaVersion": "award_version_explainable_context_v1",
@@ -185,6 +205,26 @@ def ma000027_projection() -> AwardVersionExplainableContextV1:
                 "targetCode": "SATURDAY",
                 "authorityClassification": "EXPLICIT_STRUCTURED",
             }
+        ],
+        "employmentTypeScope": [
+            {
+                "EmploymentTypeId": "employment-type-full-time",
+                "EmploymentTypeCode": "FULL_TIME",
+                "ApplicabilityCode": "EXPLICIT_SOURCE_SCOPE",
+                "ApplicabilityFingerprint": SHA_A,
+            },
+            {
+                "EmploymentTypeId": "employment-type-part-time",
+                "EmploymentTypeCode": "PART_TIME",
+                "ApplicabilityCode": "EXPLICIT_SOURCE_SCOPE",
+                "ApplicabilityFingerprint": SHA_B,
+            },
+            {
+                "EmploymentTypeId": "employment-type-casual",
+                "EmploymentTypeCode": "CASUAL",
+                "ApplicabilityCode": "EXPLICIT_SOURCE_SCOPE",
+                "ApplicabilityFingerprint": SHA_C,
+            },
         ],
         "holds": [
             {
@@ -512,6 +552,36 @@ def test_chat_and_level2_share_identical_authority_plan_and_only_presentation_ch
     assert level2.presentation.spokenSummary == "The selected version contains a configured Saturday treatment."
     assert level2.presentation.subtitles == ["Configured Saturday treatment."]
     assert level2.presentation.evidenceCards[0].evidenceIdentity == "evidence:saturday"
+
+
+def test_employment_type_comparison_uses_exact_shared_projection_for_chat_and_level2() -> None:
+    projection = ma000027_projection()
+    shared_classification = projection.semanticNodes[1].model_copy(
+        update={"applicability": {"employmentTypes": ["FULL_TIME", "PART_TIME", "CASUAL"]}}
+    )
+    projection = projection.model_copy(
+        update={"semanticNodes": [projection.semanticNodes[0], shared_classification, *projection.semanticNodes[2:]]}
+    )
+    projection = projection.model_copy(
+        update={
+            "authorityEnvelope": projection.authorityEnvelope.model_copy(
+                update={"projectionFingerprint": canonical_projection_fingerprint(projection)}
+            )
+        }
+    )
+    question = "How do Full-time, Part-time and Casual differ for the shared classification?"
+    chat = ask_award_studio_question(request(projection, question, mode="CHAT"))
+    level2 = ask_award_studio_question(request(projection, question, mode="LEVEL_2"))
+
+    assert chat.questionClassification == "EMPLOYMENT_TYPE_COMPARISON"
+    assert "FULL_TIME, PART_TIME, CASUAL" in chat.answer
+    assert "1 shared configured classifications" in chat.answer
+    assert "2 source-backed employment-type provision nodes" in chat.answer
+    assert "not a worker-specific payroll result" in chat.answer
+    assert level2.plannerFingerprint == chat.plannerFingerprint
+    assert level2.semanticIdentities == chat.semanticIdentities
+    assert level2.evidenceIdentities == chat.evidenceIdentities
+    assert level2.answer == chat.answer
 
 
 def test_ma000084_uses_the_same_generic_contract_without_award_specific_branching() -> None:

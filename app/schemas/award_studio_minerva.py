@@ -32,6 +32,7 @@ QuestionClassification = Literal[
     "HOLD",
     "SOURCE_EVIDENCE",
     "VERSION_LINEAGE",
+    "EMPLOYMENT_TYPE_COMPARISON",
     "UNKNOWN_OR_UNSUPPORTED",
 ]
 
@@ -134,6 +135,13 @@ class AwardPresentationPayload(ContractModel):
     recommendedSequence: int = Field(ge=0)
 
 
+class AwardEmploymentTypeScope(ContractModel):
+    EmploymentTypeId: str = Field(min_length=1, max_length=128)
+    EmploymentTypeCode: Literal["FULL_TIME", "PART_TIME", "CASUAL"]
+    ApplicabilityCode: Literal["EXPLICIT_SOURCE_SCOPE", "LEGACY_SINGLE_SCOPE"]
+    ApplicabilityFingerprint: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+
+
 class AwardVersionExplainableContextV1(ContractModel):
     schemaVersion: Literal["award_version_explainable_context_v1"]
     authorityEnvelope: AwardVersionAuthorityEnvelope
@@ -141,6 +149,7 @@ class AwardVersionExplainableContextV1(ContractModel):
     relationships: list[AwardSemanticRelationship]
     evidence: list[AwardEvidenceReference]
     operationalBindings: list[AwardOperationalBinding]
+    employmentTypeScope: list[AwardEmploymentTypeScope] = Field(default_factory=list)
     holds: list[AwardHold]
     completeness: list[AwardCompletenessEntry]
     presentationPayloads: list[AwardPresentationPayload]

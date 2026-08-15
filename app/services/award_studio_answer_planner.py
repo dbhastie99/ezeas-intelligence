@@ -33,6 +33,7 @@ _AUTHORITY_PRIORITY: dict[str, int] = {
 }
 
 _CONCEPT_TERMS: dict[str, tuple[str, ...]] = {
+    "EMPLOYMENT_TYPE_COMPARISON": ("employment type", "full time", "part time", "casual"),
     "CLASSIFICATION": ("classification", "position", "award position", "class"),
     "SATURDAY": ("saturday",),
     "SUNDAY": ("sunday",),
@@ -82,6 +83,8 @@ def classify_question(question: str) -> QuestionClassification:
         return "SOURCE_EVIDENCE"
     if any(term in text for term in ("overview", "what is configured", "explain this award")):
         return "OVERVIEW"
+    if any(term in text for term in ("employment type", "full time", "part time", "casual", "differ between")):
+        return "EMPLOYMENT_TYPE_COMPARISON"
     if any(term in text for term in ("version", "effective", "lifecycle", "predecessor", "successor", "lineage")):
         return "VERSION_LINEAGE"
     if any(term in text for term in ("damaged clothing", "personal effects", "hold", "unresolved", "review required")):
@@ -140,6 +143,12 @@ def _select_nodes(
         return [node for node in projection.semanticNodes if node.semanticIdentity in hold_node_ids]
     if classification == "CLASSIFICATION":
         return [node for node in projection.semanticNodes if node.type == "CLASSIFICATION"][:12]
+    if classification == "EMPLOYMENT_TYPE_COMPARISON":
+        return [
+            node for node in projection.semanticNodes
+            if node.type == "EMPLOYMENT_TYPE_PROVISION"
+            or bool((node.applicability or {}).get("employmentTypes"))
+        ][:20]
     terms = _CONCEPT_TERMS.get(classification, ())
     if classification == "ALLOWANCE_REIMBURSEMENT":
         question_text = _normalise(question)
@@ -285,6 +294,27 @@ def _direct_answer(
         return (
             f"This is {authority.awardCode} AwardVersion {authority.awardVersionId}, effective from "
             f"{authority.effectiveFrom}, lifecycle {authority.lifecycle}. Configured lineage: {lineage or 'none supplied'}."
+        )
+    if classification == "EMPLOYMENT_TYPE_COMPARISON":
+        configured = [item.EmploymentTypeCode for item in request.projection.employmentTypeScope]
+        if not configured:
+            return _completeness_answer(authority.awardVersionId, "MISSING", completeness)
+        shared = [
+            node for node in request.projection.semanticNodes
+            if node.type == "CLASSIFICATION"
+            and set((node.applicability or {}).get("employmentTypes") or []) >= set(configured)
+        ]
+        scoped = [
+            node for node in request.projection.semanticNodes
+            if node.type == "EMPLOYMENT_TYPE_PROVISION"
+            and (node.applicability or {}).get("employmentTypes")
+        ]
+        return (
+            f"AwardVersion {authority.awardVersionId} explicitly covers {', '.join(configured)}. "
+            f"It contains {len(shared)} shared configured classifications and {len(scoped)} source-backed "
+            "employment-type provision nodes. The classification remains shared where its applicability lists all "
+            "configured types; different treatments are selected from the structured employmentTypes applicability. "
+            "This is configuration authority only, not a worker-specific payroll result."
         )
     if classification == "HOLD" and holds:
         hold = holds[0]
