@@ -80,6 +80,8 @@ def classify_question(question: str) -> QuestionClassification:
         return "UNKNOWN_OR_UNSUPPORTED"
     if any(term in text for term in ("source", "evidence", "clause", "page", "proposition", "where did")):
         return "SOURCE_EVIDENCE"
+    if any(term in text for term in ("overview", "what is configured", "explain this award")):
+        return "OVERVIEW"
     if any(term in text for term in ("version", "effective", "lifecycle", "predecessor", "successor", "lineage")):
         return "VERSION_LINEAGE"
     if any(term in text for term in ("damaged clothing", "personal effects", "hold", "unresolved", "review required")):
@@ -98,8 +100,6 @@ def classify_question(question: str) -> QuestionClassification:
         return "ALLOWANCE_REIMBURSEMENT"
     if "classification" in text or "award position" in text or "position class" in text:
         return "CLASSIFICATION"
-    if any(term in text for term in ("overview", "what is configured", "explain this award", "award version")):
-        return "OVERVIEW"
     return "UNKNOWN_OR_UNSUPPORTED"
 
 
@@ -138,6 +138,8 @@ def _select_nodes(
     if classification == "HOLD":
         hold_node_ids = {hold.semanticIdentity for hold in projection.holds}
         return [node for node in projection.semanticNodes if node.semanticIdentity in hold_node_ids]
+    if classification == "CLASSIFICATION":
+        return [node for node in projection.semanticNodes if node.type == "CLASSIFICATION"][:12]
     terms = _CONCEPT_TERMS.get(classification, ())
     if classification == "ALLOWANCE_REIMBURSEMENT":
         question_text = _normalise(question)

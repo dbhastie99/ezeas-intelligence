@@ -378,6 +378,30 @@ def test_other_configured_domains_are_selected_from_semantic_identity_not_award_
     assert semantic_identity in response.semanticIdentities
 
 
+def test_classification_selection_is_typed_and_overview_precedes_version_wording() -> None:
+    projection = ma000027_projection()
+    nodes = [
+        node.model_copy(update={"applicability": {"classificationKeys": ["GRADE_1"]}})
+        if node.semanticIdentity == "semantic:saturday"
+        else node
+        for node in projection.semanticNodes
+    ]
+    projection = projection.model_copy(update={"semanticNodes": nodes})
+    projection = projection.model_copy(
+        update={
+            "authorityEnvelope": projection.authorityEnvelope.model_copy(
+                update={"projectionFingerprint": canonical_projection_fingerprint(projection)}
+            )
+        }
+    )
+    classification = ask_award_studio_question(request(projection, "Which classification is configured?"))
+    assert classification.semanticIdentities == ["semantic:classification"]
+    assert classification.answerClassification == "EXPLICIT_STRUCTURED"
+
+    overview = ask_award_studio_question(request(projection, "Give me an overview of this AwardVersion."))
+    assert overview.questionClassification == "OVERVIEW"
+
+
 def test_version_and_source_answers_echo_only_projection_authority() -> None:
     projection = ma000027_projection()
     version = ask_award_studio_question(request(projection, "Show the selected version lineage."))
